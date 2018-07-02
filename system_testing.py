@@ -12,11 +12,7 @@ Example:
         $ python system_testing.py -s of-of -l
 """
 
-import sys
-import os
-import subprocess
-import filecmp
-import argparse
+import argparse, filecmp, os, sys
 
 # Parsing flags
 parser = argparse.ArgumentParser(description='Build local.')
@@ -40,12 +36,11 @@ def build(systest):
     os.chdir(os.getcwd() + dirname)
     print(os.getcwd())
     if args.local:
-        subprocess.call("docker build -t {systest} -f Dockerfile.{systest} --build-arg from=precice-{branch}:latest .".format(systest = systest, branch = args.branch),
-                        shell=True)
+        call("docker build -t {systest} -f Dockerfile.{systest} --build-arg from=precice-{branch}:latest .".format(systest = systest, branch = args.branch))
     else:
-        subprocess.call("docker build -t "+ systest +" -f Dockerfile."+ systest +" .", shell=True)
-    subprocess.call("docker run -it -d --name "+ systest +"_container "+ systest, shell=True)
-    subprocess.call("docker cp "+ systest +"_container:Output_"+ systest +" .", shell=True)
+        call("docker build -t " + systest + " -f Dockerfile." + systest + " .")
+    call("docker run -it -d --name "+ systest +"_container " + systest)
+    call("docker cp "+ systest +"_container:Output_" + systest + " .")
 
 def comparison(pathToRef, pathToOutput):
     """Building docker image.

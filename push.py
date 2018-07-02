@@ -9,11 +9,8 @@ to the repository: https://github.com/kunstrasenspringer/precice_st_output.
             $ python push.py -s -t of-of
 """
 
-import sys
-import os
-import subprocess
-import time
-import argparse
+import argparse, os, sys, time
+from common import call
 
 # Parsing flags
 parser = argparse.ArgumentParser(description='Build local.')
@@ -30,26 +27,26 @@ if __name__ == "__main__":
     # Saving versions of used software in system test systest.
     if systest == "of-ccx":
         log.write("OpenFOAM version: 4.1\n")
-        subprocess.call(["echo OpenFOAM-adapter Version: $(git ls-remote https://github.com/precice/openfoam-adapter.git  | tail -1)"],shell=True, stdout=log)
+        call(["echo OpenFOAM-adapter Version: $(git ls-remote https://github.com/precice/openfoam-adapter.git  | tail -1)"], stdout=log)
         log.write("CalculiX version: 2.12\n")
-        subprocess.call(["echo CalculiX-adapter Version: $(git ls-remote https://github.com/precice/calculix-adapter.git | tail -1)"],shell=True, stdout=log)
-        subprocess.call(["echo tutorials Version: $(git ls-remote https://github.com/precice/tutorials.git | tail -1)"],shell=True, stdout=log)
+        call(["echo CalculiX-adapter Version: $(git ls-remote https://github.com/precice/calculix-adapter.git | tail -1)"], stdout=log)
+        call(["echo tutorials Version: $(git ls-remote https://github.com/precice/tutorials.git | tail -1)"], stdout=log)
     elif systest == "of-of":
         log.write("OpenFOAM version: 4.1\n")
-        subprocess.call(["echo OpenFOAM-adapter Version: $(git ls-remote https://github.com/precice/openfoam-adapter.git  | tail -1)"],shell=True, stdout=log)
+        call(["echo OpenFOAM-adapter Version: $(git ls-remote https://github.com/precice/openfoam-adapter.git  | tail -1)"], stdout=log)
     elif systest == "su2-ccx":
         log.write("CalculiX version: 2.13\n")
         log.write("SU2 version: 6.0.0\n")
-        subprocess.call(["echo CalculiX-adapter Version: $(git ls-remote https://github.com/precice/calculix-adapter.git | head -n 1)"],shell=True, stdout=log)
-        subprocess.call(["echo SU2-adapter Version: $(git ls-remote https://github.com/precice/su2-adapter.git | tail -1)"],shell=True, stdout=log)
-        subprocess.call(["echo tutorials Version: $(git ls-remote https://github.com/precice/tutorials.git | tail -1)"],shell=True, stdout=log)
+        call(["echo CalculiX-adapter Version: $(git ls-remote https://github.com/precice/calculix-adapter.git | head -n 1)"], stdout=log)
+        call(["echo SU2-adapter Version: $(git ls-remote https://github.com/precice/su2-adapter.git | tail -1)"], stdout=log)
+        call(["echo tutorials Version: $(git ls-remote https://github.com/precice/tutorials.git | tail -1)"], stdout=log)
     # Saving general information of all system tests.
     # Saving used Ubuntu and preCICE version in logfile.
     # git ls-remote https://github.com/precice/precice.git | grep master
     if args.branch:
-        subprocess.call(["echo preCICE Version: $(git ls-remote https://github.com/precice/precice.git | grep "+ args.branch +")"],shell=True, stdout=log)
+        call(["echo preCICE Version: $(git ls-remote https://github.com/precice/precice.git | grep "+ args.branch +")"], stdout=log)
     else:
-        subprocess.call(["echo preCICE Version: $(git ls-remote --tags https://github.com/precice/precice.git | tail -1)"],shell=True, stdout=log)
+        call(["echo preCICE Version: $(git ls-remote --tags https://github.com/precice/precice.git | tail -1)"], stdout=log)
     log.write("Ubuntu version: 16.04\n")
     # Saving current date in logfile.
     localtime = str(time.asctime(time.localtime(time.time())))
@@ -58,29 +55,29 @@ if __name__ == "__main__":
 
     # Pushing outputfiles and logfile to repo.
     # Clone repository.
-    subprocess.call(["git clone https://github.com/kunstrasenspringer/precice_st_output"], shell=True)
+    call("git clone https://github.com/kunstrasenspringer/precice_st_output")
     os.chdir(os.getcwd() + "/precice_st_output")
     # Setting up git user.
     if not args.branch:
-        subprocess.call(["git config --local user.email \"travis@travis-ci.org\""], shell=True)
-        subprocess.call(["git config --local user.name \"Travis CI\""], shell=True)
+        call("git config --local user.email \"travis@travis-ci.org\"")
+        call("git config --local user.name \"Travis CI\"")
 
     if not args.success:
         # Move ouput to local repository.
-        subprocess.call(["mv "+ os.path.abspath(os.path.join(os.getcwd(), os.pardir)) +"/SystemTest_"+systest+"/Output_"+systest+" "+ os.getcwd()], shell=True)
-        subprocess.call(["mv "+ os.path.abspath(os.path.join(os.getcwd(), os.pardir)) +"/log_"+systest+" "+ os.getcwd()], shell=True)
-        subprocess.call(["git add ."], shell=True)
+        call("mv " + os.path.abspath(os.path.join(os.getcwd(), os.pardir)) + "/SystemTest_"+systest+"/Output_"+systest + " " + os.getcwd())
+        call("mv " + os.path.abspath(os.path.join(os.getcwd(), os.pardir)) + "/log_" + systest + " " + os.getcwd())
+        call(["git add ."])
         if args.branch:
-            subprocess.call(["git commit -m \"Output != Reference, local build with preCICE branch: "+ args.branch +"\""], shell=True)
+            call("git commit -m \"Output != Reference, local build with preCICE branch: " + args.branch +"\"")
         else:
-            subprocess.call(["git commit -m \"Output != Reference, build number: ${TRAVIS_BUILD_NUMBER}\""], shell=True)
+            call("git commit -m \"Output != Reference, build number: ${TRAVIS_BUILD_NUMBER}\"")
     else:
-        subprocess.call("rm -rf Output_" + systest, shell=True)
-        subprocess.call(["mv "+ os.path.abspath(os.path.join(os.getcwd(), os.pardir)) +"/log_"+systest+" "+ os.getcwd()], shell=True)
-        subprocess.call(["git add ."], shell=True)
+        call("rm -rf Output_" + systest)
+        call("mv "+ os.path.abspath(os.path.join(os.getcwd(), os.pardir)) +"/log_"+systest+" "+ os.getcwd())
+        call("git add .")
         if args.branch:
-            subprocess.call(["git commit -m \"Output == Reference, local build with preCICE branch: "+ args.branch +"\""], shell=True)
+            call("git commit -m \"Output == Reference, local build with preCICE branch: "+ args.branch +"\"")
         else:
-            subprocess.call(["git commit -m \"Output == Reference, build number: ${TRAVIS_BUILD_NUMBER} \""], shell=True)
-    subprocess.call(["git remote set-url origin https://${GH_TOKEN}@github.com/kunstrasenspringer/precice_st_output.git > /dev/null 2>&1"], shell=True)
-    subprocess.call(["git push"], shell=True)
+            call("git commit -m \"Output == Reference, build number: ${TRAVIS_BUILD_NUMBER} \"")
+    call("git remote set-url origin https://${GH_TOKEN}@github.com/kunstrasenspringer/precice_st_output.git > /dev/null 2>&1")
+    call("git push")

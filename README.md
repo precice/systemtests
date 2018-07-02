@@ -1,4 +1,4 @@
-# precice_st
+# preCICE System Tests
 Design und Implementation of system tests for the distributed multi-physics simulation package preCICE
 
 # preCICE
