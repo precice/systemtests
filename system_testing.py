@@ -32,16 +32,16 @@ def build(systest):
     Args:
         systest (str): Name of the system test.
     """
-    dirname = "/SystemTest_" + systest
+    dirname = "/Test_" + systest
     print(os.getcwd() + dirname)
     os.chdir(os.getcwd() + dirname)
     print(os.getcwd())
     if args.local:
-        call("docker build -t {systest} -f Dockerfile.{systest} --build-arg from=precice-{branch}:latest .".format(systest = systest, branch = args.branch))
+        call("docker build -t {systest} --build-arg from=precice-{branch}:latest .".format(systest = systest, branch = args.branch))
     else:
-        call("docker build -t " + systest + " -f Dockerfile." + systest + " .")
+        call("docker build -t " + systest + " .")
     call("docker run -it -d --name "+ systest +"_container " + systest)
-    call("docker cp "+ systest +"_container:Output_" + systest + " .")
+    call("docker cp " + systest + "_container:Output_" + systest + " .")
 
 def comparison(pathToRef, pathToOutput):
     """Building docker image.

@@ -6,11 +6,11 @@ Design und Implementation of system tests for the distributed multi-physics simu
 [preCICE - github](https://github.com/precice)
 
 # System tests
-- Dockerfile.su2-ccx coupled simulation with SU2 and CalculiX
+- su2-ccx coupled simulation with SU2 and CalculiX
 [FSI tutorial](https://github.com/precice/precice/wiki/FSI-tutorial)
-- Dockerfile.of-of coupled simulation with OpenFOAM
+- of-of coupled simulation with OpenFOAM
 [Tutorial for CHT: Flow over a heated plate](https://github.com/precice/openfoam-adapter/wiki/Tutorial-for-CHT:-Flow-over-a-heated-plate)
-- Dockerfile.of-ccx conjugate heat transfer simulation with OpenFOAM and CalculiX
+- of-ccx conjugate heat transfer simulation with OpenFOAM and CalculiX
 [Tutorial for CHT with OpenFOAM and CalculiX](https://github.com/precice/precice/wiki/Tutorial-for-CHT-with-OpenFOAM-and-CalculiX)
 
 # travis.yml
@@ -26,7 +26,7 @@ Python script to compare reference data with output data.
 Reference files.
 
 # Others
-- Makefile_*: needed to build calculix-adapter in Dockerfile.su2-ccx and Dockerfile.of-ccx
+- Makefile_*: needed to build calculix-adapter in su2-ccx and of-ccx
 - push_*: script to push outputfiles back to rep [HowTo](https://gist.github.com/willprice/e07efd73fb7f13f917ea#file-push-sh)
 - How to push to [hub.docker.com](https://hub.docker.com/) [link1](https://docs.travis-ci.com/user/docker/#Pushing-a-Docker-Image-to-a-Registry) [link2](https://docs.travis-ci.com/user/build-stages/share-docker-image/)
 - log_*: script to log infomation about the build

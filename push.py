@@ -64,7 +64,7 @@ if __name__ == "__main__":
 
     if not args.success:
         # Move ouput to local repository.
-        call("mv " + os.path.abspath(os.path.join(os.getcwd(), os.pardir)) + "/SystemTest_"+systest+"/Output_"+systest + " " + os.getcwd())
+        call("mv " + os.path.abspath(os.path.join(os.getcwd(), os.pardir)) + "/Test_"+systest+"/Output_"+systest + " " + os.getcwd())
         call("mv " + os.path.abspath(os.path.join(os.getcwd(), os.pardir)) + "/log_" + systest + " " + os.getcwd())
         call(["git add ."])
         if args.branch:
