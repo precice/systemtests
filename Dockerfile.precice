@@ -4,7 +4,7 @@
 FROM ubuntu:16.04
 
 # Installing necessary dependacies for preCICE
-RUN apt update && apt install -y \
+RUN apt-get -qq update && apt-get -qq install \
     build-essential \
     scons \
     libeigen3-dev \

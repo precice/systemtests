@@ -8,7 +8,7 @@ USER root
 ENV USER=root
 
 # Installing necessary dependecies
-RUN apt-get update && apt-get install -y \
+RUN apt-get -qq update && apt-get -qq install \
     cmake \
     curl \
     automake \

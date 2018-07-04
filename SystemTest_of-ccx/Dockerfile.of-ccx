@@ -8,7 +8,7 @@ USER root
 ENV USER=root
 
 # Installing necessary dependecies
-RUN apt-get update && apt-get install -y \
+RUN apt-get -qq update && apt-get -qq install \
     software-properties-common \
     curl \
     apt-transport-https \
@@ -23,7 +23,7 @@ RUN apt-get update && apt-get install -y \
 RUN add-apt-repository "http://dl.openfoam.org/ubuntu dev" && \
     sh -c "curl -s http://dl.openfoam.org/gpg.key | apt-key add -" && \
     add-apt-repository http://dl.openfoam.org/ubuntu && apt update && \
-    apt-get -y install openfoam4 --no-install-recommends
+    apt-get -qq --no-install-recommends install openfoam4
 
 # Building openfoam-adapter
 WORKDIR /

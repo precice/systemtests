@@ -13,6 +13,7 @@ Example:
 """
 
 import argparse, filecmp, os, sys
+from common import call
 
 # Parsing flags
 parser = argparse.ArgumentParser(description='Build local.')
