@@ -51,7 +51,7 @@ RUN mkdir spooles.2.2 && cd spooles.2.2 && \
     make lib && cd /spooles.2.2/MT/src/ && make
 
 # Downloading and installing ARPACK
-RUN curl -s http://www.caam.rice.edu/software/ARPACK/SRC/arpack96.tar.gz | tar -xz && \
+RUN curl -s https://www.caam.rice.edu//software/ARPACK/SRC/arpack96.tar.gz | tar -xz && \
     mv ARPACK /usr/local/ARPACK \
     && cd /usr/local/ARPACK \
     && sed -i 's/$(HOME)/\/usr\/local/g' ARmake.inc \
