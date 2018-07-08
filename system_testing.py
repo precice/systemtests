@@ -13,12 +13,13 @@ Example:
 """
 
 import argparse, filecmp, os, sys
+import common
 from common import call
 
 # Parsing flags
 parser = argparse.ArgumentParser(description='Build local.')
 parser.add_argument('-l', '--local', action='store_true', help="use local preCICE image (default: use remote image)")
-parser.add_argument('-s', '--systemtest', help="choose system tests you want to use")
+parser.add_argument('-s', '--systemtest', help="choose system tests you want to use", choices = common.get_tests())
 parser.add_argument('-b', '--branch', help="preCICE branch to use", default = "develop")
 args = parser.parse_args()
 

@@ -11,16 +11,15 @@ of preCICE system test.
             $ python local_test.py --branch=master --systemtest of-of su2-ccx
 """
 
-import subprocess
-import argparse
-import os
+import argparse, os, subprocess
+import common
 from common import call
 
 # Parsing flags
 parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter,
                                  description='Build local.')
 parser.add_argument('-b', '--branch', help="choose branch you want to use for preCICE", default = "develop")
-parser.add_argument('-s', '--systemtest', nargs='+', help="choose system tests you want to use", default = ['of-of', 'of-ccx', 'su2-ccx'])
+parser.add_argument('-s', '--systemtest', nargs='+', help="choose system tests you want to use", default = common.get_tests())
 args = parser.parse_args()
 
 if __name__ == "__main__":
