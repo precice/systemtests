@@ -14,16 +14,10 @@ Example:
 
 import argparse, filecmp, os, sys
 import common
-from common import call
+from common import ccall
 
-# Parsing flags
-parser = argparse.ArgumentParser(description='Build local.')
-parser.add_argument('-l', '--local', action='store_true', help="use local preCICE image (default: use remote image)")
-parser.add_argument('-s', '--systemtest', help="choose system tests you want to use", choices = common.get_tests())
-parser.add_argument('-b', '--branch', help="preCICE branch to use", default = "develop")
-args = parser.parse_args()
 
-def build(systest):
+def build(systest, branch, local):
     """Building docker image.
 
     This function builds a docker image with the respectively system test,
@@ -34,15 +28,16 @@ def build(systest):
         systest (str): Name of the system test.
     """
     dirname = "/Test_" + systest
+    import pdb; pdb.set_trace()
     print(os.getcwd() + dirname)
     os.chdir(os.getcwd() + dirname)
-    print(os.getcwd())
-    if args.local:
-        call("docker build -t {systest} --build-arg from=precice-{branch}:latest .".format(systest = systest, branch = args.branch))
+    if local:
+        ccall("docker build -t {systest} --build-arg from=precice-{branch}:latest .".format(systest = systest, branch = branch))
     else:
-        call("docker build -t " + systest + " .")
-    call("docker run -it -d --name "+ systest +"_container " + systest)
-    call("docker cp " + systest + "_container:Output_" + systest + " .")
+        ccall("docker build -t " + systest + " .")
+
+    ccall("docker run -it -d --name "+ systest +"_container " + systest)
+    ccall("docker cp " + systest + "_container:Output_" + systest + " .")
 
 def comparison(pathToRef, pathToOutput):
     """Building docker image.
@@ -71,11 +66,23 @@ def comparison(pathToRef, pathToOutput):
             if not filecmp.cmp(pathToRef + x, pathToOutput + y):
                 raise Exception('Output differs from reference')
 
-if __name__ == "__main__":
+
+def build_run_compare(test, branch, local_precice):
+    """ Runs and compares test, using precice branch. """
     # Build
-    build(args.systemtest)
+    build(test, branch, local_precice)
     # Preparing string for path
-    pathToRef = os.getcwd() + "/referenceOutput_" + args.systemtest + "/"
-    pathToOutput = os.getcwd() + "/Output_" + args.systemtest + "/"
+    pathToRef = os.getcwd() + "/referenceOutput_" + test + "/"
+    pathToOutput = os.getcwd() + "/Output_" + test + "/"
     # Comparing
     comparison(pathToRef, pathToOutput)
+
+
+if __name__ == "__main__":
+    # Parsing flags
+    parser = argparse.ArgumentParser(description='Build local.')
+    parser.add_argument('-l', '--local', action='store_true', help="use local preCICE image (default: use remote image)")
+    parser.add_argument('-s', '--systemtest', help="choose system tests you want to use", choices = common.get_tests())
+    parser.add_argument('-b', '--branch', help="preCICE branch to use", default = "develop")
+    args = parser.parse_args()
+    build_run_compare(args.systemtest, args.branch, args.local)

@@ -13,7 +13,8 @@ of preCICE system test.
 
 import argparse, os, subprocess
 import common
-from common import call
+from common import call, ccall
+from system_testing import build_run_compare
 
 # Parsing flags
 parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -32,11 +33,11 @@ if __name__ == "__main__":
     if lst1:
         print("Deleting following docker images:\n")
         for x in lst1:
-            call("docker image ls | grep " + x)
+            ccall("docker image ls | grep " + x)
         answer = input("\nOk? (yes/no)\n")
         if answer in ["yes", "y"]:
             for x in lst1:
-                call("docker rmi -f " + x)
+                ccall("docker image rm -f " + x)
         else:
             print("BE CAREFUL!: Not deleting previous images can later lead to problems.\n\n")
             
@@ -45,30 +46,30 @@ if __name__ == "__main__":
     if lst2:
         print("Deleting following docker containers\n")
         for x in lst2:
-            call("docker ps -a | grep " + x + "_container")
+            ccall("docker ps -a | grep " + x + "_container")
         answer = input("\nOk? (yes/no)\n")
         if answer in ["yes", "y"]:
             for x in lst2:
-                call("docker rm -f " + x + "_container")
+                ccall("docker rm -f " + x + "_container")
         else:
             print("BE CAREFUL!: Not deleting previous containers can later lead to problems.")
 
     # Building preCICE
     print("\n\nBuilding preCICE docker image with choosen branch\n\n")
     branch = args.branch
-    call("docker build -f Dockerfile.precice -t precice-{branch} --build-arg branch={branch} .".format(branch=branch), check=True)
+    ccall("docker build -f Dockerfile.precice -t precice-{branch} --build-arg branch={branch} .".format(branch=branch))
 
     # Starting system tests
     failed = []
     success = []
-    for x in tests:
+    for test in tests:
         print("\n\nStarting system test %s\n\n" % x)
         try:
-            call("python system_testing.py --local --systemtest " + x, check=True)
+            build_run_compare(test, "develop", True)
         except subprocess.CalledProcessError:
-            failed.append(x)
+            failed.append(test)
         else:
-            success.append(x)
+            success.append(test)
 
     # Results
     print("\n\n\n\n\nLocal build finished.\n")
@@ -85,6 +86,6 @@ if __name__ == "__main__":
     answer = input("Do you want to push the results (logfiles and possibly output files) to the output repo? (yes/no)\n")
     if answer in ["yes", "y"]:
         for x in success:
-            call("python push.py --success --test " + x + " --branch " + args.branch, check=True)
+            ccall("python push.py --success --test " + x + " --branch " + args.branch)
         for y in failed:
-            call("python push.py --test " + y + " --branch " + args.branch, check=True)
+            ccall("python push.py --test " + y + " --branch " + args.branch)
