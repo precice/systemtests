@@ -16,3 +16,16 @@ import os
 def get_tests(root = os.getcwd()):
     """ List of all available system tests """
     return[s[5:] for s in os.listdir(root) if s.startswith("Test_")]
+
+
+from contextlib import contextmanager
+
+@contextmanager
+def chdir(path):
+    """ Changes and restores the current working directory. """
+    oldpwd = os.getcwd()
+    os.chdir(path)
+    try:
+        yield
+    finally:
+        os.chdir(oldpwd)

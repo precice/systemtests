@@ -27,16 +27,12 @@ def build(systest, branch, local):
     Args:
         systest (str): Name of the system test.
     """
-    dirname = "/Test_" + systest
-    import pdb; pdb.set_trace()
-    print(os.getcwd() + dirname)
-    os.chdir(os.getcwd() + dirname)
     if local:
         ccall("docker build -t {systest} --build-arg from=precice-{branch}:latest .".format(systest = systest, branch = branch))
     else:
         ccall("docker build -t " + systest + " .")
 
-    ccall("docker run -it -d --name "+ systest +"_container " + systest)
+    ccall("docker run -it -d --name "+ systest + "_container " + systest)
     ccall("docker cp " + systest + "_container:Output_" + systest + " .")
 
 def comparison(pathToRef, pathToOutput):
@@ -69,13 +65,15 @@ def comparison(pathToRef, pathToOutput):
 
 def build_run_compare(test, branch, local_precice):
     """ Runs and compares test, using precice branch. """
-    # Build
-    build(test, branch, local_precice)
-    # Preparing string for path
-    pathToRef = os.getcwd() + "/referenceOutput_" + test + "/"
-    pathToOutput = os.getcwd() + "/Output_" + test + "/"
-    # Comparing
-    comparison(pathToRef, pathToOutput)
+    dirname = "/Test_" + test
+    with common.chdir(os.getcwd() + dirname):
+        # Build
+        build(test, branch, local_precice)
+        # Preparing string for path
+        pathToRef = os.getcwd() + "/referenceOutput_" + test + "/"
+        pathToOutput = os.getcwd() + "/Output_" + test + "/"
+        # Comparing
+        comparison(pathToRef, pathToOutput)
 
 
 if __name__ == "__main__":
