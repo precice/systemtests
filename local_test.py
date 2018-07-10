@@ -12,7 +12,7 @@ of preCICE system test.
 """
 
 import argparse, os, subprocess
-import common
+import docker, common
 from common import call, ccall
 from system_testing import build_run_compare
 
@@ -27,13 +27,9 @@ if __name__ == "__main__":
     tests = args.systemtest
     
     # Checking for older docker images
-    lst1 = [ x for x in tests if call("docker image ls | grep " + x, stdout=subprocess.DEVNULL) == 0 ]
-    if call("docker image ls | grep precice", stdout=subprocess.DEVNULL) == 0:
-        lst1.append('precice')
+    lst1 = docker.get_images()
     if lst1:
-        print("Deleting following docker images:\n")
-        for x in lst1:
-            ccall("docker image ls | grep " + x)
+        print("Deleting following docker images:", lst1)
         answer = input("\nOk? (yes/no)\n")
         if answer in ["yes", "y"]:
             for x in lst1:
@@ -42,28 +38,25 @@ if __name__ == "__main__":
             print("BE CAREFUL!: Not deleting previous images can later lead to problems.\n\n")
             
     # Checking for older docker containers
-    lst2 = [ x for x in tests if call("docker ps -a | grep " + x + "_container", stdout=subprocess.DEVNULL) == 0 ]
+    lst2 = docker.get_containers()
     if lst2:
-        print("Deleting following docker containers\n")
-        for x in lst2:
-            ccall("docker ps -a | grep " + x + "_container")
+        print("Deleting following docker containers:", lst2)
         answer = input("\nOk? (yes/no)\n")
         if answer in ["yes", "y"]:
             for x in lst2:
-                ccall("docker rm -f " + x + "_container")
+                ccall("docker container rm -f " + x)
         else:
             print("BE CAREFUL!: Not deleting previous containers can later lead to problems.")
 
     # Building preCICE
     print("\n\nBuilding preCICE docker image with choosen branch\n\n")
     branch = args.branch
-    ccall("docker build -f Dockerfile.precice -t precice-{branch} --build-arg branch={branch} .".format(branch=branch))
-
+    docker.build_image("precice-" + branch, "Dockerfile.precice", {"branch" : branch})
     # Starting system tests
     failed = []
     success = []
     for test in tests:
-        print("\n\nStarting system test %s\n\n" % x)
+        print("\n\nStarting system test %s\n\n" % test)
         try:
             build_run_compare(test, "develop", True)
         except subprocess.CalledProcessError:

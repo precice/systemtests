@@ -13,7 +13,7 @@ Example:
 """
 
 import argparse, filecmp, os, sys
-import common
+import common, docker
 from common import ccall
 
 
@@ -28,12 +28,14 @@ def build(systest, branch, local):
         systest (str): Name of the system test.
     """
     if local:
-        ccall("docker build -t {systest} --build-arg from=precice-{branch}:latest .".format(systest = systest, branch = branch))
+        docker.build_image(tag = systest, build_args = {"from" :
+                                                        docker.get_namespace() + "precice-" + branch + ":latest"})
     else:
-        ccall("docker build -t " + systest + " .")
+        docker.build_image(tag = systest)
 
-    ccall("docker run -it -d --name "+ systest + "_container " + systest)
-    ccall("docker cp " + systest + "_container:Output_" + systest + " .")
+    test = docker.get_namespace() + systest
+    ccall("docker run -it -d --name " + test + " " + test)
+    ccall("docker cp " + test + ":Output_" + systest + " .")
 
 def comparison(pathToRef, pathToOutput):
     """Building docker image.
