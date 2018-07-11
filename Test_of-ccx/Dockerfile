@@ -1,23 +1,29 @@
-# System testing preCICE with openfoam-adapter
+# System testing preCICE with openfoam-adapter and calculix-adapter
 
-# Using latest preCICE from dockerhub.com
+# Building on top of the latets preCICE-build
 ARG from=kunstrasenspringer/precice:latest
 FROM $from
 
 USER root
 ENV USER=root
 
-# Install dependecies
+# Installing necessary dependecies
 RUN apt-get -qq update && apt-get -qq install \
     software-properties-common \
-    wget apt-transport-https \
+    curl \
+    apt-transport-https \
+    cmake \
+    automake \
+    autoconf \
+    autotools-dev \
+    libarpack2-dev \
     libyaml-cpp-dev
 
 # Installing OpenFOAM 4.1
-RUN add-apt-repository "http://dl.openfoam.org/ubuntu dev"
-RUN sh -c "wget -O - http://dl.openfoam.org/gpg.key | apt-key add -"
-RUN add-apt-repository http://dl.openfoam.org/ubuntu && apt update
-RUN apt-get -y install openfoam4 --no-install-recommends
+RUN add-apt-repository "http://dl.openfoam.org/ubuntu dev" && \
+    sh -c "curl -s http://dl.openfoam.org/gpg.key | apt-key add -" && \
+    add-apt-repository http://dl.openfoam.org/ubuntu && apt update && \
+    apt-get -qq --no-install-recommends install openfoam4
 
 # Building openfoam-adapter
 WORKDIR /
@@ -25,12 +31,68 @@ RUN git clone https://github.com/precice/openfoam-adapter.git
 WORKDIR /openfoam-adapter
 RUN . /opt/openfoam4/etc/bashrc && ./Allwmake
 
-# Simulating
-WORKDIR /openfoam-adapter/tutorials/CHT/flow-over-plate/buoyantPimpleFoam-laplacianFoam
-RUN . /opt/openfoam4/etc/bashrc; ./Allrun
-
-# Copying output files to a folder for further examination
+# Downloading Calculix 2.12
 WORKDIR /
-RUN mkdir Output_of-of && \
-    cp -r /openfoam-adapter/tutorials/CHT/flow-over-plate/buoyantPimpleFoam-laplacianFoam/Solid/ /Output_of-of && \
-    cp -r /openfoam-adapter/tutorials/CHT/flow-over-plate/buoyantPimpleFoam-laplacianFoam/Fluid/ /Output_of-of
+RUN curl -s http://www.dhondt.de/ccx_2.12.src.tar.bz2 | tar -xj
+
+# Installing yaml-cpp
+RUN git clone https://github.com/jbeder/yaml-cpp.git yaml-cpp
+WORKDIR /yaml-cpp
+RUN mkdir build && cd build && cmake /yaml-cpp/ && make
+
+# Installing spooles
+WORKDIR /
+RUN mkdir spooles.2.2 && cd spooles.2.2 && \
+    curl -s http://www.netlib.org/linalg/spooles/spooles.2.2.tgz | tar -xz && \
+    cd /spooles.2.2/Tree/src/ && \
+    sed -i 's/drawTree/draw/g' makeGlobalLib && \
+    cd /spooles.2.2/ && \
+    sed -i "s#CC = /usr/lang-4.0/bin/cc#CC = /usr/bin/cc#g" Make.inc && \
+    make lib && cd /spooles.2.2/MT/src/ && make
+
+# Downloading and installing ARPACK
+RUN curl -s https://www.caam.rice.edu//software/ARPACK/SRC/arpack96.tar.gz | tar -xz && \
+    mv ARPACK /usr/local/ARPACK \
+    && cd /usr/local/ARPACK \
+    && sed -i 's/$(HOME)/\/usr\/local/g' ARmake.inc \
+    && sed -i 's/\/bin\/make/make/g' ARmake.inc \
+    && sed -i 's/f77/gfortran/g' ARmake.inc \
+    && sed -i 's/SUN4/INTEL/g' ARmake.inc \
+    && sed -i 's/-cg89//g' ARmake.inc \
+    && sed -i 's/      EXTERNAL           ETIME/*     EXTERNAL           ETIME/g' UTIL/second.f \
+    && make all
+
+# Building calculix-adapter
+WORKDIR /
+RUN git clone https://github.com/precice/calculix-adapter.git
+WORKDIR /calculix-adapter/
+RUN git fetch && git checkout v2.12
+COPY Makefile_of_ccx /calculix-adapter/Makefile
+RUN make
+
+ENV PATH="/calculix-adapter/bin:${PATH}"
+
+# Downloading tutorial and meshes and set endTime to 5.0
+WORKDIR /
+RUN git clone https://github.com/precice/tutorials.git
+WORKDIR /tutorials/CHT/heat_exchanger/buoyantSimpleFoam-CalculiX
+RUN ./Download_meshes
+COPY precice-config_serial.xml /tutorials/CHT/heat_exchanger/buoyantSimpleFoam-CalculiX/precice-config_serial.xml
+COPY controlDict /tutorials/CHT/heat_exchanger/buoyantSimpleFoam-CalculiX/Inner-Fluid/system/controlDict
+COPY controlDict /tutorials/CHT/heat_exchanger/buoyantSimpleFoam-CalculiX/Outer-Fluid/system/controlDict
+
+# Simulating
+# WORKDIR /tutorials/CHT/heat_exchanger/buoyantSimpleFoam-CalculiX
+# RUN . /opt/openfoam4/etc/bashrc && ./Allrun
+
+# Simulating with reduced output for travis ci
+COPY reducing_log_of-ccx /tutorials/CHT/heat_exchanger/buoyantSimpleFoam-CalculiX
+RUN ./reducing_log_of-ccx
+
+# Copy output to folder Output for further examination
+WORKDIR /
+RUN mkdir Output_of-ccx && \
+    cp -r /tutorials/CHT/heat_exchanger/buoyantSimpleFoam-CalculiX/Inner-Fluid/ /Output_of-ccx && \
+    cp -r /tutorials/CHT/heat_exchanger/buoyantSimpleFoam-CalculiX/Outer-Fluid/ /Output_of-ccx
+
+# RUN apt-get install -y gdb
