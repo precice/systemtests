@@ -29,3 +29,19 @@ def chdir(path):
         yield
     finally:
         os.chdir(oldpwd)
+
+
+def get_diff_files(dcmp):
+    """ Given a filecmp.dircmp object, recursively compares files.
+    Returns three lists: files that differ and files that exist only in left/right directory. """
+    diff_files = dcmp.diff_files
+    left_only = dcmp.left_only
+    right_only = dcmp.right_only
+
+    for sub_dcmp in dcmp.subdirs.values():
+        ret = get_diff_files(sub_dcmp)
+        diff_files += ret[0]
+        left_only += ret[1]
+        right_only += ret[2]
+
+    return diff_files, left_only, right_only

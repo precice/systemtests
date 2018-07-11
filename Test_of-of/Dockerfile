@@ -31,6 +31,6 @@ RUN . /opt/openfoam4/etc/bashrc; ./Allrun
 
 # Copying output files to a folder for further examination
 WORKDIR /
-RUN mkdir Output_of-of && \
-    cp -r /openfoam-adapter/tutorials/CHT/flow-over-plate/buoyantPimpleFoam-laplacianFoam/Solid/ /Output_of-of && \
-    cp -r /openfoam-adapter/tutorials/CHT/flow-over-plate/buoyantPimpleFoam-laplacianFoam/Fluid/ /Output_of-of
+RUN mkdir Output && \
+    cp -r /openfoam-adapter/tutorials/CHT/flow-over-plate/buoyantPimpleFoam-laplacianFoam/Solid /Output/ && \
+    cp -r /openfoam-adapter/tutorials/CHT/flow-over-plate/buoyantPimpleFoam-laplacianFoam/Fluid /Output/

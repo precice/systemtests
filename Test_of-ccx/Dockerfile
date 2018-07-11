@@ -64,9 +64,8 @@ RUN curl -s https://www.caam.rice.edu//software/ARPACK/SRC/arpack96.tar.gz | tar
 
 # Building calculix-adapter
 WORKDIR /
-RUN git clone https://github.com/precice/calculix-adapter.git
+RUN git clone --branch v2.12 https://github.com/precice/calculix-adapter.git
 WORKDIR /calculix-adapter/
-RUN git fetch && git checkout v2.12
 COPY Makefile_of_ccx /calculix-adapter/Makefile
 RUN make
 
@@ -91,8 +90,7 @@ RUN ./reducing_log_of-ccx
 
 # Copy output to folder Output for further examination
 WORKDIR /
-RUN mkdir Output_of-ccx && \
-    cp -r /tutorials/CHT/heat_exchanger/buoyantSimpleFoam-CalculiX/Inner-Fluid/ /Output_of-ccx && \
-    cp -r /tutorials/CHT/heat_exchanger/buoyantSimpleFoam-CalculiX/Outer-Fluid/ /Output_of-ccx
+RUN mkdir Output && \
+    cp -r /tutorials/CHT/heat_exchanger/buoyantSimpleFoam-CalculiX/Inner-Fluid /Output/ && \
+    cp -r /tutorials/CHT/heat_exchanger/buoyantSimpleFoam-CalculiX/Outer-Fluid /Output/
 
-# RUN apt-get install -y gdb

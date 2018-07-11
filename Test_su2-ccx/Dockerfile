@@ -59,8 +59,7 @@ ENV PATH="/calculix-adapter/bin:${PATH}"
 
 # Downloading SU2 and SU2-adapter
 WORKDIR /
-RUN git clone https://github.com/su2code/SU2.git su2-source && cd su2-source && \
-    git fetch && git checkout v6.0.0 && cd ..
+RUN git clone --branch v6.0.0 https://github.com/su2code/SU2.git su2-source
 RUN git clone https://github.com/precice/su2-adapter.git
 
 ENV SU2_HOME="/su2-source"
@@ -89,15 +88,15 @@ RUN ./reducing_log_su2-ccx; exit 0
 
 # Copying output files to a folder for further examination
 WORKDIR /
-RUN mkdir Output_su2-ccx && cp /tutorials/FSI/flap_perp/SU2-CalculiX/flow*.vtk /Output_su2-ccx && \
-cp /tutorials/FSI/flap_perp/SU2-CalculiX/flap.cvg /Output_su2-ccx && \
-cp /tutorials/FSI/flap_perp/SU2-CalculiX/flap.dat /Output_su2-ccx && \
-cp /tutorials/FSI/flap_perp/SU2-CalculiX/flap.sta /Output_su2-ccx && \
-cp /tutorials/FSI/flap_perp/SU2-CalculiX/convergence-Calculix.txt /Output_su2-ccx && \
-cp /tutorials/FSI/flap_perp/SU2-CalculiX/forces_breakdown.dat /Output_su2-ccx && \
-cp /tutorials/FSI/flap_perp/SU2-CalculiX/iterations-Calculix.txt /Output_su2-ccx && \
-cp /tutorials/FSI/flap_perp/SU2-CalculiX/iterations-SU2_CFD.txt /Output_su2-ccx && \
-cp /tutorials/FSI/flap_perp/SU2-CalculiX/point1.watchpoint.txt /Output_su2-ccx && \
-cp /tutorials/FSI/flap_perp/SU2-CalculiX/restart_flow_*.dat /Output_su2-ccx && \
-cp /tutorials/FSI/flap_perp/SU2-CalculiX/spooles.out /Output_su2-ccx && \
-cp /tutorials/FSI/flap_perp/SU2-CalculiX/surface_flow_*.csv /Output_su2-ccx
+RUN mkdir Output && cp /tutorials/FSI/flap_perp/SU2-CalculiX/flow*.vtk /Output && \
+cp /tutorials/FSI/flap_perp/SU2-CalculiX/flap.cvg /Output && \
+cp /tutorials/FSI/flap_perp/SU2-CalculiX/flap.dat /Output && \
+cp /tutorials/FSI/flap_perp/SU2-CalculiX/flap.sta /Output && \
+cp /tutorials/FSI/flap_perp/SU2-CalculiX/convergence-Calculix.txt /Output && \
+cp /tutorials/FSI/flap_perp/SU2-CalculiX/forces_breakdown.dat /Output && \
+cp /tutorials/FSI/flap_perp/SU2-CalculiX/iterations-Calculix.txt /Output && \
+cp /tutorials/FSI/flap_perp/SU2-CalculiX/iterations-SU2_CFD.txt /Output && \
+cp /tutorials/FSI/flap_perp/SU2-CalculiX/point1.watchpoint.txt /Output && \
+cp /tutorials/FSI/flap_perp/SU2-CalculiX/restart_flow_*.dat /Output && \
+cp /tutorials/FSI/flap_perp/SU2-CalculiX/spooles.out /Output && \
+cp /tutorials/FSI/flap_perp/SU2-CalculiX/surface_flow_*.csv /Output
