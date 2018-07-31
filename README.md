@@ -33,3 +33,9 @@ Reference files.
 
 # Status
 [![Build Status](https://travis-ci.org/kunstrasenspringer/precice_st.svg?branch=develop)](https://travis-ci.org/kunstrasenspringer/precice_st)
+
+# How to create a new system tests
+1. Create a directory `Test_mysystemtest`.
+2. Create a `Dockerfile` in there.
+3. Create a directory `referenceOutput` there.
+4. Copy the output files to a folder `/Output/` (inside the container).
