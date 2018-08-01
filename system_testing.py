@@ -62,7 +62,7 @@ def comparison(pathToRef, pathToOutput):
     Raises:
         Exception: Raises IncorrectOutput when output differs from reference.
     """
-    ret = common.get_diff_files(filecmp.dircmp(pathToRef, pathToOutput))
+    ret = common.get_diff_files(filecmp.dircmp(pathToRef, pathToOutput, ignore = [".gitkeep"]))
     if ret[0] or ret[1] or ret[2]:
         raise IncorrectOutput(*ret)
 
