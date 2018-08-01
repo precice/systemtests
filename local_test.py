@@ -19,8 +19,9 @@ from system_testing import build_run_compare
 # Parsing flags
 parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter,
                                  description='Build local.')
-parser.add_argument('-b', '--branch', help="choose branch you want to use for preCICE", default = "develop")
-parser.add_argument('-s', '--systemtest', nargs='+', help="choose system tests you want to use", default = common.get_tests())
+parser.add_argument('-b', '--branch', help="Choose branch you want to use for preCICE", default = "develop")
+parser.add_argument('-s', '--systemtest', nargs='+', help="Choose system tests you want to use", default = common.get_tests(), choices = common.get_tests())
+
 args = parser.parse_args()
 
 if __name__ == "__main__":
