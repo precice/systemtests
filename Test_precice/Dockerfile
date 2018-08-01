@@ -11,6 +11,9 @@ ENV USER=root
 RUN apt-get -qq update && apt-get -qq install \
     cython
 
+# Rebuild image if force_rebuild after that command
+ARG CACHEBUST
+
 # Builds the precice python binding
 WORKDIR $PRECICE_ROOT/src/precice/bindings/python
 ENV PRECICE_MPI_IMPLEMENTATION=openmpi

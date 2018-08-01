@@ -24,14 +24,14 @@ RUN wget -nv https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_0.
     ./b2 install && \
     ldconfig
 
+# Rebuild image if force_rebuild after that command
+ARG CACHEBUST
+
 # Setting some environment variables for installing preCICE
 ENV CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/usr/include/eigen3"
 ENV CPATH="/usr/include/eigen3:${CPATH}"
 ENV PETSC_DIR="/usr/lib/petscdir/3.6.2/"
 ENV PETSC_ARCH="x86_64-linux-gnu-real"
-
-# Workaround to omit caching after that line
-ARG CACHEBUST=1
 
 # Building preCICE
 ARG branch=develop

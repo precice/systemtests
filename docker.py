@@ -1,4 +1,4 @@
-import configparser, subprocess
+import configparser, datetime, subprocess
 
 
 def get_namespace():
@@ -6,6 +6,10 @@ def get_namespace():
     # cp.read("configuration")
     # return cp["Docker"]["Namespace"]
     return "st_"
+
+def get_dockername():
+    """ Returns the docker namespace resp. username. """
+    return "precice"
 
 def get_images():
     cmd = r'docker image list --filter=reference="%s*" --format="{{.Repository}}"' % get_namespace()
@@ -21,7 +25,9 @@ def get_containers():
     images = cp.stdout.decode().split("\n")
     return [i for i in images if len(i) > 0] # Remove empty lines
 
-def build_image(tag, dockerfile = "Dockerfile", build_args = {}):
+def build_image(tag, dockerfile = "Dockerfile", build_args = {}, force_rebuild = False):
+    if force_rebuild:
+        build_args["CACHEBUST"] = datetime.datetime.now().isoformat() # A unique string for every invocation
     args = " ".join(["--build-arg " + a + "=" + b for a, b in build_args.items()])
     cmd = "docker build -f {} -t {}{} {} .".format(dockerfile, get_namespace(), tag, args)
     print("EXECUTING:", cmd)

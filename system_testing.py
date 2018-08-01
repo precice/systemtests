@@ -16,7 +16,7 @@ import argparse, filecmp, os, sys
 import common, docker
 from common import ccall
 
-def build(systest, branch, local):
+def build(systest, branch, local, force_rebuild):
     """Building docker image.
 
     This function builds a docker image with the respectively system test,
@@ -27,10 +27,11 @@ def build(systest, branch, local):
         systest (str): Name of the system test.
     """
     if local:
-        docker.build_image(tag = systest, build_args = {"from" :
-                                                        docker.get_namespace() + "precice-" + branch + ":latest"})
+        docker.build_image(tag = systest,
+                           build_args = {"from" : docker.get_namespace() + "precice-" + branch + ":latest"},
+                           force_rebuild = force_rebuild)
     else:
-        docker.build_image(tag = systest)
+        docker.build_image(tag = systest, force_rebuild = force_rebuild)
 
     test = docker.get_namespace() + systest
     ccall("docker run -it -d --name " + test + " " + test)
@@ -68,12 +69,12 @@ def comparison(pathToRef, pathToOutput):
 
 
 
-def build_run_compare(test, branch, local_precice):
+def build_run_compare(test, branch, local_precice, force_rebuild):
     """ Runs and compares test, using precice branch. """
     dirname = "/Test_" + test
     with common.chdir(os.getcwd() + dirname):
         # Build
-        build(test, branch, local_precice)
+        build(test, branch, local_precice, force_rebuild)
         # Preparing string for path
         pathToRef = os.path.join(os.getcwd(), "referenceOutput")
         pathToOutput = os.path.join(os.getcwd(), "Output")
