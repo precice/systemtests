@@ -44,7 +44,7 @@ WORKDIR precice
 ARG petsc_para=no
 ARG mpi_para=yes
 ARG python_para=no
-RUN scons petsc=$petsc_para mpi=$mpi_para python=$python_para -j2
+RUN scons petsc=$petsc_para mpi=$mpi_para python=$python_para -j$(nproc)
 
 # Setting preCICE environment variables
 ENV PRECICE_ROOT="/precice"
