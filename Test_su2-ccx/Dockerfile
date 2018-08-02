@@ -14,16 +14,13 @@ RUN apt-get -qq update && apt-get -qq install \
     automake \
     autoconf \
     autotools-dev \
-    libarpack2-dev
+    libarpack2-dev \
+    libyaml-cpp-dev
+    
 
 # Downloading CalculiX 2.13
 WORKDIR /
 RUN curl -s http://www.dhondt.de/ccx_2.13.src.tar.bz2 | tar -xj
-
-# Installing yaml-cpp
-WORKDIR /
-RUN git clone https://github.com/jbeder/yaml-cpp.git yaml-cpp && cd yaml-cpp/ && \
-    mkdir build && cd build && cmake /yaml-cpp/ && make
 
 # Installing spooles
 WORKDIR /

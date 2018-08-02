@@ -3,7 +3,6 @@ CCX			= /CalculiX/ccx_2.13/src
 SPOOLES			= /spooles.2.2
 ARPACK			= /usr/local/ARPACK
 PRECICE_ROOT		= /precice
-YAML            	= /yaml-cpp
 
 # Specify where to store the generated .o files
 OBJDIR 		= bin
