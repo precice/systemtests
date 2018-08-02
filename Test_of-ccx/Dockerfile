@@ -31,9 +31,9 @@ RUN git clone https://github.com/precice/openfoam-adapter.git
 WORKDIR /openfoam-adapter
 RUN . /opt/openfoam4/etc/bashrc && ./Allwmake
 
-# Downloading Calculix 2.12
+# Downloading Calculix 2.13
 WORKDIR /
-RUN curl -s http://www.dhondt.de/ccx_2.12.src.tar.bz2 | tar -xj
+RUN curl -s http://www.dhondt.de/ccx_2.13.src.tar.bz2 | tar -xj
 
 # Installing yaml-cpp
 RUN git clone https://github.com/jbeder/yaml-cpp.git yaml-cpp
@@ -64,7 +64,7 @@ RUN curl -s https://www.caam.rice.edu//software/ARPACK/SRC/arpack96.tar.gz | tar
 
 # Building calculix-adapter
 WORKDIR /
-RUN git clone --branch v2.12 https://github.com/precice/calculix-adapter.git
+RUN git clone https://github.com/precice/calculix-adapter.git
 WORKDIR /calculix-adapter/
 COPY Makefile_of_ccx /calculix-adapter/Makefile
 RUN make
