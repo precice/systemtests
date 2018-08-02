@@ -12,7 +12,7 @@ Example:
         $ python system_testing.py -s of-of -l
 """
 
-import argparse, filecmp, os, sys
+import argparse, filecmp, os, shutil, sys
 import common, docker
 from common import ccall
 
@@ -35,6 +35,7 @@ def build(systest, branch, local, force_rebuild):
 
     test = docker.get_namespace() + systest
     ccall("docker run -it -d --name " + test + " " + test)
+    shutil.rmtree("Output")
     ccall("docker cp " + test + ":Output . ")
 
 
