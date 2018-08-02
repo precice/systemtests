@@ -12,6 +12,8 @@ Design und Implementation of system tests for the distributed multi-physics simu
 [Tutorial for CHT: Flow over a heated plate](https://github.com/precice/openfoam-adapter/wiki/Tutorial-for-CHT:-Flow-over-a-heated-plate)
 - of-ccx conjugate heat transfer simulation with OpenFOAM and CalculiX
 [Tutorial for CHT with OpenFOAM and CalculiX](https://github.com/precice/precice/wiki/Tutorial-for-CHT-with-OpenFOAM-and-CalculiX)
+- precice Testing some components of preCICE: dummy solvers and Python bindings
+
 
 # travis.yml
 Continuous Integration config.
@@ -21,9 +23,6 @@ Two [build stages](https://docs.travis-ci.com/user/build-stages/):
 
 # compare_*.py
 Python script to compare reference data with output data.
-
-# ref_*
-Reference files.
 
 # Others
 - Makefile_*: needed to build calculix-adapter in su2-ccx and of-ccx
