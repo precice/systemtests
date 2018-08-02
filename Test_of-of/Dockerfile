@@ -19,6 +19,9 @@ RUN sh -c "wget -O - http://dl.openfoam.org/gpg.key | apt-key add -"
 RUN add-apt-repository http://dl.openfoam.org/ubuntu && apt update
 RUN apt-get -y install openfoam4 --no-install-recommends
 
+# Rebuild image if force_rebuild after that command
+ARG CACHEBUST
+
 # Building openfoam-adapter
 WORKDIR /
 RUN git clone https://github.com/precice/openfoam-adapter.git

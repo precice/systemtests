@@ -25,20 +25,9 @@ RUN add-apt-repository "http://dl.openfoam.org/ubuntu dev" && \
     add-apt-repository http://dl.openfoam.org/ubuntu && apt update && \
     apt-get -qq --no-install-recommends install openfoam4
 
-# Building openfoam-adapter
-WORKDIR /
-RUN git clone https://github.com/precice/openfoam-adapter.git
-WORKDIR /openfoam-adapter
-RUN . /opt/openfoam4/etc/bashrc && ./Allwmake
-
 # Downloading Calculix 2.13
 WORKDIR /
 RUN curl -s http://www.dhondt.de/ccx_2.13.src.tar.bz2 | tar -xj
-
-# Installing yaml-cpp
-RUN git clone https://github.com/jbeder/yaml-cpp.git yaml-cpp
-WORKDIR /yaml-cpp
-RUN mkdir build && cd build && cmake /yaml-cpp/ && make
 
 # Installing spooles
 WORKDIR /
@@ -61,6 +50,15 @@ RUN curl -s https://www.caam.rice.edu//software/ARPACK/SRC/arpack96.tar.gz | tar
     && sed -i 's/-cg89//g' ARmake.inc \
     && sed -i 's/      EXTERNAL           ETIME/*     EXTERNAL           ETIME/g' UTIL/second.f \
     && make all
+
+# Rebuild image if force_rebuild after that command
+ARG CACHEBUST
+
+# Building openfoam-adapter
+WORKDIR /
+RUN git clone https://github.com/precice/openfoam-adapter.git
+WORKDIR /openfoam-adapter
+RUN . /opt/openfoam4/etc/bashrc && ./Allwmake
 
 # Building calculix-adapter
 WORKDIR /
