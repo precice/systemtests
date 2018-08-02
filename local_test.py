@@ -27,17 +27,6 @@ args = parser.parse_args()
 if __name__ == "__main__":
     tests = args.systemtest
     
-    # Checking for older docker images
-    lst1 = docker.get_images()
-    if lst1:
-        print("Deleting following docker images:", lst1)
-        answer = input("\nOk? (yes/no)\n")
-        if answer in ["yes", "y"]:
-            for x in lst1:
-                ccall("docker image rm -f " + x)
-        else:
-            print("BE CAREFUL!: Not deleting previous images can later lead to problems.\n\n")
-            
     # Checking for older docker containers
     lst2 = docker.get_containers()
     if lst2:
