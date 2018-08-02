@@ -15,8 +15,7 @@ RUN apt-get -qq update && apt-get -qq install \
     autoconf \
     autotools-dev \
     libarpack2-dev \
-    libyaml-cpp-dev
-    
+    libyaml-cpp-dev    
 
 # Downloading CalculiX 2.13
 WORKDIR /
@@ -44,6 +43,9 @@ RUN curl -s https://www.caam.rice.edu//software/ARPACK/SRC/arpack96.tar.gz | tar
     && sed -i 's/-cg89//g' ARmake.inc \
     && sed -i 's/      EXTERNAL           ETIME/*     EXTERNAL           ETIME/g' UTIL/second.f \
     && make all
+
+# Rebuild image if force_rebuild after that command
+ARG CACHEBUST
 
 # Building calculix-adapter
 WORKDIR /
