@@ -91,11 +91,11 @@ RUN mkdir Output && cp /tutorials/FSI/flap_perp/SU2-CalculiX/flow*.vtk /Output &
 cp /tutorials/FSI/flap_perp/SU2-CalculiX/flap.cvg /Output && \
 cp /tutorials/FSI/flap_perp/SU2-CalculiX/flap.dat /Output && \
 cp /tutorials/FSI/flap_perp/SU2-CalculiX/flap.sta /Output && \
-cp /tutorials/FSI/flap_perp/SU2-CalculiX/convergence-Calculix.txt /Output && \
 cp /tutorials/FSI/flap_perp/SU2-CalculiX/forces_breakdown.dat /Output && \
-cp /tutorials/FSI/flap_perp/SU2-CalculiX/iterations-Calculix.txt /Output && \
-cp /tutorials/FSI/flap_perp/SU2-CalculiX/iterations-SU2_CFD.txt /Output && \
-cp /tutorials/FSI/flap_perp/SU2-CalculiX/point1.watchpoint.txt /Output && \
+cp /tutorials/FSI/flap_perp/SU2-CalculiX/precice-Calculix-convergence.log /Output && \
+cp /tutorials/FSI/flap_perp/SU2-CalculiX/precice-Calculix-iterations.log /Output && \
+cp /tutorials/FSI/flap_perp/SU2-CalculiX/precice-SU2_CFD-iterations.log /Output && \
+cp /tutorials/FSI/flap_perp/SU2-CalculiX/precice-Calculix-watchpoint-point1.log /Output && \
 cp /tutorials/FSI/flap_perp/SU2-CalculiX/restart_flow_*.dat /Output && \
 cp /tutorials/FSI/flap_perp/SU2-CalculiX/spooles.out /Output && \
 cp /tutorials/FSI/flap_perp/SU2-CalculiX/surface_flow_*.csv /Output
