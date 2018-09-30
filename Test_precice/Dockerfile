@@ -1,4 +1,4 @@
-# System testing preCICE with openfoam-adapter and calculix-adapter
+# System testing preCICE bindings
 
 # Building on top of the latets preCICE-build
 ARG from=precice/precice:develop
@@ -9,7 +9,7 @@ ENV USER=root
 
 # Installing necessary dependecies
 RUN apt-get -qq update && apt-get -qq install \
-    cython
+    cython python-enum34
 
 # Rebuild image if force_rebuild after that command
 ARG CACHEBUST
