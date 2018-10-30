@@ -1,6 +1,50 @@
 # preCICE System Tests
 Design und Implementation of system tests for the distributed multi-physics simulation package preCICE
 
+# Setup and running
+
+## Dependencies
+
+Make sure to install 
+
+* preCICE (https://github.com/precice/precice/wiki)
+* docker (see https://docs.docker.com/install/linux/docker-ce/ubuntu/)
+    * make sure you can run docker as non-root user (see https://docs.docker.com/install/linux/linux-postinstall/#manage-docker-as-a-non-root-user)
+    * test your docker installation with ```docker run hello-world```
+* ```python3``` 
+    * with ```configparser``` (install for example with ```pip3 install configparser```)
+* additional dependencies depending on the test you want to run
+
+## Running 
+
+### Run a system test
+
+Example command:
+
+```python3 local_test.py -b mpi_single_ports -s of-of su2-ccx -f precice```
+
+see ```python3 local_test.py --help``` for explanation of the command line arguments.
+
+### Build & Run preCICE image interactively
+
+**Build:**
+
+```
+python3 -c 'import docker; docker.build_image("precice-interactive", "Dockerfile.precice", force_rebuild = False)'
+```
+
+*comment:* if already a previous build of the preCICE image exists you can use ```force_rebuild = True``` to make sure that the most recent precice version is used.
+
+**Run:**
+
+* Make sure that your image has been build via ```docker images```.
+* Run the image in interactive mode via ```docker run -ti precice-interactive /bin/bash```.
+
+## Troubleshooting
+
+* If you receive an error like ```W: Failed to fetch http://archive.ubuntu.com/ubuntu/dists/xenial/InRelease  Temporary failure resolving 'archive.ubuntu.com'```, the following [question on stackoverflow](https://stackoverflow.com/questions/24991136/docker-build-could-not-resolve-archive-ubuntu-com-apt-get-fails-to-install-a) might help. Even, if the suggested verification step does not work, give the systemtests another try. Sometimes it works...
+* If you run into problems during compilation of preCICE in your docker container, use ```force_rebuild=True```.
+
 # preCICE
 - Dockerfile.precice docker image with ubuntu 16.04 and preCICE
 [preCICE - github](https://github.com/precice)
