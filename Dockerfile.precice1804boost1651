@@ -3,11 +3,10 @@
 # Using ubuntu 18.04 as basis
 FROM ubuntu:18.04
 
-# Installing necessary dependacies for preCICE, boost 1.65 from apt-get
+# Installing necessary dependacies for preCICE
 RUN apt-get -qq update && apt-get -qq install \
     build-essential \
     scons \
-    libboost-all-dev \
     libeigen3-dev \
     libxml2-dev \
     petsc-dev \
@@ -16,6 +15,13 @@ RUN apt-get -qq update && apt-get -qq install \
     python-dev \
     wget \
     bzip2    
+
+# Installing boost 1.65.1 from source // version installed if boost is installed using apt-get (https://launchpad.net/ubuntu/bionic/+package/libboost-all-dev)
+RUN wget -nv 'http://downloads.sourceforge.net/project/boost/boost/1.65.1/boost_1_65_1.tar.bz2' -O - | tar xj && \
+    cd boost_1_65_1/ && \
+    ./bootstrap.sh --with-libraries=log,thread,system,filesystem,program_options,test --prefix=/usr/local && \
+    ./b2 -j2 install && \
+    ldconfig
 
 # Rebuild image if force_rebuild after that command
 ARG CACHEBUST
