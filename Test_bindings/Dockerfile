@@ -9,7 +9,7 @@ ENV USER=root
 
 # Installing necessary dependecies
 RUN apt-get -qq update && apt-get -qq install \
-    python-pip2 python-enum34 python3-pip
+    python-pip python-enum34 python3-pip
     
 # Installing necessary python dependecies
 RUN pip2 install --upgrade pip
