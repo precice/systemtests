@@ -25,7 +25,7 @@ see ```python3 local_test.py --help``` for explanation of the command line argum
 
 ## Troubleshooting
 
-* If you receive an error like ```W: Failed to fetch http://archive.ubuntu.com/ubuntu/dists/xenial/InRelease  Temporary failure resolving 'archive.ubuntu.com'```, the following [question on stackoverflow](https://stackoverflow.com/questions/24991136/docker-build-could-not-resolve-archive-ubuntu-com-apt-get-fails-to-install-a) might help. Even, if the suggested verification step does not work, give the systemtests another try. Sometimes it works...
+* If you receive an error like ```W: Failed to fetch http://archive.ubuntu.com/ubuntu/dists/xenial/InRelease  Temporary failure resolving 'archive.ubuntu.com'```, the following [answer on stackoverflow](https://stackoverflow.com/a/40516974) might help. Even, if the suggested verification step does not work, give the systemtests another try. Sometimes it works...
 * If you run into problems during compilation of preCICE in your docker container, use ```force_rebuild=True```.
 
 # preCICE
