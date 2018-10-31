@@ -15,30 +15,13 @@ Make sure to install
     * with ```configparser``` (install for example with ```pip3 install configparser```)
 * additional dependencies depending on the test you want to run
 
-## Running 
-
-### Run a system test
+## Run a system test
 
 Example command:
 
 ```python3 local_test.py -b mpi_single_ports -s of-of su2-ccx -f precice```
 
 see ```python3 local_test.py --help``` for explanation of the command line arguments.
-
-### Build & Run preCICE image interactively
-
-**Build:**
-
-```
-python3 -c 'import docker; docker.build_image("precice-interactive", "Dockerfile.precice", force_rebuild = False)'
-```
-
-*comment:* if already a previous build of the preCICE image exists you can use ```force_rebuild = True``` to make sure that the most recent precice version is used.
-
-**Run:**
-
-* Make sure that your image has been build via ```docker images```.
-* Run the image in interactive mode via ```docker run -ti precice-interactive /bin/bash```.
 
 ## Troubleshooting
 
