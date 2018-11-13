@@ -40,9 +40,8 @@ if __name__ == "__main__":
 
     # Building preCICE
     print("\n\nBuilding preCICE docker image with choosen branch\n\n")
-    branch = args.branch
-    docker.build_image("precice-" + branch, "Dockerfile.precice",
-                       build_args = {"branch" : branch},
+    docker.build_image("precice-" + args.branch, "Dockerfile.precice",
+                       build_args = {"branch" : args.branch},
                        force_rebuild = "precice" in args.force_rebuild)
     # Starting system tests
     failed = []
@@ -50,7 +49,7 @@ if __name__ == "__main__":
     for test in tests:
         print("\n\nStarting system test %s\n\n" % test)
         try:
-            build_run_compare(test, "develop", True, "tests" in args.force_rebuild)
+            build_run_compare(test, args.branch, True, "tests" in args.force_rebuild)
         except subprocess.CalledProcessError:
             failed.append(test)
         else:
