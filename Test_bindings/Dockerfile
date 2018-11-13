@@ -46,3 +46,6 @@ RUN mpic++ -std=c++11 -I$PRECICE_ROOT/src main.cpp -lprecice
 # Builds the Fortran solverdummy
 WORKDIR $PRECICE_ROOT/tools/solverdummies/fortran
 RUN scons
+
+# Creating Output folder
+RUN mkdir /Output
