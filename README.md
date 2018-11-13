@@ -1,6 +1,33 @@
 # preCICE System Tests
 Design und Implementation of system tests for the distributed multi-physics simulation package preCICE
 
+# Setup and running
+
+## Dependencies
+
+Make sure to install 
+
+* preCICE (https://github.com/precice/precice/wiki)
+* docker (see https://docs.docker.com/install/linux/docker-ce/ubuntu/)
+    * make sure you can run docker as non-root user (see https://docs.docker.com/install/linux/linux-postinstall/#manage-docker-as-a-non-root-user)
+    * test your docker installation with ```docker run hello-world```
+* ```python3``` 
+    * with ```configparser``` (install for example with ```pip3 install configparser```)
+* additional dependencies depending on the test you want to run
+
+## Run a system test
+
+Example command:
+
+```python3 local_test.py -b mpi_single_ports -s of-of su2-ccx -f precice```
+
+see ```python3 local_test.py --help``` for explanation of the command line arguments.
+
+## Troubleshooting
+
+* If you receive an error like ```W: Failed to fetch http://archive.ubuntu.com/ubuntu/dists/xenial/InRelease  Temporary failure resolving 'archive.ubuntu.com'```, the following [answer on stackoverflow](https://stackoverflow.com/a/40516974) might help. Even, if the suggested verification step does not work, give the systemtests another try. Sometimes it works...
+* If you run into problems during compilation of preCICE in your docker container, try to use ```python3 local_test.py --force_rebuild precice```.
+
 # preCICE
 - Dockerfile.precice docker image with ubuntu 16.04 and preCICE
 [preCICE - github](https://github.com/precice)
