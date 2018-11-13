@@ -29,7 +29,7 @@ see ```python3 local_test.py --help``` for explanation of the command line argum
 * If you run into problems during compilation of preCICE in your docker container, try to use ```python3 local_test.py --force_rebuild precice```.
 
 # preCICE
-- Dockerfile.precice docker image with ubuntu 16.04 and preCICE
+- Dockerfile.ubuntu1604 docker image with ubuntu 16.04 and preCICE
 [preCICE - github](https://github.com/precice)
 
 # System tests

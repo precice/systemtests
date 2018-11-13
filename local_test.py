@@ -40,7 +40,7 @@ if __name__ == "__main__":
 
     # Building preCICE
     print("\n\nBuilding preCICE docker image with choosen branch\n\n")
-    docker.build_image("precice-" + args.branch, "Dockerfile.precice",
+    docker.build_image("precice-" + args.branch, "Dockerfile.Ubuntu1604",  # TODO: here we have to add the logic to support different precice base images. See issue #14.
                        build_args = {"branch" : args.branch},
                        force_rebuild = "precice" in args.force_rebuild)
     # Starting system tests
