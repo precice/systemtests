@@ -69,7 +69,7 @@ def build_run_compare(test, branch, local_precice, force_rebuild):
     dirname = "/Test_" + test
     with common.chdir(os.getcwd() + dirname):
         # Build
-        build(test, branch, local_precice, force_rebuild)
+        build(test + "-" + branch, branch, local_precice, force_rebuild)
         run(test)
         # Preparing string for path
         pathToRef = os.path.join(os.getcwd(), "referenceOutput")
