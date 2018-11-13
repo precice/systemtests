@@ -41,8 +41,7 @@ if __name__ == "__main__":
 
     # Building preCICE
     print("\n\nBuilding preCICE docker image with choosen branch\n\n")
-    tag = args.dockerfile.lower() + "-" + args.branch  
-    docker.build_image("precice-" + tag, args.dockerfile,
+    docker.build_image("precice-" + args.dockerfile.lower() + "-" + args.branch, args.dockerfile,
                        build_args = {"branch" : args.branch},
                        force_rebuild = "precice" in args.force_rebuild)
     # Starting system tests
@@ -51,8 +50,7 @@ if __name__ == "__main__":
     for test in tests:
         print("\n\nStarting system test %s\n\n" % test)
         try:
-            # TODO: constructing the name for the test image is currently a quite dirty hack. build_run_compare expects a BRANCH, not a TAG. It works, but this is not how the function should be used. 
-            build_run_compare(test, tag, True, "tests" in args.force_rebuild)
+            build_run_compare(test, args.dockerfile.lower(), args.branch, True, "tests" in args.force_rebuild)
         except subprocess.CalledProcessError:
             failed.append(test)
         else:
