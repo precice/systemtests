@@ -69,10 +69,11 @@ def comparison(pathToRef, pathToOutput):
 def build_run_compare(test, tag, branch, local_precice, force_rebuild):
     """ Runs and compares test, using precice branch. """
     dirname = "/Test_" + test
+    test_basename = test.split('.')[0]
     with common.chdir(os.getcwd() + dirname):
         # Build
-        build(test, tag, branch, local_precice, force_rebuild)
-        run(test, tag, branch)
+        build(test_basename, tag, branch, local_precice, force_rebuild)
+        run(test_basename, tag, branch)
         # Preparing string for path
         pathToRef = os.path.join(os.getcwd(), "referenceOutput")
         pathToOutput = os.path.join(os.getcwd(), "Output")

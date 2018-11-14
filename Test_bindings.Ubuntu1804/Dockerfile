@@ -9,12 +9,8 @@ ENV USER=root
 
 # Installing necessary dependecies
 RUN apt-get -qq update && apt-get -qq install \
-    python-pip python-enum34
+    cython python-enum34
     
-# Installing necessary python dependecies
-RUN pip2 install --upgrade pip
-RUN pip2 install Cython mpi4py
-
 # Rebuild image if force_rebuild after that command
 ARG CACHEBUST
 
