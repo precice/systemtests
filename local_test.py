@@ -19,8 +19,9 @@ from system_testing import build_run_compare
 # Parsing flags
 parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter,
                                  description='Build local.')
-parser.add_argument('-b', '--branch', help="Choose branch you want to use for preCICE", default = "develop")
-parser.add_argument('-s', '--systemtest', nargs='+', help="Choose system tests you want to use", default = common.get_tests(), choices = common.get_tests())
+parser.add_argument('-b', '--branch', help="Branch you want to use for preCICE", default = "develop")
+parser.add_argument('-d', '--dockerfile', help="Dockerfile used to create preCICE base image", default = "Dockerfile.Ubuntu1604")
+parser.add_argument('-s', '--systemtest', nargs='+', help="System tests you want to use", default = common.get_tests(), choices = common.get_tests())
 parser.add_argument('-f', '--force_rebuild', nargs='+', help="Force rebuild of variable parts of docker image", default = [], choices  = ["precice", "tests"])
 args = parser.parse_args()
 
@@ -40,7 +41,7 @@ if __name__ == "__main__":
 
     # Building preCICE
     print("\n\nBuilding preCICE docker image with choosen branch\n\n")
-    docker.build_image("precice-" + args.branch, "Dockerfile.precice",
+    docker.build_image("precice-" + args.dockerfile.lower() + "-" + args.branch, args.dockerfile,
                        build_args = {"branch" : args.branch},
                        force_rebuild = "precice" in args.force_rebuild)
     # Starting system tests
@@ -49,7 +50,7 @@ if __name__ == "__main__":
     for test in tests:
         print("\n\nStarting system test %s\n\n" % test)
         try:
-            build_run_compare(test, args.branch, True, "tests" in args.force_rebuild)
+            build_run_compare(test, args.dockerfile.lower(), args.branch, True, "tests" in args.force_rebuild)
         except subprocess.CalledProcessError:
             failed.append(test)
         else:

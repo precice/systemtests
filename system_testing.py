@@ -16,21 +16,23 @@ import argparse, filecmp, os, shutil, sys
 import common, docker
 from common import ccall
 
-def build(systest, branch, local, force_rebuild):
+def build(systest, tag, branch, local, force_rebuild):
     """ Builds a docker image for systest. """
+    baseimage_name = "precice-" + tag + "-" + branch + ":latest"
+    test_tag = systest + "-" +  tag + "-" + branch
     if local:
-        docker.build_image(tag = systest,
-                           build_args = {"from" : docker.get_namespace() + "precice-" + branch + ":latest"},
+        docker.build_image(tag = test_tag,
+                           build_args = {"from" : docker.get_namespace() + baseimage_name},
                            force_rebuild = force_rebuild)
     else:
-        docker.build_image(tag = systest, force_rebuild = force_rebuild)
+        docker.build_image(tag = test_tag, force_rebuild = force_rebuild)
 
-def run(systest):
+def run(systest, tag, branch):
     """ Runs (create a container from an image) the specified systest. """
-    test = docker.get_namespace() + systest
-    ccall("docker run -it -d --name " + test + " " + test)
-    shutil.rmtree("Output")
-    ccall("docker cp " + test + ":Output . ")
+    test_tag = docker.get_namespace() + systest + "-" + tag + "-" + branch
+    ccall("docker run -it -d --name " + test_tag + " " + test_tag)
+    shutil.rmtree("Output", ignore_errors=True)
+    ccall("docker cp " + test_tag + ":Output . ")
 
 
 class IncorrectOutput(Exception):
@@ -64,13 +66,13 @@ def comparison(pathToRef, pathToOutput):
 
 
 
-def build_run_compare(test, branch, local_precice, force_rebuild):
+def build_run_compare(test, tag, branch, local_precice, force_rebuild):
     """ Runs and compares test, using precice branch. """
     dirname = "/Test_" + test
     with common.chdir(os.getcwd() + dirname):
         # Build
-        build(test, branch, local_precice, force_rebuild)
-        run(test)
+        build(test, tag, branch, local_precice, force_rebuild)
+        run(test, tag, branch)
         # Preparing string for path
         pathToRef = os.path.join(os.getcwd(), "referenceOutput")
         pathToOutput = os.path.join(os.getcwd(), "Output")
