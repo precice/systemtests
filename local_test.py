@@ -13,7 +13,7 @@ of preCICE system test.
 
 import argparse, os, subprocess
 import docker, common
-from common import call, ccall
+from common import call, ccall, determine_test_name, get_test_variants
 from system_testing import build_run_compare
 
 
@@ -35,11 +35,7 @@ def determine_specialization(test):
     test_bindings.Ubuntu1804 has specialization degree 2
     """
     return test.split('.').__len__()
-
-
-def determine_test_name(test):
-    return test.split('.')[0]
-    
+  
 
 def filter_for_most_specialized_tests(all_tests):
     """
@@ -77,10 +73,12 @@ parser.add_argument('-f', '--force_rebuild', nargs='+', help="Force rebuild of v
 args = parser.parse_args()
 
 if __name__ == "__main__":
-    tests = args.systemtest
-
+    test_names = args.systemtest
+    
+    tests = []
+    for test_name in test_names:
+        tests += get_test_variants(test_name)
     tests = filter_tests(tests, args.dockerfile)
-    print(tests)
    
     # Checking for older docker containers
     lst2 = docker.get_containers()
