@@ -9,15 +9,23 @@ ENV USER=root
 
 # Installing necessary dependecies
 RUN apt-get -qq update && apt-get -qq install \
-    cython python-enum34
+    cython python-numpy python-enum34 python-mpi4py cython3 python3-numpy python3-mpi4py
     
-# Rebuild image if force_rebuild after that command
-ARG CACHEBUST
-
-# Builds the precice python binding
+# Builds the precice python binding for python2
 WORKDIR $PRECICE_ROOT/src/precice/bindings/python
-ENV PRECICE_MPI_IMPLEMENTATION=openmpi
-RUN python setup.py build_ext --inplace
+RUN python2 setup.py install
+
+# Builds the precice python binding for python3
+WORKDIR $PRECICE_ROOT/src/precice/bindings/python
+RUN python3 setup.py install
+
+# Runs the python solverdummy with python2
+WORKDIR $PRECICE_ROOT/tools/solverdummies/python
+RUN python2 solverdummy.py precice-config.xml SolverOne MeshOne & python solverdummy.py precice-config.xml SolverTwo MeshTwo
+
+# Runs the python solverdummy with python3
+WORKDIR $PRECICE_ROOT/tools/solverdummies/python
+RUN python3 solverdummy.py precice-config.xml SolverOne MeshOne & python3 solverdummy.py precice-config.xml SolverTwo MeshTwo
 
 # Builds the C solverdummy
 WORKDIR $PRECICE_ROOT/tools/solverdummies/c
@@ -31,10 +39,5 @@ RUN mpic++ -std=c++11 -I$PRECICE_ROOT/src main.cpp -lprecice
 WORKDIR $PRECICE_ROOT/tools/solverdummies/fortran
 RUN scons
 
-
-# Copy output to folder Output for further examination (currently disabled)
-WORKDIR /
-RUN mkdir Output
-    # cp -r /tutorials/CHT/heat_exchanger/buoyantSimpleFoam-CalculiX/Inner-Fluid /Output/ && \
-    # cp -r /tutorials/CHT/heat_exchanger/buoyantSimpleFoam-CalculiX/Outer-Fluid /Output/
-
+# Creating Output folder
+RUN mkdir /Output
