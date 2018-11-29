@@ -34,7 +34,7 @@ def determine_specialization(test):
     test_bindings has specialization degree 1
     test_bindings.Ubuntu1804 has specialization degree 2
     """
-    return test.split('.').__len__()
+    return len(test.split('.'))
   
 
 def filter_for_most_specialized_tests(all_tests):
