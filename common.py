@@ -9,7 +9,10 @@ def call(cmd, **kwargs):
 def ccall(cmd,  **kwargs):
     """ Runs cmd in a shell, returns its return code. Raises exception on error """
     return call(cmd, check = True, **kwargs)
-    
+
+def capture_output(cmd, **kwargs):
+    """ Runs cmd in a shell and captures output """
+    return subprocess.run(cmd, stdout=subprocess.PIPE, **kwargs).stdout.decode('utf-8')
 
 import os
 

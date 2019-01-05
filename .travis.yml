@@ -1,41 +1,62 @@
 sudo: true
 dist: trusty
-notifications:
-  email:
-    recipients:
-    - kunstrasenspringer@gmx.net
-    - kunstrasenspringer@googlemail.com
-    on_success: never
-    on_failure: always
+language: python
+python:
+  - "3.5"
+services:
+  - docker
 jobs:
   include:
   - stage: Building preCICE
+    name: "Ubuntu 16.04"
     script:
-    - docker build -f Dockerfile.precice -t precice .
+    - docker build -f Dockerfile.Ubuntu1604 -t precice .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker images
-    - docker tag precice $DOCKER_USERNAME/precice
-    - docker push $DOCKER_USERNAME/precice
+    - docker tag precice $DOCKER_USERNAME/precice_ubuntu1604
+    - docker push $DOCKER_USERNAME/precice_ubuntu1604
+
+  - stage: Building preCICE
+    name: "Ubuntu 18.04"
+    script:
+    - docker build -f Dockerfile.Ubuntu1804 -t precice .
+    after_success:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker images
+    - docker tag precice $DOCKER_USERNAME/precice_ubuntu1804
+    - docker push $DOCKER_USERNAME/precice_ubuntu1804
+
   - stage: System Tests
     script:
     - python system_testing.py -s su2-ccx
+    name: "[16.04] SU2 <-> Calculix"
     after_success:
     - python push.py -s -t su2-ccx
     after_failure:
     - python push.py -t su2-ccx
   - script:
     - python system_testing.py -s of-of
+    name: "[16.04] OpenFOAM <-> OpenFOAM"
     after_success:
     - python push.py -s -t of-of
     after_failure:
     - python push.py -t of-of
   - script:
     - python system_testing.py -s of-ccx
+    name: "[16.04] Calculix <-> OpenFOAM"
     after_success:
     - python push.py -s -t of-ccx
     after_failure:
     - python push.py -t of-ccx
+  - script:
+    - python system_testing.py -s bindings
+    name: "[16.04] Python bindings"
+    after_success:
+    - python push.py -s -t bindings
+    after_failure:
+    - python push.py -t bindings
+
 env:
   global:
-  - secure: b4FQhQOaD/lE0FkV8gpPrjt8tqhyodOl3xKYc1wYKWjKBmJTV1SmwfeQW08rdBBdBETKuvd5dC8FAJ8zS3RaxLbFd/pT//9Uew9qFoG//faASqjzHK57m2BA0N/vt+0kyesbn+D1NNCPCOQhnohJqzF87beZnUQZDRWo1ueWG06K/4oCrdDcEKLjKZy/1a0dBR/gFV/4Ae/YFUhO14MN4+g53F5ZyrBiikEn8tv3dg+/NFVCfb9Dy7UC4J91f4+30wwysK/UIW2oZNrXyQldpa7BEzG5PsglZu1p3qebEeZfesemlR85nZA8O/pH0sVVk7FvxbQ7PSsfG5zU7hxNBCiIHKT0WqUDI75uCF0Z0uezFqwPM5CflpN1nCseh0FFKKWcrYQr/Vf2cQL2ItsBO7rjw7BmLAyWJ/1kIMs6YTOOhoN2iEqAxn9lZX6M3RJMF9UivfqnPsOPSJGf5ySIoLKix3bHdX5gGF4ojjqyy9WwPxgtnjQjxSq2u/WUcEitH3J4T2h35t4UlgO7Zvv2oYZeXWNSi4ZTogGvA5KNOAYPUncaJmhNZil2cXFEyX3G02745MY4d7QZHyylYC8k+YdrWNMp3b8rl6C5KBJnjSJ3edkLxAU6DYFfCmFfzfNdN+FuhG9A4Ueq2DEw7oZVL5LQ7cqXQ/oTTaLO0cbZ76k=
+     secure: "vQ1bL5Z0kPvm0/rXMmU7nOSpqPCtQuew0AaRnpKdiEX2U1xqebCaeA88pDQaXONa14dSsP3bYidVjETh4kzggwVnEtr7lqVUDMTNxekHr8rcojRi/+x7uhJZ7VhabEpEWNKesen8Gcqf5+LlaEkStc2gf2HxAzNge8qjxrk3I5JuxpRBSjgtvIIaD4Dw9YSShSGqHW4wGkqsQ6DTLccmzk3tmvuSYrifGAuc0luk+kYJJn3SGDfEEbIenSGBn5Z5IkPmEcQmQnL67OdXWwUW/QMBBE3d8xpZpr6vt/a8txF5v6d8eJ/I3jIUrrLSY2/RRFC7CORG2rrW758d+SluzUGRc+6MPJFiXyay4CUa2eaWiuYoDtnfTqF5zqaQTATZRYszJu75yGJazcQBFK4WWqMSnSBjxqRKSgjfnjfAFUiqDfpxcLaLDb2UUQWH681aDtQEbkon/E7fIlDkheiXFOccmaZfh0Ydrsj1Sb41HkfzCDm95D3YvHm2fqUhjkYAHw6EFn7yaV1i+xgo9Xs2IRmtlbYo4pe8IJ06bjRFihX+6udBFeioO9F+gNTc88YbwsQfjVpMjc7IhuOWyAjKw8NjL0DPhXDC3iRILhRsuGUMc1uD1Vf73MQOGTaM5ITtdCYDBF3p/9kfWqNMUXS7K+bLK28bW6bnyWRQKMHAb60="

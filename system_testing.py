@@ -15,6 +15,7 @@ Example:
 import argparse, filecmp, os, shutil, sys
 import common, docker
 from common import ccall
+import re
 
 def build(systest, tag, branch, local, force_rebuild):
     """ Builds a docker image for systest. """
@@ -25,7 +26,15 @@ def build(systest, tag, branch, local, force_rebuild):
                            build_args = {"from" : docker.get_namespace() + baseimage_name},
                            force_rebuild = force_rebuild)
     else:
-        docker.build_image(tag = test_tag, force_rebuild = force_rebuild)
+        match = re.search(r'ubuntu(\d+)', baseimage_name)
+        if match:
+            ubuntu_version = match.group(1)
+        else:
+            raise Exception("Could not detect preCICE image to import from")
+        docker.build_image(tag = test_tag,
+                           build_args = {"from" :
+                               'precicecoupling/precice_ubuntu' + ubuntu_version + ':latest'},
+                           force_rebuild = force_rebuild)
 
 def run(systest, tag, branch):
     """ Runs (create a container from an image) the specified systest. """
@@ -85,7 +94,17 @@ if __name__ == "__main__":
     # Parsing flags
     parser = argparse.ArgumentParser(description='Build local.')
     parser.add_argument('-l', '--local', action='store_true', help="use local preCICE image (default: use remote image)")
-    parser.add_argument('-s', '--systemtest', help="choose system tests you want to use", choices = common.get_tests())
+    parser.add_argument('-s', '--systemtest', type=str, help="choose system tests you want to use",
+                        choices = common.get_tests())
     parser.add_argument('-b', '--branch', help="preCICE branch to use", default = "develop")
+    parser.add_argument('-f', '--force_rebuild', nargs='+', help="Force rebuild of variable parts of docker image",
+                        default = [], choices  = ["precice", "tests"])
+    parser.add_argument('-o', '--os', type=str,help="Version of Ubuntu to use", choices =
+            ["1804", "1604"], default= "1604")
     args = parser.parse_args()
-    build_run_compare(args.systemtest, args.branch, args.local)
+    test = str(args.systemtest) + '.Ubuntu' + str(args.os)
+    tag = test.lower()
+    # check if there is specialized dir for this version
+    if not os.path.isdir(os.getcwd() + '/Test_' + test):
+        test = str(args.systemtest)
+    build_run_compare(test, tag, args.branch, args.local, args.force_rebuild)
