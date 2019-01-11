@@ -16,7 +16,6 @@ RUN apt-get -qq update && apt-get -qq install \
     automake \
     autoconf \
     autotools-dev \
-    libarpack2-dev \
     libyaml-cpp-dev
 
 # Installing OpenFOAM 4.1
