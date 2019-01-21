@@ -58,7 +58,7 @@ Python script to compare reference data with output data.
 - log_*: script to log infomation about the build
 
 # Status
-[![Build Status](https://travis-ci.org/kunstrasenspringer/precice_st.svg?branch=develop)](https://travis-ci.org/kunstrasenspringer/precice_st)
+[![Build Status](https://travis-ci.org/precice/systemtests.svg?branch=develop)](https://travis-ci.org/precice/systemtests)
 
 # How to create a new system tests
 1. Create a directory `Test_mysystemtest`.
