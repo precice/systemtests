@@ -188,7 +188,7 @@ def generate_failure_callback():
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Generate and trigger job for systemtests")
-    parser.add_argument('--owner',  type=str, help="Owner of repository", default='shkodm' )
+    parser.add_argument('--owner',  type=str, help="Owner of repository", default='precice' )
     parser.add_argument('--adapter', type=str, help="Adapter for which you want to trigger systemtests",
               required=True, choices = ["openfoam", "su2", "calculix"])
     parser.add_argument('--failure', help="Whether to trigger normal or failure build",
