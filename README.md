@@ -45,7 +45,7 @@ see ```python3 local_test.py --help``` for explanation of the command line argum
 # travis.yml
 Continuous Integration config.
 Two [build stages](https://docs.travis-ci.com/user/build-stages/):
-- stage 1 (build stage): precice docker image build and pushed to [Docker Hub](https://hub.docker.com/r/kunstrasenspringer/precice/)
+- stage 1 (build stage): precice docker image build and pushed to [Docker Hub](https://hub.docker.com/u/precicecoupling)
 - stage 2 (testing stage): build su2-ccx, of-of, of-ccx and push outputfiles to repo
 
 # compare_*.py
@@ -58,7 +58,7 @@ Python script to compare reference data with output data.
 - log_*: script to log infomation about the build
 
 # Status
-[![Build Status](https://travis-ci.org/precice/systemtests.svg?branch=develop)](https://travis-ci.org/precice/systemtests)
+[![Build Status](https://travis-ci.org/precice/systemtests.svg?branch=master)](https://travis-ci.org/precice/systemtests)
 
 # How to create a new system tests
 1. Create a directory `Test_mysystemtest`.
