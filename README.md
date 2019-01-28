@@ -65,3 +65,9 @@ Python script to compare reference data with output data.
 2. Create a `Dockerfile` in there.
 3. Create a directory `referenceOutput` there.
 4. Copy the output files to a folder `/Output/` (inside the container).
+
+# Adding CI to a new adapter
+
+As described in [#22](https://github.com/precice/systemtests/pull/22),  using `trigger_systemtests.py` it is possible to trigger custom systemtests from the travis job of the another adapter, therefore providing continous integration for the adapter on each commit to a particular branch. If you want to add another adapter, or modify tests that are run for it, you need to modify `nm_repo_map` and `nm_test_map` variables in the `trigger_systemtests.py`, that describe mapping between adapter name and repository and adapter name and set of test cases correspondingly.
+
+The adapter's Travis build would be considered successful if systemtests Travis build exits with status 'Failed' or 'Errored'. It would exit with 'Success', if the systemtests Travis build exits with 'Success' or 'Canceled'.
