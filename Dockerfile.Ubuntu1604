@@ -17,8 +17,8 @@ RUN apt-get -qq update && apt-get -qq install \
     bzip2
 
 # Installing boost from source
-RUN wget -nv 'http://downloads.sourceforge.net/project/boost/boost/1.60.0/boost_1_60_0.tar.bz2' -O - | tar xj && \
-    cd boost_1_60_0/ && \
+RUN wget -nv 'https://dl.bintray.com/boostorg/release/1.65.1/source/boost_1_65_1.tar.bz2' -O - | tar xj && \
+    cd boost_1_65_1 && \
     ./bootstrap.sh --with-libraries=log,thread,system,filesystem,program_options,test --prefix=/usr/local && \
     ./b2 -j$(nproc) install && \
     ldconfig
