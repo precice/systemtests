@@ -17,8 +17,8 @@ parser = argparse.ArgumentParser(description='Build local.')
 parser.add_argument('-b', '--branch', help="log choosen preCICE branch")
 parser.add_argument('-t', '--test', help="choose system tests you want to use")
 parser.add_argument('-s', '--success', action='store_true' ,help="only upload log file")
-parser.add_argument('-o', '--os', type=str,help="Version of Ubuntu to use", choices =
-            ["1804", "1604"], default= "1604")
+parser.add_argument('-o', '--os', type=str,help="Distribution to use", choices =
+            ["Ubuntu1804", "Ubuntu1604"], default= "Ubuntu1604")
 
 args = parser.parse_args()
 
@@ -45,13 +45,13 @@ if __name__ == "__main__":
         ccall(["echo SU2-adapter Version: $(git ls-remote https://github.com/precice/su2-adapter.git | tail -1)"], stdout=log)
         ccall(["echo tutorials Version: $(git ls-remote https://github.com/precice/tutorials.git | tail -1)"], stdout=log)
     # Saving general information of all system tests.
-    # Saving used Ubuntu and preCICE version in logfile.
+    # Saving used distribution and preCICE version in logfile.
     # git ls-remote https://github.com/precice/precice.git | grep master
     if args.branch:
         ccall(["echo preCICE Version: $(git ls-remote https://github.com/precice/precice.git | grep "+ args.branch +")"], stdout=log)
     else:
         ccall(["echo preCICE Version: $(git ls-remote --tags https://github.com/precice/precice.git | tail -1)"], stdout=log)
-    log.write("Ubuntu version: {}\n".format(args.os))
+    log.write("Distribution : {}\n".format(args.os))
     # Saving current date in logfile.
     localtime = str(time.asctime(time.localtime(time.time())))
     log.write("System testing at " + localtime + "\n")
@@ -60,12 +60,12 @@ if __name__ == "__main__":
     # Pushing outputfiles and logfile to repo.
     # Clone repository.
     ccall("git clone https://github.com/precice/precice_st_output")
-    log_dir = os.getcwd() + "/precice_st_output/Ubuntu" + args.os
+    log_dir = os.getcwd() + "/precice_st_output/" + args.os
     ccall("mkdir -p " + log_dir)
     ccall("mv log_" + systest + " " + log_dir)
 
     if not args.success:
-        system_suffix = ".Ubuntu" + args.os
+        system_suffix = "." + args.os
         # Move ouput to folder of this test case
         test_folder = os.getcwd() + '/Test_' + systest + system_suffix
         if not os.path.isdir(test_folder):

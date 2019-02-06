@@ -14,8 +14,8 @@ jobs:
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker images
-    - docker tag precice $DOCKER_USERNAME/precice_ubuntu1604
-    - docker push $DOCKER_USERNAME/precice_ubuntu1604
+    - docker tag precice $DOCKER_USERNAME/precice-ubuntu1604-develop:latest
+    - docker push $DOCKER_USERNAME/precice-ubuntu1604-develop:latest
 
   - stage: Building preCICE
     name: "Ubuntu 18.04"
@@ -24,8 +24,8 @@ jobs:
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker images
-    - docker tag precice $DOCKER_USERNAME/precice_ubuntu1804
-    - docker push $DOCKER_USERNAME/precice_ubuntu1804
+    - docker tag precice $DOCKER_USERNAME/precice-ubuntu1804-develop:latest
+    - docker push $DOCKER_USERNAME/precice-ubuntu1804-develop:latest
 
   - stage: System Tests
     script:

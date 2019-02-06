@@ -15,7 +15,6 @@ Example:
 import argparse, filecmp, os, shutil, sys
 import common, docker
 from common import ccall
-import re
 
 def build(systest, tag, branch, local, force_rebuild):
     """ Builds a docker image for systest. """
@@ -26,14 +25,9 @@ def build(systest, tag, branch, local, force_rebuild):
                            build_args = {"from" : docker.get_namespace() + baseimage_name},
                            force_rebuild = force_rebuild)
     else:
-        match = re.search(r'ubuntu(\d+)', baseimage_name)
-        if match:
-            ubuntu_version = match.group(1)
-        else:
-            raise Exception("Could not detect preCICE image to import from")
         docker.build_image(tag = test_tag,
                            build_args = {"from" :
-                               'precicecoupling/precice_ubuntu' + ubuntu_version + ':latest'},
+                               'precicecoupling/' + baseimage_name},
                            force_rebuild = force_rebuild)
 
 def run(systest, tag, branch):
@@ -99,11 +93,11 @@ if __name__ == "__main__":
     parser.add_argument('-b', '--branch', help="preCICE branch to use", default = "develop")
     parser.add_argument('-f', '--force_rebuild', nargs='+', help="Force rebuild of variable parts of docker image",
                         default = [], choices  = ["precice", "tests"])
-    parser.add_argument('-o', '--os', type=str,help="Version of Ubuntu to use", choices =
-            ["1804", "1604"], default= "1604")
+    parser.add_argument('-o', '--os', type=str,help="Distribution to use", choices =
+            ["Ubuntu1804", "Ubuntu1604"], default= "Ubuntu1604")
     args = parser.parse_args()
-    test = str(args.systemtest) + '.Ubuntu' + str(args.os)
-    tag = test.lower()
+    test = str(args.systemtest) + '.' + str(args.os)
+    tag = args.os.lower()
     # check if there is specialized dir for this version
     if not os.path.isdir(os.getcwd() + '/Test_' + test):
         test = str(args.systemtest)
