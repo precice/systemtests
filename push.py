@@ -63,10 +63,6 @@ if __name__ == "__main__":
     log_dir = os.getcwd() + "/precice_st_output/Ubuntu" + args.os
     ccall("mkdir -p " + log_dir)
     ccall("mv log_" + systest + " " + log_dir)
-    # Setting up git user.
-    if not args.branch:
-        ccall("git config --local user.email \"travis@travis-ci.org\"")
-        ccall("git config --local user.name \"Travis CI\"")
 
     if not args.success:
         system_suffix = ".Ubuntu" + args.os
