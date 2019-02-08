@@ -93,7 +93,7 @@ if __name__ == "__main__":
     parser.add_argument('-b', '--branch', help="preCICE branch to use", default = "develop")
     parser.add_argument('-f', '--force_rebuild', nargs='+', help="Force rebuild of variable parts of docker image",
                         default = [], choices  = ["precice", "tests"])
-    parser.add_argument('-o', '--os', type=str,help="Distribution to use", choices =
+    parser.add_argument('-o', '--os', type=str,help="Variant to use", choices =
             ["Ubuntu1804", "Ubuntu1604"], default= "Ubuntu1604")
     args = parser.parse_args()
     test = str(args.systemtest) + '.' + str(args.os)
