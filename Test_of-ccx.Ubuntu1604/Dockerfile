@@ -24,9 +24,9 @@ RUN add-apt-repository "http://dl.openfoam.org/ubuntu dev" && \
     add-apt-repository http://dl.openfoam.org/ubuntu && apt update && \
     apt-get -qq --no-install-recommends install openfoam4
 
-# Downloading Calculix 2.13
+# Downloading Calculix 2.15
 WORKDIR /
-RUN curl -s http://www.dhondt.de/ccx_2.13.src.tar.bz2 | tar -xj
+RUN curl -s http://www.dhondt.de/ccx_2.15.src.tar.bz2 | tar -xj
 
 # Installing spooles
 WORKDIR /

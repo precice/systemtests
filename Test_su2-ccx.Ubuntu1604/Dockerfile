@@ -16,9 +16,9 @@ RUN apt-get -qq update && apt-get -qq install \
     autotools-dev \
     libyaml-cpp-dev    
 
-# Downloading CalculiX 2.13
+# Downloading CalculiX 2.15
 WORKDIR /
-RUN curl -s http://www.dhondt.de/ccx_2.13.src.tar.bz2 | tar -xj
+RUN curl -s http://www.dhondt.de/ccx_2.15.src.tar.bz2 | tar -xj
 
 # Installing spooles
 WORKDIR /
