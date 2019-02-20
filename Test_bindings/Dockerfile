@@ -19,11 +19,11 @@ RUN pip3 install Cython mpi4py numpy
 
 # Builds the precice python binding for python2
 WORKDIR $PRECICE_ROOT/src/precice/bindings/python
-RUN python2 setup.py install
+RUN python2 setup.py build_ext --include-dirs=$PRECICE_ROOT/src --library-dirs=$PRECICE_ROOT/build/last
 
 # Builds the precice python binding for python3
 WORKDIR $PRECICE_ROOT/src/precice/bindings/python
-RUN python3 setup.py install
+RUN python3 setup.py build_ext --include-dirs=$PRECICE_ROOT/src --library-dirs=$PRECICE_ROOT/build/last
 
 # Runs the python solverdummy with python2
 WORKDIR $PRECICE_ROOT/tools/solverdummies/python
