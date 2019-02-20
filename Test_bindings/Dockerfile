@@ -8,7 +8,10 @@ USER root
 ENV USER=root
 
 # Installing necessary dependecies
+# libopenmpi-dev is needed as a workaround for python2
+# (see https://bugs.launchpad.net/ubuntu/+source/mpi4py/+bug/1583432)
 RUN apt-get -qq update && apt-get -qq install \
+    libopenmpi-dev \
     python-pip python-enum34 python3-pip
     
 # Installing necessary python dependecies; we have to use pip, since cython provided by apt-get is too old.
