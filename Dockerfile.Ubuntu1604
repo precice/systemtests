@@ -44,7 +44,7 @@ ENV CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/usr/include/eigen3" \
 
 # Building preCICE
 ARG branch=develop
-RUN git clone --branch $branch --depth=1 https://github.com/precice/precice.git /precice/src
+RUN git clone --branch $branch --depth=1 https://github.com/precice/precice.git /precice
 # Some parameters for the build, you can set them in the build command e.g.
 # sudo docker build Dockerfile.precice --build-arg petsc_para=yes --build-arg mpi_para=yes .
 # this will result in
@@ -52,11 +52,11 @@ RUN git clone --branch $branch --depth=1 https://github.com/precice/precice.git 
 ARG petsc_para=no
 ARG mpi_para=yes
 ARG python_para=no
-WORKDIR /precice/build
+WORKDIR /precice-build
 RUN CXX=mpic++ CC=mpicc \
-    cmake -DPETSC=$petsc_para -DMPI=$mpi_para -DPYTHON=$python_para -D /precice/src && \
+    cmake -DPETSC=$petsc_para -DMPI=$mpi_para -DPYTHON=$python_para -D /precice && \
     cmake --build . --target install --parallel $(nproc) && \
-    rm -rf /precice
+    rm -rf /precice-build
 
 # Setting preCICE environment variables
 ENV PRECICE_ROOT="/precice"

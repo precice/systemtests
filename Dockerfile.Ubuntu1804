@@ -41,7 +41,7 @@ ARG mpi_para=yes
 ARG python_para=no
 WORKDIR /precice-build
 RUN CXX=mpic++ CC=mpicc \
-    cmake -DPETSC=$petsc_para -DMPI=$mpi_para -DPYTHON=$python_para /precice/src && \
+    cmake -DPETSC=$petsc_para -DMPI=$mpi_para -DPYTHON=$python_para /precice && \
     cmake --build . --target install --parallel $(nproc) && \
     rm -rf /precice-build
 
