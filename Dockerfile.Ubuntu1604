@@ -17,6 +17,13 @@ RUN apt-get -qq update -y && apt-get -qq install \
     bzip2 && \
     rm -rf /var/lib/apt/lists/*
 
+# Installing cmake
+WORKDIR /cmake-build
+RUN wget -nv 'https://github.com/Kitware/CMake/releases/download/v3.13.4/cmake-3.13.4.tar.gz' -O - | tar xz && \
+    cd cmake-3.13.14 && \
+    ./bootstrap && make -j $(nproc) && make install && \
+    rm -rf /cmake-build
+
 # Installing boost from source
 WORKDIR /boost-build
 RUN wget -nv 'https://dl.bintray.com/boostorg/release/1.65.1/source/boost_1_65_1.tar.bz2' -O - | tar xj && \
@@ -37,21 +44,19 @@ ENV CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/usr/include/eigen3" \
 
 # Building preCICE
 ARG branch=develop
-RUN git clone --branch $branch https://github.com/precice/precice.git /precice
-WORKDIR /precice
+RUN git clone --branch $branch --depth=1 https://github.com/precice/precice.git /precice/src
 # Some parameters for the build, you can set them in the build command e.g.
 # sudo docker build Dockerfile.precice --build-arg petsc_para=yes --build-arg mpi_para=yes .
 # this will result in
-# scons petsc=yes mpi=yes python=no compiler="mpicxx" -j2
+# cmake -DPETSC=yes -DMPI=yes -DPYTHON=no /precice/src
 ARG petsc_para=no
 ARG mpi_para=yes
 ARG python_para=no
-RUN scons petsc=$petsc_para mpi=$mpi_para python=$python_para -j$(nproc) && \
-    find -type f -name "*.o" -exec rm {} \;
+WORKDIR /precice/build
+RUN CXX=mpic++ CC=mpicc \
+    cmake -DPETSC=$petsc_para -DMPI=$mpi_para -DPYTHON=$python_para -D /precice/src && \
+    cmake --build . --target install --parallel $(nproc) && \
+    rm -rf /precice
 
 # Setting preCICE environment variables
-ENV PRECICE_ROOT="/precice" \
-    LD_LIBRARY_PATH="/precice/build/last:${LD_LIBRARY_PATH}" \
-    LIBRARY_PATH="/precice/build/last:${LIBRARY_PATH}" \
-    CPLUS_INCLUDE_PATH="/precice/src/:${CPLUS_INCLUDE_PATH}" \
-    CPATH="/precice/src/:${CPATH}"
+ENV PRECICE_ROOT="/precice"
