@@ -42,7 +42,7 @@ ARG python_para=no
 WORKDIR /precice-build
 RUN CXX=mpic++ CC=mpicc \
     cmake -DPETSC=$petsc_para -DMPI=$mpi_para -DPYTHON=$python_para /precice && \
-    cmake --build . --target install --parallel $(nproc) && \
+    cmake --build . --target install -- -j $(nproc) && \
     rm -rf /precice-build
 
 # Setting preCICE environment variables
