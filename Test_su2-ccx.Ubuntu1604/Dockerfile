@@ -61,11 +61,11 @@ WORKDIR /
 RUN git clone --branch v6.0.0 https://github.com/su2code/SU2.git su2-source
 RUN git clone https://github.com/precice/su2-adapter.git
 
-ENV SU2_HOME="/su2-source"
-ENV SU2_BIN="/su2-bin"
-ENV SU2_RUN="/su2-bin/bin"
-ENV PATH="/su2-bin/bin:${PATH}"
-ENV PYTHONPATH="/su2-bin/bin:${PYTHONPATH}"
+ENV SU2_HOME="/su2-source" \
+    SU2_BIN="/su2-bin" \
+    SU2_RUN="/su2-bin/bin" \
+    PATH="/su2-bin/bin:${PATH}" \
+    PYTHONPATH="/su2-bin/bin:${PYTHONPATH}"
 
 # Installing su2-adapter
 WORKDIR /su2-adapter
