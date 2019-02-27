@@ -13,10 +13,10 @@ RUN apt-get -qq update && apt-get -qq install \
     rm -rf /var/lib/apt/lists/*
     
 # Installing necessary python dependecies; we have to use pip, since cython provided by apt-get is too old.
-RUN pip2 install --upgrade pip
-RUN pip2 install Cython mpi4py
-RUN pip3 install --upgrade pip
-RUN pip3 install Cython mpi4py numpy
+RUN pip2 install --upgrade pip && \
+    pip2 install Cython mpi4py && \
+    pip3 install --upgrade pip && \
+    pip3 install Cython mpi4py numpy
 
 # Builds the precice python binding for python2
 WORKDIR $PRECICE_ROOT/src/precice/bindings/python
