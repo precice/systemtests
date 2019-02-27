@@ -8,22 +8,17 @@ USER root
 ENV USER=root
 
 # Installing necessary dependecies
-RUN apt-get -qq update && apt-get -qq install \
-    python-pip python-enum34 python3-pip
-    
-# Installing necessary python dependecies; we have to use pip, since cython provided by apt-get is too old.
-RUN pip2 install --upgrade pip
-RUN pip2 install Cython mpi4py
-RUN pip3 install --upgrade pip
-RUN pip3 install Cython mpi4py numpy
+RUN apt-get -qq update && apt-get -qq install python2-pip python3-pip && \
+    pip2 install --upgrade pip && \
+    pip3 install --upgrade pip && \
+    pip2 install --user cython numpy enum34 mpi4py && \
+    pip3 install --user cython numpy enum34 mpi4py
 
 # Builds the precice python binding for python2
-WORKDIR $PRECICE_ROOT/src/precice/bindings/python
-RUN python2 setup.py install
+RUN pip2 install --user -e $PRECICE_ROOT/src/precice/bindings/python
 
 # Builds the precice python binding for python3
-WORKDIR $PRECICE_ROOT/src/precice/bindings/python
-RUN python3 setup.py install
+RUN pip3 install --user -e $PRECICE_ROOT/src/precice/bindings/python
 
 # Runs the python solverdummy with python2
 WORKDIR $PRECICE_ROOT/tools/solverdummies/python
