@@ -14,7 +14,8 @@ RUN apt-get -qq update && apt-get -qq install \
     automake \
     autoconf \
     autotools-dev \
-    libyaml-cpp-dev    
+    libyaml-cpp-dev && \
+    rm -rf /var/lib/apt/lists/*
 
 # Downloading CalculiX 2.15
 WORKDIR /
