@@ -9,7 +9,8 @@ ENV USER=root
 
 # Installing necessary dependecies
 RUN apt-get -qq update && apt-get -qq install \
-    python-pip python-enum34 python3-pip
+    python-pip python-enum34 python3-pip && \
+    rm -rf /var/lib/apt/lists/*
     
 # Installing necessary python dependecies; we have to use pip, since cython provided by apt-get is too old.
 RUN pip2 install --upgrade pip
