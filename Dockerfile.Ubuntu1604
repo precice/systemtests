@@ -49,3 +49,5 @@ RUN scons petsc=$petsc_para mpi=$mpi_para python=$python_para -j$(nproc)
 ENV PRECICE_ROOT="/precice"
 ENV LD_LIBRARY_PATH="$PRECICE_ROOT/build/last:${LD_LIBRARY_PATH}"
 ENV LIBRARY_PATH="$PRECICE_ROOT/build/last:${LIBRARY_PATH}"
+ENV CPATH="$PRECICE_ROOT/src:${CPATH}"
+ENV CPLUS_INCLUDE_PATH="$PRECICE_ROOT/src:${CPLUS_INCLUDE_PATH}"
