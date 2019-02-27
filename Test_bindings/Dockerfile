@@ -40,7 +40,7 @@ RUN scons
 
 # Builds the C++ solverdummy
 WORKDIR $PRECICE_ROOT/tools/solverdummies/cpp
-RUN mpic++ -std=c++11 -I$PRECICE_ROOT/src main.cpp -lprecice
+RUN mpic++ -std=c++11 main.cpp -lprecice
 
 # Builds the Fortran solverdummy
 WORKDIR $PRECICE_ROOT/tools/solverdummies/fortran
