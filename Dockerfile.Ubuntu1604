@@ -17,6 +17,12 @@ RUN apt-get -qq update && apt-get -qq install \
     bzip2 && \
     rm -rf /var/lib/apt/lists/*
 
+# Installing cmake
+WORKDIR /cmake
+RUN wget -q -O- 'https://github.com/Kitware/CMake/releases/download/v3.13.4/cmake-3.13.4-Linux-x86_64.tar.gz' | tar xz
+ENV PATH="/cmake/cmake-3.13.4-Linux-x86_64/bin:$PATH"
+RUN cmake --version
+
 # Installing boost from source
 WORKDIR /boost-build
 RUN wget -nv 'https://dl.bintray.com/boostorg/release/1.65.1/source/boost_1_65_1.tar.bz2' -O - | tar xj && \
