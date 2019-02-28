@@ -9,7 +9,7 @@ ENV USER=root
 
 # Installing necessary dependecies
 RUN apt-get -qq update && apt-get -qq install \
-    cython python-numpy python-enum34 python-mpi4py cython3 python3-numpy python3-mpi4py && \
+    cython python-numpy python-enum34 python-mpi4py python-setuptools cython3 python3-numpy python3-mpi4py python3-setuptools && \
     rm -rf /var/lib/apt/lists/*
     
 # Builds the precice python binding for python2
