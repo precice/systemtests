@@ -46,6 +46,7 @@ WORKDIR /precice
 ARG petsc_para=no
 ARG mpi_para=yes
 ARG python_para=no
+# Build preCICE and clean-up generated object files
 RUN scons petsc=$petsc_para mpi=$mpi_para python=$python_para -j$(nproc) && \
     find . -type f \( -name "*.o" -or -name "*.os" \) -exec rm {} +
 
