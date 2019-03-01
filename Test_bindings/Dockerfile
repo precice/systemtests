@@ -8,15 +8,15 @@ USER root
 ENV USER=root
 
 # Installing necessary dependecies
-RUN apt-get -qq update && apt-get -qq install \
-    python-pip python-enum34 python3-pip && \
+RUN apt-get -qq update && apt-get -qq install python python-dev python3 python3-dev && \
     rm -rf /var/lib/apt/lists/*
-    
+
 # Installing necessary python dependecies; we have to use pip, since cython provided by apt-get is too old.
-RUN pip2 install --upgrade pip && \
-    pip2 install Cython mpi4py && \
-    pip3 install --upgrade pip && \
-    pip3 install Cython mpi4py numpy
+RUN wget -q https://bootstrap.pypa.io/get-pip.py -O get-pip.py && \
+    python3 get-pip.py && \
+    python2 get-pip.py && \
+    pip2 install Cython mpi4py enum34 && \
+    pip3 install Cython mpi4py numpy enum34
 
 # Builds the precice python binding for python2
 WORKDIR $PRECICE_ROOT/src/precice/bindings/python
