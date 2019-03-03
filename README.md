@@ -48,7 +48,7 @@ see ```python3 local_test.py --help``` for explanation of the command line argum
 # travis.yml
 Continuous Integration config.
 Two [build stages](https://docs.travis-ci.com/user/build-stages/):
-- stage 1 (build stage): precice docker image build and pushed to [Docker Hub](https://hub.docker.com/u/precicecoupling)
+- stage 1 (build stage): precice docker image build and pushed to [Docker Hub](https://hub.docker.com/u/precice)
 - stage 2 (testing stage): build su2-ccx, of-of, of-ccx and push outputfiles to repo
 
 # compare_*.py

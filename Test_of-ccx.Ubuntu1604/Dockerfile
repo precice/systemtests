@@ -1,7 +1,7 @@
 # System testing preCICE with openfoam-adapter and calculix-adapter
 
 # Building on top of the latets preCICE-build
-ARG from=precicecoupling/precice:latest
+ARG from=precice/precice:latest
 FROM $from
 
 USER root
