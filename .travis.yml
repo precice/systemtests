@@ -8,6 +8,7 @@ services:
 jobs:
   include:
   - stage: Building preCICE
+    if: fork = false
     name: "Ubuntu 16.04"
     script:
     - docker build -f Dockerfile.Ubuntu1604 -t precice .
@@ -19,6 +20,7 @@ jobs:
 
   - stage: Building preCICE
     name: "Ubuntu 18.04"
+    if: fork = false 
     script:
     - docker build -f Dockerfile.Ubuntu1804 -t precice .
     after_success:
@@ -26,6 +28,11 @@ jobs:
     - docker images
     - docker tag precice $DOCKER_USERNAME/precice_ubuntu1804
     - docker push $DOCKER_USERNAME/precice_ubuntu1804
+
+  - name: "[Build on fork] Using cached version" 
+    if: fork = true
+    script: true
+
 
   - stage: System Tests
     script:
