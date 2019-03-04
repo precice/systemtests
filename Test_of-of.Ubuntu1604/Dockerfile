@@ -1,7 +1,7 @@
 # System testing preCICE with openfoam-adapter
 
 # Using latest preCICE from dockerhub.com
-ARG from=precicecoupling/precice:latest
+ARG from=precice/precice:latest
 FROM $from
 
 USER root

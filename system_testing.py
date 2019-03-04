@@ -33,7 +33,7 @@ def build(systest, tag, branch, local, force_rebuild):
             raise Exception("Could not detect preCICE image to import from")
         docker.build_image(tag = test_tag,
                            build_args = {"from" :
-                               'precicecoupling/precice_ubuntu' + ubuntu_version + ':latest'},
+                               'precice/precice_ubuntu' + ubuntu_version + ':latest'},
                            force_rebuild = force_rebuild)
 
 def run(systest, tag, branch):
