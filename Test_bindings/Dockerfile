@@ -8,7 +8,7 @@ USER root
 ENV USER=root
 
 # Installing necessary dependecies
-RUN apt-get -qq update && apt-get -qq install python2-pip python3-pip && \
+RUN apt-get -qq update && apt-get -qq install python3-pip && \
     pip3 install --user --upgrade pip
 
 # Builds the precice python binding for python3
