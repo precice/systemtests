@@ -20,8 +20,8 @@ RUN pip3 install --user $PRECICE_ROOT/src/precice/bindings/python
 
 # Runs the python solverdummy with python3
 WORKDIR $PRECICE_ROOT/tools/solverdummies/python
-RUN pip3 install --user -r requirements.txt && \
-    python3 solverdummy.py precice-config.xml SolverOne MeshOne & python3 solverdummy.py precice-config.xml SolverTwo MeshTwo
+RUN pip3 install --user -r requirements.txt
+RUN python3 solverdummy.py precice-config.xml SolverOne MeshOne & python3 solverdummy.py precice-config.xml SolverTwo MeshTwo
 
 # Builds the C solverdummy
 WORKDIR $PRECICE_ROOT/tools/solverdummies/c
