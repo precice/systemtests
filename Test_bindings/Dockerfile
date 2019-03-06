@@ -11,7 +11,7 @@ ENV USER=root
 RUN apt-get -qq update && apt-get -qq install python3 python3-venv && \
     rm -rf /var/lib/apt/lists/*
 
-RUN python -m venv /python-venv/ && \
+RUN python3 -m venv /python-venv/ && \
     source /python-venv/bin/activate && \
     bin/pip install -U pip
 
