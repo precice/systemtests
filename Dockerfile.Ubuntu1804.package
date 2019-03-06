@@ -53,7 +53,7 @@ RUN mkdir /home/precice/precice-build && \
           -DPETSC=$petsc_para \
           -DMPI=$mpi_para \
           -DPYTHON=$python_para \
-          /precice && \
+          /home/precice/precice && \
     make -j$(nproc) && \
     make test_base && \
     make package && \
