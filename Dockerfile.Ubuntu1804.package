@@ -49,6 +49,6 @@ RUN cmake -DBUILD_SHARED_LIBS=ON \
           -DMPI=$mpi_para \
           -DPYTHON=$python_para \
           /precice && \
-    make -j$(nproc) package && \
+    make -j$(nproc) package
 RUN apt install libprecice1.3.0
 RUN rm -r precice-build
