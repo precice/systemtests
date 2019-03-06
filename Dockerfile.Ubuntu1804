@@ -53,4 +53,6 @@ RUN cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo \
     rm -r /precice-build
 
 # Setting preCICE environment variables
-ENV PRECICE_ROOT="/precice"
+ENV PRECICE_ROOT="/precice" \
+    PKG_CONFIG_PATH="/usr/local/lib/pkgconfig"
+
