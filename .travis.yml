@@ -8,6 +8,7 @@ services:
 jobs:
   include:
   - stage: Building preCICE
+    if: fork = false
     name: "Ubuntu 16.04"
     script:
     - docker build -f Dockerfile.Ubuntu1604 -t precice .
@@ -19,6 +20,7 @@ jobs:
 
   - stage: Building preCICE
     name: "Ubuntu 18.04"
+    if: fork = false 
     script:
     - docker build -f Dockerfile.Ubuntu1804 -t precice .
     after_success:
@@ -26,6 +28,11 @@ jobs:
     - docker images
     - docker tag precice $DOCKER_USERNAME/precice_ubuntu1804
     - docker push $DOCKER_USERNAME/precice_ubuntu1804
+
+  - name: "[Build on fork] Using cached version" 
+    if: fork = true
+    script: true
+
 
   - stage: System Tests
     script:
@@ -56,7 +63,3 @@ jobs:
     - python push.py -s -t bindings
     after_failure:
     - python push.py -t bindings
-
-env:
-  global:
-     secure: "vQ1bL5Z0kPvm0/rXMmU7nOSpqPCtQuew0AaRnpKdiEX2U1xqebCaeA88pDQaXONa14dSsP3bYidVjETh4kzggwVnEtr7lqVUDMTNxekHr8rcojRi/+x7uhJZ7VhabEpEWNKesen8Gcqf5+LlaEkStc2gf2HxAzNge8qjxrk3I5JuxpRBSjgtvIIaD4Dw9YSShSGqHW4wGkqsQ6DTLccmzk3tmvuSYrifGAuc0luk+kYJJn3SGDfEEbIenSGBn5Z5IkPmEcQmQnL67OdXWwUW/QMBBE3d8xpZpr6vt/a8txF5v6d8eJ/I3jIUrrLSY2/RRFC7CORG2rrW758d+SluzUGRc+6MPJFiXyay4CUa2eaWiuYoDtnfTqF5zqaQTATZRYszJu75yGJazcQBFK4WWqMSnSBjxqRKSgjfnjfAFUiqDfpxcLaLDb2UUQWH681aDtQEbkon/E7fIlDkheiXFOccmaZfh0Ydrsj1Sb41HkfzCDm95D3YvHm2fqUhjkYAHw6EFn7yaV1i+xgo9Xs2IRmtlbYo4pe8IJ06bjRFihX+6udBFeioO9F+gNTc88YbwsQfjVpMjc7IhuOWyAjKw8NjL0DPhXDC3iRILhRsuGUMc1uD1Vf73MQOGTaM5ITtdCYDBF3p/9kfWqNMUXS7K+bLK28bW6bnyWRQKMHAb60="

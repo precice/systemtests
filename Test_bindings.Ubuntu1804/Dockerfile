@@ -8,7 +8,8 @@ USER root
 ENV USER=root
 
 # Installing necessary dependecies
-RUN apt-get -qq update && apt-get -qq install python2-pip python3-pip
+RUN apt-get -qq update && apt-get -qq install python3-pip python3-dev && \
+    rm -rf /var/lib/apt/lists/*
     
 # Builds the precice python binding for python3
 RUN pip3 install --user $PRECICE_ROOT/src/precice/bindings/python
@@ -24,7 +25,7 @@ RUN scons
 
 # Builds the C++ solverdummy
 WORKDIR $PRECICE_ROOT/tools/solverdummies/cpp
-RUN mpic++ -std=c++11 -I$PRECICE_ROOT/src main.cpp -lprecice
+RUN mpic++ -std=c++11 main.cpp -lprecice
 
 # Builds the Fortran solverdummy
 WORKDIR $PRECICE_ROOT/tools/solverdummies/fortran
