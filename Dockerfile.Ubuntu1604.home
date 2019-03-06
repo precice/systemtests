@@ -16,8 +16,6 @@ RUN apt-get -qq update && apt-get -qq install \
     bzip2 && \
     rm -rf /var/lib/apt/lists/*
 
-RUN useradd -ms /bin/bash precice
-
 # Installing cmake
 WORKDIR /cmake
 RUN wget -q -O- 'https://github.com/Kitware/CMake/releases/download/v3.13.4/cmake-3.13.4-Linux-x86_64.tar.gz' | tar xz
@@ -35,6 +33,8 @@ RUN wget -nv 'https://dl.bintray.com/boostorg/release/1.65.1/source/boost_1_65_1
 # Rebuild image if force_rebuild after that command
 ARG CACHEBUST
 
+# create user precice
+RUN useradd -ms /bin/bash precice
 USER precice
 WORKDIR /home/precice
 

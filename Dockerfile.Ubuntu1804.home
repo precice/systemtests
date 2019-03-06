@@ -18,12 +18,13 @@ RUN apt-get -qq update && apt-get -qq install \
     cmake && \
     rm -rf /var/lib/apt/lists/*
 
+# Rebuild image if force_rebuild after that command
+ARG CACHEBUST
+
+# create user precice
 RUN useradd -ms /bin/bash precice
 USER precice
 WORKDIR /home/precice
-
-# Rebuild image if force_rebuild after that command
-ARG CACHEBUST
 
 # Setting some environment variables for installing preCICE
 ENV CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/usr/include/eigen3" \
