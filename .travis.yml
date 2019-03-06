@@ -9,25 +9,69 @@ jobs:
   include:
   - stage: Building preCICE
     if: fork = false
-    name: "Ubuntu 16.04"
+    name: "Ubuntu 16.04.home"
     script:
-    - docker build -f Dockerfile.Ubuntu1604 -t precice .
+    - docker build -f Dockerfile.Ubuntu1604.home -t precice .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker images
-    - docker tag precice $DOCKER_USERNAME/precice_ubuntu1604
-    - docker push $DOCKER_USERNAME/precice_ubuntu1604
+    - docker tag precice $DOCKER_USERNAME/precice_ubuntu1604_home
+    - docker push $DOCKER_USERNAME/precice_ubuntu1604_home
 
   - stage: Building preCICE
-    name: "Ubuntu 18.04"
-    if: fork = false 
+    if: fork = false
+    name: "Ubuntu 16.04.sudo"
     script:
-    - docker build -f Dockerfile.Ubuntu1804 -t precice .
+    - docker build -f Dockerfile.Ubuntu1604.sudo -t precice .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker images
-    - docker tag precice $DOCKER_USERNAME/precice_ubuntu1804
-    - docker push $DOCKER_USERNAME/precice_ubuntu1804
+    - docker tag precice $DOCKER_USERNAME/precice_ubuntu1604_sudo
+    - docker push $DOCKER_USERNAME/precice_ubuntu1604_sudo
+
+  - stage: Building preCICE
+    if: fork = false
+    name: "Ubuntu 16.04.package"
+    script:
+    - docker build -f Dockerfile.Ubuntu1604.package -t precice .
+    after_success:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker images
+    - docker tag precice $DOCKER_USERNAME/precice_ubuntu1604_package
+    - docker push $DOCKER_USERNAME/precice_ubuntu1604_package
+      
+  - stage: Building preCICE
+    name: "Ubuntu 18.04.home"
+    if: fork = false 
+    script:
+    - docker build -f Dockerfile.Ubuntu1804.home -t precice .
+    after_success:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker images
+    - docker tag precice $DOCKER_USERNAME/precice_ubuntu1804_home
+    - docker push $DOCKER_USERNAME/precice_ubuntu1804_home
+
+  - stage: Building preCICE
+    name: "Ubuntu 18.04.sudo"
+    if: fork = false
+    script:
+    - docker build -f Dockerfile.Ubuntu1804.sudo -t precice .
+    after_success:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker images
+    - docker tag precice $DOCKER_USERNAME/precice_ubuntu1804_sudo
+    - docker push $DOCKER_USERNAME/precice_ubuntu1804_sudo
+
+  - stage: Building preCICE
+    name: "Ubuntu 18.04.package"
+    if: fork = false
+    script:
+    - docker build -f Dockerfile.Ubuntu1804.package -t precice .
+    after_success:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker images
+    - docker tag precice $DOCKER_USERNAME/precice_ubuntu1804_package
+    - docker push $DOCKER_USERNAME/precice_ubuntu1804_package
 
   - name: "[Build on fork] Using cached version" 
     if: fork = true
