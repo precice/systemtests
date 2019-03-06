@@ -19,12 +19,12 @@ RUN apt-get -qq update && apt-get -qq install \
 RUN useradd -ms /bin/bash precice
 
 # Installing cmake
-WORKDIR cmake
+WORKDIR /cmake
 RUN wget -q -O- 'https://github.com/Kitware/CMake/releases/download/v3.13.4/cmake-3.13.4-Linux-x86_64.tar.gz' | tar xz
 ENV PATH="/cmake/cmake-3.13.4-Linux-x86_64/bin:$PATH"
 
 # Installing boost from source
-WORKDIR boost-build
+WORKDIR /boost-build
 RUN wget -nv 'https://dl.bintray.com/boostorg/release/1.65.1/source/boost_1_65_1.tar.bz2' -O - | tar xj && \
     cd boost_1_65_1 && \
     ./bootstrap.sh --with-libraries=log,thread,system,filesystem,program_options,test --prefix=/usr/local && \
@@ -56,8 +56,9 @@ ARG petsc_para=no
 ARG mpi_para=yes
 ARG python_para=no
 # Build preCICE and clean-up generated object files
-WORKDIR /home/precice/precice-build
-RUN mkdir /home/precice/precice-install && \
+RUN mkdir /home/precice/precice-build && \
+    cd /home/precice/precice-build && \
+    mkdir /home/precice/precice-install && \
     cmake -DBUILD_SHARED_LIBS=ON \
           -DCMAKE_BUILD_TYPE=RelWithDebInfo \
           -DCMAKE_INSTALL_PREFIX=/home/precice/precice-install \

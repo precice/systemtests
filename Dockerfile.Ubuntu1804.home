@@ -43,8 +43,9 @@ ARG petsc_para=no
 ARG mpi_para=yes
 ARG python_para=no
 # Build preCICE and clean-up generated object files
-WORKDIR /home/precice/precice-build
-RUN mkdir /home/precice/precice-install && \
+RUN mkdir /home/precice/precice-build && \
+    cd /home/precice/precice-build && \
+    mkdir /home/precice/precice-install && \
     cmake -DBUILD_SHARED_LIBS=ON \
           -DCMAKE_BUILD_TYPE=RelWithDebInfo \
           -DCMAKE_INSTALL_PREFIX=/home/precice/precice-install \
