@@ -38,10 +38,10 @@ WORKDIR /precice
 ARG petsc_para=no
 ARG mpi_para=yes
 ARG python_para=no
-# Build preCICE and clean-up generated object files
+# Build preCICE, intstall into /usr/local and clean-up the build directory
 WORKDIR /precice-build
-RUN cmake -DBUILD_SHARED_LIBS=ON \
-          -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+RUN cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+          -DBUILD_SHARED_LIBS=ON \
           -DCMAKE_INSTALL_PREFIX=/usr/local \
           -DPETSC=$petsc_para \
           -DMPI=$mpi_para \
@@ -50,4 +50,9 @@ RUN cmake -DBUILD_SHARED_LIBS=ON \
     make -j$(nproc) && \
     make test_base && \
     make install && \
+    ldconfig && \
     rm -r precice-build
+
+# Setting preCICE environment variables
+ENV PRECICE_ROOT="/precice" \
+    PKG_CONFIG_PATH="/usr/local/lib/pkgconfig"
