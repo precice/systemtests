@@ -18,6 +18,10 @@ RUN apt-get -qq update && apt-get -qq install \
     cmake && \
     rm -rf /var/lib/apt/lists/*
 
+RUN useradd -ms /bin/bash precice
+USER precice
+WORKDIR /home/precice
+
 # Rebuild image if force_rebuild after that command
 ARG CACHEBUST
 
@@ -29,8 +33,8 @@ ENV CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/usr/include/eigen3" \
 
 # Building preCICE
 ARG branch=develop
-RUN git clone --branch $branch https://github.com/precice/precice.git /precice
-WORKDIR /precice
+RUN git clone --branch $branch https://github.com/precice/precice.git /home/precice/precice
+WORKDIR /home/precice/precice
 # Some parameters for the build, you can set them in the build command e.g.
 # sudo docker build Dockerfile.precice --build-arg petsc_para=yes --build-arg mpi_para=yes .
 # this will result in
@@ -39,16 +43,16 @@ ARG petsc_para=no
 ARG mpi_para=yes
 ARG python_para=no
 # Build preCICE and clean-up generated object files
-WORKDIR /precice-build
-RUN cmake -DBUILD_SHARED_LIBS=ON \
+WORKDIR /home/precice/precice-build
+RUN mkdir /home/precice/precice-install && \
+    cmake -DBUILD_SHARED_LIBS=ON \
           -DCMAKE_BUILD_TYPE=RelWithDebInfo \
-          -DCMAKE_INSTALL_PREFIX=/usr/local \
+          -DCMAKE_INSTALL_PREFIX=/home/precice/precice-install \
           -DPETSC=$petsc_para \
           -DMPI=$mpi_para \
           -DPYTHON=$python_para \
-          -DCMAKE_INSTALL_PREFIX=/precice-install \
-          /precice && \
+          /home/precice/precice && \
     make -j$(nproc) && \
     make test_base && \
     make install && \
-    rm -r precice-build
+    rm -r /home/precice/precice-build
