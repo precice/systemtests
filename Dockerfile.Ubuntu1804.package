@@ -52,7 +52,7 @@ RUN cmake -DBUILD_SHARED_LIBS=ON \
     make -j$(nproc) && \
     make test_base && \
     make package && \
-    dpkg -i libprecice?.?.?.deb && \
+    dpkg -i $(find . -name "*.deb") && \
     rm -r /precice-build
 
 # Setting preCICE environment variables

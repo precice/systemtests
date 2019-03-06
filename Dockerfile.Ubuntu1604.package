@@ -64,7 +64,7 @@ RUN cmake -DBUILD_SHARED_LIBS=ON \
     make -j$(nproc) && \
     make test_base && \
     make package && \
-    dpkg -i --ignore-depends=libboost-dev,libboost-log-dev,libboost-thread-dev,libboost-system-dev,libboost-filesystem-dev,libboost-program-options-dev,libboost-test-dev ./libprecice?.?.?.deb && \
+    dpkg -i --ignore-depends=libboost-dev,libboost-log-dev,libboost-thread-dev,libboost-system-dev,libboost-filesystem-dev,libboost-program-options-dev,libboost-test-dev $(find . -name "*.deb") && \
     rm -r /precice-build
 
 # Setting preCICE environment variables
