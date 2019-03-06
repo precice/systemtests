@@ -41,13 +41,14 @@ ARG python_para=no
 # Build preCICE and clean-up generated object files
 WORKDIR /precice-build
 RUN cmake -DBUILD_SHARED_LIBS=ON \
-          -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+          -DPRECICE_Packages=ON \
+          -DPRECICE_InstallTest=ON \
           -DCMAKE_INSTALL_PREFIX=/usr \
+          -DCMAKE_BUILD_TYPE=RelWithDebInfo \          
           -DPETSC=$petsc_para \
           -DMPI=$mpi_para \
           -DPYTHON=$python_para \
           /precice && \
-    make -j$(nproc) && \
-    make test_base && \
-    make install && \
-    rm -r precice-build
+    make -j$(nproc) package && \
+RUN apt install libprecice1.3.0
+RUN rm -r precice-build

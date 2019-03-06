@@ -53,13 +53,13 @@ ARG python_para=no
 # Build preCICE and clean-up generated object files
 WORKDIR /precice-build
 RUN cmake -DBUILD_SHARED_LIBS=ON \
+          -DPRECICE_Packages=ON \
+          -DPRECICE_InstallTest=ON \
           -DCMAKE_BUILD_TYPE=RelWithDebInfo \
           -DCMAKE_INSTALL_PREFIX=/usr \
           -DPETSC=$petsc_para \
           -DMPI=$mpi_para \
           -DPYTHON=$python_para \
           /precice && \
-    make -j$(nproc) && \
-    make test_base && \
-    make install && \
+    make -j$(nproc) package && \
     rm -r precice-build
