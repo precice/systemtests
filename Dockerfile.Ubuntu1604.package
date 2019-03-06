@@ -1,12 +1,11 @@
-# Dockerfile for building preCICE on ubuntu 18.04
+# Dockerfile for building preCICE on ubuntu 16.04
 
-# Using ubuntu 18.04 as basis
-FROM ubuntu:18.04
+# Using ubuntu 16.04 as basis
+FROM ubuntu:16.04
 
-# Installing necessary dependacies for preCICE, boost 1.65 from apt-get
+# Installing necessary dependacies for preCICE
 RUN apt-get -qq update && apt-get -qq install \
     build-essential \
-    libboost-all-dev \
     libeigen3-dev \
     libxml2-dev \
     petsc-dev \
@@ -14,9 +13,22 @@ RUN apt-get -qq update && apt-get -qq install \
     python-numpy \
     python-dev \
     wget \
-    bzip2 \
-    cmake && \
+    bzip2 && \
     rm -rf /var/lib/apt/lists/*
+
+# Installing cmake
+WORKDIR /cmake
+RUN wget -q -O- 'https://github.com/Kitware/CMake/releases/download/v3.13.4/cmake-3.13.4-Linux-x86_64.tar.gz' | tar xz
+ENV PATH="/cmake/cmake-3.13.4-Linux-x86_64/bin:$PATH"
+
+# Installing boost from source
+WORKDIR /boost-build
+RUN wget -nv 'https://dl.bintray.com/boostorg/release/1.65.1/source/boost_1_65_1.tar.bz2' -O - | tar xj && \
+    cd boost_1_65_1 && \
+    ./bootstrap.sh --with-libraries=log,thread,system,filesystem,program_options,test --prefix=/usr/local && \
+    ./b2 -j$(nproc) install && \
+    rm -rf /boost-build && \
+    ldconfig
 
 # Rebuild image if force_rebuild after that command
 ARG CACHEBUST
@@ -42,11 +54,10 @@ ARG python_para=no
 WORKDIR /precice-build
 RUN cmake -DBUILD_SHARED_LIBS=ON \
           -DCMAKE_BUILD_TYPE=RelWithDebInfo \
-          -DCMAKE_INSTALL_PREFIX=/usr/local \
+          -DCMAKE_INSTALL_PREFIX=/usr \
           -DPETSC=$petsc_para \
           -DMPI=$mpi_para \
           -DPYTHON=$python_para \
-          -DCMAKE_INSTALL_PREFIX=/precice-install \
           /precice && \
     make -j$(nproc) && \
     make test_base && \

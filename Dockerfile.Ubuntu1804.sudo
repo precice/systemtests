@@ -46,7 +46,6 @@ RUN cmake -DBUILD_SHARED_LIBS=ON \
           -DPETSC=$petsc_para \
           -DMPI=$mpi_para \
           -DPYTHON=$python_para \
-          -DCMAKE_INSTALL_PREFIX=/precice-install \
           /precice && \
     make -j$(nproc) && \
     make test_base && \
