@@ -8,19 +8,19 @@ USER root
 ENV USER=root
 
 # Installing necessary dependecies
-RUN apt-get -qq update && apt-get -qq install python3 python3-dev && \
+RUN apt-get -qq update && apt-get -qq install python3 python3-venv && \
     rm -rf /var/lib/apt/lists/*
 
-# Installing a new version of pip
-RUN wget -q https://bootstrap.pypa.io/get-pip.py -O get-pip.py && \
-    python3 get-pip.py
+RUN python -m venv /python-venv/ && \
+    source /python-venv/bin/activate && \
+    bin/pip install -U pip
 
 # Builds the precice python binding for python3
-RUN pip3 install --user $PRECICE_ROOT/src/precice/bindings/python
+RUN pip3 install $PRECICE_ROOT/src/precice/bindings/python
 
 # Runs the python solverdummy with python3
 WORKDIR $PRECICE_ROOT/tools/solverdummies/python
-RUN pip3 install --user -r requirements.txt && \
+RUN pip3 install -r requirements.txt && \
     python3 solverdummy.py precice-config.xml SolverOne MeshOne & python3 solverdummy.py precice-config.xml SolverTwo MeshTwo
 
 # Builds the C solverdummy
