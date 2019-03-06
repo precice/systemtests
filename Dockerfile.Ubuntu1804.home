@@ -57,3 +57,7 @@ RUN mkdir /home/precice/precice-build && \
     make test_base && \
     make install && \
     rm -r /home/precice/precice-build
+
+# Setting preCICE environment variables
+ENV PRECICE_ROOT="/home/precice/precice" \
+    PKG_CONFIG_PATH="/home/precice/precice-install/lib/pkgconfig"

@@ -44,11 +44,16 @@ RUN cmake -DBUILD_SHARED_LIBS=ON \
           -DPRECICE_Packages=ON \
           -DPRECICE_InstallTest=ON \
           -DCMAKE_INSTALL_PREFIX=/usr \
-          -DCMAKE_BUILD_TYPE=RelWithDebInfo \          
+          -DCMAKE_BUILD_TYPE=RelWithDebInfo \
           -DPETSC=$petsc_para \
           -DMPI=$mpi_para \
           -DPYTHON=$python_para \
           /precice && \
-    make -j$(nproc) package
-RUN apt install libprecice1.3.0
-RUN rm -r precice-build
+    make -j$(nproc) && \
+    make test_base && \
+    make package && \
+    dpkg -i libprecice?.?.?.deb && \
+    rm -r /precice-build
+
+# Setting preCICE environment variables
+ENV PRECICE_ROOT="/precice"
