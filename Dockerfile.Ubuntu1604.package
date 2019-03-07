@@ -68,11 +68,12 @@ RUN mkdir /home/precice/precice-build && \
           /home/precice/precice && \ 
     make -j$(nproc) && \
     make test_base && \
-    make package
+    make package && \
+    mv $(find . -maxdepth 1 -name "*.deb") /home/precice && \
+    rm -r /home/precice/precice-build  # copy *.deb to home/precice; we do not need the remaining files in precice-build anymore and delete them
 USER root
-RUN cd /home/precice/precice-build && dpkg -i --ignore-depends=libboost-dev,libboost-log-dev,libboost-thread-dev,libboost-system-dev,libboost-filesystem-dev,libboost-program-options-dev,libboost-test-dev $(find . -name "*.deb")
-USER precice
-RUN rm -r /home/precice/precice-build
+RUN cd /home/precice && dpkg -i --ignore-depends=libboost-dev,libboost-log-dev,libboost-thread-dev,libboost-system-dev,libboost-filesystem-dev,libboost-program-options-dev,libboost-test-dev $(find . -maxdepth 1 -name "*.deb")
 
 # Setting preCICE environment variables
+USER precice
 ENV PRECICE_ROOT="/home/precice/precice"
