@@ -22,7 +22,7 @@ RUN apt-get -qq update && apt-get -qq install \
 ARG CACHEBUST
 
 # create user precice
-RUN useradd -ms /bin/bash precice && adduser precice sudo
+RUN useradd -ms /bin/bash precice
 USER precice
 WORKDIR /home/precice
 
@@ -56,9 +56,12 @@ RUN mkdir /home/precice/precice-build && \
           /home/precice/precice && \
     make -j$(nproc) && \
     make test_base && \
-    make package && \
-    dpkg -i $(find . -name "*.deb") && \
-    rm -r /home/precice/precice-build
+    make package
+# user with sudo rights is needed to install preCICE in debian package
+USER root
+RUN cd /home/precice/precice-build && dpkg -i $(find . -name "*.deb")
+USER precice
+RUN rm -r /home/precice/precice-build
 
 # Setting preCICE environment variables
 ENV PRECICE_ROOT="/home/precice/precice"

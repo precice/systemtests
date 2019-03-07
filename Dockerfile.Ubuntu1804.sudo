@@ -22,7 +22,7 @@ RUN apt-get -qq update && apt-get -qq install \
 ARG CACHEBUST
 
 # create user precice
-RUN useradd -ms /bin/bash precice && adduser precice sudo
+RUN useradd -ms /bin/bash precice
 USER precice
 WORKDIR /home/precice
 
@@ -44,8 +44,8 @@ ARG mpi_para=yes
 ARG python_para=no
 # Build preCICE, install into /usr/local and clean-up the build directory
 RUN mkdir /home/precice/precice-build && \
-    cd /home/precice/precice-build && \
-    cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+    cd /home/precice/precice-build
+RUN cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo \
           -DBUILD_SHARED_LIBS=ON \
           -DCMAKE_INSTALL_PREFIX=/usr/local \
           -DPETSC=$petsc_para \
@@ -53,10 +53,13 @@ RUN mkdir /home/precice/precice-build && \
           -DPYTHON=$python_para \
           /home/precice/precice && \
     make -j$(nproc) && \
-    make test_base && \
-    make install && \
-    ldconfig && \
-    rm -r /home/precice/precice-build
+    make test_base
+# user with sudo rights is needed to install preCICE in system directory
+USER root
+RUN make install && \
+    ldconfig
+USER precice
+RUN rm -r /home/precice/precice-build
 
 # Setting preCICE environment variables
 ENV PRECICE_ROOT="/home/precice/precice" \
