@@ -69,7 +69,7 @@ RUN mkdir /home/precice/precice-build && \
     make -j$(nproc) && \
     make test_base && \
     make package && \
-    sudo dpkg -i --ignore-depends=libboost-dev,libboost-log-dev,libboost-thread-dev,libboost-system-dev,libboost-filesystem-dev,libboost-program-options-dev,libboost-test-dev $(find . -name "*.deb") && \
+    dpkg -i --ignore-depends=libboost-dev,libboost-log-dev,libboost-thread-dev,libboost-system-dev,libboost-filesystem-dev,libboost-program-options-dev,libboost-test-dev $(find . -name "*.deb") && \
     rm -r /home/precice/precice-build
 
 # Setting preCICE environment variables
