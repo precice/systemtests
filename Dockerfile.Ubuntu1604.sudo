@@ -66,8 +66,10 @@ RUN mkdir /home/precice/precice-build && \
           /home/precice/precice && \
     make -j$(nproc) && \
     make test_base
+# user with sudo rights is needed to install preCICE in system directory
 USER root
-RUN make install && \
+RUN cd /home/precice/precice-build && \
+    make install && \
     ldconfig
 USER precice
 RUN rm -r /home/precice/precice-build
