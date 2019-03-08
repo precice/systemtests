@@ -5,6 +5,7 @@ FROM ubuntu:16.04
 
 # Installing necessary dependacies for preCICE
 RUN apt-get -qq update && apt-get -qq install \
+    sudo \
     build-essential \
     libeigen3-dev \
     libxml2-dev \
@@ -34,7 +35,7 @@ RUN wget -nv 'https://dl.bintray.com/boostorg/release/1.65.1/source/boost_1_65_1
 ARG CACHEBUST
 
 # create user precice
-RUN useradd -ms /bin/bash precice
+RUN useradd -ms /bin/bash precice && adduser precice sudo
 USER precice
 WORKDIR /home/precice
 
@@ -69,10 +70,8 @@ RUN mkdir /home/precice/precice-build && \
     make -j$(nproc) && \
     make test_base && \
     make package && \
-    mv $(find . -maxdepth 1 -name "*.deb") /home/precice && \
-    rm -r /home/precice/precice-build  # copy *.deb to home/precice; we do not need the remaining files in precice-build anymore and delete them
-USER root
-RUN cd /home/precice && dpkg -i --ignore-depends=libboost-dev,libboost-log-dev,libboost-thread-dev,libboost-system-dev,libboost-filesystem-dev,libboost-program-options-dev,libboost-test-dev $(find . -maxdepth 1 -name "*.deb")
+    sudo dpkg -i --ignore-depends=libboost-dev,libboost-log-dev,libboost-thread-dev,libboost-system-dev,libboost-filesystem-dev,libboost-program-options-dev,libboost-test-dev $(find . -maxdepth 1 -name "*.deb") && \
+    rm -r /home/precice/precice-build
 
 # Setting preCICE environment variables
 USER precice

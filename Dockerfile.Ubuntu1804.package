@@ -58,7 +58,8 @@ RUN mkdir /home/precice/precice-build && \
     make -j$(nproc) && \
     make test_base && \
     make package && \
-    sudo dpkg -i $(find . -maxdepth 1 -name "*.deb")
+    sudo dpkg -i $(find . -maxdepth 1 -name "*.deb") && \
+    rm -r /home/precice/precice-build
 
 # Setting preCICE environment variables
 ENV PRECICE_ROOT="/home/precice/precice"

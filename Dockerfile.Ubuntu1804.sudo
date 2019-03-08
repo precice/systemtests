@@ -5,6 +5,7 @@ FROM ubuntu:18.04
 
 # Installing necessary dependacies for preCICE, boost 1.65 from apt-get
 RUN apt-get -qq update && apt-get -qq install \
+    sudo \
     build-essential \
     libboost-all-dev \
     libeigen3-dev \
@@ -22,7 +23,7 @@ RUN apt-get -qq update && apt-get -qq install \
 ARG CACHEBUST
 
 # create user precice
-RUN useradd -ms /bin/bash precice
+RUN useradd -ms /bin/bash precice && adduser precice sudo
 USER precice
 WORKDIR /home/precice
 
@@ -53,14 +54,10 @@ RUN mkdir /home/precice/precice-build && \
           -DPYTHON=$python_para \
           /home/precice/precice && \
     make -j$(nproc) && \
-    make test_base
-# user with sudo rights is needed to install preCICE in system directory
-USER root
-RUN cd /home/precice/precice-build && \
-    make install && \
-    ldconfig
-USER precice
-RUN rm -r /home/precice/precice-build
+    make test_base && \
+    sudo make install && \
+    sudo ldconfig && \
+    rm -r /home/precice/precice-build
 
 # Setting preCICE environment variables
 ENV PRECICE_ROOT="/home/precice/precice" \
