@@ -1,0 +1,37 @@
+# Dockerfile for building preCICE on Arch Linux
+
+FROM archlinux/base
+
+RUN pacman -Syu --quiet --noconfirm --needed base-devel boost eigen git scons openmpi python2 python2-numpy
+
+# Some parameters for the build, you can set them in the build command e.g.
+# sudo docker build Dockerfile.precice --build-arg petsc_para=yes --build-arg mpi_para=yes .
+# this will result in
+# scons petsc=yes mpi=yes python=no compiler="mpicxx" -j2
+ARG petsc_para=no
+ARG mpi_para=yes
+ARG python_para=no
+
+# Fixme: This needs to be built as a non-root user.
+# RUN if [ "$petsc_para" ]; then \
+#     git clone https://aur.archlinux.org/petsc.git && cd petsc && makepkg -i ; \
+#     fi
+
+# Rebuild image if force_rebuild after that command
+ARG CACHEBUST
+
+# Building preCICE
+ARG branch=develop
+RUN git clone --branch $branch https://github.com/precice/precice.git /precice
+WORKDIR /precice
+
+# Build preCICE and clean-up generated object files
+RUN scons petsc=$petsc_para mpi=$mpi_para python=$python_para -j$(nproc) && \
+    find . -type f \( -name "*.o" -or -name "*.os" \) -exec rm {} +
+
+# Setting preCICE environment variables
+ENV PRECICE_ROOT="/precice"
+ENV LD_LIBRARY_PATH="$PRECICE_ROOT/build/last:${LD_LIBRARY_PATH}" \
+    LIBRARY_PATH="$PRECICE_ROOT/build/last:${LIBRARY_PATH}" \
+    CPATH="$PRECICE_ROOT/src:${CPATH}" \
+    CPLUS_INCLUDE_PATH="$PRECICE_ROOT/src:${CPLUS_INCLUDE_PATH}"
