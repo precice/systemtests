@@ -27,7 +27,7 @@ def build(systest, tag, branch, local, force_rebuild):
     else:
         docker.build_image(tag = test_tag,
                            build_args = {"from" :
-                               'precicecoupling/' + baseimage_name},
+                               'precice/' + baseimage_name},
                            force_rebuild = force_rebuild)
 
 def run(systest, tag, branch):
@@ -93,8 +93,7 @@ if __name__ == "__main__":
     parser.add_argument('-b', '--branch', help="preCICE branch to use", default = "develop")
     parser.add_argument('-f', '--force_rebuild', nargs='+', help="Force rebuild of variable parts of docker image",
                         default = [], choices  = ["precice", "tests"])
-    parser.add_argument('-o', '--os', type=str,help="Variant to use", choices =
-            ["Ubuntu1804", "Ubuntu1604"], default= "Ubuntu1604")
+    parser.add_argument('-o', '--os', type=str,help="Variant to use")
     args = parser.parse_args()
     test = str(args.systemtest) + '.' + str(args.os)
     tag = args.os.lower()

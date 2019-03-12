@@ -17,8 +17,7 @@ parser = argparse.ArgumentParser(description='Build local.')
 parser.add_argument('-b', '--branch', help="log choosen preCICE branch")
 parser.add_argument('-t', '--test', help="choose system tests you want to use")
 parser.add_argument('-s', '--success', action='store_true' ,help="only upload log file")
-parser.add_argument('-o', '--os', type=str,help="Variant to use", choices =
-            ["Ubuntu1804", "Ubuntu1604"], default= "Ubuntu1604")
+parser.add_argument('-o', '--os', type=str,help="Variant used")
 
 args = parser.parse_args()
 
