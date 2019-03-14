@@ -4,6 +4,10 @@ Design and Implementation of system tests for the distributed multi-physics simu
 # Status
 [![Build Status](https://travis-ci.org/precice/systemtests.svg?branch=master)](https://travis-ci.org/precice/systemtests)
 
+# General Information
+
+* [Architecture](doc/architecture.md)
+
 # Setup and running
 
 ## Dependencies
