@@ -1,6 +1,6 @@
 # Architecture
 
-The architecture of the system tests consist out of two layers:
+The architecture of the system tests consists out of two layers:
 1) [The Base Images](#base-images) each containing a system with installed dependencies and a discoverable preCICE installation.
 2) [The Tests](#tests) each containing a system test to run.
 
