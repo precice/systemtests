@@ -87,6 +87,16 @@ Base images will be matched against Tests in the following way:
         * drop a feature and repeat matching
       * else run Test with matching `TestClass` without `SystemSpec`
 
+Examples:
+
+Base Image                        | Matching Tests
+---                               | ---
+`Dockerfile.Ubuntu1804`           | `Test_of-of.Ubuntu1804`, _(no matching su2)_
+`Dockerfile.Ubuntu.1804.Boost160` | `Test_of-of.Ubuntu1804.Boost160`
+`Dockerfile.Ubuntu.1804.NoPETSc`  | `Test_of-of.Ubuntu1804`
+`Dockerfile.Ubuntu1604`           | `Test_of-of`, `Test_su2.Ubuntu1604`
+`Dockerfile.Ubuntu1604.Boost160`  | `Test_of-of`, `Test_su2.Ubuntu1604`
+
 ### Restrictions:
 * Run commands as user `precice`
 * Use `pip install --user` to install python dependencies
