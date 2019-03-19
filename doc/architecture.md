@@ -18,7 +18,7 @@ _              = "_"
 // Non-terminals
 SystemSpec     = System [. Feature]*
 Base           = Dockerfile . SystemSpec
-TestSpec       = TestClass | TestClass SystemSpec
+TestSpec       = TestClass | TestClass . SystemSpec
 Test           = TestPrefix _ TestSpec
 ```
 
@@ -37,7 +37,7 @@ Dockerfile.Ubuntu1604.Boost160
 ```
 
 ### Responsibilities:
-The image needs to provide:
+The image must provide:
 1) Software:
     1) `cmake`
     2) `make`
@@ -54,15 +54,15 @@ The image needs to provide:
     * `pgk-config --exist precice` returns true
     * `#include <precice/SolverInterface.hpp` has to work either out-of-the-box or by passing the flag `-I` using pkg-config.
     * `ld -lprecice` has to work either out-of-the-box or by passing the flag `-L` using pkg-config.
-    * `binprecice` and `testprecice` have to be in `PATH`
-    * `PRECICE_ROOT` hast to be set so that at least `runprecice` will be able to run the tests.
+    * `binprecice` and `testprecice` have to be in `$PATH`
+    * `$PRECICE_ROOT` hast to be set so that at least `testprecice` will be able to run the tests.
 
 _Optional: after building preCICE, the "base" test-set has to be executed with `make test_base`!_
 
 ## Tests
 
 ### Naming Convention: 
-Described by Grammar: `Base`
+Described by Grammar: `Test`
 
 Examples:
 ```
@@ -92,5 +92,5 @@ Base images will be matched against Tests in the following way:
 
 ### Responsibilities:
 
-* A failing `RUN` marks the test as failed.
+* To signal a failing systemtest, make the corresponding `RUN` command fail.
 * Do not fail silently!
