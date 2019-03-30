@@ -14,7 +14,7 @@ Example:
 
 import argparse, filecmp, os, shutil, sys
 import common, docker
-from common import ccall
+from common import ccall, get_test_variants, filter_tests
 
 def build(systest, tag, branch, local, force_rebuild):
     """ Builds a docker image for systest. """
@@ -93,11 +93,16 @@ if __name__ == "__main__":
     parser.add_argument('-b', '--branch', help="preCICE branch to use", default = "develop")
     parser.add_argument('-f', '--force_rebuild', nargs='+', help="Force rebuild of variable parts of docker image",
                         default = [], choices  = ["precice", "tests"])
-    parser.add_argument('-o', '--os', type=str,help="Variant to use", default= "Ubuntu1604")
+    parser.add_argument('--base', type=str,help="Base preCICE image to use", default= "Ubuntu1604")
     args = parser.parse_args()
-    test = str(args.systemtest) + '.' + str(args.os)
-    tag = args.os.lower()
+    test = str(args.systemtest) + '.' + str(args.base)
     # check if there is specialized dir for this version
-    if not os.path.isdir(os.getcwd() + '/Test_' + test):
-        test = str(args.systemtest)
+    test_name = args.systemtest
+    all_derived_tests = get_test_variants(test_name)
+    test = filter_tests(all_derived_tests, 'Dockerfile.'+args.base)
+    if len(test) != 1:
+        raise Exception("Could not determine test to run!")
+    else:
+        test = test[0]
+    tag = args.base.lower()
     build_run_compare(test, tag, args.branch, args.local, args.force_rebuild)
