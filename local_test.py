@@ -23,7 +23,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter,
                                      description='Build local.')
     parser.add_argument('-b', '--branch', help="Branch you want to use for preCICE", default = "develop")
-    parser.add_argument('-d', '--dockerfile', help="Dockerfile used to create preCICE base image", default = "Dockerfile.Ubuntu1604")
+    parser.add_argument('-d', '--dockerfile', help="Dockerfile used to create preCICE base image", default = "Dockerfile.Ubuntu1604.home")
     parser.add_argument('-s', '--systemtest', nargs='+', help="System tests you want to use", default = common.get_tests(), choices = common.get_tests())
     parser.add_argument('-f', '--force_rebuild', nargs='+', help="Force rebuild of variable parts of docker image", default = [], choices  = ["precice", "tests"])
     args = parser.parse_args()
