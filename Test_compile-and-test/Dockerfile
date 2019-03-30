@@ -7,7 +7,8 @@ FROM $from
 USER root
 ENV USER=root
 
-RUN apt-get -qq update && apt-get -qq install python3
+RUN apt-get -qq update && apt-get -qq install python3 && \
+    rm -rf /var/lib/apt/lists/*
 
 # create a new non-root user that has access to $PRECICE_ROOT
 RUN adduser testuser

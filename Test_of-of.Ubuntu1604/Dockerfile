@@ -1,7 +1,7 @@
 # System testing preCICE with openfoam-adapter
 
 # Using latest preCICE from dockerhub.com
-ARG from=precicecoupling/precice:latest
+ARG from=precice/precice:latest
 FROM $from
 
 USER root
@@ -11,13 +11,15 @@ ENV USER=root
 RUN apt-get -qq update && apt-get -qq install \
     software-properties-common \
     wget apt-transport-https \
-    libyaml-cpp-dev
+    libyaml-cpp-dev && \
+    rm -rf /var/lib/apt/lists/*
 
 # Installing OpenFOAM 4.1
 RUN add-apt-repository "http://dl.openfoam.org/ubuntu dev"
 RUN sh -c "wget -O - http://dl.openfoam.org/gpg.key | apt-key add -"
 RUN add-apt-repository http://dl.openfoam.org/ubuntu && apt update
-RUN apt-get -y install openfoam4 --no-install-recommends
+RUN apt-get -y install openfoam4 --no-install-recommends && \
+    rm -rf /var/lib/apt/lists/*
 
 # Rebuild image if force_rebuild after that command
 ARG CACHEBUST

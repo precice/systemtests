@@ -9,7 +9,8 @@ ENV USER=root
 
 # Installing necessary dependecies
 RUN apt-get -qq update && apt-get -qq install \
-    cython python-numpy python-enum34 python-mpi4py cython3 python3-numpy python3-mpi4py
+    cython python-pip python-numpy python-enum34 python-mpi4py cython3 python3-pip python3-numpy python3-mpi4py && \
+    rm -rf /var/lib/apt/lists/*
     
 # Builds the precice python binding for python2
 WORKDIR $PRECICE_ROOT/src/precice/bindings/python
@@ -33,7 +34,7 @@ RUN scons
 
 # Builds the C++ solverdummy
 WORKDIR $PRECICE_ROOT/tools/solverdummies/cpp
-RUN mpic++ -std=c++11 -I$PRECICE_ROOT/src main.cpp -lprecice
+RUN mpic++ -std=c++11 main.cpp -lprecice
 
 # Builds the Fortran solverdummy
 WORKDIR $PRECICE_ROOT/tools/solverdummies/fortran

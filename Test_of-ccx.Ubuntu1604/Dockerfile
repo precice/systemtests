@@ -1,7 +1,7 @@
 # System testing preCICE with openfoam-adapter and calculix-adapter
 
 # Building on top of the latets preCICE-build
-ARG from=precicecoupling/precice:latest
+ARG from=precice/precice:latest
 FROM $from
 
 USER root
@@ -16,17 +16,19 @@ RUN apt-get -qq update && apt-get -qq install \
     automake \
     autoconf \
     autotools-dev \
-    libyaml-cpp-dev
+    libyaml-cpp-dev && \
+    rm -rf /var/lib/apt/lists/*
 
 # Installing OpenFOAM 4.1
 RUN add-apt-repository "http://dl.openfoam.org/ubuntu dev" && \
     sh -c "curl -s http://dl.openfoam.org/gpg.key | apt-key add -" && \
     add-apt-repository http://dl.openfoam.org/ubuntu && apt update && \
-    apt-get -qq --no-install-recommends install openfoam4
+    apt-get -qq --no-install-recommends install openfoam4 && \
+    rm -rf /var/lib/apt/lists/*
 
-# Downloading Calculix 2.13
+# Downloading Calculix 2.15
 WORKDIR /
-RUN curl -s http://www.dhondt.de/ccx_2.13.src.tar.bz2 | tar -xj
+RUN curl -s http://www.dhondt.de/ccx_2.15.src.tar.bz2 | tar -xj
 
 # Installing spooles
 WORKDIR /
