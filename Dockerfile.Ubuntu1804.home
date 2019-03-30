@@ -62,3 +62,8 @@ RUN mkdir /home/precice/precice-build && \
 # Setting preCICE environment variables
 ENV PRECICE_ROOT="/home/precice/precice" \
     PKG_CONFIG_PATH="/home/precice/precice-install/lib/pkgconfig"
+    PKG_CONFIG_PATH="/home/precice/precice-install/lib/pkgconfig" \
+    LD_LIBRARY_PATH="/home/precice/precice-install/lib:${LD_LIBRARY_PATH}" \
+    LIBRARY_PATH="/home/precice/precice-install/lib:${LIBRARY_PATH}" \
+    CPATH="/home/precice/precice-install/include:${CPATH}" \
+    CMAKE_PREFIX_PATH="/home/precice/precice-install/lib/cmake/precice:${CMAKE_PREFIX_PATH}"
