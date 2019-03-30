@@ -10,7 +10,6 @@ import os
 import time
 from sys import exit
 import argparse
-from string import Template
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
@@ -39,20 +38,55 @@ def get_json_response(url, **kwargs):
 
     return json_response
 
+def adjust_travis_script(script, user, adapter):
+    """ Patches travis job in case we are running on fork or a different branch """
+
+    join_jobs = lambda jobs: " && ".join(filter(None, jobs))
+
+    branch = os.environ.get("TRAVIS_BRANCH")
+    pull_req = os.environ.get("TRAVIS_PULL_REQUEST")
+
+    branch_switch_cmd = None
+    if branch:
+        branch_switch_cmd = "git checkout {}".format(branch)
+
+    pr_merge_cmd = None
+    if pull_req:
+        pr_merge_cmd = "git fetch origin\
+        +refs/pull/{}/merge && git checkout -qf FETCH_HEAD ".format(pull_req)
+
+    post_clone_cmd = join_jobs([branch_switch_cmd, pr_merge_cmd])
+
+    # inserts switching to a branch / merging a pull request
+    # after cloning the adapter in all systemtests dockerfiles that use it
+    preprocess_cmd = None
+    if pull_req or branch:
+        preprocess_cmd = "grep -rl --include=\*Dockerfile* github.com/{user}/{adapter}.git |\
+        xargs sed -i '/github.com\/{user}\/{adapter}.git/a RUN cd {adapter} && {post_clone_cmd} && \
+        cd .. /'".format(user = user, adapter =
+                nm_repo_map[adapter], post_clone_cmd = post_clone_cmd)
+
+    main_script = join_jobs([ preprocess_cmd, script ])
+
+    return main_script
+
 def generate_travis_job(adapter, user, trigger_failure = True):
 
     triggered_by = os.environ["TRAVIS_JOB_WEB_URL"] if "TRAVIS_JOB_WEB_URL" in\
          os.environ else "manual script call"
 
-    after_failure_action = "python push.py -t $TEST;"
+    after_failure_action = "python push.py -t {TEST};"
+    main_script = "python system_testing.py -s {TEST}"
+
     if trigger_failure:
-        after_failure_action += " python trigger_systemtests.py --failure --owner $USER --adapter $ADAPTER"
+        after_failure_action += " python trigger_systemtests.py --failure --owner {USER} --adapter {ADAPTER}"
 
     job_templates= {
-        "name":  Template('[16.04] $TESTNAME <-> $TESTNAME'),
-        "script": Template('python system_testing.py -s $TEST') ,
-        "after_success":Template('python push.py -s -t $TEST') ,
-        "after_failure": Template(after_failure_action)}
+        "name":          "[16.04] {TESTNAME} <-> {TESTNAME}",
+        "script":        adjust_travis_script(main_script, user,adapter),
+        "after_success": "python push.py -s -t {TEST}",
+        "after_failure": after_failure_action
+        }
 
     job_body={
         "request": {
@@ -79,8 +113,8 @@ def generate_travis_job(adapter, user, trigger_failure = True):
     jobs = []
     for tests in nm_test_map[adapter]:
         job = {}
-        for key,template in job_templates.items():
-            job[key] = template.substitute(TESTNAME=tests, USER=user, TEST=tests,
+        for key,job_template in job_templates.items():
+            job[key] = job_template.format(TESTNAME=tests, USER=user, TEST=tests,
                 ADAPTER=adapter)
         jobs.append(job)
 

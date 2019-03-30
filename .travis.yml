@@ -9,7 +9,18 @@ jobs:
   include:
   - stage: Building preCICE
     if: fork = false
-    name: "Ubuntu 16.04.home"
+    name: "Arch Linux"
+    script:
+    - docker build -f Dockerfile.Arch -t precice .
+    after_success:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker images
+    - docker tag precice $DOCKER_USERNAME/precice-arch-develop:latest
+    - docker push $DOCKER_USERNAME/precice-arch-develop:latest
+
+  - stage: Building preCICE
+    if: fork = false
+    name: "Ubuntu 16.04 home"
     script:
     - docker build -f Dockerfile.Ubuntu1604.home -t precice .
     after_success:
