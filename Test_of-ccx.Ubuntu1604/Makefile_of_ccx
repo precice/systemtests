@@ -3,6 +3,8 @@ CCX			= /CalculiX/ccx_2.15/src
 SPOOLES			= /spooles.2.2
 ARPACK			= /usr/local/ARPACK
 PRECICE_ROOT		= /precice
+PKGCONF_CFLAGS  = $(shell pkg-config --cflags libprecice)
+PKGCONF_LIBS    = $(shell pkg-config --libs libprecice)
 
 # Specify where to store the generated .o files
 OBJDIR 		= bin
@@ -13,27 +15,16 @@ INCLUDES = \
 	-I./adapter \
 	-I$(CCX) \
 	-I$(SPOOLES) \
-	-I$(PRECICE_ROOT)/src \
+	$(PKGCONF_CFLAGS) \
     	-I$(ARPACK) \
 
 LIBS = \
 	$(SPOOLES)/spooles.a \
 	$(ARPACK)/libarpack_INTEL.a \
-    	-lm -lc -lpthread -llapack -lblas \
-    	-L$(PRECICE_ROOT)/build/last \
-    	-lprecice \
-    	-lboost_log \
-    	-lboost_log_setup \
-    	-lboost_thread \
-    	-lboost_system \
-    	-lboost_filesystem \
-	-lboost_program_options \
-    	-lpython2.7 \
-    	-lstdc++ \
-	-L$(PETSC_DIR)/$(PETSC_ARCH)/lib -lpetsc \
-    	-lmpi_cxx \
-    	-lyaml-cpp \
-        -lxml2
+    	-lm -lc -lpthread\
+			$(PKGCONF_LIBS) \
+			-lstdc++ \
+			-lyaml-cpp \
 
 
 # Compilers and flags
