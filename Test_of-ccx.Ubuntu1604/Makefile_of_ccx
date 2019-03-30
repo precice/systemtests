@@ -22,9 +22,9 @@ LIBS = \
 	$(SPOOLES)/spooles.a \
 	$(ARPACK)/libarpack_INTEL.a \
     	-lm -lc -lpthread\
-			$(PKGCONF_LIBS) \
-			-lstdc++ \
-			-lyaml-cpp \
+      $(PKGCONF_LIBS) \
+      -lstdc++ \
+      -lyaml-cpp \
 
 
 # Compilers and flags
