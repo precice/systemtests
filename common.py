@@ -60,3 +60,48 @@ def get_diff_files(dcmp):
         right_only += ret[2]
 
     return diff_files, left_only, right_only
+
+
+def test_is_considered(test, features):
+    test_specializations = test.split('.')
+    test_specializations = test_specializations[1:]  # get specialization of test (e.g. test only for Ubuntu1604)
+    for test_specialization in test_specializations:  # check all specializations of the test whether they are met by features of the base image
+        if not test_specialization in features:
+            # test specialization does not match provided features of base image -> we will not run the test with the provided base image
+            return False
+    return True
+
+
+def determine_specialization(test):
+    """
+    The specialization degree of a test is simply determined, by counting the number of appended specializations.
+    Example:
+    test_bindings has specialization degree 1
+    test_bindings.Ubuntu1804 has specialization degree 2
+    """
+    return len(test.split('.'))
+
+def filter_for_most_specialized_tests(all_tests):
+    """
+    We only want to consider the most specialized test, if several tests are availabe. This function removes duplicate tests and filters for the most specialized version.
+    """
+    most_specialized_tests = {}
+    for test in all_tests:
+        test_name = determine_test_name(test)
+        specialization_degree = determine_specialization(test)
+        if not test_name in most_specialized_tests:  # test has not been added to the dict so far
+            most_specialized_tests[test_name] = test
+        elif determine_specialization(most_specialized_tests[test_name]) < specialization_degree:  # test has already been added to the dict, but the currently evaluated test is more specialized
+            most_specialized_tests[test_name] = test
+    return most_specialized_tests
+
+
+def filter_tests(all_tests, base_dockerfile):
+    base_features = base_dockerfile.split('.')  # put features of base Dockerfile separated by . in a list (e.g. Dockerfile.Ubuntu1604 has feature Ubuntu1604)
+    base_features.remove('Dockerfile')  # remove Dockerfile
+    executed_tests = []
+    for test in all_tests:
+        if test_is_considered(test, base_features):  # check all tests for compatibility with features of base image (e.g. base image with Ubuntu1604 feature cannot run tests with Ubuntu1804 specialization
+            executed_tests.append(test)
+    executed_tests = filter_for_most_specialized_tests(executed_tests)
+    return list(executed_tests.values())
