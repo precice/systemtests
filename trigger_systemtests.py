@@ -51,7 +51,7 @@ def adjust_travis_script(script, user, adapter):
         branch_switch_cmd = "git checkout {}".format(branch)
 
     pr_merge_cmd = None
-    if pull_req:
+    if pull_req != "false":
         pr_merge_cmd = "git fetch origin\
         +refs/pull/{}/merge && git checkout -qf FETCH_HEAD ".format(pull_req)
 
@@ -60,7 +60,7 @@ def adjust_travis_script(script, user, adapter):
     # inserts switching to a branch / merging a pull request
     # after cloning the adapter in all systemtests dockerfiles that use it
     preprocess_cmd = None
-    if pull_req or branch:
+    if branch or pull_req != "false":
         preprocess_cmd = "grep -rl --include=\*Dockerfile* github.com/{user}/{adapter}.git |\
         xargs sed -i '/github.com\/{user}\/{adapter}.git/a RUN cd {adapter} && {post_clone_cmd} && \
         cd .. /'".format(user = user, adapter =
