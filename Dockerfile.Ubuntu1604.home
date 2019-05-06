@@ -2,6 +2,7 @@
 
 # Using ubuntu 16.04 as basis
 FROM ubuntu:16.04
+ARG CCACHE_REMOTE
 
 # Installing necessary dependacies for preCICE
 RUN apt-get -qq update && apt-get -qq install \
@@ -13,7 +14,9 @@ RUN apt-get -qq update && apt-get -qq install \
     python-numpy \
     python-dev \
     wget \
-    bzip2 && \
+    bzip2 \
+    rsync \
+    ccache && \
     rm -rf /var/lib/apt/lists/*
 
 # Installing cmake
@@ -52,6 +55,10 @@ WORKDIR /home/precice/precice
 # sudo docker build Dockerfile.precice --build-arg petsc_para=yes --build-arg mpi_para=yes .
 # this will result in
 # cmake -DPETSC=yes -DMPI=yes -DPYTHON=no compiler="mpicxx" -j2 /precice
+RUN if [ ! -z "$CCACHE_REMOTE" ]; then\
+        rsync -azpvr ${CCACHE_REMOTE} ~/.ccache; \
+    fi
+
 ARG petsc_para=no
 ARG mpi_para=yes
 ARG python_para=no
@@ -65,10 +72,15 @@ RUN mkdir /home/precice/precice-build && \
           -DPETSC=$petsc_para \
           -DMPI=$mpi_para \
           -DPYTHON=$python_para \
+          -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
           /home/precice/precice && \
     make -j$(nproc) && \
     make test_base && \
     make install && \
+    if [ ! -z "${CCACHE_REMOTE}" ]; then \
+      rsync -azpvr --delete ~/.ccache/ ${CCACHE_REMOTE} &&\
+      rm -rf ~/.ccache; \
+    fi && \
     rm -r /home/precice/precice-build
 
 # Setting preCICE environment variables
