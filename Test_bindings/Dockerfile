@@ -11,44 +11,25 @@ ENV FORTRAN=gfortran
 
 # Installing necessary dependecies
 RUN apt-get -qq update && apt-get -qq install \
-    python python-dev \
     python3 python3-dev && \
     rm -rf /var/lib/apt/lists/*
 
 # Installing necessary python dependecies; we have to use pip, since cython provided by apt-get is too old.
 RUN wget -q https://bootstrap.pypa.io/get-pip.py -O get-pip.py && \
     python3 get-pip.py && \
-    python2 get-pip.py && \
-    pip2 install Cython mpi4py numpy enum34 && \
     pip3 install Cython mpi4py numpy enum34
-
-# Builds the python_future python bindings for python2
-WORKDIR $PRECICE_ROOT/src/precice/bindings/python_future
-RUN pip2 install --user .
 
 # Builds the python_future python bindings for python3
 WORKDIR $PRECICE_ROOT/src/precice/bindings/python_future
 RUN pip3 install --user .
     
-# Builds the precice python bindings for python2
-WORKDIR $PRECICE_ROOT/src/precice/bindings/python
-RUN pip2 install --user .
-
 # Builds the precice python bindings for python3
 WORKDIR $PRECICE_ROOT/src/precice/bindings/python
 RUN pip3 install --user .
 
-# Runs the python solverdummy with python2
-WORKDIR $PRECICE_ROOT/tools/solverdummies
-RUN python2 python/solverdummy.py precice-config.xml SolverOne MeshOne & python python/solverdummy.py precice-config.xml SolverTwo MeshTwo
-
 # Runs the python solverdummy with python3
 WORKDIR $PRECICE_ROOT/tools/solverdummies
 RUN python3 python/solverdummy.py precice-config.xml SolverOne MeshOne & python3 python/solverdummy.py precice-config.xml SolverTwo MeshTwo
-
-# Runs the python_future solverdummy with python2
-WORKDIR $PRECICE_ROOT/tools/solverdummies
-RUN python2 python_future/solverdummy.py precice-config.xml SolverOne MeshOne & python python_future/solverdummy.py precice-config.xml SolverTwo MeshTwo
 
 # Runs the python_future solverdummy with python3
 WORKDIR $PRECICE_ROOT/tools/solverdummies
