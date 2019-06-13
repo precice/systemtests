@@ -53,7 +53,7 @@ RUN ./solverdummy ../precice-config.xml SolverOne MeshOne & ./solverdummy ../pre
 
 # Builds the f2003 solverdummy
 WORKDIR $PRECICE_ROOT/tools/solverdummies/f2003
-RUN gfortran $PRECICE_ROOT/src/precice/bindings/f2003/SolverInterfaceF2003.f90 -o solverdummy solverdummy.f03 -L/home/precice/precice-install/lib -lprecice
+RUN gfortran $PRECICE_ROOT/src/precice/bindings/f2003/SolverInterfaceF2003.f90 -o solverdummy solverdummy.f03 $(pkg-config --libs-only-L libprecice) -lprecice
 RUN ./solverdummy ../precice-config.xml SolverOne MeshOne & ./solverdummy ../precice-config.xml SolverTwo MeshTwo
 
 # Creating Output folder
