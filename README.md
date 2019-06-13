@@ -68,8 +68,9 @@ Python script to compare reference data with output data.
 
 ## Useful paths:
 
-* preCICE Library path: `-L/home/precice/precice-install/libs`
-* preCICE Include path: `-I/home/precice/precice-install/include`
+* preCICE Library path: `-L/home/precice/precice-install/libs` or `pkg-config --libs-only-L libprecice`
+* preCICE Include path: `-I/home/precice/precice-install/include` or `pkg-config --cflags-only-I libprecice`
+* preCICE library flag: `-lprecice` or `pkg-config --libs-only-l libprecice`
 
 # Adding CI to a new adapter
 
