@@ -24,19 +24,19 @@ RUN wget -q https://bootstrap.pypa.io/get-pip.py -O get-pip.py && \
 
 # Builds the python_future python bindings for python2
 WORKDIR $PRECICE_ROOT/src/precice/bindings/python_future
-RUN pip2 install --user
+RUN pip2 install --user .
 
 # Builds the python_future python bindings for python3
 WORKDIR $PRECICE_ROOT/src/precice/bindings/python_future
-RUN pip3 install --user
+RUN pip3 install --user .
     
 # Builds the precice python bindings for python2
 WORKDIR $PRECICE_ROOT/src/precice/bindings/python
-RUN pip2 install --user
+RUN pip2 install --user .
 
 # Builds the precice python bindings for python3
 WORKDIR $PRECICE_ROOT/src/precice/bindings/python
-RUN pip3 install --user
+RUN pip3 install --user .
 
 # Runs the python solverdummy with python2
 WORKDIR $PRECICE_ROOT/tools/solverdummies
