@@ -66,6 +66,11 @@ Python script to compare reference data with output data.
 3. Create a directory `referenceOutput` there.
 4. Copy the output files to a folder `/Output/` (inside the container).
 
+## Useful paths:
+
+* preCICE Library path: `-L/home/precice/precice-install/libs`
+* preCICE Include path: `-I/home/precice/precice-install/include`
+
 # Adding CI to a new adapter
 
 As described in [#22](https://github.com/precice/systemtests/pull/22),  using `trigger_systemtests.py` it is possible to trigger custom systemtests from the travis job of the another adapter, therefore providing continous integration for the adapter on each commit to a particular branch. If you want to add another adapter, or modify tests that are run for it, you need to modify `nm_repo_map` and `nm_test_map` variables in the `trigger_systemtests.py`, that describe mapping between adapter name and repository and adapter name and set of test cases correspondingly.
