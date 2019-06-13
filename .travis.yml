@@ -113,7 +113,7 @@ jobs:
     - python push.py -t of-ccx
   - script:
     - python system_testing.py -s bindings
-    name: "[16.04] Python bindings"
+    name: "[16.04] Bindings"
     after_success:
     - python push.py -s -t bindings
     after_failure:
