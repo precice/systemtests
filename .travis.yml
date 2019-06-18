@@ -5,8 +5,12 @@ python:
   - "3.5"
 services:
   - docker
+cache:
+  directories:
+    - $HOME/cache
 jobs:
   include:
+
   - stage: Building preCICE
     if: fork = false
     name: "Arch Linux"
@@ -22,7 +26,8 @@ jobs:
     if: fork = false
     name: "Ubuntu 16.04 home"
     script:
-    - docker build -f Dockerfile.Ubuntu1604.home -t precice .
+    - source setup_docker_ci_cache.sh ubuntu1604
+    - docker build --build-arg CCACHE_REMOTE=$CCACHE_REMOTE -f Dockerfile.Ubuntu1604.home -t precice .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker images
@@ -33,7 +38,8 @@ jobs:
     if: type = cron
     name: "Ubuntu 16.04.sudo"
     script:
-    - docker build -f Dockerfile.Ubuntu1604.sudo -t precice .
+    - source setup_docker_ci_cache.sh ubuntu1604
+    - docker build --build-arg CCACHE_REMOTE=$CCACHE_REMOTE -f Dockerfile.Ubuntu1604.sudo -t precice .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker images
@@ -44,7 +50,8 @@ jobs:
     if: type = cron
     name: "Ubuntu 16.04.package"
     script:
-    - docker build -f Dockerfile.Ubuntu1604.package -t precice .
+    - source setup_docker_ci_cache.sh ubuntu1604
+    - docker build --build-arg CCACHE_REMOTE=$CCACHE_REMOTE -f Dockerfile.Ubuntu1604.package -t precice .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker images
@@ -55,7 +62,8 @@ jobs:
     name: "Ubuntu 18.04.home"
     if: type = cron
     script:
-    - docker build -f Dockerfile.Ubuntu1804.home -t precice .
+    - source setup_docker_ci_cache.sh ubuntu1804
+    - docker build --build-arg CCACHE_REMOTE=$CCACHE_REMOTE -f Dockerfile.Ubuntu1804.home -t precice .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker images
@@ -66,7 +74,8 @@ jobs:
     name: "Ubuntu 18.04.sudo"
     if: type = cron
     script:
-    - docker build -f Dockerfile.Ubuntu1804.sudo -t precice .
+    - source setup_docker_ci_cache.sh ubuntu1804
+    - docker build --build-arg CCACHE_REMOTE=$CCACHE_REMOTE -f Dockerfile.Ubuntu1804.sudo -t precice .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker images
@@ -77,7 +86,8 @@ jobs:
     name: "Ubuntu 18.04.package"
     if: fork = false
     script:
-    - docker build -f Dockerfile.Ubuntu1804.package -t precice .
+    - source setup_docker_ci_cache.sh ubuntu1804
+    - docker build --build-arg CCACHE_REMOTE=$CCACHE_REMOTE -f Dockerfile.Ubuntu1804.package -t precice .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker images
@@ -118,3 +128,10 @@ jobs:
     - python push.py -s -t bindings
     after_failure:
     - python push.py -t bindings
+  - script:
+    - python system_testing.py -s dealii-of
+    name: "[16.04] deal.ii <-> OpenFOAM"
+    after_success:
+    - python push.py -s -t dealii-of
+    after_failure:
+    - python push.py -t dealii-of
