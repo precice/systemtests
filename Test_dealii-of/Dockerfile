@@ -51,7 +51,7 @@ RUN git clone https://github.com/precice/tutorials.git && \
 WORKDIR  /tutorials/FSI/flap_perp/OpenFOAM-deal.II/
 RUN . /opt/openfoam4/etc/bashrc; ./Allrun
 
+# Copy only fluid output since solid is too large
 WORKDIR /
 RUN mkdir Output && \
-     cp -r /tutorials/FSI/flap_perp/OpenFOAM-deal.II/Fluid /Output/ && \
-     cp -r /tutorials/FSI/flap_perp/OpenFOAM-deal.II/Solid /Output/
+     cp -r /tutorials/FSI/flap_perp/OpenFOAM-deal.II/Fluid /Output/
