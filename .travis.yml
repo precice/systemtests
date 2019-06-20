@@ -5,12 +5,8 @@ python:
   - "3.5"
 services:
   - docker
-cache:
-  directories:
-    - $HOME/cache
 jobs:
   include:
-
   - stage: Building preCICE
     if: fork = false
     name: "Arch Linux"
@@ -26,8 +22,7 @@ jobs:
     if: fork = false
     name: "Ubuntu 16.04 home"
     script:
-    - source setup_docker_ci_cache.sh ubuntu1604
-    - docker build --build-arg CCACHE_REMOTE=$CCACHE_REMOTE -f Dockerfile.Ubuntu1604.home -t precice .
+    - docker build -f Dockerfile.Ubuntu1604.home -t precice .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker images
@@ -38,8 +33,7 @@ jobs:
     if: type = cron
     name: "Ubuntu 16.04.sudo"
     script:
-    - source setup_docker_ci_cache.sh ubuntu1604
-    - docker build --build-arg CCACHE_REMOTE=$CCACHE_REMOTE -f Dockerfile.Ubuntu1604.sudo -t precice .
+    - docker build -f Dockerfile.Ubuntu1604.sudo -t precice .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker images
@@ -50,8 +44,7 @@ jobs:
     if: type = cron
     name: "Ubuntu 16.04.package"
     script:
-    - source setup_docker_ci_cache.sh ubuntu1604
-    - docker build --build-arg CCACHE_REMOTE=$CCACHE_REMOTE -f Dockerfile.Ubuntu1604.package -t precice .
+    - docker build -f Dockerfile.Ubuntu1604.package -t precice .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker images
@@ -62,8 +55,7 @@ jobs:
     name: "Ubuntu 18.04.home"
     if: type = cron
     script:
-    - source setup_docker_ci_cache.sh ubuntu1804
-    - docker build --build-arg CCACHE_REMOTE=$CCACHE_REMOTE -f Dockerfile.Ubuntu1804.home -t precice .
+    - docker build -f Dockerfile.Ubuntu1804.home -t precice .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker images
@@ -74,8 +66,7 @@ jobs:
     name: "Ubuntu 18.04.sudo"
     if: type = cron
     script:
-    - source setup_docker_ci_cache.sh ubuntu1804
-    - docker build --build-arg CCACHE_REMOTE=$CCACHE_REMOTE -f Dockerfile.Ubuntu1804.sudo -t precice .
+    - docker build -f Dockerfile.Ubuntu1804.sudo -t precice .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker images
@@ -86,8 +77,7 @@ jobs:
     name: "Ubuntu 18.04.package"
     if: fork = false
     script:
-    - source setup_docker_ci_cache.sh ubuntu1804
-    - docker build --build-arg CCACHE_REMOTE=$CCACHE_REMOTE -f Dockerfile.Ubuntu1804.package -t precice .
+    - docker build -f Dockerfile.Ubuntu1804.package -t precice .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker images
