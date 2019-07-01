@@ -9,9 +9,9 @@ ENV USER=root
 
 # Builds the executables for running the test
 WORKDIR $PRECICE_ROOT/src/cplscheme/tests/systemtest
-RUN g++ dummy_serial.cpp -lprecice -o serial
-RUN mpic++ dummy_parallel.cpp -lprecice -o parallel
+RUN g++ dummy_serial.cpp -I/home/precice/precice-install/include -L/home/precice/precice-install/lib -lprecice -std=c++11 -o serial 
+RUN mpic++ dummy_parallel.cpp -I/home/precice/precice-install/include -L/home/precice/precice-install/lib -lprecice -std=c++11 -o parallel
 
 # Runs the test
-RUN ./serial precice-config-hybrid.xml Serial NodesSerial & mpirun -np 2 ./parallel precice-config-hybrid.xml Parallel NodesParallel
+RUN ./serial precice-config-hybrid.xml Serial NodesSerial & mpirun --allow-run-as-root -np 2 ./parallel precice-config-hybrid.xml Parallel NodesParallel
 
