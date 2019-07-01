@@ -118,3 +118,10 @@ jobs:
     - python push.py -s -t bindings
     after_failure:
     - python push.py -t bindings
+  - script:
+    - python system_testing.py -s dealii-of
+    name: "[16.04] deal.ii <-> OpenFOAM"
+    after_success:
+    - python push.py -s -t dealii-of
+    after_failure:
+    - python push.py -t dealii-of
