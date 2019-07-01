@@ -57,7 +57,7 @@ if __name__ == "__main__":
         test_basename = determine_test_name(test)
         print("\n\nStarting system test %s\n\n" % test)
         try:
-            build_run_compare(test, args.dockerfile.lower(), args.branch, True, "tests" in args.force_rebuild)
+            build_run_compare(test, args.dockerfile.lower(), args.branch.lower(), True, "tests" in args.force_rebuild)
         except subprocess.CalledProcessError:
             failed.append(test_basename)
         else:
