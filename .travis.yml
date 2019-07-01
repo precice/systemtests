@@ -119,5 +119,5 @@ jobs:
     after_failure:
     - python push.py -t bindings
   - script:
-    - python local_test.py -s cplscheme -b debugMasterSockets
-    name: "[16.04] cplscheme"  
+    - python local_test.py -s cplscheme -b debugMasterSockets -d Dockerfile.Ubuntu1804.home
+    name: "[18.04] cplscheme"  
