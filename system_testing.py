@@ -105,4 +105,4 @@ if __name__ == "__main__":
     else:
         test = test[0]
     tag = args.base.lower()
-    build_run_compare(test, tag, args.branch, args.local, args.force_rebuild)
+    build_run_compare(test, tag, args.branch.lower(), args.local, args.force_rebuild)
