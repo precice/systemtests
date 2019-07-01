@@ -51,7 +51,12 @@ ARG CACHEBUST
 WORKDIR /
 RUN git clone https://github.com/precice/calculix-adapter.git
 WORKDIR /calculix-adapter/
-COPY Makefile_su2-ccx /calculix-adapter/Makefile
+# specify proper locations of libraries
+RUN sed -i  -e 's|CCX\s\+=.*|CCX	= /CalculiX/ccx_2.15/src|g'\
+            -e 's|SPOOLES\s\+=.*|SPOOLES	 = /spooles.2.2|g'\
+            -e 's|ARPACK\s\+=.*|ARPACK  = /usr/local/ARPACK|g'\
+            -e 's|-L$(YAML)/build||g' \
+            -e 's|-I$(YAML)/include||g' Makefile
 RUN make
 
 ENV PATH="/calculix-adapter/bin:${PATH}"
