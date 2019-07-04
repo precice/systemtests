@@ -56,7 +56,7 @@ RUN mkdir /home/precice/precice-build && \
           -DMPIEXEC_EXECUTABLE=/usr/bin/mpiexec.mpich \
           /home/precice/precice && \
     make -j$(nproc) && \
-    make test  
+    ctest -V  
 # user with sudo rights is needed to install preCICE in system directory
 USER root
 RUN cd /home/precice/precice-build && \
