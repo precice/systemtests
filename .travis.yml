@@ -84,7 +84,6 @@ jobs:
     - docker tag precice $DOCKER_USERNAME/precice-ubuntu1804.sudo.mpich-develop:latest
     - docker push $DOCKER_USERNAME/precice-ubuntu1804.sudo.mpich-develop:latest
 
-
   - stage: Building preCICE
     name: "Ubuntu 18.04.package"
     if: fork = false
