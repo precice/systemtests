@@ -37,6 +37,54 @@ def run(systest, tag, branch):
     shutil.rmtree("Output", ignore_errors=True)
     ccall("docker cp " + test_tag + ":Output . ")
 
+def build_adapters(systest, base, branch, local, force_rebuild):
+    """ Builds a docker images for a preCICE adapter, participating in tests """
+    baseimage_name = "precice-{tag}-{branch}:latest".format(TAG = tag, BRANCH=branch)
+    test_tag = "-".join([ systest, tag, branch])
+
+    participants = get_test_participants(systest)
+    build_args = { tag: test_tag,
+                   build_args: {"from": docker.get_namespace() + baseimage if local
+                        else 'precice/' + baseimage_name },
+                   force_rebuild: force_rebuild, 
+                   dockerfile: 'Dockerfile'}
+
+    for participant in participants:
+
+        build_args['dockerfile'] = "Dockerfile." + participant
+
+        docker.build_image(**build_args)
+
+def run_compose(systest, branch):
+    """ Runs necessary systemtest with docker compose """
+
+    dirname = "/TestCompose_" + systest
+    test_basename = systest.split('.')[0]
+    with common.chdir(os.getcwd() + dirname):
+
+        # execute necessary commands
+        commands_main = ["{extra_cmd} bash ../silent_compose.sh".format(extra_cmd =
+                                                "export SYSTEST_REMOTE='precice/';" if
+                                                os.environ.get("TRAVIS_BUILD_ID") else "" ), 
+                                                "docker cp tutorial-data:/Output ."]
+        commands_cleanup = ["docker-compose down -v", "docker-compose rm"]
+
+        for command in commands_main:
+            ccall(command)
+
+        #compare results
+        pathToRef = os.path.join(os.getcwd(), "referenceOutput")
+        pathToOutput = os.path.join(os.getcwd(), "Output")
+        try:
+            comparison(pathToRef, pathToOutput)
+        except IncorrectOutput as e:
+            print (e)
+            
+        shutil.rmtree("Output", ignore_errors=True)
+
+        for command in commands_cleanup:
+            ccall(command)
+
 
 class IncorrectOutput(Exception):
     def __init__(self, diff_files, left_only, right_only):
@@ -71,17 +119,25 @@ def comparison(pathToRef, pathToOutput):
 
 def build_run_compare(test, tag, branch, local_precice, force_rebuild):
     """ Runs and compares test, using precice branch. """
-    dirname = "/Test_" + test
-    test_basename = test.split('.')[0]
-    with common.chdir(os.getcwd() + dirname):
-        # Build
-        build(test_basename, tag, branch, local_precice, force_rebuild)
-        run(test_basename, tag, branch)
-        # Preparing string for path
-        pathToRef = os.path.join(os.getcwd(), "referenceOutput")
-        pathToOutput = os.path.join(os.getcwd(), "Output")
-        # Comparing
-        comparison(pathToRef, pathToOutput)
+
+    # tests to run with docker compose
+    compose_tests = ["dealii-of", "of-of", "su2-ccx", "of-ccx"]
+    print (test.split(".")[0])
+    if test.split(".")[0] in compose_tests:
+        run_compose(test.split(".")[0], branch)
+    else:
+        # remaining
+        dirname = "/Test_" + test
+        test_basename = test.split('.')[0]
+        with common.chdir(os.getcwd() + dirname):
+            # Build
+            build(test_basename, tag, branch, local_precice, force_rebuild)
+            run(test_basename, tag, branch)
+            # Preparing string for path
+            pathToRef = os.path.join(os.getcwd(), "referenceOutput")
+            pathToOutput = os.path.join(os.getcwd(), "Output")
+            # Comparing
+            comparison(pathToRef, pathToOutput)
 
 
 if __name__ == "__main__":

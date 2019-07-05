@@ -83,8 +83,32 @@ jobs:
     if: fork = true
     script: true
 
+  - stage: Building adapters
+    script: docker build -f Dockerfile.su2-adapter -t $DOCKER_USERNAME/su2-adapter .
+    name: SU2 adapter
+    after_success:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker push $DOCKER_USERNAME/su2-adapter
 
-  - stage: System Tests
+  - name: CalculiX adapter
+    script: docker build -f Dockerfile.calculix-adapter -t $DOCKER_USERNAME/calculix-adapter .
+    after_success:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker push $DOCKER_USERNAME/calculix-adapter
+
+  - name: deal.ii adapter
+    script: docker build -f Dockerfile.dealii-adapter -t $DOCKER_USERNAME/dealii-adapter .
+    after_success:
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      - docker push $DOCKER_USERNAME/dealii-adapter
+
+  - name: openFOAM adapter
+    script: docker build -f Dockerfile.openfoam-adapter -t $DOCKER_USERNAME/openfoam-adapter .
+    after_success:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker push $DOCKER_USERNAME/openfoam-adapter
+
+  - stage: Tests
     script:
     - python system_testing.py -s su2-ccx
     name: "[16.04] SU2 <-> Calculix"
