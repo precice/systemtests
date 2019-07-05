@@ -62,6 +62,15 @@ jobs:
     - docker push $DOCKER_USERNAME/precice-ubuntu1804.sudo-develop
 
   - stage: Building preCICE
+    name: "Ubuntu 18.04.sudo.mpich"
+    if: type = cron
+    script:
+    - docker build -f Dockerfile.Ubuntu1804.sudo.mpich -t $DOCKER_USERNAME/Dockerfile.Ubuntu1804.sudo.mpich-develop .
+    after_success:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker push $DOCKER_USERNAME/precice-ubuntu1804.sudo.mpich-develop:latest
+
+  - stage: Building preCICE
     name: "Ubuntu 18.04.package"
     if: fork = false
     script:
