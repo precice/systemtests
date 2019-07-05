@@ -30,7 +30,7 @@ jobs:
     - docker push $DOCKER_USERNAME/precice-ubuntu1604.home-develop:latest
 
   - stage: Building preCICE
-    if: fork = false
+    if: type = cron
     name: "Ubuntu 16.04.sudo"
     script:
     - docker build -f Dockerfile.Ubuntu1604.sudo -t precice .
@@ -41,7 +41,7 @@ jobs:
     - docker push $DOCKER_USERNAME/precice-ubuntu1604.sudo-develop:latest
 
   - stage: Building preCICE
-    if: fork = false
+    if: type = cron
     name: "Ubuntu 16.04.package"
     script:
     - docker build -f Dockerfile.Ubuntu1604.package -t precice .
@@ -53,7 +53,7 @@ jobs:
 
   - stage: Building preCICE
     name: "Ubuntu 18.04.home"
-    if: fork = false
+    if: type = cron
     script:
     - docker build -f Dockerfile.Ubuntu1804.home -t precice .
     after_success:
@@ -64,7 +64,7 @@ jobs:
 
   - stage: Building preCICE
     name: "Ubuntu 18.04.sudo"
-    if: fork = false
+    if: type = cron
     script:
     - docker build -f Dockerfile.Ubuntu1804.sudo -t precice .
     after_success:
