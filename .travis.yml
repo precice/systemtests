@@ -33,7 +33,7 @@ jobs:
     if: fork = false
     name: "Ubuntu 16.04.home(debugMasterSockets)"
     script:
-    - docker build  -build-arg  branch=debugMasterSockets  -f Dockerfile.Ubuntu1604.home -t $DOCKER_USERNAME/Dockerfile.Ubuntu1604.home-debugMasterSockets  .
+    - docker build --build-arg  branch=debugMasterSockets  -f Dockerfile.Ubuntu1604.home -t $DOCKER_USERNAME/Dockerfile.Ubuntu1604.home-debugMasterSockets  .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker push $DOCKER_USERNAME/Dockerfile.Ubuntu1604.home-debugMasterSockets
@@ -70,6 +70,15 @@ jobs:
     - docker images
     - docker tag precice $DOCKER_USERNAME/precice-ubuntu1804.home-develop:latest
     - docker push $DOCKER_USERNAME/precice-ubuntu1804.home-develop:latest
+    
+  - stage: Building preCICE 
+    if: fork = false
+    name: "Ubuntu 18.04.home(debugMasterSockets)"
+    script:
+    - docker build --build-arg  branch=debugMasterSockets  -f Dockerfile.Ubuntu1804.home -t $DOCKER_USERNAME/Dockerfile.Ubuntu1804.home-debugMasterSockets  .
+    after_success:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker push $DOCKER_USERNAME/Dockerfile.Ubuntu1804.home-debugMasterSockets
 
   - stage: Building preCICE
     name: "Ubuntu 18.04.sudo"
