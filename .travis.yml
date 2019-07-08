@@ -33,7 +33,7 @@ jobs:
     if: fork = false
     name: "Ubuntu 16.04.home(debugMasterSockets)"
     script:
-    - docker build --build-arg  branch=debugMasterSockets  -f Dockerfile.Ubuntu1604.home -t $DOCKER_USERNAME/Dockerfile.Ubuntu1604.home-debugMasterSockets  .
+    - python build_base.py --branch debugMasterSockets  --dockerfile Dockerfile.Ubuntu1604.home
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker push $DOCKER_USERNAME/Dockerfile.Ubuntu1604.home-debugMasterSockets
