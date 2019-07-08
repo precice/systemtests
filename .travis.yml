@@ -14,8 +14,6 @@ jobs:
     - python build_base.py --dockerfile Dockerfile.Arch
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-    - docker images
-    - docker tag precice $DOCKER_USERNAME/precice-arch-develop:latest
     - docker push $DOCKER_USERNAME/precice-arch-develop:latest
 
   - stage: Building preCICE
@@ -25,8 +23,6 @@ jobs:
     - python build_base.py --dockerfile Dockerfile.Ubuntu1604.home
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-    - docker images
-    - docker tag precice $DOCKER_USERNAME/precice-ubuntu1604.home-develop:latest
     - docker push $DOCKER_USERNAME/precice-ubuntu1604.home-develop:latest
     
   - stage: Building preCICE 
@@ -45,9 +41,7 @@ jobs:
     - python build_base.py --dockerfile Dockerfile.Ubuntu1604.sudo
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-    - docker images
-    - docker tag precice $DOCKER_USERNAME/precice-ubuntu1604.sudo-develop:latest
-    - docker push $DOCKER_USERNAME/precice-ubuntu1604.sudo-develop:latest       
+    - docker push $DOCKER_USERNAME/precice-ubuntu1604.sudo-develop:latest
 
   - stage: Building preCICE
     if: type = cron
@@ -56,8 +50,6 @@ jobs:
     - python build_base.py --dockerfile Dockerfile.Ubuntu1604.package
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-    - docker images
-    - docker tag precice $DOCKER_USERNAME/precice-ubuntu1604.package-develop:latest
     - docker push $DOCKER_USERNAME/precice-ubuntu1604.package-develop:latest
 
   - stage: Building preCICE
@@ -67,8 +59,6 @@ jobs:
     - python build_base.py --dockerfile Dockerfile.Ubuntu1804.home
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-    - docker images
-    - docker tag precice $DOCKER_USERNAME/precice-ubuntu1804.home-develop:latest
     - docker push $DOCKER_USERNAME/precice-ubuntu1804.home-develop:latest
     
   - stage: Building preCICE 
@@ -84,12 +74,19 @@ jobs:
     name: "Ubuntu 18.04.sudo"
     if: type = cron
     script:
-    - python build_base.py --dockerfile Dockerfile.Ubuntu1804.sudo    
+    - python build_base.py --dockerfile Dockerfile.Ubuntu1804.sudo
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-    - docker images
-    - docker tag precice $DOCKER_USERNAME/precice-ubuntu1804.sudo-develop:latest
-    - docker push $DOCKER_USERNAME/precice-ubuntu1804.sudo-develop:latest
+    - docker push $DOCKER_USERNAME/precice-ubuntu1804.sudo-develop
+
+  - stage: Building preCICE
+    name: "Ubuntu 18.04.sudo.mpich"
+    if: type = cron
+    script:
+    - python build_base.py --dockerfile Dockerfile.Ubuntu1804.sudo.mpich    
+    after_success:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker push $DOCKER_USERNAME/precice-ubuntu1804.sudo.mpich-develop:latest
 
   - stage: Building preCICE
     name: "Ubuntu 18.04.package"
@@ -98,9 +95,7 @@ jobs:
     - python build_base.py --dockerfile Dockerfile.Ubuntu1804.package    
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-    - docker images
-    - docker tag precice $DOCKER_USERNAME/precice-ubuntu1804.package-develop:latest
-    - docker push $DOCKER_USERNAME/precice-ubuntu1804.package-develop:latest
+    - docker push $DOCKER_USERNAME/precice-ubuntu1804.package-develop
 
   - name: "[Build on fork] Using cached version"
     if: fork = true
@@ -137,5 +132,13 @@ jobs:
     after_failure:
     - python push.py -t bindings
   - script:
+    - python system_testing.py -s dealii-of
+    name: "[16.04] deal.ii <-> OpenFOAM"
+    after_success:
+    - python push.py -s -t dealii-of
+    after_failure:
+    - python push.py -t dealii-of
+  - script:
     - python system_testing.py -s cplscheme -b debugMasterSockets -d Dockerfile.Ubuntu1804.home
-    name: "[18.04] cplscheme"  
+    name: "[18.04] cplscheme"
+    

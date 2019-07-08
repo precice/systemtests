@@ -15,12 +15,15 @@ from urllib.request import Request, urlopen
 
 nm_repo_map = {'openfoam': 'openfoam-adapter',
     'calculix' : 'calculix-adapter',
-    'su2': 'su2-adapter'}
+    'su2': 'su2-adapter',
+    'dealii': 'dealii-adapter'}
 
 
 nm_test_map = {'openfoam': ['of-of', 'of-ccx'],
         'calculix': ['of-ccx', 'su2-ccx'],
-        'su2': ['su2-ccx'] }
+        'su2': ['su2-ccx'], 
+        'dealii': ['dealii-of'],
+        }
 
 
 def get_json_response(url, **kwargs):
@@ -224,7 +227,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate and trigger job for systemtests")
     parser.add_argument('--owner',  type=str, help="Owner of repository", default='precice' )
     parser.add_argument('--adapter', type=str, help="Adapter for which you want to trigger systemtests",
-              required=True, choices = ["openfoam", "su2", "calculix"])
+              required=True, choices = ["openfoam", "su2", "calculix", "dealii"])
     parser.add_argument('--failure', help="Whether to trigger normal or failure build",
               action="store_true")
     parser.add_argument('--wait', help='Whether exit only when the triggered build succeeds',
