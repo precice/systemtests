@@ -11,7 +11,7 @@ jobs:
     if: fork = false
     name: "Arch Linux"
     script:
-    - python build_base.py --dockerfile Dockerfile.Arch
+    - python build_base.py --dockerfile Dockerfile.Arch --docker-username $DOCKER_USERNAME
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker push $DOCKER_USERNAME/precice-arch-develop:latest
@@ -20,7 +20,7 @@ jobs:
     if: fork = false
     name: "Ubuntu 16.04 home"
     script:
-    - python build_base.py --dockerfile Dockerfile.Ubuntu1604.home
+    - python build_base.py --dockerfile Dockerfile.Ubuntu1604.home --docker-username $DOCKER_USERNAME
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker push $DOCKER_USERNAME/precice-ubuntu1604.home-develop:latest
@@ -29,7 +29,7 @@ jobs:
     if: fork = false
     name: "Ubuntu 16.04.home(debugMasterSockets)"
     script:
-    - python build_base.py --branch debugMasterSockets  --dockerfile Dockerfile.Ubuntu1604.home
+    - python build_base.py --branch debugMasterSockets --dockerfile Dockerfile.Ubuntu1604.home --docker-username $DOCKER_USERNAME
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker push $DOCKER_USERNAME/Dockerfile.Ubuntu1604.home-debugMasterSockets
@@ -38,7 +38,7 @@ jobs:
     if: type = cron
     name: "Ubuntu 16.04.sudo"
     script:
-    - python build_base.py --dockerfile Dockerfile.Ubuntu1604.sudo
+    - python build_base.py --dockerfile Dockerfile.Ubuntu1604.sudo --docker-username $DOCKER_USERNAME
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker push $DOCKER_USERNAME/precice-ubuntu1604.sudo-develop:latest
@@ -47,7 +47,7 @@ jobs:
     if: type = cron
     name: "Ubuntu 16.04.package"
     script:
-    - python build_base.py --dockerfile Dockerfile.Ubuntu1604.package
+    - python build_base.py --dockerfile Dockerfile.Ubuntu1604.package --docker-username $DOCKER_USERNAME
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker push $DOCKER_USERNAME/precice-ubuntu1604.package-develop:latest
@@ -56,7 +56,7 @@ jobs:
     name: "Ubuntu 18.04.home"
     if: type = cron
     script:
-    - python build_base.py --dockerfile Dockerfile.Ubuntu1804.home
+    - python build_base.py --dockerfile Dockerfile.Ubuntu1804.home --docker-username $DOCKER_USERNAME
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker push $DOCKER_USERNAME/precice-ubuntu1804.home-develop:latest
@@ -65,7 +65,7 @@ jobs:
     if: fork = false
     name: "Ubuntu 18.04.home(debugMasterSockets)"
     script:
-    - python build_base.py --branch debugMasterSockets  --dockerfile Dockerfile.Ubuntu1804.home
+    - python build_base.py --branch debugMasterSockets  --dockerfile Dockerfile.Ubuntu1804.home --docker-username $DOCKER_USERNAME
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker push $DOCKER_USERNAME/Dockerfile.Ubuntu1804.home-debugMasterSockets
@@ -74,7 +74,7 @@ jobs:
     name: "Ubuntu 18.04.sudo"
     if: type = cron
     script:
-    - python build_base.py --dockerfile Dockerfile.Ubuntu1804.sudo
+    - python build_base.py --dockerfile Dockerfile.Ubuntu1804.sudo --docker-username $DOCKER_USERNAME
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker push $DOCKER_USERNAME/precice-ubuntu1804.sudo-develop
@@ -83,7 +83,7 @@ jobs:
     name: "Ubuntu 18.04.sudo.mpich"
     if: type = cron
     script:
-    - python build_base.py --dockerfile Dockerfile.Ubuntu1804.sudo.mpich    
+    - python build_base.py --dockerfile Dockerfile.Ubuntu1804.sudo.mpich --docker-username $DOCKER_USERNAME   
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker push $DOCKER_USERNAME/precice-ubuntu1804.sudo.mpich-develop:latest
@@ -92,7 +92,7 @@ jobs:
     name: "Ubuntu 18.04.package"
     if: fork = false
     script:
-    - python build_base.py --dockerfile Dockerfile.Ubuntu1804.package    
+    - python build_base.py --dockerfile Dockerfile.Ubuntu1804.package --docker-username $DOCKER_USERNAME   
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker push $DOCKER_USERNAME/precice-ubuntu1804.package-develop
