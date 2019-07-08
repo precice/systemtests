@@ -29,14 +29,14 @@ jobs:
     - docker tag precice $DOCKER_USERNAME/precice-ubuntu1604.home-develop:latest
     - docker push $DOCKER_USERNAME/precice-ubuntu1604.home-develop:latest
     
- - stage: Building preCICE 
+  - stage: Building preCICE 
     if: fork = false
     name: "Ubuntu 16.04.home(debugMasterSockets)"
     script:
     - docker build  -build-arg  branch=debugMasterSockets  -f Dockerfile.Ubuntu1604.home -t $DOCKER_USERNAME/Dockerfile.Ubuntu1604.home-debugMasterSockets  .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-    - docker push $DOCKER_USERNAME/Dockerfile.Ubuntu1604.home-debugMasterSockets    
+    - docker push $DOCKER_USERNAME/Dockerfile.Ubuntu1604.home-debugMasterSockets
 
   - stage: Building preCICE
     if: type = cron
