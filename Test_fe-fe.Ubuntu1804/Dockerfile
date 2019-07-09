@@ -58,7 +58,7 @@ RUN python3 setup.py test
 WORKDIR $HOME
 RUN git clone https://github.com/precice/tutorials.git
 WORKDIR $HOME/tutorials/HT/partitioned-heat/fenics-fenics
-RUN python3 heat.py -d && python3 heat.py -n
+RUN python3 heat.py -d & python3 heat.py -n
 
 # Check output
 
