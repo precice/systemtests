@@ -25,7 +25,8 @@ ARG CACHEBUST
 # create user precice
 RUN useradd -ms /bin/bash precice
 USER precice
-WORKDIR /home/precice
+ENV HOME=/home/precice
+WORKDIR $HOME
 
 # Setting some environment variables for installing preCICE
 ENV CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/usr/include/eigen3" \
@@ -35,17 +36,17 @@ ENV CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/usr/include/eigen3" \
 
 # Building preCICE
 ARG branch=develop
-RUN git clone --branch $branch https://github.com/precice/precice.git /home/precice/precice
+RUN git clone --branch $branch https://github.com/precice/precice.git $HOME/precice
 # Some parameters for the build, you can set them in the build command e.g.
 # sudo docker build Dockerfile.precice --build-arg petsc_para=yes --build-arg mpi_para=yes .
 # this will result in
-# cmake -DPETSC=yes -DMPI=yes -DPYTHON=no -DCMAKE_CXX_COMPILER=mpicxx -DMPIEXEC_EXECUTABLE=mpiexec -j2 /home/precice/precice
+# cmake -DPETSC=yes -DMPI=yes -DPYTHON=no -DCMAKE_CXX_COMPILER=mpicxx -DMPIEXEC_EXECUTABLE=mpiexec -j2 $HOME/precice
 ARG petsc_para=no
 ARG mpi_para=yes
 ARG python_para=no
 # Build preCICE, install into /usr/local and clean-up the build directory
-RUN mkdir /home/precice/precice-build && \
-    cd /home/precice/precice-build && \
+RUN mkdir $HOME/precice-build && \
+    cd $HOME/precice-build && \
     cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo \
           -DBUILD_SHARED_LIBS=ON \
           -DCMAKE_INSTALL_PREFIX=/usr/local \
@@ -54,17 +55,17 @@ RUN mkdir /home/precice/precice-build && \
           -DPYTHON=$python_para \
           -DCMAKE_CXX_COMPILER=/usr/bin/mpicxx.mpich \
           -DMPIEXEC_EXECUTABLE=/usr/bin/mpiexec.mpich \
-          /home/precice/precice && \
+          $HOME/precice && \
     make -j$(nproc) && \
     make test
 # user with sudo rights is needed to install preCICE in system directory
 USER root
-RUN cd /home/precice/precice-build && \
+RUN cd $HOME/precice-build && \
     make install && \
     ldconfig
 USER precice
-RUN rm -r /home/precice/precice-build
+RUN rm -r $HOME/precice-build
 
 # Setting preCICE environment variables
-ENV PRECICE_ROOT="/home/precice/precice" \
+ENV PRECICE_ROOT="$HOME/precice" \
     PKG_CONFIG_PATH="/usr/local/lib/pkgconfig"
