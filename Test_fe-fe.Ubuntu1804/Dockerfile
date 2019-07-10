@@ -64,3 +64,8 @@ RUN python3 heat.py -d & python3 heat.py -n
 
 ## TODO: compare iteration count to reference result!
 
+# Copying output files to a folder for further examination
+USER root
+WORKDIR /
+RUN mkdir Output
+
