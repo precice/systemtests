@@ -10,9 +10,10 @@ ENV USER=root
 # Installing necessary dependecies
 RUN apt-get -qq update && apt-get -qq install \
     apt-utils \
+    software-properties-common \
     python3 \
     python3-dev \
-    software-properties-common && \
+    python3-pip && \   
     rm -rf /var/lib/apt/lists/*
 
 # Install pip dependecies; we have to use pip, since cython provided by apt-get is too old.
@@ -22,11 +23,12 @@ RUN wget -q https://bootstrap.pypa.io/get-pip.py -O get-pip.py && \
 # Installing FEniCS
 RUN add-apt-repository -y ppa:fenics-packages/fenics && \
     apt-get -qq update && \
-    apt-get -qq --no-install-recommends install fenics && \
+    apt-get -qq install --no-install-recommends fenics && \
     rm -rf /var/lib/apt/lists/*
 
-# switch to non-root user
 USER precice
+
+RUN pip3 install --user cython  # TODO: can we put this dependency into requirements.txt of python_future?
 
 # Builds the python_future python bindings for python3
 RUN cd $PRECICE_ROOT/src/precice/bindings/python_future && \
@@ -48,9 +50,9 @@ RUN cd $HOME && \
 
 # Downloading tutorial and run it
 RUN cd $HOME && \
-    git clone https://github.com/precice/tutorials.git && \
-    cd $HOME/tutorials/HT/partitioned-heat/fenics-fenics && \
-    pip3 install --user -r requirements.txt && \
+    git clone https://github.com/precice/tutorials.git
+WORKDIR $HOME/tutorials/HT/partitioned-heat/fenics-fenics
+RUN pip3 install --user -r requirements.txt && \    
     python3 heat.py -d & python3 heat.py -n
 
 # Check output
