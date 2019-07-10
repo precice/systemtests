@@ -45,7 +45,7 @@ jobs:
 
   - stage: Building preCICE
     name: "Ubuntu 18.04.home"
-    if: fork = true
+    if: fork = false
     script:
     - docker build -f Dockerfile.Ubuntu1804.home -t precice .
     after_success:
