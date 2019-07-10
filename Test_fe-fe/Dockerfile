@@ -42,18 +42,16 @@ ARG CACHEBUST
 # Building fenics-adapter
 RUN cd $HOME && \
     git clone https://github.com/precice/fenics-adapter.git && \
-    cd $HOME/fenics-adapter
-RUN pip3 install --user .
-
-# test the adapter
-RUN python3 setup.py test
+    cd $HOME/fenics-adapter && \
+    pip3 install --user . && \
+    python3 setup.py test
 
 # Downloading tutorial and run it
 RUN cd $HOME && \
     git clone https://github.com/precice/tutorials.git && \
-    cd $HOME/tutorials/HT/partitioned-heat/fenics-fenics
-RUN pip3 install --user -r requirements.txt
-RUN python3 heat.py -d & python3 heat.py -n
+    cd $HOME/tutorials/HT/partitioned-heat/fenics-fenics && \
+    pip3 install --user -r requirements.txt && \
+    python3 heat.py -d & python3 heat.py -n
 
 # Check output
 
