@@ -16,32 +16,35 @@ RUN apt-get -qq update && apt-get -qq install \
     bzip2 && \
     rm -rf /var/lib/apt/lists/*
 
-# Installing cmake
-WORKDIR /cmake
-RUN wget -q -O- 'https://github.com/Kitware/CMake/releases/download/v3.13.4/cmake-3.13.4-Linux-x86_64.tar.gz' | tar xz
-ENV PATH="/cmake/cmake-3.13.4-Linux-x86_64/bin:$PATH"
-
-# Installing boost from source
-WORKDIR /boost-build
-RUN wget -nv 'https://dl.bintray.com/boostorg/release/1.65.1/source/boost_1_65_1.tar.bz2' -O - | tar xj && \
-    cd boost_1_65_1 && \
-    ./bootstrap.sh --with-libraries=log,thread,system,filesystem,program_options,test --prefix=/usr/local && \
-    ./b2 -j$(nproc) install && \
-    rm -rf /boost-build && \
-    ldconfig
-
-# Rebuild image if force_rebuild after that command
-ARG CACHEBUST
-
 # create user precice
 RUN useradd -ms /bin/bash precice
 USER precice
 ENV HOME=/home/precice
 WORKDIR $HOME
 
+# Installing cmake
+RUN mkdir $HOME/cmake && \
+    cd $HOME/cmake && \
+    wget -q -O- 'https://github.com/Kitware/CMake/releases/download/v3.13.4/cmake-3.13.4-Linux-x86_64.tar.gz' | tar xz
+ENV PATH="$HOME/cmake/cmake-3.13.4-Linux-x86_64/bin:$PATH"
+
+# Installing boost from source
+RUN mkdir $HOME/boost-build $HOME/boost-install && \
+    cd $HOME/boost-build && \
+    wget -nv 'https://dl.bintray.com/boostorg/release/1.65.1/source/boost_1_65_1.tar.bz2' -O - | tar xj && \
+    cd boost_1_65_1 && \
+    ./bootstrap.sh --with-libraries=log,thread,system,filesystem,program_options,test --prefix=$HOME/boost-install && \
+    ./b2 -j$(nproc) install && \
+    cd $HOME && \
+    rm -r $HOME/boost-build
+
+# Rebuild image if force_rebuild after that command
+ARG CACHEBUST
+
 # Setting some environment variables for installing preCICE
 ENV CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/usr/include/eigen3" \
     CPATH="/usr/include/eigen3:${CPATH}" \
+    LD_LIBRARY_PATH="$HOME/boost-install/lib" \
     PETSC_DIR="/usr/lib/petscdir/3.6.2/" \
     PETSC_ARCH="x86_64-linux-gnu-real"
 
@@ -66,10 +69,13 @@ RUN mkdir $HOME/precice-build && \
           -DPETSC=$petsc_para \
           -DMPI=$mpi_para \
           -DPYTHON=$python_para \
+          -DBOOST_ROOT=$HOME/boost-install \
+          -DBoost_NO_BOOST_CMAKE=TRUE \
           $HOME/precice && \
     make -j$(nproc) && \
     make test_base && \
     make install && \
+    cd $HOME && \
     rm -r $HOME/precice-build
 
 # Setting preCICE environment variables

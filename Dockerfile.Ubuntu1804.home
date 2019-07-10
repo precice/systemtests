@@ -58,6 +58,7 @@ RUN mkdir $HOME/precice-build && \
     make -j$(nproc) && \
     make test_base && \
     make install && \
+    cd $HOME && \
     rm -r $HOME/precice-build
 
 # Setting preCICE environment variables
