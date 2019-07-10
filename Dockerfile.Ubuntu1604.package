@@ -3,7 +3,7 @@
 # Using ubuntu 16.04 as basis
 FROM ubuntu:16.04
 
-# Installing necessary dependacies for preCICE
+# Installing necessary dependencies for preCICE
 RUN apt-get -qq update && apt-get -qq install \
     build-essential \
     libeigen3-dev \
