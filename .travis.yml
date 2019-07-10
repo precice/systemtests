@@ -107,13 +107,6 @@ jobs:
     after_failure:
     - python push.py -t of-ccx
   - script:
-    - python system_testing.py -s fe-fe --base Ubuntu1604.home
-    name: "[16.04] FEniCS <-> FEniCS"
-    after_success:
-    - python push.py -s -t fe-fe --base Ubuntu1604.home
-    after_failure:
-    - python push.py -t fe-fe --base Ubuntu1604.home
-  - script:
     - python system_testing.py -s fe-fe --base Ubuntu1804.home
     name: "[18.04] FEniCS <-> FEniCS"
     after_success:
