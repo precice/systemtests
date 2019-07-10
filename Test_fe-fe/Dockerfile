@@ -28,9 +28,6 @@ RUN add-apt-repository -y ppa:fenics-packages/fenics && \
 # switch to non-root user
 USER precice
 
-# install necessary python modules as non-root user
-RUN pip3 install --user Cython mpi4py numpy enum34 scipy
-
 # Builds the python_future python bindings for python3
 WORKDIR $PRECICE_ROOT/src/precice/bindings/python_future
 RUN pip3 install --user .
@@ -49,15 +46,13 @@ WORKDIR $HOME/fenics-adapter
 RUN pip3 install --user .
 
 # test the adapter
-RUN python3 -c "import mpi4py; print(mpi4py.__file__)"  
-RUN python3 -c "import numpy; print(numpy.__file__)"  
-RUN python3 -c "import fenicsadapter"  
 RUN python3 setup.py test
 
 # Downloading tutorial and run it
 WORKDIR $HOME
 RUN git clone https://github.com/precice/tutorials.git
 WORKDIR $HOME/tutorials/HT/partitioned-heat/fenics-fenics
+RUN pip3 install --user -r requirements.txt
 RUN python3 heat.py -d & python3 heat.py -n
 
 # Check output
