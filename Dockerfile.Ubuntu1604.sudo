@@ -36,8 +36,7 @@ ARG CACHEBUST
 # create user precice
 RUN useradd -ms /bin/bash precice
 USER precice
-ENV HOME=/home/precice
-WORKDIR $HOME
+WORKDIR /home/precice
 
 # Setting some environment variables for installing preCICE
 ENV CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/usr/include/eigen3" \
@@ -47,29 +46,29 @@ ENV CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/usr/include/eigen3" \
 
 # Building preCICE
 ARG branch=develop
-RUN git clone --branch $branch https://github.com/precice/precice.git $HOME/precice
+RUN git clone --branch $branch https://github.com/precice/precice.git /home/precice/precice
 # Some parameters for the build, you can set them in the build command e.g.
 # sudo docker build Dockerfile.precice --build-arg petsc_para=yes --build-arg mpi_para=yes .
 # this will result in
-# cmake -DPETSC=yes -DMPI=yes -DPYTHON=no -DCMAKE_CXX_COMPILER=mpicxx -j2 $HOME/precice
+# cmake -DPETSC=yes -DMPI=yes -DPYTHON=no -DCMAKE_CXX_COMPILER=mpicxx -j2 /home/precice/precice
 ARG petsc_para=no
 ARG mpi_para=yes
 ARG python_para=no
 # Build preCICE, install into /usr/local and clean-up the build directory
-RUN mkdir $HOME/precice-build && \
-    cd $HOME/precice-build && \
+RUN mkdir /home/precice/precice-build && \
+    cd /home/precice/precice-build && \
     cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo \
           -DBUILD_SHARED_LIBS=ON \
           -DCMAKE_INSTALL_PREFIX=/usr/local \
           -DPETSC=$petsc_para \
           -DMPI=$mpi_para \
           -DPYTHON=$python_para \
-          $HOME/precice && \
+          /home/precice/precice && \
     make -j$(nproc) && \
     make test_base
 # user with sudo rights is needed to install preCICE in system directory
 USER root
-RUN cd $HOME/precice-build && \
+RUN cd /home/precice/precice-build && \
     make install && \
     ldconfig
 USER precice

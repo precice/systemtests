@@ -26,8 +26,6 @@ RUN add-apt-repository -y ppa:fenics-packages/fenics && \
     apt-get -qq install --no-install-recommends fenics && \
     rm -rf /var/lib/apt/lists/*
 
-USER precice
-
 RUN pip3 install --user cython  # TODO: can we put this dependency into requirements.txt of python_future?
 
 # Builds the python_future python bindings for python3
@@ -42,16 +40,16 @@ RUN cd $PRECICE_ROOT/src/precice/bindings/python && \
 ARG CACHEBUST
 
 # Building fenics-adapter
-RUN cd $HOME && \
-    git clone https://github.com/precice/fenics-adapter.git && \
-    cd $HOME/fenics-adapter && \
+WORKDIR /
+RUN git clone https://github.com/precice/fenics-adapter.git && \
+    cd fenics-adapter && \
     pip3 install --user . && \
     python3 setup.py test
 
 # Downloading tutorial and run it
-WORKDIR $HOME
+WORKDIR /
 RUN git clone https://github.com/precice/tutorials.git
-WORKDIR $HOME/tutorials/HT/partitioned-heat/fenics-fenics
+WORKDIR /tutorials/HT/partitioned-heat/fenics-fenics
 RUN pip3 install --user -r requirements.txt && \    
     python3 heat.py -d & python3 heat.py -n
 
@@ -60,7 +58,6 @@ RUN pip3 install --user -r requirements.txt && \
 ## TODO: compare iteration count to reference result!
 
 # Copying output files to a folder for further examination
-USER root
 WORKDIR /
 RUN mkdir Output
 

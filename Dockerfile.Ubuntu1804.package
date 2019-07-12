@@ -24,8 +24,7 @@ ARG CACHEBUST
 # create user precice
 RUN useradd -ms /bin/bash precice
 USER precice
-ENV HOME=/home/precice
-WORKDIR $HOME
+WORKDIR /home/precice
 
 # Setting some environment variables for installing preCICE
 ENV CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/usr/include/eigen3" \
@@ -35,17 +34,17 @@ ENV CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/usr/include/eigen3" \
 
 # Building preCICE
 ARG branch=develop
-RUN git clone --branch $branch https://github.com/precice/precice.git $HOME/precice
+RUN git clone --branch $branch https://github.com/precice/precice.git /home/precice/precice
 # Some parameters for the build, you can set them in the build command e.g.
 # sudo docker build Dockerfile.precice --build-arg petsc_para=yes --build-arg mpi_para=yes .
 # this will result in
-# cmake -DPETSC=yes -DMPI=yes -DPYTHON=no -DCMAKE_CXX_COMPILER=mpicxx -j2 $HOME/precice
+# cmake -DPETSC=yes -DMPI=yes -DPYTHON=no -DCMAKE_CXX_COMPILER=mpicxx -j2 /home/precice/precice
 ARG petsc_para=no
 ARG mpi_para=yes
 ARG python_para=no
 # Build preCICE and clean-up generated object files
-RUN mkdir $HOME/precice-build && \
-    cd $HOME/precice-build && \
+RUN mkdir /home/precice/precice-build && \
+    cd /home/precice/precice-build && \
     cmake -DBUILD_SHARED_LIBS=ON \
           -DPRECICE_Packages=ON \
           -DPRECICE_InstallTest=ON \
@@ -54,16 +53,16 @@ RUN mkdir $HOME/precice-build && \
           -DPETSC=$petsc_para \
           -DMPI=$mpi_para \
           -DPYTHON=$python_para \
-          $HOME/precice && \
+          /home/precice/precice && \
     make -j$(nproc) && \
     make test_base && \
     make package && \
-    mv $(find . -maxdepth 1 -name "*.deb") $HOME && \
-    rm -r $HOME/precice-build  # copy *.deb to home/precice; we do not need the remaining files in precice-build anymore and delete them
+    mv $(find . -maxdepth 1 -name "*.deb") /home/precice && \
+    rm -r /home/precice/precice-build  # copy *.deb to home/precice; we do not need the remaining files in precice-build anymore and delete them
 # user with sudo rights is needed to install preCICE in debian package
 USER root
-RUN cd $HOME && dpkg -i $(find . -maxdepth 1 -name "*.deb")
+RUN cd /home/precice && dpkg -i $(find . -maxdepth 1 -name "*.deb")
 
 # Setting preCICE environment variables
 USER precice
-ENV PRECICE_ROOT="$HOME/precice"
+ENV PRECICE_ROOT="/home/precice/precice"
