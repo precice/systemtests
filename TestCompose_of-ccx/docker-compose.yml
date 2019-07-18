@@ -16,7 +16,7 @@ services:
       /bin/bash -c "source /opt/openfoam4/etc/bashrc 
       && ln -sf configs/* . 
       && buoyantSimpleFoam -case /home/precice/Data/Input
-      && cp -r /home/precice/Data/Input/. /home/precice/Data/Output/" 
+      && cp -r /home/precice/Data/Input/. /home/precice/Data/Output/Inner-Fluid" 
     container_name: openfoam-adapter-inner
     depends_on:
       - tutorial-data
@@ -35,7 +35,7 @@ services:
       /bin/bash -c "source /opt/openfoam4/etc/bashrc
       && ln -sf configs/* . 
       && buoyantSimpleFoam -case /home/precice/Data/Input
-      && cp -r /home/precice/Data/Input/. /home/precice/Data/Output/" 
+      && cp -r /home/precice/Data/Input/. /home/precice/Data/Output/Outer-Fluid" 
     container_name: openfoam-adapter-outer
     depends_on:
       - tutorial-data
@@ -53,8 +53,7 @@ services:
     command: >
       /bin/bash -c "ln -s /home/precice/Data/Input/ Solid
       && ln -sf configs/* . 
-      && ccx_preCICE -i /home/precice/Data/Input/solid -precice-participant Solid
-      && cp -r /home/precice/Data/Input/. /home/precice/Data/Output/" 
+      && ccx_preCICE -i /home/precice/Data/Input/solid -precice-participant Solid"
     container_name: calculix-adapter-solid
     depends_on:
       - tutorial-data
