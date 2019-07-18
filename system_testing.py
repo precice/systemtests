@@ -145,7 +145,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Build local.')
     parser.add_argument('-l', '--local', action='store_true', help="use local preCICE image (default: use remote image)")
     parser.add_argument('-s', '--systemtest', type=str, help="choose system tests you want to use",
-                        choices = common.get_tests())
+                        choices = common.get_tests(prefix="Test_") + common.get_tests(prefix="TestCompose_"))
     parser.add_argument('-b', '--branch', help="preCICE branch to use", default = "develop")
     parser.add_argument('-f', '--force_rebuild', nargs='+', help="Force rebuild of variable parts of docker image",
                         default = [], choices  = ["precice", "tests"])
@@ -154,7 +154,7 @@ if __name__ == "__main__":
     test = str(args.systemtest) + '.' + str(args.base)
     # check if there is specialized dir for this version
     test_name = args.systemtest
-    all_derived_tests = get_test_variants(test_name)
+    all_derived_tests = get_test_variants(test_name, prefix = "Test_") + get_test_variants(test_name, os.getcwd(), prefix = "TestCompose_")
     test = filter_tests(all_derived_tests, 'Dockerfile.'+args.base)
     if len(test) != 1:
         raise Exception("Could not determine test to run!")

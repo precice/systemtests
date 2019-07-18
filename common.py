@@ -23,13 +23,14 @@ def determine_test_name(test):
 
 def get_tests(root = os.getcwd(), prefix = "Test_"):
     """ List of all available system tests """
-    tests = list(set([determine_test_name(s[5:]) for s in os.listdir(root) if s.startswith(prefix)]))
+    tests = list(set([determine_test_name(s[len(prefix):]) for s in os.listdir(root) if s.startswith(prefix)]))
     return tests
 
 
-def get_test_variants(test_name, root = os.getcwd(), prefix = "Test" ):
+def get_test_variants(test_name, root = os.getcwd(), prefix = "Test_" ):
     """ List of all available system tests """
-    test_variants = [s[5:] for s in os.listdir(root) if s.startswith(prefix + "_" +test_name)]
+    test_variants = [s[len(prefix):] for s in os.listdir(root) if
+            s.startswith(prefix +test_name)]
     return test_variants
 
 
