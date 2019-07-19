@@ -17,6 +17,7 @@ RUN apt-get -qq update && apt-get -qq install \
     libyaml-cpp-dev && \
     rm -rf /var/lib/apt/lists/*
 
+ARG CACHEBUST
 # copy arpack and spooles
 COPY --from=calculix  /usr/local/ARPACK /usr/local/ARPACK
 COPY --from=calculix  /spooles.2.2 /spooles.2.2

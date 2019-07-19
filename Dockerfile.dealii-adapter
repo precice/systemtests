@@ -3,6 +3,8 @@ ARG base_solver=precice/deal.ii
 FROM ${base_solver} as deal.ii
 FROM $from
 
+ARG CACHEBUST
+
 COPY --from=deal.ii /root/dealii/ /home/precice/dealii/
 
 USER precice

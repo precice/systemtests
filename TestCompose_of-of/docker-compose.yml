@@ -1,7 +1,7 @@
 version : '3'
 services:
   openfoam-adapter-fluid: 
-    image: "${SYSTEST_REMOTE}openfoam-adapter:${OPENFOAM_TAG}"
+    image: "${SYSTEST_REMOTE}openfoam-adapter${PRECICE_BASE}:${OPENFOAM_TAG}"
     networks: 
       - precicecomm
     volumes:
@@ -16,7 +16,7 @@ services:
     container_name: openfoam-adapter-fluid
 
   openfoam-adapter-solid:
-    image: "${SYSTEST_REMOTE}openfoam-adapter:${OPENFOAM_TAG}"
+    image: "${SYSTEST_REMOTE}openfoam-adapter${PRECICE_BASE}:${OPENFOAM_TAG}"
     networks: 
       - precicecomm
     volumes:

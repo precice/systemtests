@@ -10,3 +10,4 @@ RUN rm $tutorial_path/precice-config_serial.xml $tutorial_path/precice-config.xm
 RUN rm -rfv $tutorial_path/Fluid/0/
 RUN cp -r $tutorial_path/Fluid/0.orig/ $tutorial_path/Fluid/0/
 RUN addgroup -g 1000 precice && adduser -u 1000 -G precice -D precice && chown -R precice:precice tutorials configs
+USER precice

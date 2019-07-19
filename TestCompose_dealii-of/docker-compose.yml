@@ -4,7 +4,7 @@ version : '3.4'
 services:
   
   dealii-adapter: 
-    image: "${SYSTEST_REMOTE}dealii-adapter:${DEALII_TAG}"
+    image: "${SYSTEST_REMOTE}dealii-adapter${PRECICE_BASE}:${DEALII_TAG}"
     networks: 
       - precicecomm
     volumes:
@@ -22,7 +22,7 @@ services:
       - openfoam-adapter
     
   openfoam-adapter: 
-    image: "${SYSTEST_REMOTE}openfoam-adapter:${OPENFOAM_TAG}"
+    image: "${SYSTEST_REMOTE}openfoam-adapter${PRECICE_BASE}:${OPENFOAM_TAG}"
     networks: 
       - precicecomm
     volumes:

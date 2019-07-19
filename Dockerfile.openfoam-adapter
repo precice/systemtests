@@ -13,6 +13,8 @@ RUN apt-get -qq update && apt-get -qq install \
     libyaml-cpp-dev && \
     rm -rf /var/lib/apt/lists/*
 
+ARG CACHEBUST
+
 COPY --from=openfoam /opt/openfoam4 /opt/openfoam4/
 
 # Building openfoam-adapter

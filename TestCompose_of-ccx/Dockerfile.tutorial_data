@@ -20,3 +20,4 @@ WORKDIR /
 RUN sed -i 's|exchange-directory\="."|exchange-directory="/home/precice/Data/Exchange/" network="eth0"|g' \
     configs/precice-config.xml && cp $tutorial_path/config.yml  configs/config.yml
 RUN addgroup -g 1000 precice && adduser -u 1000 -G precice -D precice && chown -R precice:precice tutorials configs
+USER precice

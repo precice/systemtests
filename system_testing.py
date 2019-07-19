@@ -14,21 +14,19 @@ Example:
 
 import argparse, filecmp, os, shutil, sys
 import common, docker
-from common import ccall, get_test_variants, filter_tests
+from common import ccall, get_test_variants, filter_tests, get_test_participants
 
 def build(systest, tag, branch, local, force_rebuild):
     """ Builds a docker image for systest. """
-    baseimage_name = "precice-" + tag + "-" + branch + ":latest"
-    test_tag = systest + "-" +  tag + "-" + branch
-    if local:
-        docker.build_image(tag = test_tag,
-                           build_args = {"from" : docker.get_namespace() + baseimage_name},
-                           force_rebuild = force_rebuild)
-    else:
-        docker.build_image(tag = test_tag,
-                           build_args = {"from" :
-                               'precice/' + baseimage_name},
-                           force_rebuild = force_rebuild)
+
+    baseimage_name = "precice-{tag}-{branch}:latest".format(TAG = tag, BRANCH=branch)
+    test_tag = "-".join([systest, tag, branch])
+
+    docker.build_image(tag = test_tag,
+                       build_args = {"from" : docker.get_namespace() +
+                           baseimage_name if local
+                           else 'precice/' + baseimage_name},
+                       force_rebuild = force_rebuild)
 
 def run(systest, tag, branch):
     """ Runs (create a container from an image) the specified systest. """
@@ -37,37 +35,49 @@ def run(systest, tag, branch):
     shutil.rmtree("Output", ignore_errors=True)
     ccall("docker cp " + test_tag + ":Output . ")
 
-def build_adapters(systest, base, branch, local, force_rebuild):
+def build_adapters(systest, tag, branch, local, force_rebuild):
     """ Builds a docker images for a preCICE adapter, participating in tests """
-    baseimage_name = "precice-{tag}-{branch}:latest".format(TAG = tag, BRANCH=branch)
-    test_tag = "-".join([ systest, tag, branch])
+    baseimage_name = "precice-{tag}-{branch}:latest".format(tag = tag, branch=branch)
 
     participants = get_test_participants(systest)
-    build_args = { tag: test_tag,
-                   build_args: {"from": docker.get_namespace() + baseimage if local
+    docker_args = { 'tag': '',
+                   'build_args': {"from": docker.get_namespace() + baseimage_name if local
                         else 'precice/' + baseimage_name },
-                   force_rebuild: force_rebuild, 
-                   dockerfile: 'Dockerfile'}
+                   'force_rebuild': force_rebuild, 
+                   'dockerfile': 'Dockerfile'}
 
     for participant in participants:
 
-        build_args['dockerfile'] = "Dockerfile." + participant
+        docker_args['tag'] = '-'.join([ participant, tag, branch])
+        docker_args['dockerfile'] = "Dockerfile." + participant
 
-        docker.build_image(**build_args)
+        docker.build_image(**docker_args)
 
-def run_compose(systest, branch):
+def run_compose(systest, branch, local, tag, force_rebuild):
     """ Runs necessary systemtest with docker compose """
 
     dirname = "/TestCompose_" + systest
     test_basename = systest.split('.')[0]
+
+    adapter_base_name="-".join([tag, branch])
+    print("Adapter base name is {}".format(adapter_base_name))
+
     with common.chdir(os.getcwd() + dirname):
 
-        # execute necessary commands
-        commands_main = ["{extra_cmd} bash ../silent_compose.sh".format(extra_cmd =
-                                                "export SYSTEST_REMOTE='precice/';" if
-                                                os.environ.get("TRAVIS_BUILD_ID") else "" ), 
-                                                "docker cp tutorial-data:/Output ."]
-        commands_cleanup = ["docker-compose down -v", "docker-compose rm"]
+        # cleanup previous results
+        shutil.rmtree("Output", ignore_errors=True)
+        
+        commands_main = ["{extra_cmd} docker-compose config && bash ../silent_compose.sh".format(extra_cmd =
+                                "export SYSTEST_REMOTE={remote}; export PRECICE_BASE=-{base};".format(
+                                    remote = docker.get_namespace(), base = adapter_base_name) if
+                                    local else ""),
+                         "docker cp tutorial-data:/Output ."]
+
+        # rebuild tutorials image if needed
+        if force_rebuild:
+            commands_main.insert(0, "docker-compose build --no-cache")
+
+        commands_cleanup = ["docker-compose down -v"]
 
         for command in commands_main:
             ccall(command)
@@ -75,15 +85,19 @@ def run_compose(systest, branch):
         #compare results
         pathToRef = os.path.join(os.getcwd(), "referenceOutput")
         pathToOutput = os.path.join(os.getcwd(), "Output")
+
+        err = None
         try:
             comparison(pathToRef, pathToOutput)
         except IncorrectOutput as e:
-            print (e)
-            
-        shutil.rmtree("Output", ignore_errors=True)
+            err = e
 
+        # cleanup docker-compose stuff anyway
         for command in commands_cleanup:
             ccall(command)
+        
+        if err:
+            raise err;
 
 
 class IncorrectOutput(Exception):
@@ -122,13 +136,14 @@ def build_run_compare(test, tag, branch, local_precice, force_rebuild):
 
     # tests to run with docker compose
     compose_tests = ["dealii-of", "of-of", "su2-ccx", "of-ccx"]
-    print (test.split(".")[0])
-    if test.split(".")[0] in compose_tests:
-        run_compose(test.split(".")[0], branch)
+    test_basename = test.split(".")[0]
+    if local_precice:
+        build_adapters(test_basename, tag, branch, local_precice, force_rebuild)
+    if test_basename in compose_tests:
+        run_compose(test_basename, branch, local_precice, tag, force_rebuild)
     else:
-        # remaining
+        # remaining, non compose tests
         dirname = "/Test_" + test
-        test_basename = test.split('.')[0]
         with common.chdir(os.getcwd() + dirname):
             # Build
             build(test_basename, tag, branch, local_precice, force_rebuild)
@@ -145,7 +160,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Build local.')
     parser.add_argument('-l', '--local', action='store_true', help="use local preCICE image (default: use remote image)")
     parser.add_argument('-s', '--systemtest', type=str, help="choose system tests you want to use",
-                        choices = common.get_tests(prefix="Test_") + common.get_tests(prefix="TestCompose_"))
+                        choices = common.get_tests())
     parser.add_argument('-b', '--branch', help="preCICE branch to use", default = "develop")
     parser.add_argument('-f', '--force_rebuild', nargs='+', help="Force rebuild of variable parts of docker image",
                         default = [], choices  = ["precice", "tests"])
@@ -154,7 +169,7 @@ if __name__ == "__main__":
     test = str(args.systemtest) + '.' + str(args.base)
     # check if there is specialized dir for this version
     test_name = args.systemtest
-    all_derived_tests = get_test_variants(test_name, prefix = "Test_") + get_test_variants(test_name, os.getcwd(), prefix = "TestCompose_")
+    all_derived_tests = get_test_variants(test_name)
     test = filter_tests(all_derived_tests, 'Dockerfile.'+args.base)
     if len(test) != 1:
         raise Exception("Could not determine test to run!")

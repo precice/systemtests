@@ -4,7 +4,7 @@ version : '3.4'
 services:
   
   openfoam-adapter-inner: 
-    image: "${SYSTEST_REMOTE}openfoam-adapter:${OPENFOAM_TAG}"
+    image: "${SYSTEST_REMOTE}openfoam-adapter${PRECICE_BASE}:${OPENFOAM_TAG}"
     networks: 
       - precicecomm
     volumes:
@@ -23,7 +23,7 @@ services:
     
   # outer-fluid 
   openfoam-adapter-outer: 
-    image: "${SYSTEST_REMOTE}openfoam-adapter:${OPENFOAM_TAG}"
+    image: "${SYSTEST_REMOTE}openfoam-adapter${PRECICE_BASE}:${OPENFOAM_TAG}"
     networks: 
       - precicecomm
     volumes:
@@ -42,7 +42,7 @@ services:
 
   # solid
   calculix-adapter:
-    image: "${SYSTEST_REMOTE}calculix-adapter:${CALCULIX_TAG}"
+    image: "${SYSTEST_REMOTE}calculix-adapter${PRECICE_BASE}:${CALCULIX_TAG}"
     networks: 
       - precicecomm
     volumes:

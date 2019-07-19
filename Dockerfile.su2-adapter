@@ -13,6 +13,8 @@ RUN apt-get -qq update && apt-get -qq install \
     autotools-dev \
     ccache
 
+ARG CACHEBUST
+
 COPY --from=su2 /root/.ccache $HOME/.ccache
 
 USER precice
