@@ -32,10 +32,11 @@ for i in {1..10}; do
   sleep 60
 done
 
-# probably failed due to communication issues 
+# probably failed due to communication issues, 
+# list individual logs and exit
 for service in ${services[@]}; do 
     docker-compose logs --tail=$taillen $service 
     docker-compose stop $service
 done
 
-exit $failed
+exit 1
