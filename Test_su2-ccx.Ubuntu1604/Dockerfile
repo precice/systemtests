@@ -93,9 +93,9 @@ RUN ./reducing_log_su2-ccx; exit 0
 # Copying output files to a folder for further examination
 WORKDIR /
 RUN mkdir Output && cp /tutorials/FSI/flap_perp/SU2-CalculiX/flow*.vtk /Output && \
-cp /tutorials/FSI/flap_perp/SU2-CalculiX/flap.cvg /Output && \
-cp /tutorials/FSI/flap_perp/SU2-CalculiX/flap.dat /Output && \
-cp /tutorials/FSI/flap_perp/SU2-CalculiX/flap.sta /Output && \
+cp /tutorials/FSI/flap_perp/SU2-CalculiX/Solid/flap.cvg /Output && \
+cp /tutorials/FSI/flap_perp/SU2-CalculiX/Solid/flap.dat /Output && \
+cp /tutorials/FSI/flap_perp/SU2-CalculiX/Solid/flap.sta /Output && \
 cp /tutorials/FSI/flap_perp/SU2-CalculiX/forces_breakdown.dat /Output && \
 cp /tutorials/FSI/flap_perp/SU2-CalculiX/precice-Calculix-convergence.log /Output && \
 cp /tutorials/FSI/flap_perp/SU2-CalculiX/precice-Calculix-iterations.log /Output && \
