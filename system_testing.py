@@ -19,7 +19,7 @@ from common import ccall, get_test_variants, filter_tests, get_test_participants
 def build(systest, tag, branch, local, force_rebuild):
     """ Builds a docker image for systest. """
 
-    baseimage_name = "precice-{tag}-{branch}:latest".format(TAG = tag, BRANCH=branch)
+    baseimage_name = "precice-{tag}-{branch}:latest".format(tag = tag, branch=branch)
     test_tag = "-".join([systest, tag, branch])
 
     docker.build_image(tag = test_tag,
