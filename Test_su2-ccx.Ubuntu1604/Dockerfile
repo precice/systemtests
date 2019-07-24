@@ -78,7 +78,7 @@ RUN ./su2AdapterInstall
 
 WORKDIR /su2-source
 RUN ./configure --prefix=${SU2_BIN} CXXFLAGS="-std=c++11" --enable-mpi
-RUN make -j 2 install
+RUN make -j $(nproc) install
 
 # Downloading tutorials
 WORKDIR /

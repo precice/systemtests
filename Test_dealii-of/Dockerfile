@@ -35,7 +35,7 @@ WORKDIR /
 RUN git clone https://github.com/precice/dealii-adapter.git
 RUN cd dealii-adapter && \
     cmake -DDEAL_II_DIR=$HOME/dealii -DCMAKE_BUILD_TYPE=Release . && \
-    make -j 2 
+    make -j $(nproc)
 # Simulating
 
 # Downloading tutorials, switch and copy parameters 
