@@ -7,13 +7,13 @@ services:
     volumes:
       - exchange:/home/precice/Data/Exchange/
       - output:/home/precice/Data/Output/
-      - input:/home/precice/Data/Input/
+      - input_solid:/home/precice/Data/Input/
       - configs:/home/precice/calculix-adapter/configs
     command: >
-            /bin/bash -c "ln -s /home/precice/Data/Input/CalculixMesh CalculixMesh; 
+            /bin/bash -c "ln -s /home/precice/Data/Input/Solid Solid; 
             ln -sf configs/* . &&
-            ccx_preCICE -i /home/precice/Data/Input/flap -precice-participant Calculix; 
-            cp spooles.out *.log /home/precice/Data/Output/"
+            ccx_preCICE -i Solid/flap -precice-participant Calculix; 
+            cp -r Solid/. /home/precice/Data/Output/"
     container_name: calculix-adapter
     depends_on:
     - tutorial-data
@@ -25,7 +25,7 @@ services:
     volumes:
       - exchange:/home/precice/Data/Exchange/
       - output:/home/precice/Data/Output/
-      - input:/home/precice/Data/Input/
+      - input_fluid:/home/precice/Data/Input/
       - configs:/su2-adapter/configs
     command: >  
               /bin/bash -c "cd /home/precice/Data/Input/ && 
@@ -41,7 +41,8 @@ services:
       context: .
       dockerfile: Dockerfile.tutorial_data
     volumes:
-      - input:/tutorials/FSI/flap_perp/SU2-CalculiX/
+      - input_solid:/tutorials/FSI/flap_perp/SU2-CalculiX/Solid
+      - input_fluid:/tutorials/FSI/flap_perp/SU2-CalculiX/Fluid
       - configs:/configs/
       - output:/Output/
     container_name: tutorial-data 

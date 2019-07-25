@@ -53,7 +53,7 @@ services:
     command: >
       /bin/bash -c "ln -s /home/precice/Data/Input/ Solid
       && ln -sf configs/* . 
-      && ccx_preCICE -i /home/precice/Data/Input/solid -precice-participant Solid"
+      && ccx_preCICE -i Solid/solid -precice-participant Solid"
     container_name: calculix-adapter-solid
     depends_on:
       - tutorial-data
