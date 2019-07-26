@@ -36,4 +36,4 @@ WORKDIR su2-source
 # build, but only keep the cache and source and remove everything else
 # for "minimal" image size
 RUN ./configure --disable-metis --disable-parmetis --disable-cgns --disable-DOT --disable-MSH --disable-DEF --disable-SOL --disable-GEO \
-    --prefix="/home/precice/" CXXFLAGS="-std=c++11" && make -j $(nproc) && find . -type f -name "*.o" -exec rm {} \;
+    --prefix=${SU2_BIN} CXXFLAGS="-std=c++11" && make -j $(nproc) && find . -type f -name "*.o" -exec rm {} \;

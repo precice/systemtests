@@ -1,6 +1,6 @@
 ARG from=precice-ubuntu1604.home-develop
-#ARG base_solver=precice/su2
 ARG base_solver=su2
+#ARG base_solver=precice/su2
 FROM ${base_solver} as su2
 FROM $from
 
@@ -22,7 +22,6 @@ COPY --from=su2 /home/precice/.ccache /home/precice/.ccache
 COPY --from=su2 /home/precice/su2-source /home/precice/su2-source
 RUN chown -R precice:precice /home/precice/.ccache /home/precice/su2-source
 
-# build for the first time, using ccache, keep object files
 ENV SU2_HOME="/home/precice/su2-source" \
     SU2_BIN="/home/precice/su2-bin" \
     SU2_RUN="/home/precice/su2-bin/bin" \
@@ -31,19 +30,19 @@ ENV SU2_HOME="/home/precice/su2-source" \
 
 USER precice
 WORKDIR /home/precice/su2-source
-# double build to facilitate caching 
 RUN ./configure --disable-metis --disable-parmetis --disable-cgns --disable-DOT \
     --disable-MSH --disable-DEF --disable-SOL --disable-GEO \
     --prefix=${SU2_BIN} CXXFLAGS="-std=c++11" &&\
-    make -j $(nproc) install && rm -rf ~/.ccache && cd /home/precice && \
-    git clone https://github.com/precice/su2-adapter.git && cd su2-adapter \
-    ./su2AdapterInstall && cd /home/precice/su2-source && \
-    ./configure --disable-metis --disable-parmetis --disable-cgns --disable-DOT \
+    make -j $(nproc) && rm -rf ~/.ccache 
+
+RUN cd /home/precice && \
+    git clone https://github.com/precice/su2-adapter.git && cd su2-adapter &&  \
+    ./su2AdapterInstall
+
+RUN ./configure --disable-metis --disable-parmetis --disable-cgns --disable-DOT \
     --disable-MSH --disable-DEF --disable-SOL --disable-GEO \
     --prefix=${SU2_BIN} CXXFLAGS="-std=c++11" && \
     make -j $(nproc) install && find . -type f -name "*.o" -exec rm {} \; && rm -r ~/.ccache
 
-# create directory for input/out/exchange (otherwise it will be owned by 
-# root after mounting )
 RUN cd $HOME && mkdir -p Data/Input Data/Output Data/Exchange
 WORKDIR /home/precice/su2-bin/bin/

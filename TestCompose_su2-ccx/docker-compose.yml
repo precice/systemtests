@@ -11,10 +11,10 @@ services:
       - input_solid:/home/precice/Data/Input/
       - configs:/home/precice/calculix-adapter/configs
     command: >
-            /bin/bash -c "ln -s /home/precice/Data/Input/Solid Solid; 
-            ln -sf configs/* . &&
-            ccx_preCICE -i /home/precice/Data/Input/flap -precice-participant Calculix; 
-            cp -r Solid/. /home/precice/Data/Output/"
+            /bin/bash -c "ln -sf /home/precice/Data/Input Solid; 
+            ln -sf /home/precice/calculix-adapter/configs/* . &&
+            ccx_preCICE -i Solid/flap -precice-participant Calculix
+            cp -r *.out *.dat *.log *.cvg *.sta /home/precice/Data/Output/"
     container_name: calculix-adapter
     depends_on:
     - tutorial-data
@@ -27,12 +27,12 @@ services:
       - exchange:/home/precice/Data/Exchange/
       - output:/home/precice/Data/Output/
       - input_fluid:/home/precice/Data/Input/
-      - configs:/su2-adapter/configs
+      - configs:/home/precice/su2-adapter/configs
     command: >  
-              /bin/bash -c "cd /home/precice/Data/Input/ && 
-              ln -sf /su2-adapter/configs/* . &&
-              SU2_CFD euler_config_coupled.cfg &&
-              cp -r /home/precice/Data/Input/. /home/precice/Data/Output/"
+              /bin/bash -c "ln -sf /home/precice/Data/Input Fluid && 
+                ln -sf /home/precice/su2-adapter/configs/* . &&
+                SU2_CFD Fluid/euler_config_coupled.cfg &&
+                cp -r *.vtk *.csv *.log *.dat /home/precice/Data/Output/"
     container_name: su2-adapter
     depends_on: 
     - tutorial-data

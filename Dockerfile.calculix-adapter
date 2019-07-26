@@ -1,6 +1,5 @@
 ARG from=precice/precice-ubuntu1604.home-develop
-#ARG base_solver=precice/calculix
-ARG base_solver calculix
+ARG base_solver=precice/calculix
 FROM ${base_solver} as calculix
 FROM $from
 
