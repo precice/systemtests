@@ -1,4 +1,5 @@
-version : '3'
+#version : '3'
+version : '3.4'
 services:
   calculix-adapter: 
     image: "${SYSTEST_REMOTE}calculix-adapter${PRECICE_BASE}:${CALCULIX_TAG}"
@@ -12,7 +13,7 @@ services:
     command: >
             /bin/bash -c "ln -s /home/precice/Data/Input/Solid Solid; 
             ln -sf configs/* . &&
-            ccx_preCICE -i Solid/flap -precice-participant Calculix; 
+            ccx_preCICE -i /home/precice/Data/Input/flap -precice-participant Calculix; 
             cp -r Solid/. /home/precice/Data/Output/"
     container_name: calculix-adapter
     depends_on:
@@ -38,6 +39,7 @@ services:
 
   tutorial-data:
     build:
+      network: host
       context: .
       dockerfile: Dockerfile.tutorial_data
     volumes:
@@ -53,4 +55,5 @@ volumes:
   exchange:
   output:
   configs:
-  input:
+  input_solid:
+  input_fluid:
