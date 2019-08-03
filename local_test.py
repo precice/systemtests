@@ -73,4 +73,3 @@ if __name__ == "__main__":
         print("Following system tests failed: ")
         print(", ".join(failed))
         print('\n')
-
