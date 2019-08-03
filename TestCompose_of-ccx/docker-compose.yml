@@ -1,6 +1,4 @@
-## for network:hsot
-version : '3.4'
-#version: '3'
+version: '3'
 services:
   
   openfoam-adapter-inner: 
@@ -62,7 +60,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.tutorial_data
-      network: host
     volumes:
       - solid_input:/tutorials/CHT/heat_exchanger/buoyantSimpleFoam-CalculiX/Solid
       - outer_fluid_input:/tutorials/CHT/heat_exchanger/buoyantSimpleFoam-CalculiX/Outer-Fluid

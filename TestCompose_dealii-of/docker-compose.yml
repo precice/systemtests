@@ -1,6 +1,4 @@
-# for network
-version : '3.4'
-#version : '3'
+version : '3'
 services:
   
   dealii-adapter: 
@@ -44,7 +42,6 @@ services:
   tutorial-data:
     build:
       context: .
-      network: host
       dockerfile: Dockerfile.tutorial_data
     volumes:
       - input_of:/tutorials/FSI/flap_perp/OpenFOAM-deal.II/Fluid

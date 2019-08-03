@@ -1,5 +1,4 @@
-#version : '3'
-version : '3.4'
+version : '3'
 services:
   calculix-adapter: 
     image: "${SYSTEST_REMOTE}calculix-adapter${PRECICE_BASE}:${CALCULIX_TAG}"
@@ -39,7 +38,6 @@ services:
 
   tutorial-data:
     build:
-      network: host
       context: .
       dockerfile: Dockerfile.tutorial_data
     volumes:
