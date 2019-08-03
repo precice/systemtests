@@ -74,10 +74,3 @@ if __name__ == "__main__":
         print(", ".join(failed))
         print('\n')
 
-    # Push
-    answer = input("Do you want to push the results (logfiles and possibly output files) to the output repo? (yes/no)\n")
-    if answer in ["yes", "y"]:
-        for x in success:
-            ccall("python push.py --success --test " + x + " --branch " + args.branch)
-        for y in failed:
-            ccall("python push.py --test " + y + " --branch " + args.branch)
