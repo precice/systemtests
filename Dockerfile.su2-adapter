@@ -1,4 +1,4 @@
-ARG from=precice-ubuntu1604.home-develop
+ARG from=precice/precice-ubuntu1604.home-develop
 ARG base_solver=su2
 #ARG base_solver=precice/su2
 FROM ${base_solver} as su2
