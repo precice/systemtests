@@ -1,5 +1,6 @@
 # Docker image of SU2-source and related dependencies to be used by preCICE adapter
-FROM ubuntu:16.04
+ARG from=ubuntu:16.04
+FROM $from
 USER root
 ENV CXX="g++"
 

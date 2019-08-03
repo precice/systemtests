@@ -1,5 +1,6 @@
 # Docker image of CalculiX to be used by preCICE adapter
-FROM ubuntu:16.04
+ARG from=ubuntu:16.04
+FROM $from
 USER root
 
 # Installing necessary dependecies
