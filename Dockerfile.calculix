@@ -50,4 +50,4 @@ RUN  sed -i -e 's|\.\./\.\./\.\./SPOOLES.2.2|/spooles.2.2|g' \
             -e 's|\.\./\.\./\.\./ARPACK|/usr/local/ARPACK|g' \
             Makefile
 
-RUN make -j 2 && rm *.o
+RUN make -j $(nproc) $ && rm *.o

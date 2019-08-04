@@ -37,7 +37,6 @@ RUN sed -i  -e 's|CCX\s\+=.*|CCX	= /home/precice/CalculiX/ccx_2.15/src|g'\
             -e 's|CC\s\+=.*|CC=cc|g' Makefile
 
 # build and clean-up
-RUN ls -lshtr /home/precice/
 RUN make -j $(nproc)
 
 # create directory for input/out/exchange
