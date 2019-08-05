@@ -84,26 +84,27 @@ jobs:
     script: true
 
   - stage: Building adapters
-    script: docker build -f Dockerfile.su2-adapter -t $DOCKER_USERNAME/su2-adapter .
+    script: docker build -f Dockerfile.su2-adapter -t $DOCKER_USERNAME/su2-adapter-ubuntu1604.home-develop
+ .
     name: SU2 adapter
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker push $DOCKER_USERNAME/su2-adapter
 
   - name: CalculiX adapter
-    script: docker build -f Dockerfile.calculix-adapter -t $DOCKER_USERNAME/calculix-adapter .
+    script: docker build -f Dockerfile.calculix-adapter -t $DOCKER_USERNAME/calculix-adapter-ubuntu1604.home-develop .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker push $DOCKER_USERNAME/calculix-adapter
 
   - name: deal.ii adapter
-    script: docker build -f Dockerfile.dealii-adapter -t $DOCKER_USERNAME/dealii-adapter .
+    script: docker build -f Dockerfile.dealii-adapter -t $DOCKER_USERNAME/dealii-adapter-ubuntu1604.home-develop .
     after_success:
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
       - docker push $DOCKER_USERNAME/dealii-adapter
 
   - name: openFOAM adapter
-    script: docker build -f Dockerfile.openfoam-adapter -t $DOCKER_USERNAME/openfoam-adapter .
+    script: docker build -f Dockerfile.openfoam-adapter -t $DOCKER_USERNAME/openfoam-adapter-ubuntu1604.home-develop.
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker push $DOCKER_USERNAME/openfoam-adapter

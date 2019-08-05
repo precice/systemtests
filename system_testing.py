@@ -51,7 +51,9 @@ def build_adapters(systest, tag, branch, local, force_rebuild):
         docker_args['tag'] = '-'.join([ participant, tag, branch])
         docker_args['dockerfile'] = "Dockerfile." + participant
 
-        docker.build_image(**docker_args)
+        # skip "light-adapters" (e.g. nutils )
+        if os.path.exists("Dockerfile.{}".format(participant)):
+            docker.build_image(**docker_args)
 
 def run_compose(systest, branch, local, tag, force_rebuild):
     """ Runs necessary systemtest with docker compose """
@@ -60,18 +62,20 @@ def run_compose(systest, branch, local, tag, force_rebuild):
     test_basename = systest.split('.')[0]
 
     adapter_base_name="-".join([tag, branch])
-    print("Adapter base name is {}".format(adapter_base_name))
 
     with common.chdir(os.getcwd() + dirname):
 
         # cleanup previous results
         shutil.rmtree("Output", ignore_errors=True)
         
-        commands_main = ["{extra_cmd} docker-compose config && bash ../silent_compose.sh".format(extra_cmd =
-                                "export SYSTEST_REMOTE={remote}; export PRECICE_BASE=-{base};".format(
-                                    remote = docker.get_namespace(), base = adapter_base_name) if
-                                    local else ""),
-                         "docker cp tutorial-data:/Output ."]
+        # set up environment variables, to detect precice base image, that we
+        # should run with and docker images location
+        commands_main = ["""export PRECICE_BASE=-{base}; {extra_cmd} docker-compose config &&
+                             bash ../silent_compose.sh""".format(base =
+                            adapter_base_name, extra_cmd =\
+                            "export SYSTEST_REMOTE={remote};".format(
+                                    remote = docker.get_namespace()) if local else "" ),
+                             "docker cp tutorial-data:/Output ."]
 
         # rebuild tutorials image if needed
         if force_rebuild:
