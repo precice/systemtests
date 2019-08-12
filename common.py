@@ -23,14 +23,25 @@ def determine_test_name(test):
 
 def get_tests(root = os.getcwd()):
     """ List of all available system tests """
-    tests = list(set([determine_test_name(s[5:]) for s in os.listdir(root) if s.startswith("Test_")]))
+    prefixes = ["Test_", "TestCompose_"]
+    tests = list(set([determine_test_name(s[len(prefix ):]) for prefix in prefixes for s in
+        os.listdir(root) if s.startswith(prefix)]))
     return tests
 
 
 def get_test_variants(test_name, root = os.getcwd()):
     """ List of all available system tests """
-    test_variants = [s[5:] for s in os.listdir(root) if s.startswith("Test_"+test_name)]
+    prefixes = ["Test_", "TestCompose_"]
+    test_variants = [s[len(prefix):]  for prefix in prefixes for s in os.listdir(root)
+            if s.startswith(prefix +test_name)]
     return test_variants
+
+
+def get_test_participants(test_name):
+    """ Returns solvers that participate in the test """
+    solvers_abbr = {"ccx": "calculix-adapter", "su2": "su2-adapter", "of": "openfoam-adapter", 
+            "dealii":"dealii-adapter", "bindings": "bindings"}
+    return [solvers_abbr[abbr] for abbr in test_name.lower().split('-')]
 
 
 from contextlib import contextmanager
@@ -44,7 +55,6 @@ def chdir(path):
         yield
     finally:
         os.chdir(oldpwd)
-
 
 def get_diff_files(dcmp):
     """ Given a filecmp.dircmp object, recursively compares files.

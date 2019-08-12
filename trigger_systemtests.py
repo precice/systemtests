@@ -6,6 +6,7 @@
 """
 
 import json
+import pprint
 import os
 import time
 from sys import exit
@@ -54,7 +55,7 @@ def adjust_travis_script(script, user, adapter):
         branch_switch_cmd = "git checkout {}".format(branch)
 
     pr_merge_cmd = None
-    if pull_req != "false":
+    if pull_req and pull_req != "false":
         pr_merge_cmd = "git fetch origin\
         +refs/pull/{}/merge && git checkout -qf FETCH_HEAD ".format(pull_req)
 
@@ -63,7 +64,7 @@ def adjust_travis_script(script, user, adapter):
     # inserts switching to a branch / merging a pull request
     # after cloning the adapter in all systemtests dockerfiles that use it
     preprocess_cmd = None
-    if branch or pull_req != "false":
+    if branch or not pull_req in [None, "false"]:
         preprocess_cmd = "grep -rl --include=\*Dockerfile* github.com/{user}/{adapter}.git |\
         xargs sed -i '/github.com\/{user}\/{adapter}.git/a RUN cd {adapter} && {post_clone_cmd} && \
         cd .. /'".format(user = user, adapter =
@@ -73,28 +74,59 @@ def adjust_travis_script(script, user, adapter):
 
     return main_script
 
+
+def determine_image_tag():
+
+    """ Generates tag information based on the branch and pull request names """
+
+    branch = os.environ.get("TRAVIS_BRANCH", "latest")
+    pull_req = os.environ.get("TRAVIS_PULL_REQUEST")
+    if pull_req and pull_req != 'false':
+        return ".pr".join([branch, pull_req])
+    else:
+        return branch
+
 def generate_travis_job(adapter, user, trigger_failure = True):
 
     triggered_by = os.environ["TRAVIS_JOB_WEB_URL"] if "TRAVIS_JOB_WEB_URL" in\
          os.environ else "manual script call"
 
     after_failure_action = "python push.py -t {TEST};"
-    main_script = "python system_testing.py -s {TEST}"
+    main_test_script = "python system_testing.py -s {TEST}"
+    main_build_script = "docker build -f Dockerfile.{adapter} -t {user}/{adapter} .".format(adapter = nm_repo_map[adapter], user = user )
 
     if trigger_failure:
         after_failure_action += " python trigger_systemtests.py --failure --owner {USER} --adapter {ADAPTER}"
 
-    job_templates= {
+
+    # template for building this particular adapter
+    build_template = {
+        "stage": "Building adapter",
+        "name": nm_repo_map[adapter],
+        "script": adjust_travis_script(main_build_script, user, adapter), 
+        "after_success": 
+            [  'echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME --password-stdin', 
+                "docker push {user}/{adapter}:{tag}".format(adapter =
+                    nm_repo_map[adapter], user = user,tag = determine_image_tag()) ]
+        }
+
+    # template for actually runnig an adapter in combination with other
+    # adapters
+    systest_templates = {
+        "stage": "Running tests",
         "name":          "[16.04] {TESTNAME} <-> {TESTNAME}",
-        "script":        adjust_travis_script(main_script, user,adapter),
+        # force docker-compose to consider an image with a particular tag
+        "script":        "export ${adapter_tag}={tag}; ".format(adapter_tag = adapter.upper() + "_TAG", tag = determine_image_tag()) \
+                        + main_test_script,
         "after_success": "python push.py -s -t {TEST}",
         "after_failure": after_failure_action
-        }
+    };
 
     job_body={
         "request": {
           "message": "{} systemtests".format(adapter),
-          "branch": "master",
+          #"branch": "master",
+          "branch": "systemtests_future",
           "config": {
             # we need to use 'replace' to replace .travis.yml,
             # that is originally present in the repo
@@ -112,12 +144,13 @@ def generate_travis_job(adapter, user, trigger_failure = True):
           }
         }
 
-    # generate jobs body for the request
-    jobs = []
+    # generate jobs body for the request, build of an adapter
+    # should be first stage
+    jobs = [build_template]
     for tests in nm_test_map[adapter]:
         job = {}
-        for key,job_template in job_templates.items():
-            job[key] = job_template.format(TESTNAME=tests, USER=user, TEST=tests,
+        for key,systest_template in systest_templates.items():
+            job[key] = systest_template.format(TESTNAME=tests, USER=user, TEST=tests,
                 ADAPTER=adapter)
         jobs.append(job)
 
@@ -232,12 +265,18 @@ if __name__ == "__main__":
               action="store_true")
     parser.add_argument('--wait', help='Whether exit only when the triggered build succeeds',
               action='store_true')
+    parser.add_argument('--test', help='Only print generated job, do not send the request', 
+            action='store_true')
     args = parser.parse_args()
 
     if args.failure:
         repo = nm_repo_map[ args.adapter ]
         trigger_travis_build( generate_failure_callback(), args.owner,repo)
     else:
+        if args.test:
+            job = generate_travis_job(args.adapter, args.owner, trigger_failure
+                    = False)
+            pprint.pprint(job)
         if args.wait:
             trigger_travis_and_wait_and_respond(generate_travis_job(args.adapter, args.owner, trigger_failure
                 = False), args.owner, 'systemtests' )
