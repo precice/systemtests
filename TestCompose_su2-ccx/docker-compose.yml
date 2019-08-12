@@ -29,7 +29,6 @@ services:
       - configs:/home/precice/su2-adapter/configs
     command: >  
               /bin/bash -c "ln -sf /home/precice/Data/Input Fluid && 
-                ln -sf /home/precice/su2-adapter/configs/* . &&
                 SU2_CFD Fluid/euler_config_coupled.cfg &&
                 cp flow*.vtk *.csv *.dat *SU2*.log /home/precice/Data/Output/"
     container_name: su2-adapter
