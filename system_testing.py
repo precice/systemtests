@@ -92,7 +92,12 @@ def run_compose(systest, branch, local, tag, force_rebuild, rm_all):
             path_to_otp = os.path.join(os.getcwd(), "Output")
             comparison(path_to_ref, path_to_otp)
 
+            if rm_all:
+                for command in commands_cleanup:
+                    ccall(command)
+
         except (CalledProcessError, IncorrectOutput)  as e: 
+            # cleanup in either case
             if rm_all:
                 for command in commands_cleanup:
                     ccall(command)
