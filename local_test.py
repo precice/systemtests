@@ -24,6 +24,7 @@ if __name__ == "__main__":
                                      description='Build local.')
     parser.add_argument('-b', '--branch', help="Branch you want to use for preCICE", default = "develop")
     parser.add_argument('-d', '--dockerfile', help="Dockerfile used to create preCICE base image", default = "Dockerfile.Ubuntu1604.home")
+    parser.add_argument('--keep', help="Keep containers and docker volumes upon finishing", action='store_true')
     parser.add_argument('-s', '--systemtest', nargs='+', help="System tests you want to use", 
             default = common.get_tests(), 
             choices = common.get_tests())
@@ -61,7 +62,9 @@ if __name__ == "__main__":
         test_basename = determine_test_name(test)
         print("\n\nStarting system test %s\n\n" % test)
         try:
-            build_run_compare(test, args.dockerfile.lower(), args.branch.lower(), True, "tests" in args.force_rebuild)
+            build_run_compare(test, args.dockerfile.lower(),
+                    args.branch.lower(), True, "tests" in args.force_rebuild,
+                    not args.keep)
         except subprocess.CalledProcessError:
             failed.append(test_basename)
         else:

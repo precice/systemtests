@@ -14,6 +14,7 @@ Example:
 
 import argparse, filecmp, os, shutil, sys
 import common, docker
+from subprocess import CalledProcessError
 from common import ccall, get_test_variants, filter_tests, get_test_participants
 
 def build(systest, tag, branch, local, force_rebuild):
@@ -55,53 +56,51 @@ def build_adapters(systest, tag, branch, local, force_rebuild):
         if os.path.exists("Dockerfile.{}".format(participant)):
             docker.build_image(**docker_args)
 
-def run_compose(systest, branch, local, tag, force_rebuild):
+def run_compose(systest, branch, local, tag, force_rebuild, rm_all):
     """ Runs necessary systemtest with docker compose """
 
-    dirname = "/TestCompose_" + systest
+    dirname = "/TestCompose_{}".format(systest)
     test_basename = systest.split('.')[0]
 
     adapter_base_name="-".join([tag, branch])
+
+    # set up environment variables, to detect precice base image, that we
+    # should run with and docker images location
+    commands_main = ["""export PRECICE_BASE=-{base}; {extra_cmd} docker-compose config &&
+                         bash ../silent_compose.sh""".format(base =
+                        adapter_base_name, extra_cmd =\
+                        "export SYSTEST_REMOTE={remote};".format(
+                                remote = docker.get_namespace()) if local else "" ),
+                         "docker cp tutorial-data:/Output ."]
+    # rebuild tutorials image if needed
+    if force_rebuild:
+        commands_main.insert(0, "docker-compose build --no-cache")
+
+    commands_cleanup = ["docker-compose down -v"]
 
     with common.chdir(os.getcwd() + dirname):
 
         # cleanup previous results
         shutil.rmtree("Output", ignore_errors=True)
         
-        # set up environment variables, to detect precice base image, that we
-        # should run with and docker images location
-        commands_main = ["""export PRECICE_BASE=-{base}; {extra_cmd} docker-compose config &&
-                             bash ../silent_compose.sh""".format(base =
-                            adapter_base_name, extra_cmd =\
-                            "export SYSTEST_REMOTE={remote};".format(
-                                    remote = docker.get_namespace()) if local else "" ),
-                             "docker cp tutorial-data:/Output ."]
+        try: 
+            for command in commands_main:
+                ccall(command)
 
-        # rebuild tutorials image if needed
-        if force_rebuild:
-            commands_main.insert(0, "docker-compose build --no-cache")
+            #compare results
+            path_to_ref = os.path.join(os.getcwd(), "referenceOutput")
+            path_to_otp = os.path.join(os.getcwd(), "Output")
+            comparison(path_to_ref, path_to_otp)
 
-        commands_cleanup = ["docker-compose down -v"]
-
-        for command in commands_main:
-            ccall(command)
-
-        #compare results
-        pathToRef = os.path.join(os.getcwd(), "referenceOutput")
-        pathToOutput = os.path.join(os.getcwd(), "Output")
-
-        err = None
-        try:
-            comparison(pathToRef, pathToOutput)
-        except IncorrectOutput as e:
-            err = e
-
-        # cleanup docker-compose stuff anyway
-        for command in commands_cleanup:
-            ccall(command)
-        
-        if err:
-            raise err;
+        except (CalledProcessError, IncorrectOutput)  as e: 
+            if rm_all:
+                for command in commands_cleanup:
+                    ccall(command)
+            # generate a report of failurs for local tests
+            if local:
+                raise e
+            print ("TESTS FAILED WITH: {}".format(e))
+            sys.exit(1)
 
 
 class IncorrectOutput(Exception):
@@ -135,7 +134,7 @@ def comparison(pathToRef, pathToOutput):
 
 
 
-def build_run_compare(test, tag, branch, local_precice, force_rebuild):
+def build_run_compare(test, tag, branch, local_precice, force_rebuild, rm_all):
     """ Runs and compares test, using precice branch. """
 
     # tests to run with docker compose
@@ -144,10 +143,10 @@ def build_run_compare(test, tag, branch, local_precice, force_rebuild):
     if local_precice:
         build_adapters(test_basename, tag, branch, local_precice, force_rebuild)
     if test_basename in compose_tests:
-        run_compose(test_basename, branch, local_precice, tag, force_rebuild)
+        run_compose(test_basename, branch, local_precice, tag, force_rebuild, rm_all)
     else:
         # remaining, non compose tests
-        dirname = "/Test_" + test
+        dirname = "/Test_{}".format(test)
         with common.chdir(os.getcwd() + dirname):
             # Build
             build(test_basename, tag, branch, local_precice, force_rebuild)
