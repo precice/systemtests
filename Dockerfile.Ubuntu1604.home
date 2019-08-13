@@ -55,8 +55,8 @@ WORKDIR /home/precice/precice
 # sudo docker build Dockerfile.precice --build-arg petsc_para=yes --build-arg mpi_para=yes .
 # this will result in
 # cmake -DPETSC=yes -DMPI=yes -DPYTHON=no -DCMAKE_CXX_COMPILER=mpicxx -j2 /precice
-ARG petsc_para=yes
-ARG mpi_para=no
+ARG petsc_para=no
+ARG mpi_para=yes
 ARG python_para=no
 # Build preCICE and clean-up generated object files
 RUN mkdir /home/precice/precice-build && \
@@ -73,11 +73,11 @@ RUN mkdir /home/precice/precice-build && \
     make test_base && \
     make install && \
     rm -r /home/precice/precice-build
-#
-## Setting preCICE environment variables
-#ENV PRECICE_ROOT="/home/precice/precice" \
-#    PKG_CONFIG_PATH="/home/precice/precice-install/lib/pkgconfig" \
-#    LD_LIBRARY_PATH="/home/precice/precice-install/lib:${LD_LIBRARY_PATH}" \
-#    LIBRARY_PATH="/home/precice/precice-install/lib:${LIBRARY_PATH}" \
-#    CPATH="/home/precice/precice-install/include:${CPATH}" \
-#    CMAKE_PREFIX_PATH="/home/precice/precice-install/lib/cmake/precice:${CMAKE_PREFIX_PATH}"
+
+# Setting preCICE environment variables
+ENV PRECICE_ROOT="/home/precice/precice" \
+    PKG_CONFIG_PATH="/home/precice/precice-install/lib/pkgconfig" \
+    LD_LIBRARY_PATH="/home/precice/precice-install/lib:${LD_LIBRARY_PATH}" \
+    LIBRARY_PATH="/home/precice/precice-install/lib:${LIBRARY_PATH}" \
+    CPATH="/home/precice/precice-install/include:${CPATH}" \
+CMAKE_PREFIX_PATH="/home/precice/precice-install/lib/cmake/precice:${CMAKE_PREFIX_PATH}"
