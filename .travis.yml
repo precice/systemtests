@@ -150,4 +150,5 @@ jobs:
     after_success:
     - python push.py -s -t nutils-of
     after_failure:
+    - diff -r -y --speed-large-files --suppress-common-lines TestCompose_nutils-of/Output  TestCompose_nutils-of/referenceOutput 
     - python push.py -t nutils-of
