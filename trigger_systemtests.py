@@ -105,7 +105,7 @@ def generate_travis_job(adapter, user, trigger_failure = True):
         "name": nm_repo_map[adapter],
         "script": adjust_travis_script(main_build_script, user, adapter), 
         "after_success": 
-            [  'echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME --password-stdin', 
+            [  'echo "$DOCKER_PASSWORD" | docker login -u {user} --password-stdin', 
                 "docker push {user}/{adapter}:{tag}".format(adapter =
                     nm_repo_map[adapter], user = user,tag = determine_image_tag()) ]
         }
