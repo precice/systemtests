@@ -1,0 +1,60 @@
+version: '3.4'
+services:
+  
+  openfoam-adapter: 
+    image: "${SYSTEST_REMOTE}openfoam-adapter${PRECICE_BASE}:${OPENFOAM_TAG}"
+    networks: 
+      - precicecomm
+    volumes:
+      - exchange:/home/precice/Data/Exchange/
+      - fluid_input:/home/precice/Data/Input/
+      - configs:/home/precice/openfoam-adapter/configs/
+      - output:/home/precice/Data/Output/
+    command: >
+      /bin/bash -c "source /opt/openfoam4/etc/bashrc && 
+      ln -sf configs/* . &&
+      cp -r /home/precice/Data/Input/0.orig /home/precice/Data/Input/0 &&
+      blockMesh -case /home/precice/Data/Input &&
+      pimpleDyMFoam -case /home/precice/Data/Input &&
+      cp -r /home/precice/Data/Input/. /home/precice/Data/Output/Fluid"
+    depends_on:
+      - tutorial-data
+    
+  # solid
+  calculix-adapter:
+    image: "${SYSTEST_REMOTE}calculix-adapter${PRECICE_BASE}:${CALCULIX_TAG}"
+    networks: 
+      - precicecomm
+    volumes:
+      - exchange:/home/precice/Data/Exchange/
+      - output:/home/precice/Data/Output/
+      - solid_input:/home/precice/Data/Input/
+      - configs:/home/precice/calculix-adapter/configs/
+    command: >
+      /bin/bash -c "ln -s /home/precice/Data/Input/ Solid
+      && ln -sf configs/* . 
+      && ccx_preCICE -i Solid/flap -precice-participant CalculiX"
+    container_name: calculix-adapter-solid
+    depends_on:
+      - tutorial-data
+
+  tutorial-data:
+    build:
+      context: .
+      dockerfile: Dockerfile.tutorial_data
+      network: host
+    volumes:
+      - fluid_input:/tutorials/FSI/flap_perp/OpenFOAM-CalculiX/Fluid
+      - solid_input:/tutorials/FSI/flap_perp/OpenFOAM-CalculiX/Solid
+      - configs:/configs/
+      - output:/Output/
+    container_name: tutorial-data
+
+networks:
+  precicecomm:
+volumes:
+  exchange:
+  fluid_input:
+  solid_input:
+  output:
+  configs:

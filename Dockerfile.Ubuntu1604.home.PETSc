@@ -51,12 +51,14 @@ ENV CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/usr/include/eigen3" \
 ARG branch=develop
 RUN git clone --branch $branch https://github.com/precice/precice.git /home/precice/precice
 WORKDIR /home/precice/precice
+# fix preCICE bug for PETSc < 1.77
+RUN sed -i '/PetscOptionsSetValue/d' src/utils/Petsc.cpp
 # Some parameters for the build, you can set them in the build command e.g.
 # sudo docker build Dockerfile.precice --build-arg petsc_para=yes --build-arg mpi_para=yes .
 # this will result in
 # cmake -DPETSC=yes -DMPI=yes -DPYTHON=no -DCMAKE_CXX_COMPILER=mpicxx -j2 /precice
 ARG petsc_para=yes
-ARG mpi_para=no
+ARG mpi_para=yes
 ARG python_para=no
 # Build preCICE and clean-up generated object files
 RUN mkdir /home/precice/precice-build && \

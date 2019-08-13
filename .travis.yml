@@ -24,6 +24,15 @@ jobs:
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin
     - docker push precice/precice-ubuntu1604.home-develop:latest
+  
+  - stage: Building preCICE
+    if: fork = false
+    name: "Ubuntu 16.04 home PETSc"
+    script:
+    - docker build -f Dockerfile.Ubuntu1604.home.PETSc -t precice/precice-ubuntu1604.home.petsc-develop .
+    after_success:
+    - echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin
+    - docker push precice/precice-ubuntu1604.home.petsc-develop:latest
 
   - stage: Building preCICE
     if: type = cron
@@ -107,6 +116,22 @@ jobs:
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker push $DOCKER_USERNAME/openfoam-adapter-ubuntu1604.home-develop
+
+  - name: openFOAM adapter [PETSc]
+    script: >
+      docker build -f Dockerfile.openfoam-adapter -t $DOCKER_USERNAME/openfoam-adapter-ubuntu1604.home.petsc-develop . 
+      --build-arg from=precice/precice-ubuntu1804.home.petsc .
+    after_success:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker push $DOCKER_USERNAME/openfoam-adapter-ubuntu1604.home.petsc-develop
+
+  - name: CalculiX adapter [PETSc]
+    script: >
+      docker build -f Dockerfile.calculix-adapter -t $DOCKER_USERNAME/calculix-adapter-ubuntu1604.home.petsc-develop . 
+      --build-arg from=precice/precice-ubuntu1804.home.petsc .
+    after_success:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker push $DOCKER_USERNAME/calculix-adapter-ubuntu1604.home.petsc-develop
 
   - stage: Tests
     script:
