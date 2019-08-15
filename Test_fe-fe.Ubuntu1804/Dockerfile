@@ -53,14 +53,11 @@ WORKDIR /tutorials/HT/partitioned-heat/fenics-fenics
 RUN pip3 install --user -r requirements.txt && \    
     python3 heat.py -d & python3 heat.py -n
 
-# Check output
-
-## TODO: compare iteration count to reference result!
-
 # Copying output files to a folder for further examination
 WORKDIR /
+RUN ls /tutorials/HT/partitioned-heat/fenics-fenics
 RUN mkdir Output && \
-    cp -r /tutorials/HT/partitioned-heat/fenics-fenics/precice-HeatDirichlet-convergence.log /Output/ && \
-    cp -r /tutorials/HT/partitioned-heat/fenics-fenics/precice-HeatDirichlet-iterations.log /Output/ && \
-    cp -r /tutorials/HT/partitioned-heat/fenics-fenics/precice-HeatNeumann-convergence.log /Output/ && \
-    cp -r /tutorials/HT/partitioned-heat/fenics-fenics/precice-HeatNeumann-iterations.log  /Output/   
+    cp /tutorials/HT/partitioned-heat/fenics-fenics/precice-HeatDirichlet-convergence.log /Output/ && \
+    cp /tutorials/HT/partitioned-heat/fenics-fenics/precice-HeatDirichlet-iterations.log /Output/ && \
+    cp /tutorials/HT/partitioned-heat/fenics-fenics/precice-HeatNeumann-convergence.log /Output/ && \
+    cp /tutorials/HT/partitioned-heat/fenics-fenics/precice-HeatNeumann-iterations.log  /Output/   
