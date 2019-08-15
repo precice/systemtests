@@ -24,18 +24,23 @@ if __name__ == "__main__":
                                      description='Build local.')
     parser.add_argument('-b', '--branch', help="Branch you want to use for preCICE", default = "develop")
     parser.add_argument('-d', '--dockerfile', help="Dockerfile used to create preCICE base image", default = "Dockerfile.Ubuntu1604.home")
-    parser.add_argument('-s', '--systemtest', nargs='+', help="System tests you want to use", default = common.get_tests(), choices = common.get_tests())
+    parser.add_argument('--keep', help="Keep containers and docker volumes upon finishing", action='store_true')
+    parser.add_argument('-s', '--systemtest', nargs='+', help="System tests you want to use", 
+            default = common.get_tests(), 
+            choices = common.get_tests())
+
     parser.add_argument('-f', '--force_rebuild', nargs='+', help="Force rebuild of variable parts of docker image", default = [], choices  = ["precice", "tests"])
     args = parser.parse_args()
     test_names = args.systemtest
     
     tests = []
     for test_name in test_names:
-        tests += get_test_variants(test_name)
+        tests += get_test_variants(test_name) 
     tests = filter_tests(tests, args.dockerfile)
    
     # Checking for older docker containers
     lst2 = docker.get_containers()
+    print (lst2)
     if lst2:
         print("Deleting following docker containers:", lst2)
         answer = input("\nOk? (yes/no)\n")
@@ -57,7 +62,9 @@ if __name__ == "__main__":
         test_basename = determine_test_name(test)
         print("\n\nStarting system test %s\n\n" % test)
         try:
-            build_run_compare(test, args.dockerfile.lower(), args.branch.lower(), True, "tests" in args.force_rebuild)
+            build_run_compare(test, args.dockerfile.lower(),
+                    args.branch.lower(), True, "tests" in args.force_rebuild,
+                    not args.keep)
         except subprocess.CalledProcessError:
             failed.append(test_basename)
         else:
@@ -73,11 +80,3 @@ if __name__ == "__main__":
         print("Following system tests failed: ")
         print(", ".join(failed))
         print('\n')
-
-    # Push
-    answer = input("Do you want to push the results (logfiles and possibly output files) to the output repo? (yes/no)\n")
-    if answer in ["yes", "y"]:
-        for x in success:
-            ccall("python push.py --success --test " + x + " --branch " + args.branch)
-        for y in failed:
-            ccall("python push.py --test " + y + " --branch " + args.branch)

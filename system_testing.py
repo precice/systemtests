@@ -14,21 +14,20 @@ Example:
 
 import argparse, filecmp, os, shutil, sys
 import common, docker
-from common import ccall, get_test_variants, filter_tests
+from subprocess import CalledProcessError
+from common import ccall, get_test_variants, filter_tests, get_test_participants
 
 def build(systest, tag, branch, local, force_rebuild):
     """ Builds a docker image for systest. """
-    baseimage_name = "precice-" + tag + "-" + branch + ":latest"
-    test_tag = systest + "-" +  tag + "-" + branch
-    if local:
-        docker.build_image(tag = test_tag,
-                           build_args = {"from" : docker.get_namespace() + baseimage_name},
-                           force_rebuild = force_rebuild)
-    else:
-        docker.build_image(tag = test_tag,
-                           build_args = {"from" :
-                               'precice/' + baseimage_name},
-                           force_rebuild = force_rebuild)
+
+    baseimage_name = "precice-{tag}-{branch}:latest".format(tag = tag, branch=branch)
+    test_tag = "-".join([systest, tag, branch])
+
+    docker.build_image(tag = test_tag,
+                       build_args = {"from" : docker.get_namespace() +
+                           baseimage_name if local
+                           else 'precice/' + baseimage_name},
+                       force_rebuild = force_rebuild)
 
 def run(systest, tag, branch):
     """ Runs (create a container from an image) the specified systest. """
@@ -36,6 +35,77 @@ def run(systest, tag, branch):
     ccall("docker run -it -d --name " + test_tag + " " + test_tag)
     shutil.rmtree("Output", ignore_errors=True)
     ccall("docker cp " + test_tag + ":Output . ")
+
+def build_adapters(systest, tag, branch, local, force_rebuild):
+    """ Builds a docker images for a preCICE adapter, participating in tests """
+    baseimage_name = "precice-{tag}-{branch}:latest".format(tag = tag, branch=branch)
+
+    participants = get_test_participants(systest)
+    docker_args = { 'tag': '',
+                   'build_args': {"from": docker.get_namespace() + baseimage_name if local
+                        else 'precice/' + baseimage_name },
+                   'force_rebuild': force_rebuild, 
+                   'dockerfile': 'Dockerfile'}
+
+    for participant in participants:
+
+        docker_args['tag'] = '-'.join([ participant, tag, branch])
+        docker_args['dockerfile'] = "Dockerfile." + participant
+
+        # skip "light-adapters" (e.g. nutils )
+        if os.path.exists("Dockerfile.{}".format(participant)):
+            docker.build_image(**docker_args)
+
+def run_compose(systest, branch, local, tag, force_rebuild, rm_all):
+    """ Runs necessary systemtest with docker compose """
+
+    dirname = "/TestCompose_{}".format(systest)
+    test_basename = systest.split('.')[0]
+
+    adapter_base_name="-".join([tag, branch])
+
+    # set up environment variables, to detect precice base image, that we
+    # should run with and docker images location
+    commands_main = ["""export PRECICE_BASE=-{base}; {extra_cmd} docker-compose config &&
+                         bash ../silent_compose.sh""".format(base =
+                        adapter_base_name, extra_cmd =\
+                        "export SYSTEST_REMOTE={remote};".format(
+                                remote = docker.get_namespace()) if local else "" ),
+                         "docker cp tutorial-data:/Output ."]
+    # rebuild tutorials image if needed
+    if force_rebuild:
+        commands_main.insert(0, "docker-compose build --no-cache")
+
+    commands_cleanup = ["docker-compose down -v"]
+
+    with common.chdir(os.getcwd() + dirname):
+
+        # cleanup previous results
+        shutil.rmtree("Output", ignore_errors=True)
+        
+        try: 
+            for command in commands_main:
+                ccall(command)
+
+            #compare results
+            path_to_ref = os.path.join(os.getcwd(), "referenceOutput")
+            path_to_otp = os.path.join(os.getcwd(), "Output")
+            comparison(path_to_ref, path_to_otp)
+
+            if rm_all:
+                for command in commands_cleanup:
+                    ccall(command)
+
+        except (CalledProcessError, IncorrectOutput)  as e: 
+            # cleanup in either case
+            if rm_all:
+                for command in commands_cleanup:
+                    ccall(command)
+            # generate a report of failurs for local tests
+            if local:
+                raise e
+            print ("TESTS FAILED WITH: {}".format(e))
+            sys.exit(1)
 
 
 class IncorrectOutput(Exception):
@@ -69,19 +139,28 @@ def comparison(pathToRef, pathToOutput):
 
 
 
-def build_run_compare(test, tag, branch, local_precice, force_rebuild):
+def build_run_compare(test, tag, branch, local_precice, force_rebuild, rm_all):
     """ Runs and compares test, using precice branch. """
-    dirname = "/Test_" + test
-    test_basename = test.split('.')[0]
-    with common.chdir(os.getcwd() + dirname):
-        # Build
-        build(test_basename, tag, branch, local_precice, force_rebuild)
-        run(test_basename, tag, branch)
-        # Preparing string for path
-        pathToRef = os.path.join(os.getcwd(), "referenceOutput")
-        pathToOutput = os.path.join(os.getcwd(), "Output")
-        # Comparing
-        comparison(pathToRef, pathToOutput)
+
+    # tests to run with docker compose
+    compose_tests = ["dealii-of", "of-of", "su2-ccx", "of-ccx", "of-of_np"]
+    test_basename = test.split(".")[0]
+    if local_precice:
+        build_adapters(test_basename, tag, branch, local_precice, force_rebuild)
+    if test_basename in compose_tests:
+        run_compose(test_basename, branch, local_precice, tag, force_rebuild, rm_all)
+    else:
+        # remaining, non compose tests
+        dirname = "/Test_{}".format(test)
+        with common.chdir(os.getcwd() + dirname):
+            # Build
+            build(test_basename, tag, branch, local_precice, force_rebuild)
+            run(test_basename, tag, branch)
+            # Preparing string for path
+            pathToRef = os.path.join(os.getcwd(), "referenceOutput")
+            pathToOutput = os.path.join(os.getcwd(), "Output")
+            # Comparing
+            comparison(pathToRef, pathToOutput)
 
 
 if __name__ == "__main__":
@@ -105,4 +184,5 @@ if __name__ == "__main__":
     else:
         test = test[0]
     tag = args.base.lower()
-    build_run_compare(test, tag, args.branch.lower(), args.local, args.force_rebuild)
+    build_run_compare(test, tag, args.branch.lower(), args.local,
+            args.force_rebuild, False)

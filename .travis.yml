@@ -11,37 +11,37 @@ jobs:
     if: fork = false
     name: "Arch Linux"
     script:
-    - docker build -f Dockerfile.Arch -t $DOCKER_USERNAME/precice-arch-develop .
+    - docker build -f Dockerfile.Arch -t precice/precice-arch-develop .
     after_success:
-    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-    - docker push $DOCKER_USERNAME/precice-arch-develop:latest
+    - echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin
+    - docker push precice/precice-arch-develop:latest
 
   - stage: Building preCICE
     if: fork = false
     name: "Ubuntu 16.04 home"
     script:
-    - docker build -f Dockerfile.Ubuntu1604.home -t $DOCKER_USERNAME/precice-ubuntu1604.home-develop .
+    - docker build -f Dockerfile.Ubuntu1604.home -t precice/precice-ubuntu1604.home-develop .
     after_success:
-    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-    - docker push $DOCKER_USERNAME/precice-ubuntu1604.home-develop:latest
+    - echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin
+    - docker push precice/precice-ubuntu1604.home-develop:latest
 
   - stage: Building preCICE
     if: type = cron
     name: "Ubuntu 16.04.sudo"
     script:
-    - docker build -f Dockerfile.Ubuntu1604.sudo -t $DOCKER_USERNAME/precice-ubuntu1604.sudo-develop .
+    - docker build -f Dockerfile.Ubuntu1604.sudo -t precice/precice-ubuntu1604.sudo-develop .
     after_success:
-    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-    - docker push $DOCKER_USERNAME/precice-ubuntu1604.sudo-develop:latest
+    - echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin
+    - docker push precice/precice-ubuntu1604.sudo-develop:latest
 
   - stage: Building preCICE
     if: type = cron
     name: "Ubuntu 16.04.package"
     script:
-    - docker build -f Dockerfile.Ubuntu1604.package -t $DOCKER_USERNAME/precice-ubuntu1604.package-develop .
+    - docker build -f Dockerfile.Ubuntu1604.package -t precice/precice-ubuntu1604.package-develop .
     after_success:
-    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-    - docker push $DOCKER_USERNAME/precice-ubuntu1604.package-develop:latest
+    - echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin
+    - docker push precice/precice-ubuntu1604.package-develop:latest
 
   - stage: Building preCICE
     name: "Ubuntu 18.04.home"
@@ -49,42 +49,66 @@ jobs:
     script:
     - docker build -f Dockerfile.Ubuntu1804.home -t precice .
     after_success:
-    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-    - docker push $DOCKER_USERNAME/precice-ubuntu1804.home-develop:latest
+    - echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin
+    - docker push precice/precice-ubuntu1804.home-develop:latest
 
   - stage: Building preCICE
     name: "Ubuntu 18.04.sudo"
     if: type = cron
     script:
-    - docker build -f Dockerfile.Ubuntu1804.sudo -t $DOCKER_USERNAME/precice-ubuntu1804.sudo-develop .
+    - docker build -f Dockerfile.Ubuntu1804.sudo -t precice/precice-ubuntu1804.sudo-develop .
     after_success:
-    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-    - docker push $DOCKER_USERNAME/precice-ubuntu1804.sudo-develop
+    - echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin
+    - docker push precice/precice-ubuntu1804.sudo-develop
 
   - stage: Building preCICE
     name: "Ubuntu 18.04.sudo.mpich"
     if: type = cron
     script:
-    - docker build -f Dockerfile.Ubuntu1804.sudo.mpich -t $DOCKER_USERNAME/precice-ubuntu1804.sudo.mpich-develop .
+    - docker build -f Dockerfile.Ubuntu1804.sudo.mpich -t precice/precice-ubuntu1804.sudo.mpich-develop .
     after_success:
-    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-    - docker push $DOCKER_USERNAME/precice-ubuntu1804.sudo.mpich-develop:latest
+    - echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin
+    - docker push precice/precice-ubuntu1804.sudo.mpich-develop:latest
 
   - stage: Building preCICE
     name: "Ubuntu 18.04.package"
     if: fork = false
     script:
-    - docker build -f Dockerfile.Ubuntu1804.package -t $DOCKER_USERNAME/precice-ubuntu1804.package-develop .
+    - docker build -f Dockerfile.Ubuntu1804.package -t precice/precice-ubuntu1804.package-develop .
     after_success:
-    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-    - docker push $DOCKER_USERNAME/precice-ubuntu1804.package-develop
+    - echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin
+    - docker push precice/precice-ubuntu1804.package-develop
 
   - name: "[Build on fork] Using cached version"
     if: fork = true
     script: true
 
+  - stage: Building adapters
+    script: docker build -f Dockerfile.su2-adapter -t $DOCKER_USERNAME/su2-adapter-ubuntu1604.home-develop .
+    name: SU2 adapter
+    after_success:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker push $DOCKER_USERNAME/su2-adapter-ubuntu1604.home-develop
 
-  - stage: System Tests
+  - name: CalculiX adapter
+    script: docker build -f Dockerfile.calculix-adapter -t $DOCKER_USERNAME/calculix-adapter-ubuntu1604.home-develop .
+    after_success:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker push $DOCKER_USERNAME/calculix-adapter-ubuntu1604.home-develop
+
+  - name: deal.ii adapter
+    script: docker build -f Dockerfile.dealii-adapter -t $DOCKER_USERNAME/dealii-adapter-ubuntu1604.home-develop .
+    after_success:
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      - docker push $DOCKER_USERNAME/dealii-adapter-ubuntu1604.home-develop
+
+  - name: openFOAM adapter
+    script: docker build -f Dockerfile.openfoam-adapter -t $DOCKER_USERNAME/openfoam-adapter-ubuntu1604.home-develop .
+    after_success:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker push $DOCKER_USERNAME/openfoam-adapter-ubuntu1604.home-develop
+
+  - stage: Tests
     script:
     - python system_testing.py -s su2-ccx
     name: "[16.04] SU2 <-> Calculix"
@@ -127,3 +151,10 @@ jobs:
     - python push.py -s -t dealii-of
     after_failure:
     - python push.py -t dealii-of
+  - script:
+    - python system_testing.py -s of-of_np
+    name: "[16.04] OpenFOAM <-> OpenFOAM [nearest projection]"
+    after_success:
+    - python push.py -s -t of-of_np
+    after_failure:
+    - python push.py -t of-of_np

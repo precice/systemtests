@@ -1,0 +1,26 @@
+ARG from=precice/precice-ubuntu1604.home-develop
+ARG base_solver=precice/openfoam
+FROM ${base_solver} as openfoam
+FROM $from
+
+USER root
+ENV USER=root
+
+# Install dependecies
+RUN apt-get -qq update && apt-get -qq install \
+    software-properties-common \
+    wget apt-transport-https \
+    libyaml-cpp-dev && \
+    rm -rf /var/lib/apt/lists/*
+
+ARG CACHEBUST
+
+COPY --from=openfoam /opt/openfoam4 /opt/openfoam4/
+
+# Building openfoam-adapter
+USER precice
+WORKDIR /home/precice
+RUN git clone https://github.com/precice/openfoam-adapter.git
+WORKDIR /home/precice/openfoam-adapter
+RUN . /opt/openfoam4/etc/bashrc && ./Allwmake
+RUN cd $HOME && mkdir -p Data/Input Data/Output Data/Exchange
