@@ -22,7 +22,8 @@ RUN apt-get -qq update && apt-get -qq install \
 ARG CACHEBUST
 
 # create user precice
-RUN useradd -ms /bin/bash precice
+RUN groupadd -g ${gid} precice \ 
+    && useradd -u ${uid} -g ${gid} -m -s /bin/bash precice
 USER precice
 WORKDIR /home/precice
 
