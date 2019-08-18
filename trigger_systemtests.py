@@ -13,19 +13,15 @@ from sys import exit
 import argparse
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
+from collections import namedtuple
 
-nm_repo_map = {'openfoam': 'openfoam-adapter',
-    'calculix' : 'calculix-adapter',
-    'su2': 'su2-adapter',
-    'dealii': 'dealii-adapter'}
+adapter_info = namedtuple('adapter_info', 'repo tests base')
 
-
-nm_test_map = {'openfoam': ['of-of', 'of-ccx'],
-        'calculix': ['of-ccx', 'su2-ccx'],
-        'su2': ['su2-ccx'], 
-        'dealii': ['dealii-of'],
-        }
-
+adapters_info = {"openfoam": adapter_info('openfoam-adapter', ['of-of', 'of-ccx'],  'Ubuntu1604.home'),
+                "calculix":  adapter_info('calculix-adapter', ['of-ccx','su2-ccx'], 'Ubuntu1604.home'),
+                "su2":       adapter_info('su2-adapter',      ['su2-ccx'],          'Ubuntu1604.home'),
+                "dealii":    adapter_info('dealii-adapter',   ['dealii-of'],        'Ubuntu1604.home'),
+                "fenics":    adapter_info('fenics-adapter',   ['fe-fe'],            'Ubuntu1804.home')}
 
 def get_json_response(url, **kwargs):
 
@@ -68,7 +64,7 @@ def adjust_travis_script(script, user, adapter):
         preprocess_cmd = "grep -rl --include=\*Dockerfile* github.com/{user}/{adapter}.git |\
         xargs sed -i '/github.com\/{user}\/{adapter}.git/a RUN cd {adapter} && {post_clone_cmd} && \
         cd .. /'".format(user = user, adapter =
-                nm_repo_map[adapter], post_clone_cmd = post_clone_cmd)
+                adapters_info[adapter].repo, post_clone_cmd = post_clone_cmd)
 
     main_script = join_jobs([ preprocess_cmd, script ])
 
@@ -91,9 +87,11 @@ def generate_travis_job(adapter, user, trigger_failure = True):
     triggered_by = os.environ["TRAVIS_JOB_WEB_URL"] if "TRAVIS_JOB_WEB_URL" in\
          os.environ else "manual script call"
 
-    after_failure_action = "python push.py -t {TEST};"
-    main_test_script = "python system_testing.py -s {TEST}"
-    main_build_script = "docker build -f Dockerfile.{adapter} -t {user}/{adapter} .".format(adapter = nm_repo_map[adapter], user = user )
+    base = adapters_info[adapter].base
+
+    after_failure_action = "python push.py -t {TEST} --base {BASE} ;"
+    main_test_script = "python system_testing.py -s {TEST} --base {BASE}"
+    main_build_script = "docker build -f Dockerfile.{adapter} -t {user}/{adapter} .".format(adapter = adapters_info[adapter].repo, user = user )
 
     if trigger_failure:
         after_failure_action += " python trigger_systemtests.py --failure --owner {USER} --adapter {ADAPTER}"
@@ -102,19 +100,19 @@ def generate_travis_job(adapter, user, trigger_failure = True):
     # template for building this particular adapter
     build_template = {
         "stage": "Building adapter",
-        "name": nm_repo_map[adapter],
+        "name": adapters_info[adapter].repo,
         "script": adjust_travis_script(main_build_script, user, adapter), 
         "after_success": 
             [  'echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME --password-stdin', 
-                "docker push {user}/{adapter}:{tag}".format(adapter =
-                    nm_repo_map[adapter], user = user,tag = determine_image_tag()) ]
+                "docker push {user}/{adapter}:{tag} --base {base}".format(adapter =
+                    adapters_info[adapter].repo, user = user,tag = determine_image_tag(), base = base) ]
         }
 
     # template for actually runnig an adapter in combination with other
     # adapters
     systest_templates = {
         "stage": "Running tests",
-        "name":          "[16.04] {TESTNAME} <-> {TESTNAME}",
+        "name":          "[{BASE}] {TESTNAME} <-> {TESTNAME}",
         # force docker-compose to consider an image with a particular tag
         "script":        "export ${adapter_tag}={tag}; ".format(adapter_tag = adapter.upper() + "_TAG", tag = determine_image_tag()) \
                         + main_test_script,
@@ -147,11 +145,11 @@ def generate_travis_job(adapter, user, trigger_failure = True):
     # generate jobs body for the request, build of an adapter
     # should be first stage
     jobs = [build_template]
-    for tests in nm_test_map[adapter]:
+    for tests in adapters_info[adapter].tests:
         job = {}
         for key,systest_template in systest_templates.items():
             job[key] = systest_template.format(TESTNAME=tests, USER=user, TEST=tests,
-                ADAPTER=adapter)
+                ADAPTER=adapter, BASE=base)
         jobs.append(job)
 
     job_body["request"]["message"] = "{} systemtest. Triggered by:{}".format(adapter, triggered_by)
@@ -260,7 +258,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate and trigger job for systemtests")
     parser.add_argument('--owner',  type=str, help="Owner of repository", default='precice' )
     parser.add_argument('--adapter', type=str, help="Adapter for which you want to trigger systemtests",
-              required=True, choices = ["openfoam", "su2", "calculix", "dealii"])
+              required=True, choices = adapters_info.keys() )
     parser.add_argument('--failure', help="Whether to trigger normal or failure build",
               action="store_true")
     parser.add_argument('--wait', help='Whether exit only when the triggered build succeeds',
@@ -270,16 +268,17 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.failure:
-        repo = nm_repo_map[ args.adapter ]
+        repo = adapters_info[ args.adapter ].repo
         trigger_travis_build( generate_failure_callback(), args.owner,repo)
     else:
         if args.test:
             job = generate_travis_job(args.adapter, args.owner, trigger_failure
                     = False)
             pprint.pprint(job)
-        if args.wait:
-            trigger_travis_and_wait_and_respond(generate_travis_job(args.adapter, args.owner, trigger_failure
-                = False), args.owner, 'systemtests' )
         else:
-            trigger_travis_build( generate_travis_job(args.adapter, args.owner),
-                         args.owner, 'systemtests' )
+            if args.wait:
+                trigger_travis_and_wait_and_respond(generate_travis_job(args.adapter, args.owner, trigger_failure
+                    = False), args.owner, 'systemtests' )
+            else:
+                trigger_travis_build( generate_travis_job(args.adapter, args.owner),
+                        args.owner, 'systemtests' )
