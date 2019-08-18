@@ -143,12 +143,12 @@ def build_run_compare(test, tag, branch, local_precice, force_rebuild, rm_all):
     """ Runs and compares test, using precice branch. """
 
     # tests to run with docker compose
-    compose_tests = ["dealii-of", "of-of", "su2-ccx", "of-ccx", "of-of_np"]
+    compose_tests = ["dealii-of", "of-of", "su2-ccx", "of-ccx", "of-of_np", "fe-fe"]
     test_basename = test.split(".")[0]
     if local_precice:
         build_adapters(test_basename, tag, branch, local_precice, force_rebuild)
     if test_basename in compose_tests:
-        run_compose(test_basename, branch, local_precice, tag, force_rebuild, rm_all)
+        run_compose(test, branch, local_precice, tag, force_rebuild, rm_all)
     else:
         # remaining, non compose tests
         dirname = "/Test_{}".format(test)
