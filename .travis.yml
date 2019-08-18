@@ -108,6 +108,13 @@ jobs:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker push $DOCKER_USERNAME/openfoam-adapter-ubuntu1604.home-develop
 
+  - name: FEniCS adapter
+    script: > docker build -f Dockerfile.fenics-adapter -t $DOCKER_USERNAME/fenics-adapter-ubuntu1804.home-develop 
+    --build-arg precice/precice-ubuntu1804.home-develop .
+    after_success:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker push $DOCKER_USERNAME/fenics-adapter-ubuntu1804.home-develop
+
   - stage: Tests
     script:
     - python system_testing.py -s su2-ccx
