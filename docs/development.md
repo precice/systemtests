@@ -1,9 +1,9 @@
 # Useful documentation
 
-* Docker
-* Docker-compose
-* Main Travis docs
-* Travis API
+* [Docker](https://docs.docker.com/)
+* [Docker-compose](https://docs.docker.com/compose/)
+* [Main Travis docs](https://docs.travis-ci.com/)
+* [Travis API](https://developer.travis-ci.com/)
 
 
 # Useful patterns and commands

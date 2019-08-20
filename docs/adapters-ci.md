@@ -5,8 +5,8 @@
 
 In order not to duplicate tests on different adapters, and reuse functionality provided here, Travis API 
 is used to trigger selected tests from this repository after commits to the adapters repositories. This is done by
-generating custom JSON with specification of the job and sending it to the Travis that triggers the build. Once the tests are finished
-their return status is queried/sent back (controlled by `--wait` argument) to the Travis job on the adapter repository, making it fail/pass, depending on the return status.
+generating custom JSON with specification of the job and sending it to the Travis that triggers the build (For overview of build triggering see [here](https://docs.travis-ci.com/user/triggering-builds/).
+Once the tests are finished their return status is queried/sent back (controlled by `--wait` argument) to the Travis job on the adapter repository, making it fail/pass, depending on the return status.
 You can learn more from `trigger_systemtests.py`, that handles all job generation and triggering.
 
 Since we don't need run full set of tests, when generating JSON only following stages are added:
@@ -32,6 +32,6 @@ Then the only thing remaining is to add `.travis.yml` to the adapter:
     - if: branch = master
       script: |
         curl -LO --retry 3 https://raw.githubusercontent.com/precice/systemtests/master/trigger_systemtests.py
-        python trigger_systemtests.py --adapter openfoam
+        python3 trigger_systemtests.py --adapter openfoam
 
 We also need to add `TRAVIS_ACCESS_TOKEN` in each adapter repository as a secure variable to authenticate build triggering. It can be found on the [Travis profile page](https://travis-ci.org/account/preferences).
