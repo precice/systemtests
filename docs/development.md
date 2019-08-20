@@ -9,8 +9,7 @@
 # Useful patterns and commands
 ##  During development of standalone Dockerfiles
 
-If something fails during the build you can determine the command where it failed and comment out the remaining of the Dockefile. Then rebuild and tag for instance
-`test_image`. You can then interactively try to follow commented out section of Dockefile, by starting container interactively
+If something fails during the build you can determine the command where it failed and comment out the remaining of the Dockerfile. Then rebuild and tag for instance `test_image`. You can then interactively try to follow commented out section of the Dockerfile, by starting the container interactively
 ```
    docker run -it --rm test_image /bin/bash
 ```
@@ -26,8 +25,7 @@ If something fails during running `docker-compose` due to communication problems
 ```
    docker-compose run -it calculix-adapter
 ```
-4. You can then try to rerun command in `docker-compose.yml` and check the folders `/home/precice/Data/Input`, `/home/precice/Data/Exchange`, 
-`/home/precice/Data/Output`. Make sure the `precice-config.xml` is properly setup, input can be read and folders have proper rights.
+4. You can then try to rerun command in `docker-compose.yml` and check the folders `/home/precice/Data/Input`, `/home/precice/Data/Exchange`, `/home/precice/Data/Output`. Make sure the `precice-config.xml` is properly setup, input can be read and folders have proper rights.
 
 You should also try to make sure, both runs on local and remote machine works by testing both `local_test.py` and `system_testing.py` with the considered test case.
 
@@ -39,12 +37,11 @@ You should also try to make sure, both runs on local and remote machine works by
 ```
    python3 system_testing.py -s su2-ccx
 ``` 
-3. If it fails locally, use above-mentioned techniques to debug it. If is does not, bad luck. 
+4. If it fails locally, use above-mentioned techniques to debug it. If is does not, bad luck. 
 
 ## If there are some network problems
 
-It can happen, that you cannot access the network from the inside of docker. You can try to fix it using `--network=host` during build of docker images 
-or by specifying `network: host` in the `docker-compose.yml`.
+It can happen, that you cannot access the network from the inside of docker. You can try to fix it using `--network=host` during build of docker images or by specifying `network: host` in the `docker-compose.yml`.
 
 
 ## If CI on adapters does not work
