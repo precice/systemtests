@@ -42,7 +42,7 @@ def get_json_response(url, **kwargs):
 def adjust_travis_script(script, user, adapter):
     """ Patches travis job in case we are running on fork or a different branch """
 
-    join_jobs = lambda jobs: " && ".join(filter(None, jobs))
+    join_jobs = lambda jobs: " \&\& ".join(filter(None, jobs))
 
     branch = os.environ.get("TRAVIS_BRANCH")
     pull_req = os.environ.get("TRAVIS_PULL_REQUEST")
@@ -54,7 +54,7 @@ def adjust_travis_script(script, user, adapter):
     pr_merge_cmd = None
     if pull_req and pull_req != "false":
         pr_merge_cmd = "git fetch origin\
-        +refs/pull/{}/merge && git checkout -qf FETCH_HEAD ".format(pull_req)
+        +refs/pull/{}/merge \&\& git checkout -qf FETCH_HEAD ".format(pull_req)
 
     post_clone_cmd = join_jobs([branch_switch_cmd, pr_merge_cmd])
 
@@ -63,11 +63,11 @@ def adjust_travis_script(script, user, adapter):
     preprocess_cmd = None
     if branch or not pull_req in [None, "false"]:
         preprocess_cmd = "grep -rl --include=\*Dockerfile* github.com/{user}/{adapter}.git |\
-        xargs sed -i '/github.com\/{user}\/{adapter}.git/a RUN cd {adapter} && {post_clone_cmd} && \
-        cd .. /'".format(user = user, adapter =
+        xargs sed -i 's|\(github.com/{user}/{adapter}.git\)|\\1 \&\& cd \
+        {adapter} \&\& {post_clone_cmd} \&\& cd .. |g'".format(user = user, adapter =
                 adapters_info[adapter].repo, post_clone_cmd = post_clone_cmd)
 
-    main_script = join_jobs([ preprocess_cmd, script ])
+    main_script = " && ".join(filter(None, ([ preprocess_cmd, script ])))
 
     return main_script
 
@@ -92,7 +92,12 @@ def generate_travis_job(adapter, user, trigger_failure = True):
 
     after_failure_action = "python push.py -t {TEST} --base {BASE} ;"
     main_test_script = "python system_testing.py -s {TEST} --base {BASE}"
-    main_build_script = "docker build -f Dockerfile.{adapter} -t {user}/{adapter} .".format(adapter = adapters_info[adapter].repo, user = user )
+
+    base_remote = "precice/precice-{base}-develop".format(base = base.lower())
+    main_build_script = "docker build -f Dockerfile.{adapter} -t \
+        {user}/{adapter} --build-arg from={base_remote} .".format(adapter =
+                adapters_info[adapter].repo, user = user, base_remote =
+                base_remote)
 
     if trigger_failure:
         after_failure_action += " python trigger_systemtests.py --failure --owner {USER} --adapter {ADAPTER}"
@@ -105,8 +110,8 @@ def generate_travis_job(adapter, user, trigger_failure = True):
         "script": adjust_travis_script(main_build_script, user, adapter), 
         "after_success": 
             [  'echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME --password-stdin', 
-                "docker push {user}/{adapter}:{tag} --base {base}".format(adapter =
-                    adapters_info[adapter].repo, user = user,tag = determine_image_tag(), base = base) ]
+                "docker push {user}/{adapter}:{tag}".format(adapter =
+                    adapters_info[adapter].repo, user = user,tag = determine_image_tag()) ]
         }
 
     # template for actually runnig an adapter in combination with other
