@@ -102,7 +102,7 @@ def run_compose(systest, branch, local, tag, force_rebuild, rm_all):
                 for command in commands_cleanup:
                     ccall(command)
             # generate a report of failurs for local tests
-            ccall("bash compare_results.sh {} {}", path_to_otp, path_to_ref)
+            ccall("bash compare_results.sh {} {}".format(path_to_otp, path_to_ref))
             if local:
                 raise e
             print ("TESTS FAILED WITH: {}".format(e))
