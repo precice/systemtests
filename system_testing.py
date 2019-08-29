@@ -102,7 +102,6 @@ def run_compose(systest, branch, local, tag, force_rebuild, rm_all):
                 for command in commands_cleanup:
                     ccall(command)
             # generate a report of failurs for local tests
-            ccall("bash compare_results.sh {} {}".format(path_to_otp, path_to_ref))
             if local:
                 raise e
             print ("TESTS FAILED WITH: {}".format(e))
@@ -136,7 +135,11 @@ def comparison(pathToRef, pathToOutput):
     """
     ret = common.get_diff_files(filecmp.dircmp(pathToRef, pathToOutput, ignore = [".gitkeep"]))
     if ret[0] or ret[1] or ret[2]:
-        raise IncorrectOutput(*ret)
+            
+        # check the results numerically now
+        num_diff = call("bash compare_results.sh {} {}".format(pathToRef, pathToOutPut))
+        if num_diff == 1:
+            raise IncorrectOutput(*ret)
 
 
 

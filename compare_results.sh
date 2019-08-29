@@ -1,11 +1,14 @@
 #!/bin/bash
 
-# Rough estimate of difference in numerical results of different sovlers
-# might need future parsing fixes for newly added adapters (awk will complain when this happen)
-# 
-# Input: folder where results should be compared and 
-# (optional) maximum relative difference between
-# difference numerical values in the files ( averaged over the file and over the individual field)
+# Roughly compares difference in numerical results between different adapter runs.
+# The values should not be completely different, but might vary in non-significant digits
+# due to FP on different architectures/OS.
+#
+# It just strips away all "non-numerical" looking data and then compares files field by field. 
+# Might need future parsing fixes for newly added adapters (awk will complain when this happen)
+#
+# Input: folder where results should be compared and (optional) maximum relative difference between
+# numerical values in the reference and obtained files ( averaged over the file and over the individual field)
 
 avg_diff_limit="0.01"
 max_diff_limit="0.01"
@@ -32,6 +35,8 @@ do case $i in
     echo "Uknown options $i. Possible options: --avg_diff, --max_diff "; exit 1;;
 esac
 done
+
+ret=0
 
 # Get the list of files that differ
 diff_result=$( diff -rq $folder1 $folder2 )
@@ -76,11 +81,16 @@ if [ -n "$diff_files" ]; then
       difference=( $rel_max_difference )
       echo "Difference between numerical fields in $file1 and $file2 -  Average: ${difference[0]}. Maximum: ${difference[1]}"
       diff -yr --suppress-common-lines $folder1 $folder2
+      ret=1
     fi
   done
 fi
 
-# Files that are present only in one system
+# Files that are present only in reference or obtained
+# folder
 if [ -n "$only_files" ]; then
   echo "$only_files"
+  ret=1
 fi
+
+exit $ret
