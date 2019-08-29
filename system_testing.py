@@ -15,7 +15,7 @@ Example:
 import argparse, filecmp, os, shutil, sys
 import common, docker
 from subprocess import CalledProcessError
-from common import ccall, get_test_variants, filter_tests, get_test_participants
+from common import call, ccall, get_test_variants, filter_tests, get_test_participants
 
 def build(systest, tag, branch, local, force_rebuild):
     """ Builds a docker image for systest. """
