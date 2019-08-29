@@ -28,6 +28,8 @@ RUN add-apt-repository -y ppa:fenics-packages/fenics && \
 
 RUN pip3 install --user cython  # TODO: can we put this dependency into requirements.txt of python_future?
 
+USER precice
+
 # Builds the python_future python bindings for python3
 RUN cd $PRECICE_ROOT/src/precice/bindings/python_future && \
     pip3 install --user .
@@ -40,22 +42,11 @@ RUN cd $PRECICE_ROOT/src/precice/bindings/python && \
 ARG CACHEBUST
 
 # Building fenics-adapter
-WORKDIR /
+WORKDIR /home/precice
 RUN git clone https://github.com/precice/fenics-adapter.git && \
     cd fenics-adapter && \
     pip3 install --user . && \
     python3 setup.py test
 
-# Downloading tutorial and run it
-WORKDIR /
-RUN git clone https://github.com/precice/tutorials.git
-WORKDIR /tutorials/HT/partitioned-heat/fenics-fenics
-RUN pip3 install --user -r requirements.txt && \    
-    python3 heat.py -d & python3 heat.py -n
-
-# Copying output files to a folder for further examination
-WORKDIR /
-RUN mkdir Output && \
-    cp /tutorials/HT/partitioned-heat/fenics-fenics/precice-HeatDirichlet-iterations.log /Output/ && \
-    cp /tutorials/HT/partitioned-heat/fenics-fenics/precice-HeatNeumann-convergence.log /Output/ && \
-    cp /tutorials/HT/partitioned-heat/fenics-fenics/precice-HeatNeumann-iterations.log  /Output/   
+RUN mkdir -p Data/Input Data/Output Data/Exchange
+WORKDIR /home/precice/fenics-adapter

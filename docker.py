@@ -29,6 +29,6 @@ def build_image(tag, dockerfile = "Dockerfile", build_args = {}, force_rebuild =
     if force_rebuild:
         build_args["CACHEBUST"] = datetime.datetime.now().isoformat() # A unique string for every invocation
     args = " ".join(["--build-arg " + a + "=" + b for a, b in build_args.items()])
-    cmd = "docker build --file {dockerfile} --tag {namespace}{tag} {build_args} .".format(dockerfile=dockerfile, namespace=get_namespace(), tag=tag.lower(), build_args=args)
+    cmd = "docker build --network=host --file {dockerfile} --tag {namespace}{tag} {build_args} .".format(dockerfile=dockerfile, namespace=get_namespace(), tag=tag.lower(), build_args=args)
     print("EXECUTING:", cmd)
     subprocess.run(cmd, shell = True, check = True)

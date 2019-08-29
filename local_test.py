@@ -52,9 +52,10 @@ if __name__ == "__main__":
 
     # Building preCICE
     print("\n\nBuilding preCICE docker image with choosen branch\n\n")
-    docker.build_image("precice-" + args.dockerfile.lower() + "-" + args.branch, args.dockerfile,
-                       build_args = {"branch" : args.branch},
-                       force_rebuild = "precice" in args.force_rebuild)
+    with common.chdir(os.path.join(os.getcwd(), 'base_precice')):
+        docker.build_image("precice-" + args.dockerfile.lower() + "-" + args.branch, args.dockerfile,
+                           build_args = {"branch" : args.branch},
+                           force_rebuild = "precice" in args.force_rebuild)
     # Starting system tests
     failed = []
     success = []

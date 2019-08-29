@@ -21,7 +21,7 @@ def determine_test_name(test):
     return test.split('.')[0]
 
 
-def get_tests(root = os.getcwd()):
+def get_tests(root = os.path.join(os.getcwd(), 'tests')):
     """ List of all available system tests """
     prefixes = ["Test_", "TestCompose_"]
     tests = list(set([determine_test_name(s[len(prefix ):]) for prefix in prefixes for s in
@@ -29,7 +29,7 @@ def get_tests(root = os.getcwd()):
     return tests
 
 
-def get_test_variants(test_name, root = os.getcwd()):
+def get_test_variants(test_name, root = os.path.join(os.getcwd(), 'tests')):
     """ List of all available system tests """
     prefixes = ["Test_", "TestCompose_"]
     test_variants = [s[len(prefix):]  for prefix in prefixes for s in os.listdir(root)
@@ -44,7 +44,7 @@ def get_test_variants(test_name, root = os.getcwd()):
 def get_test_participants(test_name):
     """ Returns solvers that participate in the test """
     solvers_abbr = {"ccx": "calculix-adapter", "su2": "su2-adapter", "of": "openfoam-adapter", 
-            "dealii":"dealii-adapter", "bindings": "bindings"}
+            "dealii":"dealii-adapter", "bindings": "bindings", "fe":"fenics-adapter"}
 
     return [solvers_abbr[abbr] for abbr in  test_name.lower().split('_')[0].split('-')]
 
