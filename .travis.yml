@@ -28,8 +28,9 @@ jobs:
   - stage: Building preCICE
     if: fork = false
     name: "Ubuntu 16.04 home PETSc"
-    script:
-    - docker build -f Dockerfile.Ubuntu1604.home.PETSc -t precice/precice-ubuntu1604.home.petsc-develop .
+    script: >
+      docker build -f Dockerfile.Ubuntu1604.home -t precice/precice-ubuntu1604.home.petsc-develop .
+      --build-arg --petsc_para=yes
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin
     - docker push precice/precice-ubuntu1604.home.petsc-develop:latest
