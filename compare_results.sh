@@ -4,7 +4,7 @@
 # The values should not be completely different, but might vary in non-significant digits
 # due to FP on different architectures/OS.
 #
-# It just strips away all "non-numerical" looking data and then compares files field by field. 
+# It just strips away all "non-numerical" looking data and then compares files field by field.
 # Might need future parsing fixes for newly added adapters (awk will complain when this happen)
 #
 # Input: folder where results should be compared and (optional) maximum relative difference between
@@ -23,7 +23,7 @@ else
   shift
 fi
 
-for i in "$@"; 
+for i in "$@";
 do case $i in
     --avg_diff=*)
     avg_diff_limit="${i#*=}"
