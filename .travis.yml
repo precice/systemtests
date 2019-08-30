@@ -30,7 +30,7 @@ jobs:
     name: "Ubuntu 16.04 home PETSc"
     script: >
       docker build -f Dockerfile.Ubuntu1604.home -t precice/precice-ubuntu1604.home.petsc-develop .
-      --build-arg --petsc_para=yes
+      --build-arg petsc_para=yes
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin
     - docker push precice/precice-ubuntu1604.home.petsc-develop:latest
@@ -177,3 +177,10 @@ jobs:
     - python push.py -s -t of-of_np
     after_failure:
     - python push.py -t of-of_np
+  - script:
+    - python system_testing.py -s of-of_np
+    name: "[16.04 PETSc] OpenFOAM <-> CalculiX [FSI]"
+    after_success:
+    - python push.py -s -t of-ccx_fsi
+    after_failure:
+    - python push.py -t of-ccx_fsi
