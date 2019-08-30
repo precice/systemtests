@@ -15,7 +15,7 @@ Example:
 import argparse, filecmp, os, shutil, sys
 import common, docker
 from subprocess import CalledProcessError
-from common import ccall, get_test_variants, filter_tests, get_test_participants
+from common import call, ccall, get_test_variants, filter_tests, get_test_participants
 
 def build(systest, tag, branch, local, force_rebuild):
     """ Builds a docker image for systest. """
@@ -135,7 +135,10 @@ def comparison(pathToRef, pathToOutput):
     """
     ret = common.get_diff_files(filecmp.dircmp(pathToRef, pathToOutput, ignore = [".gitkeep"]))
     if ret[0] or ret[1] or ret[2]:
-        raise IncorrectOutput(*ret)
+        # check the results numerically now
+        num_diff = call("bash ../compare_results.sh {} {}".format(pathToRef, pathToOutput))
+        if num_diff == 1:
+            raise IncorrectOutput(*ret)
 
 
 
