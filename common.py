@@ -33,15 +33,20 @@ def get_test_variants(test_name, root = os.getcwd()):
     """ List of all available system tests """
     prefixes = ["Test_", "TestCompose_"]
     test_variants = [s[len(prefix):]  for prefix in prefixes for s in os.listdir(root)
-            if s.startswith(prefix +test_name)]
+            if s.startswith(prefix + test_name)]
+    # filter cases with same participants
+    if test_name and not "_" in test_name:
+        test_variants = [t for t in test_variants if not "_" in t]
+
     return test_variants
 
 
 def get_test_participants(test_name):
     """ Returns solvers that participate in the test """
     solvers_abbr = {"ccx": "calculix-adapter", "su2": "su2-adapter", "of": "openfoam-adapter", 
-            "dealii":"dealii-adapter", "bindings": "bindings", "nutils": "nutils"}
-    return [solvers_abbr[abbr] for abbr in test_name.lower().split('-')]
+            "dealii":"dealii-adapter", "bindings": "bindings", "fe":"fenics-adapter", "nutils": "nutils"}
+
+    return [solvers_abbr[abbr] for abbr in  test_name.lower().split('_')[0].split('-')]
 
 
 from contextlib import contextmanager
