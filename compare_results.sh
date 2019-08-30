@@ -64,7 +64,7 @@ if [ -n "$diff_files" ]; then
     # Paiwise compares files fields, that are produces from diffs and computes average and maximum
     # relative differences
     if [ -n "$filtered_diff" ]; then
-      rel_max_difference=$( echo "$filtered_diff" | awk 'function abs(v) {return v < 0 ? -v : v} { radius=NF/2;
+      rel_max_difference=$( export max_diff_limit; export avg_diff_limit; echo "$filtered_diff" | awk 'function abs(v) {return v < 0 ? -v : v} { radius=NF/2;
               max_diff=0;
               for(i = 1; i <= radius; i++) {
               if ($i != 0) {
@@ -74,7 +74,7 @@ if [ -n "$diff_files" ]; then
               }
              }
              } END { diff=sum/( NR*radius ); if (diff > ENVIRON["avg_diff_limit"] || max_diff > ENVIRON["max_diff_limit"])  { print diff, max_diff }}')
-  fi
+    fi
 
     if [ -n "$rel_max_difference" ]; then
       # Split by space and transform into the array
