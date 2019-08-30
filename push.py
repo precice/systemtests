@@ -66,9 +66,9 @@ if __name__ == "__main__":
     if not args.success:
         system_suffix = "." + args.base
         # Move ouput to folder of this test case
-        test_folder = os.getcwd() + '/Test_' + systest + system_suffix
+        test_folder = os.getcwd() + '/TestCompose_' + systest + system_suffix
         if not os.path.isdir(test_folder):
-            test_folder = 'Test_' + systest
+            test_folder = 'TestCompose_' + systest
         source_dir = test_folder + "/Output"
         dest_dir = log_dir + "/Output_" + systest
         # source folder was not created, we probably failed before producing

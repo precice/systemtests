@@ -84,29 +84,29 @@ jobs:
     script: true
 
   - stage: Building adapters
-    script: docker build -f Dockerfile.su2-adapter -t $DOCKER_USERNAME/su2-adapter-ubuntu1604.home-develop .
+    script: docker build -f Dockerfile.su2-adapter -t precice/su2-adapter-ubuntu1604.home-develop .
     name: SU2 adapter
     after_success:
-    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-    - docker push $DOCKER_USERNAME/su2-adapter-ubuntu1604.home-develop
+    - echo "$DOCKER_PASSWORD" | docker login -u "precice" --password-stdin
+    - docker push precice/su2-adapter-ubuntu1604.home-develop
 
   - name: CalculiX adapter
-    script: docker build -f Dockerfile.calculix-adapter -t $DOCKER_USERNAME/calculix-adapter-ubuntu1604.home-develop .
+    script: docker build -f Dockerfile.calculix-adapter -t precice/calculix-adapter-ubuntu1604.home-develop .
     after_success:
-    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-    - docker push $DOCKER_USERNAME/calculix-adapter-ubuntu1604.home-develop
+    - echo "$DOCKER_PASSWORD" | docker login -u "precice" --password-stdin
+    - docker push precice/calculix-adapter-ubuntu1604.home-develop
 
   - name: deal.ii adapter
-    script: docker build -f Dockerfile.dealii-adapter -t $DOCKER_USERNAME/dealii-adapter-ubuntu1604.home-develop .
+    script: docker build -f Dockerfile.dealii-adapter -t precice/dealii-adapter-ubuntu1604.home-develop .
     after_success:
-      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-      - docker push $DOCKER_USERNAME/dealii-adapter-ubuntu1604.home-develop
+      - echo "$DOCKER_PASSWORD" | docker login -u "precice" --password-stdin
+      - docker push precice/dealii-adapter-ubuntu1604.home-develop
 
   - name: openFOAM adapter
-    script: docker build -f Dockerfile.openfoam-adapter -t $DOCKER_USERNAME/openfoam-adapter-ubuntu1604.home-develop .
+    script: docker build -f Dockerfile.openfoam-adapter -t precice/openfoam-adapter-ubuntu1604.home-develop .
     after_success:
-    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-    - docker push $DOCKER_USERNAME/openfoam-adapter-ubuntu1604.home-develop
+    - echo "$DOCKER_PASSWORD" | docker login -u "precice" --password-stdin
+    - docker push precice/openfoam-adapter-ubuntu1604.home-develop
 
   - name: FEniCS adapter
     script: >
@@ -159,6 +159,13 @@ jobs:
     - python push.py -s -t dealii-of
     after_failure:
     - python push.py -t dealii-of
+  - script:
+    - python system_testing.py -s nutils-of
+    name: "[16.04] nutils <-> OpenFOAM"
+    after_success:
+    - python push.py -s -t nutils-of
+    after_failure:
+    - python push.py -t nutils-of
   - script:
     - python system_testing.py -s of-of_np
     name: "[16.04] OpenFOAM <-> OpenFOAM [nearest projection]"
