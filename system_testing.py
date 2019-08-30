@@ -137,7 +137,7 @@ def comparison(pathToRef, pathToOutput):
     if ret[0] or ret[1] or ret[2]:
             
         # check the results numerically now
-        num_diff = call("bash compare_results.sh {} {}".format(pathToRef, pathToOutPut))
+        num_diff = call("bash ../compare_results.sh {} {}".format(pathToRef, pathToOutput))
         if num_diff == 1:
             raise IncorrectOutput(*ret)
 
