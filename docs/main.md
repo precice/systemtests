@@ -56,4 +56,6 @@ At this stage, we spawn containers with the necessary solvers for the simulation
 
 The tests are based on the corresponding tutorials from the [tutorials repository](https://github.com/precice/tutorials). Several modifications are necessary to decouple the input to solvers, adjust simulation time, or change solver version and to modify `precice-config.xml` for simulation with docker. This is done with `Dockerfile.tutorial_data` image, that clones the tutorial data, adjusts and splits the input to different solvers. It is then is used as first container spawned by `docker-compose`.
 
-Afterwards, when the simulation finishes the output is copied from all the solvers into the common volume and compared to the reference output. An error is thrown if they don't match. In either case after tests finishes, all volumes, networks and containers are removed.
+Afterwards, when the simulation finishes the output is copied from all the solvers into the common volume and compared to the reference output. An error is thrown if they don't match. Since it is possible for the output of the identical tests to differ in floating points due to specifics of the machine and OS, after simple comparison of the output file by file it is also compared numerically using `compare_results.sh`. It strips aways non-numerical data and then compared files field by field with respect to specified relative tolerance.
+
+In either case after tests finishes, all volumes, networks and containers are removed.
