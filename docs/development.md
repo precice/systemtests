@@ -56,10 +56,10 @@ Then you can  run and check the generated JSON file without sending a request
 If it looks fine, you can run it without `--test` to actually send the request to Travis. Then check the triggered builds.
 If there are no builds visible there, check the `requests` section of Travis, maybe Travis could not interpret the request correctly.
 
-## If you want to use Dockefiles for your own development
+## If you want to use Dockerfiles for your own development
 
 Some users might want to run coupled simulations without having everything installed on the same system.
-For instance mount your own input for each adapter to `/home/precice/Data/Input` and get output from
+For instance mount input folders from your machine to `/home/precice/Data/Input` in the container and get output from
 `/home/precice/Data/Output`.
 
 With the provided setup and a few tweaks this is easy to achieve. Using the example of the fenics-adapter:

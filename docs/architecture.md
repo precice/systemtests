@@ -11,7 +11,7 @@ Resultant images are then pushed to the [Dockerhub](https://hub.docker.com/u/pre
 
 ## Building solvers
 
-Is done once for every solver, using `Dockefile.${solver_name}`. Resultant images are then stored on the [Dockerhub](https://hub.docker.com/u/precice).
+Is done once for every solver, using `Dockerfile.${solver_name}`. Resultant images are then stored on the [Dockerhub](https://hub.docker.com/u/precice).
 
 ## Building adapters
 
@@ -39,11 +39,11 @@ Note, that due to the fact that each adapter "adapts" differently, the general p
   Same as for the deal.II adapter.
 
 - **Nutils adapter**
-  The Nutils adapter is a Python script with Nutils and preCICE for a particular test case. We therefore only provide a Nutils adapter Dockefile for
+  The Nutils adapter is a Python script with Nutils and preCICE for a particular test case. We therefore only provide a Nutils adapter Dockerfile for
  the test running stage (not for the building stage).
 
 - **FEniCS adapter**
-  We install FEniCS, together with the FEniCS adapter using `Dockefile.fenics-adapter` file.
+  We install FEniCS, together with the FEniCS adapter using `Dockerfile.fenics-adapter` file.
 
 
 All adapters are built using user `precice` with `gid` and `uid` equal to 1000 and of `precice` group. As a last building stage they create folder for the file system volume mapping in
