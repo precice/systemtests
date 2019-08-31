@@ -19,4 +19,4 @@ System tests for the distributed multi-physics coupling library library preCICE
    python3 local_test.py -s of-of su2-ccx -f Dockefile.Ubuntu1604.home
 ``` 
 
-More information can be found in the [docs](`www.github.com/precice/systemtests/docs`)
+More information can be found in the [docs](docs/))
