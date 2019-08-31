@@ -15,6 +15,10 @@ If something fails during building, you can determine the failing command and co
 ```
 Usually it is much easier to debug in this way.
 
+If you are developing a new base image for preCICE, make sure you create a user `precice`, in group `precice` with `uid` and `gid` equal to 1000, as done in 
+other base dockerfiles. Additionally, make sure that precice in installed in `/home/precice/precice`, and create folders `/home/precice/Data/Exchange`, 
+`/home/precice/Data/Input` and `/home/precice/Data/Output`, that should be owned by `precice` user.
+
 ## During development of the test cases
 
 If something fails during running `docker-compose` due to communication problems or invalid input, the easiest way to debug is:
