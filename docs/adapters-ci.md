@@ -1,13 +1,22 @@
 
-# General architecture
+# Continuous Integration on adapters repositories
+
+This file documents solution that ensures continuous integration for adapters, including different branch
+and pull requests without unnecessary code duplication.
 
 ## Triggering the build from the adapter
 
 In order not to duplicate tests on different adapters, and to reuse functionality provided here, we use the Travis API
-to trigger selected tests from this repository after commits to the adapters repositories. This is done by
-generating custom JSON with specification of the job and sending it to the Travis that triggers the build (For overview of build triggering see [here](https://docs.travis-ci.com/user/triggering-builds/)).
-Once the tests are finished,  their return status is queried/sent back (controlled by `--wait` argument) to the Travis job on the adapter repository, making it fail/pass, depending on the return status.
-You can learn more from `trigger_systemtests.py`, which handles all job generation and triggering.
+to trigger selected tests present in this repository after commits to the adapters repositories. This is done by
+generating custom JSON with specification of the job and sending it to the Travis that triggers the build on this repository(For the overview of build triggering and custom jobs 
+see [here](https://docs.travis-ci.com/user/triggering-builds/)).
+Correspondingly, in order to send this request a simple Travis job needs to be present on adapters repository, so that it runs the main triggering script.
+Once the tests are finished, their return status is queried/sent back (controlled by `--wait` argument) to the Travis job on the adapter repository. 
+In case `--wait` flag is on, Travis job on adapter's repository essentially performs a blocking call, that does not return until tests finish (two running jobs 
+will be then seen in Travis dashboard - one for systemtests and one for the adapter). Alternatively, non-blocking call is possible - in that case, in order to indicate
+failure of the test, the script will trigger "failing job" on the adapters repository if the test fails.
+
+You can learn more from `trigger_systemtests.py`, which handles all of described functionality.
 
 Since we don't need to run a full set of tests, only the following stages are added when generating the JSON job configuration file:
 - Building the adapter

@@ -1,10 +1,11 @@
 # General architecture
 
-Tests are executed in several stages:
+When running on Travis tests are executed in the several stages that are outlined below. 
+When it comes to local tests, steps are identical, but the push to the remote dockerhub repository is absent.
 
 ## Building preCICE
 
-Several images of preCICE are built, based on different system (Ubuntu 16.04/18.04, Arch Linux) and different specifications
+Several images of preCICE are built, based on different systems (Ubuntu 16.04/18.04, Arch Linux) and different specifications
 of properties of the image ( root/non-root, package, different MPI versions ). This corresponds to the `Dockerfile.$systemname$.${system_spec}`
 Resultant images are then pushed to the [Dockerhub](https://hub.docker.com/u/precice).
 
@@ -53,7 +54,7 @@ All adapters are built using user `precice` with `gid` and `uid` equal to 1000 a
 At this stage, we spawn containers with the necessary solvers for the simulation. The execution is controlled using [docker-compose](https://docs.docker.com/compose/). Separate volumes are created for the input and the output of every adapter. An additional docker network is created and used for the communication between containers. Exchange of data is done using an additional, common volume. The general pattern across the tests for such volumes are paths
 such as `/home/precice/Data/Exchange`, `/home/precice/Data/Input`, `/home/precice/Data/Output`, as explained above.
 
-The tests are based on the corresponding tutorials from the [tutorials repository](https://github.com/precice/tutorials). Several modifications are necessary to decouple the input to solvers,
+The tests are based on the corresponding tutorials from the [tutorials repository](https://github.com/precice/tutorials). Several modifications are necessary to split the input to solvers in different directories,
 to adjust the simulated time, or to potentially change a solver's version, as well as to modify the `precice-config.xml` for the communication pattern we use in docker. This is done using the `Dockerfile.tutorial_data` image, which clones the tutorial data and adjusts and splits the input to different solvers. It is then used as the first container spawned by `docker-compose`.
 
 Afterwards, when the simulation finishes, the output is copied from all the solvers into the common volume and is compared to the reference output. An error is thrown if they don't match.

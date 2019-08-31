@@ -6,7 +6,7 @@ System tests for the distributed multi-physics coupling library library preCICE.
 This repository provides Dockerfiles for building preCICE images, solvers, and adapters, as well as docker-compose files and scripts that coordinate everything.
 More information can be found in the [docs](docs/))
 
-# Dependencies
+## Dependencies
 
 * [preCICE](https://github.com/precice/precice)
 * [docker](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
@@ -17,7 +17,7 @@ More information can be found in the [docs](docs/))
     * With ```configparser``` (install for example with ```pip3 install configparser```)
 
 
-# Main scripts
+## Main scripts
 
 - `system_testing.py` is the main script to run automatic testing on CI system
 - `local_test.py` is a simple wrapper to run tests on a local machine
