@@ -158,7 +158,7 @@ if __name__ == "__main__":
 
     os.chdir(log_dir)
 
-    #add_job_log(args.test, not args.success, log_dir)
+    add_job_log(args.test, not args.success, log_dir)
     add_output_files(output_dir, output_log_dir, args.success)
 
     # finally commit 
