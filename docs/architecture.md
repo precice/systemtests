@@ -20,7 +20,7 @@ To build an adapter we follow a two-stage build, first importing from the preCIC
 (if the solver's image is actually relevant for building the adapter).We can import from different preCICE base images by specifying `from` 
 argument during building of the image, e.g:
 ```
-docker build --build-arg from=precice/precice-ubuntu1804.home-develop -f Dockerfile.openfoam-adapter -t openfoam-adapter-ubuntu1804.home-develop .
+docker build --build-arg from=precice/precice-ubuntu1804.home-develop -d Dockerfile.openfoam-adapter -t openfoam-adapter-ubuntu1804.home-develop .
 ```
 Note, that due to the fact that each adapter "adapts" differently, the general procedure is slightly different and is outlined below:
 
@@ -54,12 +54,11 @@ All adapters are built using user `precice` with `gid` and `uid` equal to 1000 a
 At this stage, we spawn containers with the necessary solvers for the simulation. The execution is controlled using [docker-compose](https://docs.docker.com/compose/). Separate volumes are created for the input and the output of every adapter. An additional docker network is created and used for the communication between containers. Exchange of data is done using an additional, common volume. The general pattern across the tests for such volumes are paths
 such as `/home/precice/Data/Exchange`, `/home/precice/Data/Input`, `/home/precice/Data/Output`, as explained above.
 
-The tests are based on the corresponding tutorials from the [tutorials repository](https://github.com/precice/tutorials). Several modifications are necessary to split the input to solvers in different directories,
-to adjust the simulated time, or to potentially change a solver's version, as well as to modify the `precice-config.xml` for the communication pattern we use in docker. This is done using the `Dockerfile.tutorial_data` image, which clones the tutorial data and adjusts and splits the input to different solvers. It is then used as the first container spawned by `docker-compose`.
+The tests are based on the corresponding tutorials from the [tutorials repository](https://github.com/precice/tutorials). Since tests run using independent containers, several modifications are necessary to split the input to solvers in different directories, to adjust the simulated time, or to potentially change a solver's version, as well as to modify the `precice-config.xml` for the communication pattern we use in docker. This is done using the `Dockerfile.tutorial_data` image, which clones the tutorial data and adjusts and splits the input to different solvers. It is then used as the first container spawned by `docker-compose`.
 
 Afterwards, when the simulation finishes, the output is copied from all the solvers into the common volume and is compared to the reference output. An error is thrown if they don't match.
 
 Since it is possible for the output of two identical tests to differ in floating points due to a different machine or OS(as we test different systems and properties), after simple, file by file comparison of the output,
-the files are also compared numerically using `compare_results.sh`. This script strips away non-numerical data and then compares files field by field with respect to a specified relative tolerance.
+the files are also compared numerically using `compare_results.sh`. This script strips away non-numerical data and then compares files field by field with respect to a specified relative tolerance (default maximum allowed difference is 1 percent)
 
 In either case after a test finishes, all the related volumes, networks and containers are removed.
