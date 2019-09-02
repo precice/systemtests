@@ -124,7 +124,7 @@ def generate_commit_message(output_dir, success):
     travis_job_web_url = os.environ["TRAVIS_JOB_WEB_URL"]
     commit_msg_lines = []
 
-    if sucess:
+    if success:
         commit_msg_lines = ["Output == Reference build number: {}".format(travis_build_number)]
     # folder with output was not created, we probably failed before producing
     # any of the results
