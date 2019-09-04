@@ -48,8 +48,9 @@ Note, that due to the fact that each adapter "adapts" differently, the general p
   We install FEniCS, together with the FEniCS adapter using `Dockerfile.fenics-adapter` file.
 
 
-All adapters are built using user `precice` with `gid` and `uid` equal to 1000 and of `precice` group. As a last building stage they create folder for the file system volume mapping in
-`/home/precice/Data` folder.
+All adapters are built using user `precice` with `gid` and `uid` equal to 1000 (by default) and of `precice` group. As a last building stage they create folder for the file system volume mapping in `/home/precice/Data` folder.
+
+This is done to ensure consistent user rights for writing and reading from mounted directories without a need to use root user on the host system. Running root within container will work, but will lead to output directory being owned by root on host. Running with different users in different directories will cause problems with access to e.g. `/home/precice/Data/Exchange` directory. More information and motivation behind the solution can be found [this blogs post](https://medium.com/@nielssj/docker-volumes-and-file-system-permissions-772c1aee23ca) and [this issue](https://github.com/moby/moby/issues/2259).
 
 ## Running tests
 
