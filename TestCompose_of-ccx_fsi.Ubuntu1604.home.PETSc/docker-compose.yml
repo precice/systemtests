@@ -1,4 +1,4 @@
-version: '3.4'
+version: '3'
 services:
   
   openfoam-adapter: 
@@ -42,7 +42,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.tutorial_data
-      network: host
     volumes:
       - fluid_input:/tutorials/FSI/flap_perp/OpenFOAM-CalculiX/Fluid
       - solid_input:/tutorials/FSI/flap_perp/OpenFOAM-CalculiX/Solid
