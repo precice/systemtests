@@ -178,7 +178,7 @@ jobs:
     after_failure:
     - python push.py -t of-of_np
   - script:
-    - python system_testing.py -s of-ccx_fsi
+    - python system_testing.py -s of-ccx_fsi --base Ubuntu1604.home.PETSc
     name: "[16.04 PETSc] OpenFOAM <-> CalculiX [FSI]"
     after_success:
     - python push.py -s -t of-ccx_fsi
