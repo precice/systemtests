@@ -7,11 +7,13 @@ When it comes to local tests, steps are identical, but the push to the remote do
 
 Several images of preCICE are built, based on different systems (Ubuntu 16.04/18.04, Arch Linux) and different specifications
 of properties of the image ( root/non-root, package, different MPI versions ). This corresponds to the `Dockerfile.$systemname$.${system_spec}`
-Resultant images are then pushed to the [Dockerhub](https://hub.docker.com/u/precice).
+Resulting images are then pushed to the [Dockerhub](https://hub.docker.com/u/precice).
 
 ## Building solvers
 
-Is done once for every solver, using `Dockerfile.${solver_name}`. Resultant images are then stored on the [Dockerhub](https://hub.docker.com/u/precice).
+Is done once for every solver, using `Dockerfile.${solver_name}`.
+
+Resulting images are then stored on the [Dockerhub](https://hub.docker.com/u/precice).
 
 ## Building adapters
 
@@ -29,7 +31,7 @@ Note, that due to the fact that each adapter "adapts" differently, the general p
   SU2 source.
 
 - **deal.II adapter**
-  Since deal.II is a library and the adapter just needs to link with it, here we actually perform the import of deal.II image and only build
+  deal.II is a library and the adapter just needs to link to it. Thus, we perform the import of deal.II image and only build
   the adapter
 
 - **CalculiX adapter**

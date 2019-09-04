@@ -29,7 +29,7 @@ During the adapter's Travis job, if it is identified that the job is running on 
 the adapter Dockerfiles with additional instruction to switch to the needed branch (the instruction should be injected prior
 to actually building an image).
 
-The resultant image is then tagged with the name of the branch/pull request and pushed to [Dockerhub](https://hub.docker.com/u/precice). In the `docker-compose.yml` the image tag
+The resulting image is then tagged with the name of the branch/pull request and pushed to [Dockerhub](https://hub.docker.com/u/precice). In the `docker-compose.yml` the image tag
 is controlled using  `{${SOLVER_NAME}_TAG}`( defaults to `latest`). Similarly, this environment variables is also specified in the specification of the Travis job
 for every solver participating in the test.
 

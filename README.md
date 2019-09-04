@@ -4,7 +4,7 @@
 System tests for the distributed multi-physics coupling library library preCICE. 
 
 This repository provides Dockerfiles for building preCICE images, solvers, and adapters, as well as docker-compose files and scripts that coordinate everything.
-More information can be found in the [docs](docs/))
+More information can be found in the [docs](docs/)
 
 ## Dependencies
 
@@ -31,3 +31,5 @@ To run OpenFOAM-OpenFOAM system test using Ubuntu 16.04 as the base for building
 ```
    python3 local_test.py -s of-of -f Dockerfile.Ubuntu1604.home
 ```
+
+Run `local_test.py -h` for more information.
