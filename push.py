@@ -143,7 +143,7 @@ if __name__ == "__main__":
     parser.add_argument('-b', '--base', type=str, help="Base image of the test", default="Ubuntu1604.home")
     args = parser.parse_args()
 
-    #ccall("git clone https://github.com/precice/precice_st_output")
+    ccall("git clone https://github.com/precice/precice_st_output")
 
     test_type = "Test" if args.test == "bindings" else "TestCompose"
     test_name = "{Type}_{test}.{base}".format(Type = test_type, test =
@@ -161,7 +161,7 @@ if __name__ == "__main__":
     add_job_log(args.test, not args.success, log_dir)
     add_output_files(output_dir, output_log_dir, args.success)
 
-    # finally commit 
+    # finally commit
     commit_msg_lines = generate_commit_message(output_dir, log_dir)
     commit_msg = " ".join(map( lambda x: "-m \"" + x + "\"", commit_msg_lines))
     ccall("git commit " + commit_msg)
