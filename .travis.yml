@@ -11,7 +11,7 @@ jobs:
     if: fork = false
     name: "Arch Linux"
     script:
-    - docker build -f base_precice/Dockerfile.Arch -t precice/precice-arch-develop .
+    - docker build -f precice/Dockerfile.Arch -t precice/precice-arch-develop .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin
     - docker push precice/precice-arch-develop:latest
@@ -20,7 +20,7 @@ jobs:
     if: fork = false
     name: "Ubuntu 16.04 home"
     script:
-    - docker build -f base_precice/Dockerfile.Ubuntu1604.home -t precice/precice-ubuntu1604.home-develop .
+    - docker build -f precice/Dockerfile.Ubuntu1604.home -t precice/precice-ubuntu1604.home-develop .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin
     - docker push precice/precice-ubuntu1604.home-develop:latest
@@ -29,7 +29,7 @@ jobs:
     if: type = cron
     name: "Ubuntu 16.04.sudo"
     script:
-    - docker build -f base_precice/Dockerfile.Ubuntu1604.sudo -t precice/precice-ubuntu1604.sudo-develop .
+    - docker build -f precice/Dockerfile.Ubuntu1604.sudo -t precice/precice-ubuntu1604.sudo-develop .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin
     - docker push precice/precice-ubuntu1604.sudo-develop:latest
@@ -38,7 +38,7 @@ jobs:
     if: type = cron
     name: "Ubuntu 16.04.package"
     script:
-    - docker build -f base_precice/Dockerfile.Ubuntu1604.package -t precice/precice-ubuntu1604.package-develop .
+    - docker build -f precice/Dockerfile.Ubuntu1604.package -t precice/precice-ubuntu1604.package-develop .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin
     - docker push precice/precice-ubuntu1604.package-develop:latest
@@ -47,7 +47,7 @@ jobs:
     name: "Ubuntu 18.04.home"
     if: fork = false
     script:
-    - docker build -f base_precice/Dockerfile.Ubuntu1804.home -t precice .
+    - docker build -f precice/Dockerfile.Ubuntu1804.home -t precice .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin
     - docker push precice/precice-ubuntu1804.home-develop:latest
@@ -56,7 +56,7 @@ jobs:
     name: "Ubuntu 18.04.sudo"
     if: type = cron
     script:
-    - docker build -f base_precice/Dockerfile.Ubuntu1804.sudo -t precice/precice-ubuntu1804.sudo-develop .
+    - docker build -f precice/Dockerfile.Ubuntu1804.sudo -t precice/precice-ubuntu1804.sudo-develop .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin
     - docker push precice/precice-ubuntu1804.sudo-develop
@@ -65,7 +65,7 @@ jobs:
     name: "Ubuntu 18.04.sudo.mpich"
     if: type = cron
     script:
-    - docker build -f base_precice/Dockerfile.Ubuntu1804.sudo.mpich -t precice/precice-ubuntu1804.sudo.mpich-develop .
+    - docker build -f precice/Dockerfile.Ubuntu1804.sudo.mpich -t precice/precice-ubuntu1804.sudo.mpich-develop .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin
     - docker push precice/precice-ubuntu1804.sudo.mpich-develop:latest
@@ -74,7 +74,7 @@ jobs:
     name: "Ubuntu 18.04.package"
     if: fork = false
     script:
-    - docker build -f base_precice/Dockerfile.Ubuntu1804.package -t precice/precice-ubuntu1804.package-develop .
+    - docker build -f precice/Dockerfile.Ubuntu1804.package -t precice/precice-ubuntu1804.package-develop .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin
     - docker push precice/precice-ubuntu1804.package-develop
@@ -84,33 +84,33 @@ jobs:
     script: true
 
   - stage: Building adapters
-    script: docker build -f base_adapters/Dockerfile.su2-adapter -t $DOCKER_USERNAME/su2-adapter-ubuntu1604.home-develop .
+    script: docker build -f adapters/Dockerfile.su2-adapter -t $DOCKER_USERNAME/su2-adapter-ubuntu1604.home-develop .
     name: SU2 adapter
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker push $DOCKER_USERNAME/su2-adapter-ubuntu1604.home-develop
 
   - name: CalculiX adapter
-    script: docker build -f base_adapters/Dockerfile.calculix-adapter -t $DOCKER_USERNAME/calculix-adapter-ubuntu1604.home-develop .
+    script: docker build -f adapters/Dockerfile.calculix-adapter -t $DOCKER_USERNAME/calculix-adapter-ubuntu1604.home-develop .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker push $DOCKER_USERNAME/calculix-adapter-ubuntu1604.home-develop
 
   - name: deal.ii adapter
-    script: docker build -f base_adapters/Dockerfile.dealii-adapter -t $DOCKER_USERNAME/dealii-adapter-ubuntu1604.home-develop .
+    script: docker build -f adapters/Dockerfile.dealii-adapter -t $DOCKER_USERNAME/dealii-adapter-ubuntu1604.home-develop .
     after_success:
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
       - docker push $DOCKER_USERNAME/dealii-adapter-ubuntu1604.home-develop
 
   - name: openFOAM adapter
-    script: docker build -f base_adapters/Dockerfile.openfoam-adapter -t $DOCKER_USERNAME/openfoam-adapter-ubuntu1604.home-develop .
+    script: docker build -f adapters/Dockerfile.openfoam-adapter -t $DOCKER_USERNAME/openfoam-adapter-ubuntu1604.home-develop .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker push $DOCKER_USERNAME/openfoam-adapter-ubuntu1604.home-develop
 
   - name: FEniCS adapter
     script: >
-      docker build -f base_adapters/Dockerfile.fenics-adapter -t $DOCKER_USERNAME/fenics-adapter-ubuntu1804.home-develop 
+      docker build -f adapters/Dockerfile.fenics-adapter -t $DOCKER_USERNAME/fenics-adapter-ubuntu1804.home-develop 
       --build-arg from=precice/precice-ubuntu1804.home-develop .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin

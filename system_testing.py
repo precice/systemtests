@@ -47,7 +47,7 @@ def build_adapters(systest, tag, branch, local, force_rebuild):
                    'force_rebuild': force_rebuild, 
                    'dockerfile': 'Dockerfile'}
 
-    with common.chdir(os.path.join(os.getcwd(), 'base_adapters')):
+    with common.chdir(os.path.join(os.getcwd(), 'adapters')):
         for participant in participants:
 
             docker_args['tag'] = '-'.join([ participant, tag, branch])
