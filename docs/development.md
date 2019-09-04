@@ -47,7 +47,7 @@ You should also make sure that running both on a local and a remote machine work
 
 ## If there are network problems
 
-It can happen, that you cannot access the network from the inside of docker. You can try to fix it using `--network=host` during build of docker images or by specifying `network: host` in the `docker-compose.yml`.
+It can happen, that you cannot access the network from the inside of docker. You can try to fix it using `--network=host` during build of docker images or by specifying `network: host` in the `docker-compose.yml`. You might also want to add this parameter in `build_image` function in `docker.py`.
 
 
 ## If CI on adapters does not work

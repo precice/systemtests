@@ -11,10 +11,10 @@ More information can be found in the [docs](docs/)
 * [preCICE](https://github.com/precice/precice)
 * [docker](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
     * Make sure you can run docker as non-root user (see [here](https://docs.docker.com/install/linux/linux-postinstall/#manage-docker-as-a-non-root-user))
-    * Test your docker installation with e.g. ```docker run hello-world```
+    * Test your docker installation with e.g. ```docker run --rm hello-world```
+    * Test your network connectivity with `docker run --rm alpine ping 8.8.8.8`. See [`docs/development.md`](docs/development.md) if this does not work.
 * [docker-compose](https://docs.docker.com/compose/)
 * ```python3``` 
-    * With ```configparser``` (install for example with ```pip3 install configparser```)
 
 
 ## Main scripts
