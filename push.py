@@ -99,7 +99,7 @@ def create_job_log(test, log, exit_status):
 
 def add_output_files(output_dir, output_log_dir, success):
 
-    if success:
+    if success and os.path.isdir(output_log_dir):
         # Everything passes, no need to commit anything, remove previous output
         ccall("git rm -r --ignore-unmatch {}".format(output_log_dir))
 
@@ -126,12 +126,13 @@ def generate_commit_message(output_dir, success):
 
     if success:
         commit_msg_lines = ["Output == Reference build number: {}".format(travis_build_number)]
-    # folder with output was not created, we probably failed before producing
-    # any of the results
-    if not os.path.isdir(output_dir):
-        commit_msg_lines = ["Failed to produce results"]
     else:
-        commit_msg_lines = ["Output != Reference build number: {}".format(travis_build_number)]
+        # folder with output was not created, we probably failed before producing
+        # any of the results
+        if not os.path.isdir(output_dir):
+            commit_msg_lines = ["Failed to produce results"]
+        else:
+            commit_msg_lines = ["Output != Reference build number: {}".format(travis_build_number)]
 
     return commit_msg_lines + ["Build url: {}".format(travis_job_web_url)]
 
@@ -153,7 +154,7 @@ if __name__ == "__main__":
 
     log_dir = os.path.join(os.getcwd(), "precice_st_output", args.base)
     output_log_dir = os.path.join(log_dir, "Output_{}_{}".format(test_type, args.test))
-    output_dir = os.path.join(os.getcwd(), "systemtests", test_name, "Output")
+    output_dir = os.path.join(os.getcwd(), test_name, "Output")
     ccall("mkdir -p {}".format(log_dir))
 
     os.chdir(log_dir)
@@ -162,7 +163,7 @@ if __name__ == "__main__":
     add_output_files(output_dir, output_log_dir, args.success)
 
     # finally commit
-    commit_msg_lines = generate_commit_message(output_dir, log_dir)
+    commit_msg_lines = generate_commit_message(output_dir, args.success)
     commit_msg = " ".join(map( lambda x: "-m \"" + x + "\"", commit_msg_lines))
     ccall("git commit " + commit_msg)
     ccall("git remote set-url origin https://${GH_TOKEN}@github.com/precice/precice_st_output.git > /dev/null 2>&1")
