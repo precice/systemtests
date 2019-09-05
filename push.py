@@ -115,7 +115,7 @@ def add_job_log(systest, failed, log_dir):
         log_name = "log_{test}.md".format(test = systest)
         with open(log_name, "w") as log:
             create_job_log(systest, log, failed)
-        ccall("git add {log_name}".format(log_name))
+        ccall("git add {log_name}".format(log_name = log_name))
 
 
 def generate_commit_message(output_dir, success):
