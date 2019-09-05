@@ -177,7 +177,6 @@ if __name__ == "__main__":
                         default = [], choices  = ["precice", "tests"])
     parser.add_argument('--base', type=str,help="Base preCICE image to use", default= "Ubuntu1604.home")
     args = parser.parse_args()
-    test = str(args.systemtest) + '.' + str(args.base)
     # check if there is specialized dir for this version
     test_name = args.systemtest
     all_derived_tests = get_test_variants(test_name)
