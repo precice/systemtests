@@ -102,8 +102,7 @@ def add_output_files(output_dir, output_log_dir, success):
     if success and os.path.isdir(output_log_dir):
         # Everything passes, no need to commit anything, remove previous output
         ccall("git rm -r --ignore-unmatch {}".format(output_log_dir))
-
-    if os.path.isdir(output_dir):
+    else if os.path.isdir(output_dir):
         if os.path.isdir(output_log_dir):
             # overwrite previous output to get rid of artifacts
             ccall("git rm -rf {}".format(output_log_dir))
