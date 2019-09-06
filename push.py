@@ -153,7 +153,7 @@ if __name__ == "__main__":
 
     log_dir = os.path.join(os.getcwd(), "precice_st_output", args.base)
     output_log_dir = os.path.join(log_dir, "Output_{}_{}".format(test_type, args.test))
-    output_dir = os.path.join(os.getcwd(), test_name, "Output")
+    output_dir = os.path.join(os.getcwd(), "tests", test_name, "Output")
     ccall("mkdir -p {}".format(log_dir))
 
     os.chdir(log_dir)
