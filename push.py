@@ -99,7 +99,7 @@ def create_job_log(test, log, exit_status):
 
 def add_output_files(output_dir, output_log_dir, success):
 
-    if success and os.path.isdir(output_log_dir):
+    if success:
         # Everything passes, no need to commit anything, remove previous output
         ccall("git rm -r --ignore-unmatch {}".format(output_log_dir))
     elif os.path.isdir(output_dir):
