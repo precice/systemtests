@@ -15,7 +15,7 @@ Example:
 import argparse, filecmp, os, shutil, sys
 import common, docker
 from subprocess import CalledProcessError
-from common import ccall, get_test_variants, filter_tests, get_test_participants
+from common import call, ccall, get_test_variants, filter_tests, get_test_participants
 
 def build(systest, tag, branch, local, force_rebuild):
     """ Builds a docker image for systest. """
@@ -137,7 +137,10 @@ def comparison(pathToRef, pathToOutput):
     """
     ret = common.get_diff_files(filecmp.dircmp(pathToRef, pathToOutput, ignore = [".gitkeep"]))
     if ret[0] or ret[1] or ret[2]:
-        raise IncorrectOutput(*ret)
+        # check the results numerically now
+        num_diff = call("bash ../compare_results.sh {} {}".format(pathToRef, pathToOutput))
+        if num_diff == 1:
+            raise IncorrectOutput(*ret)
 
 
 
@@ -145,7 +148,7 @@ def build_run_compare(test, tag, branch, local_precice, force_rebuild, rm_all):
     """ Runs and compares test, using precice branch. """
 
     # tests to run with docker compose
-    compose_tests = ["dealii-of", "of-of", "su2-ccx", "of-ccx", "of-of_np", "fe-fe"]
+    compose_tests = ["dealii-of", "of-of", "su2-ccx", "of-ccx", "of-of_np", "fe-fe","nutils-of"]
     test_basename = test.split(".")[0]
     if local_precice:
         build_adapters(test_basename, tag, branch, local_precice, force_rebuild)
@@ -177,7 +180,6 @@ if __name__ == "__main__":
                         default = [], choices  = ["precice", "tests"])
     parser.add_argument('--base', type=str,help="Base preCICE image to use", default= "Ubuntu1604.home")
     args = parser.parse_args()
-    test = str(args.systemtest) + '.' + str(args.base)
     # check if there is specialized dir for this version
     test_name = args.systemtest
     all_derived_tests = get_test_variants(test_name)

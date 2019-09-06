@@ -1,10 +1,7 @@
-import configparser, datetime, subprocess
+import datetime, subprocess
 
 
 def get_namespace():
-    # cp = configparser.ConfigParser()
-    # cp.read("configuration")
-    # return cp["Docker"]["Namespace"]
     return "st_"
 
 def get_dockername():
