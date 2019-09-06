@@ -21,7 +21,7 @@ def determine_test_name(test):
     return test.split('.')[0]
 
 
-def get_tests(root = os.getcwd()):
+def get_tests(root = os.path.join(os.getcwd(), 'tests')):
     """ List of all available system tests """
     prefixes = ["Test_", "TestCompose_"]
     tests = list(set([determine_test_name(s[len(prefix ):]) for prefix in prefixes for s in
@@ -29,7 +29,7 @@ def get_tests(root = os.getcwd()):
     return tests
 
 
-def get_test_variants(test_name, root = os.getcwd()):
+def get_test_variants(test_name, root = os.path.join(os.getcwd(), 'tests')):
     """ List of all available system tests """
     prefixes = ["Test_", "TestCompose_"]
     test_variants = [s[len(prefix):]  for prefix in prefixes for s in os.listdir(root)

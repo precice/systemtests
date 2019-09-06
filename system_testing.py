@@ -24,10 +24,10 @@ def build(systest, tag, branch, local, force_rebuild):
     test_tag = "-".join([systest, tag, branch])
 
     docker.build_image(tag = test_tag,
-                       build_args = {"from" : docker.get_namespace() +
-                           baseimage_name if local
-                           else 'precice/' + baseimage_name},
-                       force_rebuild = force_rebuild)
+            build_args = {"from" : docker.get_namespace() +
+                baseimage_name if local
+                else 'precice/' + baseimage_name},
+            force_rebuild = force_rebuild)
 
 def run(systest, tag, branch):
     """ Runs (create a container from an image) the specified systest. """
@@ -47,19 +47,20 @@ def build_adapters(systest, tag, branch, local, force_rebuild):
                    'force_rebuild': force_rebuild, 
                    'dockerfile': 'Dockerfile'}
 
-    for participant in participants:
+    with common.chdir(os.path.join(os.getcwd(), 'adapters')):
+        for participant in participants:
 
-        docker_args['tag'] = '-'.join([ participant, tag, branch])
-        docker_args['dockerfile'] = "Dockerfile." + participant
+            docker_args['tag'] = '-'.join([ participant, tag, branch])
+            docker_args['dockerfile'] = "Dockerfile." + participant
 
-        # skip "light-adapters" (e.g. nutils )
-        if os.path.exists("Dockerfile.{}".format(participant)):
-            docker.build_image(**docker_args)
+            # skip "light-adapters" (e.g. nutils )
+            if os.path.exists("Dockerfile.{}".format(participant)):
+                docker.build_image(**docker_args)
 
 def run_compose(systest, branch, local, tag, force_rebuild, rm_all):
     """ Runs necessary systemtest with docker compose """
 
-    dirname = "/TestCompose_{}".format(systest)
+    test_dirname = "TestCompose_{systest}".format(systest = systest)
     test_basename = systest.split('.')[0]
 
     adapter_base_name="-".join([tag, branch])
@@ -67,7 +68,7 @@ def run_compose(systest, branch, local, tag, force_rebuild, rm_all):
     # set up environment variables, to detect precice base image, that we
     # should run with and docker images location
     commands_main = ["""export PRECICE_BASE=-{base}; {extra_cmd} docker-compose config &&
-                         bash ../silent_compose.sh""".format(base =
+                         bash ../../silent_compose.sh""".format(base =
                         adapter_base_name, extra_cmd =\
                         "export SYSTEST_REMOTE={remote};".format(
                                 remote = docker.get_namespace()) if local else "" ),
@@ -78,7 +79,8 @@ def run_compose(systest, branch, local, tag, force_rebuild, rm_all):
 
     commands_cleanup = ["docker-compose down -v"]
 
-    with common.chdir(os.getcwd() + dirname):
+    test_path = os.path.join(os.getcwd(), 'tests', test_dirname)
+    with common.chdir(test_path):
 
         # cleanup previous results
         shutil.rmtree("Output", ignore_errors=True)
@@ -154,8 +156,9 @@ def build_run_compare(test, tag, branch, local_precice, force_rebuild, rm_all):
         run_compose(test, branch, local_precice, tag, force_rebuild, rm_all)
     else:
         # remaining, non compose tests
-        dirname = "/Test_{}".format(test)
-        with common.chdir(os.getcwd() + dirname):
+        test_dirname = "Test_{systest}".format(systest=test)
+        test_path = os.path.join(os.getcwd(), 'tests', test_dirname)
+        with common.chdir(test_path):
             # Build
             build(test_basename, tag, branch, local_precice, force_rebuild)
             run(test_basename, tag, branch)
