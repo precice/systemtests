@@ -160,6 +160,13 @@ jobs:
     after_failure:
     - python push.py -t dealii-of
   - script:
+    - python system_testing.py -s nutils-of
+    name: "[16.04] nutils <-> OpenFOAM"
+    after_success:
+    - python push.py -s -t nutils-of
+    after_failure:
+    - python push.py -t nutils-of
+  - script:
     - python system_testing.py -s of-of_np
     name: "[16.04] OpenFOAM <-> OpenFOAM [nearest projection]"
     after_success:
