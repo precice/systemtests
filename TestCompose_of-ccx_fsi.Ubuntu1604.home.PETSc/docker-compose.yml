@@ -1,7 +1,7 @@
 version: '3'
 services:
   
-  openfoam-adapter: 
+  openfoam-adapter-fluid:
     image: "${SYSTEST_REMOTE}openfoam-adapter${PRECICE_BASE}:${OPENFOAM_TAG}"
     networks: 
       - precicecomm
@@ -22,9 +22,9 @@ services:
       - tutorial-data
     
   # solid
-  calculix-adapter:
+  calculix-adapter-solid:
     image: "${SYSTEST_REMOTE}calculix-adapter${PRECICE_BASE}:${CALCULIX_TAG}"
-    networks: 
+    networks:
       - precicecomm
     volumes:
       - exchange:/home/precice/Data/Exchange/
@@ -33,7 +33,7 @@ services:
       - configs:/home/precice/calculix-adapter/configs/
     command: >
       /bin/bash -c "ln -s /home/precice/Data/Input/ Solid
-      && ln -sf configs/* . 
+      && ln -sf configs/* .
       && ccx_preCICE -i Solid/flap -precice-participant Calculix"
     container_name: calculix-adapter-solid
     depends_on:
