@@ -44,7 +44,7 @@ def get_test_variants(test_name, root = os.getcwd()):
 def get_test_participants(test_name):
     """ Returns solvers that participate in the test """
     solvers_abbr = {"ccx": "calculix-adapter", "su2": "su2-adapter", "of": "openfoam-adapter", 
-            "dealii":"dealii-adapter", "bindings": "bindings"}
+            "dealii":"dealii-adapter", "bindings": "bindings", "fe":"fenics-adapter", "nutils": "nutils"}
 
     return [solvers_abbr[abbr] for abbr in  test_name.lower().split('_')[0].split('-')]
 

@@ -9,93 +9,163 @@ to the repository: https://github.com/precice/precice_st_output.
             $ python push.py -s -t of-of
 """
 
+from trigger_systemtests import get_json_response
+from urllib.parse import urlencode
+from urllib.request import Request, urlopen
 import argparse, os, sys, time
-from common import ccall, capture_output
+from common import ccall, capture_output, get_test_participants, chdir
 
-# Parsing flags
-parser = argparse.ArgumentParser(description='Build local.')
-parser.add_argument('-b', '--branch', help="log choosen preCICE branch")
-parser.add_argument('-t', '--test', help="choose system tests you want to use")
-parser.add_argument('-s', '--success', action='store_true' ,help="only upload log file")
-parser.add_argument('--base', type=str,help="Base preCICE image used", default= "Ubuntu1604")
+def get_job_commit(job_id):
+    """ Checks commit that triggered travis job"""
+    url = "https://api.{TRAVIS_URL}/job/{JOB_ID}".format(TRAVIS_URL="travis-ci.org", JOB_ID=job_id)
+    resp =  get_json_response(url)
+    return resp['commit']
 
-args = parser.parse_args()
+def get_builds(user, repo, offset=0):
+    """ Get list of Travis builds of the repo """
+    url = "https://api.{TRAVIS_URL}/repo/{USER}%2F{REPO}/builds?offset={OFFSET}".format(TRAVIS_URL="travis-ci.org",
+            USER=user, REPO=repo, OFFSET = offset)
+    return get_json_response(url)
+
+def get_last_successfull_commit(user, repo):
+    """ Identify last commit the passed on Travis """
+
+    commit = {}
+    offset = 0
+    while not commit:
+        builds = get_builds(user, repo, offset = offset)
+        for build in builds["builds"]:
+            if build["state"] == "passed":
+                commit = build["commit"]
+                break
+        offset += 25
+
+    return commit
+
+def get_travis_job_log(job_id, tail = 100):
+
+    txt_url = "https://api.travis-ci.org/v3/job/{}/log.txt".format(job_id)
+    req = Request(txt_url)
+    response = urlopen( req ).read().decode()
+    job_log = "\n".join( response.split("\n")[-tail:] )
+    return job_log
+
+def create_job_log(test, log, exit_status):
+
+    make_md_link = lambda name, link: "[{name}]({link})".format(name=
+            name, link=link)
+
+    build_url = os.environ["TRAVIS_BUILD_WEB_URL"]
+    event_type = os.environ["TRAVIS_EVENT_TYPE"]
+    triggered_commit = os.environ["TRAVIS_COMMIT"]
+    job_id = os.environ["TRAVIS_JOB_ID"]
+    commit_message = os.environ["TRAVIS_COMMIT_MESSAGE"]
+
+    # Decipher commit from the job message
+    if (event_type == "api"):
+        job_that_triggered = commit_message.split("Triggered by:")[-1]
+        if job_that_triggered == "manual script call":
+           event_type = "manual trigger"
+        else:
+           *_, adapter_name, _, adapter_job_id = job_that_triggered.split('/')
+           triggered_commit = get_job_commit(adapter_job_id)
+           event_type = "commit to the {}".format(adapter_name)
+    else:
+        triggered_commit = get_job_commit(job_id)
+
+    log.write(" # Status : " + (" Passing " if not exit_status else\
+        "Failing") + "\n")
+    log.write(" # {link} \n".format(link = make_md_link("Job url", build_url)))
+    log.write("## Triggered by: {link} \n".format(link =
+        make_md_link(event_type, triggered_commit['compare_url'])))
+
+    if exit_status:
+
+        adapters =  get_test_participants(test)
+        last_good_commits = {}
+        if adapters:
+            for adapter in adapters:
+                last_good_commits[adapter] = get_last_successfull_commit('precice', adapter).get('compare_url')
+        last_good_commits['systemtests'] = get_last_successfull_commit('precice', 'systemtests').get('compare_url')
+        failed_info = "## Last succesfull commits \n* {commits} \n".format(commits = 
+                "\n* ".join([make_md_link(name, commit) for name, commit in last_good_commits.items()]))
+        log.write(failed_info)
+
+    log.write("## Last 100 lines of the job log at the moment of push...\n")
+    log.write('```\n {job_log} ```\n'.format(job_log =
+        get_travis_job_log(job_id)))
+    log.write(make_md_link("Full job log", "https://api.travis-ci.org/v3/job/{}/log.txt".format(job_id)))
+
+
+def add_output_files(output_dir, output_log_dir, success):
+
+    if success:
+        # Everything passes, no need to commit anything, remove previous output
+        ccall("git rm -r --ignore-unmatch {}".format(output_log_dir))
+    elif os.path.isdir(output_dir):
+        if os.path.isdir(output_log_dir):
+            # overwrite previous output to get rid of artifacts
+            ccall("git rm -rf {}".format(output_log_dir))
+        ccall("mv {} {}".format(output_dir, output_log_dir))
+        ccall("git add .")
+
+def add_job_log(systest, failed, log_dir):
+    with chdir(log_dir):
+        log_name = "log_{test}.md".format(test = systest)
+        with open(log_name, "w") as log:
+            create_job_log(systest, log, failed)
+        ccall("git add {log_name}".format(log_name = log_name))
+
+
+def generate_commit_message(output_dir, success):
+
+    travis_build_number = os.environ["TRAVIS_BUILD_NUMBER"]
+    travis_job_web_url = os.environ["TRAVIS_JOB_WEB_URL"]
+    commit_msg_lines = []
+
+    if success:
+        commit_msg_lines = ["Output == Reference build number: {}".format(travis_build_number)]
+    else:
+        # folder with output was not created, we probably failed before producing
+        # any of the results
+        if not os.path.isdir(output_dir):
+            commit_msg_lines = ["Failed to produce results"]
+        else:
+            commit_msg_lines = ["Output != Reference build number: {}".format(travis_build_number)]
+
+    return commit_msg_lines + ["Build url: {}".format(travis_job_web_url)]
 
 if __name__ == "__main__":
-    systest = args.test
 
-    # Creating new logfile. if it exists, truncate content.
-    log = open("log_" + systest, "w")
-    foam_version = 4.1
-    # Saving versions of used software in system test systest.
-    if systest == "of-ccx":
-        log.write("OpenFOAM version: {}\n".format(foam_version))
-        ccall(["echo OpenFOAM-adapter Version: $(git ls-remote https://github.com/precice/openfoam-adapter.git  | tail -1)"], stdout=log)
-        log.write("CalculiX version: 2.12\n")
-        ccall(["echo CalculiX-adapter Version: $(git ls-remote https://github.com/precice/calculix-adapter.git | tail -1)"], stdout=log)
-        ccall(["echo tutorials Version: $(git ls-remote https://github.com/precice/tutorials.git | tail -1)"], stdout=log)
-    elif systest == "of-of":
-        log.write("OpenFOAM version: {}\n".format(foam_version))
-        ccall(["echo OpenFOAM-adapter Version: $(git ls-remote https://github.com/precice/openfoam-adapter.git  | tail -1)"], stdout=log)
-    elif systest == "su2-ccx":
-        log.write("CalculiX version: 2.13\n")
-        log.write("SU2 version: 6.0.0\n")
-        ccall(["echo CalculiX-adapter Version: $(git ls-remote https://github.com/precice/calculix-adapter.git | head -n 1)"], stdout=log)
-        ccall(["echo SU2-adapter Version: $(git ls-remote https://github.com/precice/su2-adapter.git | tail -1)"], stdout=log)
-        ccall(["echo tutorials Version: $(git ls-remote https://github.com/precice/tutorials.git | tail -1)"], stdout=log)
-    # Saving general information of all system tests.
-    # Saving used distribution and preCICE version in logfile.
-    # git ls-remote https://github.com/precice/precice.git | grep master
-    if args.branch:
-        ccall(["echo preCICE Version: $(git ls-remote https://github.com/precice/precice.git | grep "+ args.branch +")"], stdout=log)
-    else:
-        ccall(["echo preCICE Version: $(git ls-remote --tags https://github.com/precice/precice.git | tail -1)"], stdout=log)
-    log.write("Base preCICE image used : {}\n".format(args.base))
-    # Saving current date in logfile.
-    localtime = str(time.asctime(time.localtime(time.time())))
-    log.write("System testing at " + localtime + "\n")
-    log.close()
+    parser = argparse.ArgumentParser(description='Push information about the test to the output repository')
+    parser.add_argument('-t', '--test', help="Choose systemtest, results of which to push")
+    parser.add_argument('-s', '--success', action='store_true' ,help="Whether test was successfull")
+    parser.add_argument('-b', '--base', type=str, help="Base image of the test", default="Ubuntu1604.home")
+    args = parser.parse_args()
 
-    # Pushing outputfiles and logfile to repo.
-    # Clone repository.
     ccall("git clone https://github.com/precice/precice_st_output")
-    log_dir = os.getcwd() + "/precice_st_output/" + args.base
-    ccall("mkdir -p " + log_dir)
-    ccall("mv log_" + systest + " " + log_dir)
 
-    if not args.success:
-        system_suffix = "." + args.base
-        # Move ouput to folder of this test case
-        test_folder = os.getcwd() + '/Test_' + systest + system_suffix
-        if not os.path.isdir(test_folder):
-            test_folder = 'Test_' + systest
-        source_dir = test_folder + "/Output"
-        dest_dir = log_dir + "/Output_" + systest
-        # source folder was not created, we probably failed before producing
-        # any of the results
-        if (not os.path.isdir(source_dir)):
-            os.chdir(log_dir)
-            ccall(["git add ."])
-            ccall("git commit -m \"Failed to produce results. \" -m \"Build url: ${TRAVIS_JOB_WEB_URL}\"")
-        else:
-            os.chdir(log_dir)
-            # something was committed to that folder before -> overwrite it
-            if os.path.isdir(dest_dir):
-                ccall("git rm -rf {}".format(dest_dir))
-            ccall("mv {} {}".format(source_dir, dest_dir))
-            ccall("git add .")
-            if args.branch:
-                ccall("git commit -m \"Output != Reference, local build with preCICE branch: "+ args.branch +"\"")
-            else:
-                ccall("git commit -m \"Output != Reference, build number: ${TRAVIS_BUILD_NUMBER} \" -m \"Build url: ${TRAVIS_JOB_WEB_URL}\"")
-    else:
-        os.chdir(log_dir)
-        ccall("git add .")
-        # remove previously failing results, if we succeed
-        ccall("git rm -r --ignore-unmatch Output_" + systest)
-        if args.branch:
-            ccall("git commit -m \"Output == Reference, local build with preCICE branch: "+ args.branch +"\"")
-        else:
-            ccall("git commit -m \"Output == Reference, build number: ${TRAVIS_BUILD_NUMBER} \" -m \"Build url: ${TRAVIS_JOB_WEB_URL}\"")
+    test_type = "Test" if args.test == "bindings" else "TestCompose"
+    test_name = "{Type}_{test}.{base}".format(Type = test_type, test =
+            args.test, base = args.base)
+    if not os.path.isdir(test_name):
+        test_name = test_name.split(".")[0]
+
+    log_dir = os.path.join(os.getcwd(), "precice_st_output", args.base)
+    output_log_dir = os.path.join(log_dir, "Output_{}_{}".format(test_type, args.test))
+    output_dir = os.path.join(os.getcwd(), test_name, "Output")
+    ccall("mkdir -p {}".format(log_dir))
+
+    os.chdir(log_dir)
+
+    add_job_log(args.test, not args.success, log_dir)
+    add_output_files(output_dir, output_log_dir, args.success)
+
+    # finally commit
+    commit_msg_lines = generate_commit_message(output_dir, args.success)
+    commit_msg = " ".join(map( lambda x: "-m \"" + x + "\"", commit_msg_lines))
+    ccall("git commit " + commit_msg)
+    ccall("git config user.name 'Precice Bot'")
+    ccall("git config user.email ${PRECICE_BOT_EMAIL}")
     ccall("git remote set-url origin https://${GH_TOKEN}@github.com/precice/precice_st_output.git > /dev/null 2>&1")
     ccall("git push")
