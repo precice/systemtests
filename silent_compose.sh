@@ -11,10 +11,10 @@ services=($(docker-compose ps | awk '{print $1}'| tail -n +3))
 
 # maximum test time out is 10 minutes
 for i in {1..10}; do
-  for service in ${services[@]}; do 
+  for service in ${services[@]}; do
     # check if the service is still running
-    if [ -z $(docker ps | grep $service | cut -d " " -f 1) ]; then
-      if [ $(docker inspect $service --format='{{.State.ExitCode}}') -eq 1 ]; then
+    if [ -z "$(docker ps | grep $service | cut -d ' ' -f 1)" ]; then
+      if [ "$(docker inspect $service --format='{{.State.ExitCode}}')" -eq 1 ]; then
         echo "$service failed! Find the logs below"
         failed=1
         docker-compose logs --tail=$taillen  $service
@@ -32,10 +32,10 @@ for i in {1..10}; do
   sleep 60
 done
 
-# probably failed due to communication issues, 
+# probably failed due to communication issues,
 # list individual logs and exit
-for service in ${services[@]}; do 
-    docker-compose logs --tail=$taillen $service 
+for service in ${services[@]}; do
+    docker-compose logs --tail=$taillen $service
     docker-compose stop $service
 done
 
