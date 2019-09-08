@@ -29,7 +29,7 @@ jobs:
     if: fork = false
     name: "Ubuntu 16.04 home PETSc"
     script: >
-      docker build -f Dockerfile.Ubuntu1604.home -t precice/precice-ubuntu1604.home.petsc-develop .
+      docker build -f precice/Dockerfile.Ubuntu1604.home -t precice/precice-ubuntu1604.home.petsc-develop .
       --build-arg petsc_para=yes
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin
@@ -128,7 +128,7 @@ jobs:
 
   - name: openFOAM adapter [PETSc]
     script: >
-      docker build -f Dockerfile.openfoam-adapter -t $DOCKER_USERNAME/openfoam-adapter-ubuntu1604.home.petsc-develop 
+      docker build -f adapters/Dockerfile.openfoam-adapter -t $DOCKER_USERNAME/openfoam-adapter-ubuntu1604.home.petsc-develop
       --build-arg from=precice/precice-ubuntu1604.home.petsc-develop .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
@@ -136,7 +136,7 @@ jobs:
 
   - name: CalculiX adapter [PETSc]
     script: >
-      docker build -f Dockerfile.calculix-adapter -t $DOCKER_USERNAME/calculix-adapter-ubuntu1604.home.petsc-develop 
+      docker build -f adapters/Dockerfile.calculix-adapter -t $DOCKER_USERNAME/calculix-adapter-ubuntu1604.home.petsc-develop
       --build-arg from=precice/precice-ubuntu1604.home.petsc-develop .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
