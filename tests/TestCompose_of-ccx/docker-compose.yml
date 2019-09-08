@@ -39,7 +39,7 @@ services:
       - tutorial-data
 
   # solid
-  calculix-adapter:
+  calculix-adapter-solid:
     image: "${SYSTEST_REMOTE}calculix-adapter${PRECICE_BASE}:${CALCULIX_TAG}"
     networks: 
       - precicecomm
