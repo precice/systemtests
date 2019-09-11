@@ -16,8 +16,7 @@ RUN apt-get -qq update && apt-get -qq install \
 
 # Installing necessary python dependecies; we have to use pip, since cython provided by apt-get is too old.
 RUN wget -q https://bootstrap.pypa.io/get-pip.py -O get-pip.py && \
-    python3 get-pip.py && \
-    pip3 install Cython mpi4py numpy enum34
+    python3 get-pip.py
 
 # Builds the python_future python bindings for python3
 WORKDIR $PRECICE_ROOT/src/precice/bindings/python_future
