@@ -1,0 +1,41 @@
+version : '3'
+services:
+{%- for participant, solver, adapter  in zipped_input %}
+  {{participant}}:
+    image: "${SYSTEST_REMOTE}{{adapter}}${PRECICE_BASE}:${{solver.upper() + '_TAG'}}"
+    networks:
+      - precicecomm
+    volumes:
+      - exchange:/home/precice/Data/Exchange/
+      - {{participant}}_input:/home/precice/Data/Input/
+      - configs:/home/precice/{{adapter}}/configs/
+      - output:/home/precice/Data/Output/
+    command: >
+      /bin/bash -c "#NOTE: Edit your command here"
+    container_name: {{participant}}
+    depends_on:
+      - tutorial-data
+{% endfor %}
+
+  tutorial-data:
+    build:
+      context: .
+      dockerfile: Dockerfile.tutorial_data
+    volumes:
+      # NOTE: Adjust input to each solver here
+      {%- for input in input_volumes %}
+      - {{input}}:{{tutorial_path}}
+      {%- endfor %}
+      - configs:/configs/
+      - output:/Output/
+    container_name: tutorial-data
+
+networks:
+  precicecomm:
+volumes:
+  exchange:
+  output:
+  configs:
+  {%- for input in input_volumes %}
+  {{input}}:
+  {%- endfor %}
