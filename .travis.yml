@@ -94,7 +94,7 @@ jobs:
     script: true
 
   - stage: Building adapters
-    script: docker build -f Dockerfile.su2-adapter -t precice/su2-adapter-ubuntu1604.home-develop .
+    script: docker build -f adapters/Dockerfile.su2-adapter -t precice/su2-adapter-ubuntu1604.home-develop .
     name: SU2 adapter
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "precice" --password-stdin
