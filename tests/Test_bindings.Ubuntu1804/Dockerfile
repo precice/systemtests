@@ -1,7 +1,7 @@
 # System testing preCICE bindings
 
 # Building on top of the latets preCICE-build
-ARG from=precice/precice:develop
+ARG from=precice/precice-ubuntu1804.home-develop
 FROM $from
 
 USER root

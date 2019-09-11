@@ -1,7 +1,7 @@
 # System testing preCICE bindings
 
 # Building on top of the latest preCICE-build
-ARG from=precice/precice:develop
+ARG from=precice/precice-ubuntu1604.home-develop
 FROM $from
 
 USER root
