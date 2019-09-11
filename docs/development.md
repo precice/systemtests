@@ -21,6 +21,9 @@ other base dockerfiles. Additionally, make sure that precice in installed in `/h
 
 ## During development of the test cases
 
+There is a `generate_test.py` script provided, that make is easier to generate all the necessary docker configuration files. Make sure to read through the generated files, 
+make sure it suits your test case and adjust where needed.
+
 If something fails during running `docker-compose` due to communication problems or invalid input, the easiest way to debug is:
 
 1. Add a sleep timer (e.g. `sleep 1000`) after running failed command
