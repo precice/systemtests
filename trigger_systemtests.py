@@ -94,7 +94,7 @@ def generate_travis_job(adapter, user, trigger_failure = True):
     main_test_script = "python system_testing.py -s {TEST} --base {BASE}"
 
     base_remote = "precice/precice-{base}-develop".format(base = base.lower())
-    main_build_script = "docker build -f Dockerfile.{adapter} -t \
+    main_build_script = "docker build -f adapters/Dockerfile.{adapter} -t \
         {user}/{adapter} --build-arg from={base_remote} .".format(adapter =
                 adapters_info[adapter].repo, user = user, base_remote =
                 base_remote)
