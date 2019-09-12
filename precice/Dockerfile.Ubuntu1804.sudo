@@ -60,7 +60,9 @@ RUN cd /home/precice/precice-build && \
     make install && \
     ldconfig
 USER precice
-RUN rm -r /home/precice/precice-build
+RUN cd /home/precice/precice-build && \
+    make test_install && \
+    rm -r /home/precice/precice-build
 
 # Setting preCICE environment variables
 ENV PRECICE_ROOT="/home/precice/precice" \
