@@ -266,3 +266,4 @@ RUN \
 
 #cleanUPRUN \
 #cleanUP    rm -r SRC/ build/$CA_TAG/share/aster/tests/ build/PAR$CA_TAG/share/aster/tests/
+WORKDIR /home/precice/codeaster
