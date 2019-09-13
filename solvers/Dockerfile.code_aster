@@ -59,17 +59,14 @@ RUN apt-get update \
 # USER precice
 
 # TODO: No need to add a new line everywhere (also command below can be merged)
-RUN \
-	useradd -m -s /bin/bash codeaster
+ARG uid=1000
+ARG gid=1000
+# create user precice
+RUN groupadd -g ${gid} precice \ 
+    && useradd -u ${uid} -g ${gid} -m -s /bin/bash precice
+USER precice
 
-RUN \
-    mkdir -p /srvtc/cloud \
-    && chown -R codeaster:codeaster /srvtc
-
-USER codeaster
-
-WORKDIR \
-    /srvtc/cloud
+WORKDIR /home/precice/codeaster
 
 ENV \
     CA_VERSION=12.6.0 \
@@ -92,22 +89,22 @@ RUN \
     && tar -xzf aster-full-src-$CA_VERSION-$CA_REVISION.noarch.tar.gz \
     && mv aster-full-src-$CA_VERSION/ aster-$CA_VERSION/ \
     && rm aster-full-src-$CA_VERSION-$CA_REVISION.noarch.tar.gz \
-    && mkdir -p /srvtc/cloud/aster-$CA_VERSION/build \
-    && mkdir -p /srvtc/cloud/aster-$CA_VERSION/contrib
+    && mkdir -p /home/precice/codeaster/aster-$CA_VERSION/build \
+    && mkdir -p /home/precice/codeaster/aster-$CA_VERSION/contrib
 
 WORKDIR \
-    /srvtc/cloud/aster-$CA_VERSION/contrib
+    /home/precice/codeaster/aster-$CA_VERSION/contrib
 
 RUN \
     wget -nv https://github.com/xianyi/OpenBLAS/archive/v$OpBL_VERSION.tar.gz \
     && tar -xzf v$OpBL_VERSION.tar.gz \
     && rm v$OpBL_VERSION.tar.gz \
-    && mkdir -p /srvtc/cloud/aster-$CA_VERSION/contrib/OpenBLAS-$OpBL_VERSION/build
+    && mkdir -p /home/precice/codeaster/aster-$CA_VERSION/contrib/OpenBLAS-$OpBL_VERSION/build
 
 WORKDIR \
-    /srvtc/cloud/aster-$CA_VERSION/contrib/OpenBLAS-$OpBL_VERSION
+    /home/precice/codeaster/aster-$CA_VERSION/contrib/OpenBLAS-$OpBL_VERSION
 
-ENV OMP_NUM_THREADS=1 OPENBLAS_BUILD=/srvtc/cloud/aster-$CA_VERSION/contrib/OpenBLAS-$OpBL_VERSION/build
+ENV OMP_NUM_THREADS=1 OPENBLAS_BUILD=/home/precice/codeaster/aster-$CA_VERSION/contrib/OpenBLAS-$OpBL_VERSION/build
 
 # NB: TARGET=CORE2 sets the build target to the specific architecture
 # otherwise, OpenBLAS will detect the build architecture itself and
@@ -124,10 +121,10 @@ USER \
     root
 
 RUN \
-    echo "/srvtc/cloud/aster-$CA_VERSION/contrib/OpenBLAS-$OpBL_VERSION" > /etc/ld.so.conf.d/ca.conf
+    echo "/home/precice/codeaster/aster-$CA_VERSION/contrib/OpenBLAS-$OpBL_VERSION" > /etc/ld.so.conf.d/ca.conf
 
 RUN \
-    echo "/srvtc/cloud/aster-$CA_VERSION/contrib/OpenBLAS-$OpBL_VERSION/lib" > /etc/ld.so.conf.d/openblas.conf
+    echo "/home/precice/codeaster/aster-$CA_VERSION/contrib/OpenBLAS-$OpBL_VERSION/lib" > /etc/ld.so.conf.d/openblas.conf
 
 RUN \
     ldconfig
@@ -136,22 +133,22 @@ USER \
     codeaster
 
 RUN \
-	export LD_LIBRARY_PATH=/srvtc/cloud/aster-$CA_VERSION/contrib/OpenBLAS-$OpBL_VERSION/lib
+	export LD_LIBRARY_PATH=/home/precice/codeaster/aster-$CA_VERSION/contrib/OpenBLAS-$OpBL_VERSION/lib
 
 WORKDIR \
-    /srvtc/cloud/aster-$CA_VERSION
+    /home/precice/codeaster/aster-$CA_VERSION
 
 # If this is not set, error when compiling aster V13 due to: no program using openmp
 # V13commentoutENV OMP_NUM_THREADS=2
 
 RUN \
-    sed -i "s:ASTER_ROOT='/opt/aster':ASTER_ROOT='/srvtc/cloud/aster-$CA_VERSION/build':g" setup.cfg \
+    sed -i "s:ASTER_ROOT='/opt/aster':ASTER_ROOT='/home/precice/codeaster/aster-$CA_VERSION/build':g" setup.cfg \
     && sed -i "s:PREFER_COMPILER\ =\ 'GNU':PREFER_COMPILER\ =\'GNU_without_MATH'\nMATHLIB=\ '-L$OPENBLAS_BUILD/lib/ -lopenblas':g" setup.cfg \
     && yes | python setup.py install \
-    && echo localhost cpu=`nproc` >> /srvtc/cloud/aster-$CA_VERSION/build/etc/codeaster/mpi_hostfile
+    && echo localhost cpu=`nproc` >> /home/precice/codeaster/aster-$CA_VERSION/build/etc/codeaster/mpi_hostfile
 
 WORKDIR \
-    /srvtc/cloud/aster-$CA_VERSION/contrib
+    /home/precice/codeaster/aster-$CA_VERSION/contrib
 
 RUN \
     wget -nv http://www.netlib.org/scalapack/scalapack_installer.tgz \
@@ -160,36 +157,36 @@ RUN \
     && mv scalapack_installer scalapack-$SCLPK_VERSION
 
 WORKDIR \
-    /srvtc/cloud/aster-$CA_VERSION/contrib/scalapack-$SCLPK_VERSION
+    /home/precice/codeaster/aster-$CA_VERSION/contrib/scalapack-$SCLPK_VERSION
 
 RUN \
-    mkdir -p /srvtc/cloud/aster-$CA_VERSION/contrib/scalapack-$SCLPK_VERSION/build \
-    && ./setup.py --lapacklib=$OPENBLAS_BUILD/lib/libopenblas.a --mpicc=mpicc --mpif90=mpif90 --mpiincdir=/usr/lib/openmpi/include --ldflags_c=-fopenmp --ldflags_fc=-fopenmp --prefix=/srvtc/cloud/aster-$CA_VERSION/contrib/scalapack-$SCLPK_VERSION/build
+    mkdir -p /home/precice/codeaster/aster-$CA_VERSION/contrib/scalapack-$SCLPK_VERSION/build \
+    && ./setup.py --lapacklib=$OPENBLAS_BUILD/lib/libopenblas.a --mpicc=mpicc --mpif90=mpif90 --mpiincdir=/usr/lib/openmpi/include --ldflags_c=-fopenmp --ldflags_fc=-fopenmp --prefix=/home/precice/codeaster/aster-$CA_VERSION/contrib/scalapack-$SCLPK_VERSION/build
 
 WORKDIR \
-    /srvtc/cloud/aster-$CA_VERSION/contrib
+    /home/precice/codeaster/aster-$CA_VERSION/contrib
 
 # Todo: fix above
 ENV \
     MUMPS_ARCHIVE=4.10.0-aster3-2
 
 RUN \
-    tar -xzf /srvtc/cloud/aster-$CA_VERSION/SRC/mumps-$MUMPS_ARCHIVE.tar.gz -C /srvtc/cloud/aster-$CA_VERSION/contrib \
+    tar -xzf /home/precice/codeaster/aster-$CA_VERSION/SRC/mumps-$MUMPS_ARCHIVE.tar.gz -C /home/precice/codeaster/aster-$CA_VERSION/contrib \
     && mv mumps-$MUMPS_VERSION mumps-${MUMPS_VERSION}_mpi
 
-ADD docker/build-utils-tmp /srvtc/cloud/build-utils
+ADD docker/build-utils-tmp /home/precice/codeaster/build-utils
 
 WORKDIR \
-    /srvtc/cloud/aster-$CA_VERSION/contrib/mumps-${MUMPS_VERSION}_mpi
+    /home/precice/codeaster/aster-$CA_VERSION/contrib/mumps-${MUMPS_VERSION}_mpi
 
-ENV MUMPS_BUILD=/srvtc/cloud/aster-$CA_VERSION/contrib/mumps-${MUMPS_VERSION}_mpi
+ENV MUMPS_BUILD=/home/precice/codeaster/aster-$CA_VERSION/contrib/mumps-${MUMPS_VERSION}_mpi
 
 RUN \
-    cp /srvtc/cloud/build-utils/MUMPS_Makefile.inc Makefile.inc \
+    cp /home/precice/codeaster/build-utils/MUMPS_Makefile.inc Makefile.inc \
     && make -j 4 all
 
 WORKDIR \
-    /srvtc/cloud/aster-$CA_VERSION/contrib
+    /home/precice/codeaster/aster-$CA_VERSION/contrib
 
 RUN \
     wget -nv http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-$PETSC_VERSION.tar.gz \
@@ -197,9 +194,9 @@ RUN \
     && rm petsc-$PETSC_VERSION.tar.gz
 
 WORKDIR \
-    /srvtc/cloud/aster-$CA_VERSION/contrib/petsc-$PETSC_VERSION
+    /home/precice/codeaster/aster-$CA_VERSION/contrib/petsc-$PETSC_VERSION
 
-ENV PETSC_BUILD=/srvtc/cloud/aster-$CA_VERSION/contrib/petsc-$PETSC_VERSION
+ENV PETSC_BUILD=/home/precice/codeaster/aster-$CA_VERSION/contrib/petsc-$PETSC_VERSION
 ENV PETSC_DIR=$PETSC_BUILD
 
 RUN \
@@ -208,7 +205,7 @@ RUN \
     && make PETSC_DIR=$PETSC_BUILD PETSC_ARCH=arch-linux2-c-opt test
 
 WORKDIR \
-    /srvtc/cloud/aster-$CA_VERSION/SRC
+    /home/precice/codeaster/aster-$CA_VERSION/SRC
 
 RUN \
     wget -nv https://www.bitbucket.org/code_aster/codeaster-src/get/$CABT_VERSION.tar.gz \
@@ -216,43 +213,43 @@ RUN \
     && tar xf $CABT_VERSION.tar.gz -C aster-bitbucket-$CABT_VERSION --strip-components 1 \
 	&& rm $CABT_VERSION.tar.gz \
 	&& mv aster-bitbucket-$CABT_VERSION aster-$CA_VERSION \
-	&& cp /srvtc/cloud/aster-$CA_VERSION/build/$CA_TAG/lib/aster/Accas/pkginfo.py aster-$CA_VERSION/bibpyt/Accas/
+	&& cp /home/precice/codeaster/aster-$CA_VERSION/build/$CA_TAG/lib/aster/Accas/pkginfo.py aster-$CA_VERSION/bibpyt/Accas/
 
 # blacs is only required for mumps, not code_aster itself, so it can be ecluded, otherwise error
 #V13commentoutRUN\
-#V13commentout    sed -i "s/call blacs_pinfo (iam, nprocs)/!call blacs_pinfo (iam, nprocs)/g" /srvtc/cloud/aster-13.2.0/SRC/aster-13.2.0/waftools/mathematics.py \
-#V13commentout    && sed -i "s/print \*,iam/!print *,iam/g" /srvtc/cloud/aster-13.2.0/SRC/aster-13.2.0/waftools/mathematics.py \
-#V13commentout    && sed -i "s/print \*,nprocs/!print *,nprocs/g" /srvtc/cloud/aster-13.2.0/SRC/aster-13.2.0/waftools/mathematics.py
+#V13commentout    sed -i "s/call blacs_pinfo (iam, nprocs)/!call blacs_pinfo (iam, nprocs)/g" /home/precice/codeaster/aster-13.2.0/SRC/aster-13.2.0/waftools/mathematics.py \
+#V13commentout    && sed -i "s/print \*,iam/!print *,iam/g" /home/precice/codeaster/aster-13.2.0/SRC/aster-13.2.0/waftools/mathematics.py \
+#V13commentout    && sed -i "s/print \*,nprocs/!print *,nprocs/g" /home/precice/codeaster/aster-13.2.0/SRC/aster-13.2.0/waftools/mathematics.py
 
 WORKDIR \
-    /srvtc/cloud/aster-$CA_VERSION/SRC/aster-$CA_VERSION/
+    /home/precice/codeaster/aster-$CA_VERSION/SRC/aster-$CA_VERSION/
 
 RUN \
-    ./waf configure --use-config-dir=/srvtc/cloud/build-utils --use-config=Ubuntu_gnu_mpi --prefix=/srvtc/cloud/aster-$CA_VERSION/build/PAR$CA_TAG --install-tests \
+    ./waf configure --use-config-dir=/home/precice/codeaster/build-utils --use-config=Ubuntu_gnu_mpi --prefix=/home/precice/codeaster/aster-$CA_VERSION/build/PAR$CA_TAG --install-tests \
     && ./waf install -p
 
 WORKDIR \
-    /srvtc/cloud/aster-$CA_VERSION/build
+    /home/precice/codeaster/aster-$CA_VERSION/build
 
 RUN \
-    sed -i "s/PMI_RANK/OMPI_COMM_WORLD_RANK/g" /srvtc/cloud/aster-$CA_VERSION/build/etc/codeaster/asrun \
-    && echo vers : PAR$CA_TAG:/srvtc/cloud/aster-$CA_VERSION/build/PAR$CA_TAG/share/aster >> /srvtc/cloud/aster-$CA_VERSION/build/etc/codeaster/aster
+    sed -i "s/PMI_RANK/OMPI_COMM_WORLD_RANK/g" /home/precice/codeaster/aster-$CA_VERSION/build/etc/codeaster/asrun \
+    && echo vers : PAR$CA_TAG:/home/precice/codeaster/aster-$CA_VERSION/build/PAR$CA_TAG/share/aster >> /home/precice/codeaster/aster-$CA_VERSION/build/etc/codeaster/aster
 
 RUN \
-    sed -i "s/#batch_memmax : 12000/batch_memmax : 64000/g" /srvtc/cloud/aster-$CA_VERSION/build/etc/codeaster/asrun \
-    && sed -i "s/#interactif_memmax : 2048/interactif_memmax : 64000/g" /srvtc/cloud/aster-$CA_VERSION/build/etc/codeaster/asrun \
-    && sed -i "s/#batch_nbpmax : 16/batch_nbpmax : 32/g" /srvtc/cloud/aster-$CA_VERSION/build/etc/codeaster/asrun \
-    && sed -i "s/#interactif_nbpmax : 16/interactif_nbpmax : 32/g" /srvtc/cloud/aster-$CA_VERSION/build/etc/codeaster/asrun
+    sed -i "s/#batch_memmax : 12000/batch_memmax : 64000/g" /home/precice/codeaster/aster-$CA_VERSION/build/etc/codeaster/asrun \
+    && sed -i "s/#interactif_memmax : 2048/interactif_memmax : 64000/g" /home/precice/codeaster/aster-$CA_VERSION/build/etc/codeaster/asrun \
+    && sed -i "s/#batch_nbpmax : 16/batch_nbpmax : 32/g" /home/precice/codeaster/aster-$CA_VERSION/build/etc/codeaster/asrun \
+    && sed -i "s/#interactif_nbpmax : 16/interactif_nbpmax : 32/g" /home/precice/codeaster/aster-$CA_VERSION/build/etc/codeaster/asrun
 
 RUN \
-    sed -i "s/export ASTER_TEMPDIR:\/tmp/export ASTER_TEMPDIR:\/srvtc\/tmp/g" /srvtc/cloud/aster-$CA_VERSION/build/etc/codeaster/profile.sh
+    sed -i "s/export ASTER_TEMPDIR:\/tmp/export ASTER_TEMPDIR:\/srvtc\/tmp/g" /home/precice/codeaster/aster-$CA_VERSION/build/etc/codeaster/profile.sh
 
 WORKDIR \
-	/srvtc/cloud/aster-$CA_VERSION/contrib
+	/home/precice/codeaster/aster-$CA_VERSION/contrib
 
 RUN \
-    mv /srvtc/cloud/aster-$CA_VERSION/build/share/codeaster/asrun/data/mpirun_template /srvtc/cloud/aster-$CA_VERSION/build/share/codeaster/asrun/data/mpirun_template_backup \
-    && cp /srvtc/cloud/build-utils/mpirun_template /srvtc/cloud/aster-$CA_VERSION/build/share/codeaster/asrun/data/.
+    mv /home/precice/codeaster/aster-$CA_VERSION/build/share/codeaster/asrun/data/mpirun_template /home/precice/codeaster/aster-$CA_VERSION/build/share/codeaster/asrun/data/mpirun_template_backup \
+    && cp /home/precice/codeaster/build-utils/mpirun_template /home/precice/codeaster/aster-$CA_VERSION/build/share/codeaster/asrun/data/.
 
 # RUN \
 #	wget -nv https://crowdin.com/download/project/code-aster.zip \
@@ -260,12 +257,12 @@ RUN \
 #	&& rm code-aster.zip \
 #	&& cd code-aster-locales/code_aster/en-US \
 #	&& msgfmt aster-messages.po \
-#	&& mv messages.mo /srvtc/cloud/aster-$CA_VERSION/build/PAR$CA_TAG/share/locale/aster/en-US/# # LC_MESSAGES/aster_messages.mo
+#	&& mv messages.mo /home/precice/codeaster/aster-$CA_VERSION/build/PAR$CA_TAG/share/locale/aster/en-US/# # LC_MESSAGES/aster_messages.mo
 
 ## Clean up for reduced container size
 
 #cleanUPWORKDIR \
-#cleanUP    /srvtc/cloud/aster-$CA_VERSION
+#cleanUP    /home/precice/codeaster/aster-$CA_VERSION
 
 #cleanUPRUN \
 #cleanUP    rm -r SRC/ build/$CA_TAG/share/aster/tests/ build/PAR$CA_TAG/share/aster/tests/
