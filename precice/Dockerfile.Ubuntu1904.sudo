@@ -1,9 +1,9 @@
-# Dockerfile for building preCICE on ubuntu 18.04
+# Dockerfile for building preCICE on ubuntu 19.04
 
-# Using ubuntu 18.04 as basis
+# Using ubuntu 19.04 as basis
 FROM ubuntu:19.04
 
-# Installing necessary dependacies for preCICE, boost 1.65 from apt-get
+# Installing necessary dependencies for preCICE
 RUN apt-get -qq update && apt-get -qq install \
     build-essential \
     libboost-all-dev \
