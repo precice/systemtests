@@ -13,6 +13,8 @@ ENV FORTRAN=gfortran
 RUN apt-get -qq update && apt-get -qq install \
     cython3 python3-pip python3-numpy python3-mpi4py python3-setuptools python3-dev && \
     rm -rf /var/lib/apt/lists/*
+    
+USER precice
 
 # Builds the python_future python bindings for python3
 WORKDIR $PRECICE_ROOT/src/precice/bindings/python_future
