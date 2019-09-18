@@ -11,7 +11,7 @@ ENV FORTRAN=gfortran
 
 # Installing necessary dependecies
 RUN apt-get -qq update && apt-get -qq install \
-    python3 python3-dev && \
+    python3-dev && \
     rm -rf /var/lib/apt/lists/*
 
 # Installing necessary python dependecies; we have to use pip, since cython provided by apt-get is too old.
