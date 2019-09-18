@@ -54,4 +54,6 @@ RUN gfortran $PRECICE_ROOT/src/precice/bindings/f2003/SolverInterfaceF2003.f90 -
 RUN ./solverdummy ../precice-config.xml SolverOne MeshOne & ./solverdummy ../precice-config.xml SolverTwo MeshTwo
 
 # Creating Output folder
+USER root
 RUN mkdir /Output
+USER precice
