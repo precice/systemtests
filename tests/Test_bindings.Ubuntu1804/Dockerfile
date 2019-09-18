@@ -1,6 +1,6 @@
 # System testing preCICE bindings
 
-# Building on top of the latets preCICE-build
+# Building on top of the latest preCICE-build
 ARG from=precice/precice-ubuntu1804.home-develop
 FROM $from
 
@@ -54,4 +54,6 @@ RUN gfortran $PRECICE_ROOT/src/precice/bindings/f2003/SolverInterfaceF2003.f90 -
 RUN ./solverdummy ../precice-config.xml SolverOne MeshOne & ./solverdummy ../precice-config.xml SolverTwo MeshTwo
 
 # Creating Output folder
+USER root
 RUN mkdir /Output
+USER precice

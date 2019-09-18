@@ -19,7 +19,7 @@ RUN wget -q https://bootstrap.pypa.io/get-pip.py -O get-pip.py && \
     python3 get-pip.py
 
 USER precice
-RUN pip3 install Cython mpi4py numpy enum34
+RUN pip3 install --user cython mpi4py numpy enum34
 
 # Builds the python_future python bindings for python3
 WORKDIR $PRECICE_ROOT/src/precice/bindings/python_future
@@ -59,4 +59,6 @@ RUN gfortran $PRECICE_ROOT/src/precice/bindings/f2003/SolverInterfaceF2003.f90 -
 RUN ./solverdummy ../precice-config.xml SolverOne MeshOne & ./solverdummy ../precice-config.xml SolverTwo MeshTwo
 
 # Creating Output folder
+USER root
 RUN mkdir /Output
+USER precice
