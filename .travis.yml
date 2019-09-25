@@ -210,6 +210,6 @@ jobs:
     - python system_testing.py -s et1d --base Ubuntu1604.home
     name: "[16.04] elastictube1d"
     after_success:
-    - echo "TODO: add success command"
+    - echo "[WIP] success"
     after_failure:
-    - echo "TODO: add failure command"
+    - echo "[WIP] failure"
