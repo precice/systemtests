@@ -10,6 +10,9 @@ RUN wget -q https://bootstrap.pypa.io/get-pip.py -O get-pip.py && \
     python3 get-pip.py && \
     pip3 install Cython mpi4py numpy enum34
 
+
+RUN mkdir /Output
+
 USER precice
 
 WORKDIR $PRECICE_ROOT/src/precice/bindings/python_future
@@ -23,5 +26,4 @@ RUN git clone https://github.com/Eder-K/elastictube1d.git && \
     mkdir -p Data/Input Data/Output Data/Exchange
 
 WORKDIR /home/precice/elastictube1d
-
-RUN mkdir /Output
+RUN ./Allrun
