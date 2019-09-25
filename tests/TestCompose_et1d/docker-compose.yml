@@ -1,0 +1,25 @@
+version: '3'
+services:
+  # Fluid
+  elastictube1d:
+    build:
+      context: .
+      dockerfile: Dockerfile.elastictube1d
+      args:
+        from: "${SYSTEST_REMOTE}precice${PRECICE_BASE}"
+    networks:
+      - precicecomm
+    volumes:
+      - exchange:/home/precice/Data/Exchange/
+      - output:/home/precice/Data/Output/
+      - configs:/home/precice/elastictube1d-python/
+    command: >
+      /bin/bash -c "source Allrun"
+    container_name: elastictube1d
+
+networks:
+  precicecomm:
+volumes:
+  exchange:
+  output:
+  configs:
