@@ -1,12 +1,12 @@
 version: '3'
 services:
-  # Fluid
+  # Fluid and Structure participants are executed simultaneously
   elastictube1d:
     build:
       context: .
       dockerfile: Dockerfile.elastictube1d
       args:
-        from: "${SYSTEST_REMOTE}precice${PRECICE_BASE}"
+        from: "$precice/precice${PRECICE_BASE}"
     networks:
       - precicecomm
     volumes:
