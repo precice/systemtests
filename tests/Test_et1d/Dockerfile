@@ -21,5 +21,7 @@ RUN pip3 install --user .
 WORKDIR /home/precice/
 RUN git clone https://github.com/Eder-K/elastictube1d.git && \
     mkdir -p Data/Input Data/Output Data/Exchange
-    
+
 WORKDIR /home/precice/elastictube1d
+
+RUN mkdir /Output
