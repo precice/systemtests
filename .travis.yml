@@ -89,36 +89,41 @@ jobs:
     - echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin
     - docker push precice/precice-ubuntu1804.package-develop
 
-  - name: "[Build on fork] Using cached version"
+  - name: "[Build preCICE on fork] Using cached version"
     if: fork = true
     script: true
 
   - stage: Building adapters
     script: docker build -f adapters/Dockerfile.su2-adapter -t precice/su2-adapter-ubuntu1604.home-develop .
     name: SU2 adapter
+    if: fork = false
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "precice" --password-stdin
     - docker push precice/su2-adapter-ubuntu1604.home-develop
 
   - name: CalculiX adapter
+    if: fork = false
     script: docker build -f adapters/Dockerfile.calculix-adapter -t $DOCKER_USERNAME/calculix-adapter-ubuntu1604.home-develop .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "precice" --password-stdin
     - docker push precice/calculix-adapter-ubuntu1604.home-develop
 
   - name: deal.ii adapter
+    if: fork = false
     script: docker build -f adapters/Dockerfile.dealii-adapter -t $DOCKER_USERNAME/dealii-adapter-ubuntu1604.home-develop .
     after_success:
       - echo "$DOCKER_PASSWORD" | docker login -u "precice" --password-stdin
       - docker push precice/dealii-adapter-ubuntu1604.home-develop
 
   - name: openFOAM adapter
+    if: fork = false
     script: docker build -f adapters/Dockerfile.openfoam-adapter -t $DOCKER_USERNAME/openfoam-adapter-ubuntu1604.home-develop .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "precice" --password-stdin
     - docker push precice/openfoam-adapter-ubuntu1604.home-develop
 
   - name: FEniCS adapter
+    if: fork = false
     script: >
       docker build -f adapters/Dockerfile.fenics-adapter -t $DOCKER_USERNAME/fenics-adapter-ubuntu1804.home-develop 
       --build-arg from=precice/precice-ubuntu1804.home-develop .
@@ -127,6 +132,7 @@ jobs:
     - docker push $DOCKER_USERNAME/fenics-adapter-ubuntu1804.home-develop
 
   - name: openFOAM adapter [PETSc]
+    if: fork = false
     script: >
       docker build -f adapters/Dockerfile.openfoam-adapter -t $DOCKER_USERNAME/openfoam-adapter-ubuntu1604.home.petsc-develop
       --build-arg from=precice/precice-ubuntu1604.home.petsc-develop .
@@ -135,12 +141,18 @@ jobs:
     - docker push $DOCKER_USERNAME/openfoam-adapter-ubuntu1604.home.petsc-develop
 
   - name: CalculiX adapter [PETSc]
+    if: fork = false
     script: >
       docker build -f adapters/Dockerfile.calculix-adapter -t $DOCKER_USERNAME/calculix-adapter-ubuntu1604.home.petsc-develop
       --build-arg from=precice/precice-ubuntu1604.home.petsc-develop .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - docker push $DOCKER_USERNAME/calculix-adapter-ubuntu1604.home.petsc-develop
+
+  - stage: Building adapters
+    if: fork = true
+    name: "[Build adapters on fork] Using cached version"
+    script: true
 
   - stage: Tests
     script:
