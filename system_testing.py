@@ -138,7 +138,7 @@ def comparison(pathToRef, pathToOutput):
     ret = common.get_diff_files(filecmp.dircmp(pathToRef, pathToOutput, ignore = [".gitkeep"]))
     if ret[0] or ret[1] or ret[2]:
         # check the results numerically now
-        num_diff = call("bash ../compare_results.sh {} {}".format(pathToRef, pathToOutput))
+        num_diff = call("bash ../../compare_results.sh {} {}".format(pathToRef, pathToOutput))
         if num_diff == 1:
             raise IncorrectOutput(*ret)
 
