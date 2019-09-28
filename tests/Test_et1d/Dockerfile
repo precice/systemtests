@@ -11,10 +11,9 @@ RUN wget -q https://bootstrap.pypa.io/get-pip.py -O get-pip.py && \
     python3 get-pip.py && \
     pip install Cython mpi4py numpy enum34 matplotlib vtk
 
+ARG CACHEBUST
 
 RUN mkdir /Output
-
-USER precice
 
 WORKDIR $PRECICE_ROOT/src/precice/bindings/python_future
 RUN pip3 install --user .
@@ -23,8 +22,12 @@ WORKDIR $PRECICE_ROOT/src/precice/bindings/python
 RUN pip3 install --user .
 
 WORKDIR /home/precice/
-RUN git clone https://github.com/Eder-K/elastictube1d.git && \
-    mkdir -p Data/Input Data/Output Data/Exchange
+RUN git clone https://github.com/Eder-K/elastictube1d.git
 
 WORKDIR /home/precice/elastictube1d
+
+# execute launch script
 RUN ./Allrun
+
+# copy results (only VTK due to iteration discrepancies)
+RUN cp -r VTK /Output/
