@@ -1,4 +1,4 @@
-ARG from=precice/precice-ubuntu1604.home-develop
+ARG from=precice/precice-ubuntu1804.home-develop
 FROM $from
 USER root
 
