@@ -95,4 +95,8 @@ if [ -n "$only_files" ]; then
   ret=1
 fi
 
+if [ $ret -eq 0 ]; then
+  echo "No significant file differences found."
+fi
+
 exit $ret
