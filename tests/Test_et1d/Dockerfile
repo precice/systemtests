@@ -3,12 +3,13 @@ FROM $from
 USER root
 
 RUN apt-get -qq update && apt-get -qq install \
-    python3 python3-dev && \
+    python3 python3-dev \
+    libsm6 libgl1 && \
     rm -rf /var/lib/apt/lists/*
 
 RUN wget -q https://bootstrap.pypa.io/get-pip.py -O get-pip.py && \
     python3 get-pip.py && \
-    pip3 install Cython mpi4py numpy enum34
+    pip install Cython mpi4py numpy enum34 matplotlib vtk
 
 
 RUN mkdir /Output
