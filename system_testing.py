@@ -32,6 +32,8 @@ def build(systest, tag, branch, local, force_rebuild):
 def run(systest, tag, branch):
     """ Runs (create a container from an image) the specified systest. """
     test_tag = docker.get_namespace() + systest + "-" + tag + "-" + branch
+    # remove any currently running containers with same name
+    ccall("docker container stop {}; docker container rm {}".format(test_tag, test_tag))
     ccall("docker run -it -d --name " + test_tag + " " + test_tag)
     shutil.rmtree("Output", ignore_errors=True)
     ccall("docker cp " + test_tag + ":Output . ")
