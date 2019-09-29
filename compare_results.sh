@@ -32,7 +32,7 @@ do case $i in
     max_diff_limit="${i#*=}"
     ;;
     *)
-    echo "Uknown options $i. Possible options: --avg_diff, --max_diff "; exit 1;;
+    echo "Unknown options $i. Possible options: --avg_diff, --max_diff "; exit 1;;
 esac
 done
 
