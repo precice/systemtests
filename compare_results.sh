@@ -80,8 +80,9 @@ if [ -n "$diff_files" ]; then
     if [ -n "$rel_max_difference" ]; then
       # Split by space and transform into the array
       difference=( $rel_max_difference )
+      diff -yr --suppress-common-lines $file1 $file2
+      echo
       echo "Difference between numerical fields in $file1 and $file2 -  Average: ${difference[0]}. Maximum: ${difference[1]}"
-      diff -yr --suppress-common-lines $folder1 $folder2
       ret=1
     fi
   done
