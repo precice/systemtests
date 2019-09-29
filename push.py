@@ -145,7 +145,7 @@ if __name__ == "__main__":
 
     ccall("git clone https://github.com/precice/precice_st_output")
 
-    test_type = "Test" if args.test == "bindings" else "TestCompose"
+    test_type = "Test" if args.test in ["bindings","1dtube"] else "TestCompose"
     test_name = "{Type}_{test}.{base}".format(Type = test_type, test =
             args.test, base = args.base)
     if not os.path.isdir(test_name):
