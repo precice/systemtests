@@ -45,7 +45,7 @@ def get_test_participants(test_name):
     """ Returns solvers that participate in the test """
     solvers_abbr = {"ccx": "calculix-adapter", "su2": "su2-adapter", "of": "openfoam-adapter",
             "dealii":"dealii-adapter", "bindings": "bindings", "fe":"fenics-adapter", "nutils": "nutils",
-            "1dtube":"elastictube1d"}
+            "1dtube_py":"elastictube1d-python", "1dtube_cxx":"elastictube1d-cxx"}
 
     return [solvers_abbr[abbr] for abbr in  test_name.lower().split('_')[0].split('-')]
 
