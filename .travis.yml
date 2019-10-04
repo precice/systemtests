@@ -24,7 +24,7 @@ jobs:
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin
     - docker push precice/precice-ubuntu1604.home-develop:latest
-  
+
   - stage: Building preCICE
     if: fork = false
     name: "Ubuntu 16.04 home PETSc"
@@ -125,7 +125,7 @@ jobs:
   - name: FEniCS adapter
     if: fork = false
     script: >
-      docker build -f adapters/Dockerfile.fenics-adapter -t $DOCKER_USERNAME/fenics-adapter-ubuntu1804.home-develop 
+      docker build -f adapters/Dockerfile.fenics-adapter -t $DOCKER_USERNAME/fenics-adapter-ubuntu1804.home-develop
       --build-arg from=precice/precice-ubuntu1804.home-develop .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
@@ -219,9 +219,16 @@ jobs:
     after_failure:
     - python push.py -t of-ccx_fsi
   - script:
-    - python system_testing.py -s 1dtube
-    name: "[16.04] elastictube1d"
+    - python system_testing.py -s 1dtube_py
+    name: "[16.04] elastictube1d - Python"
     after_success:
-    - python push.py -s -t 1dtube
+    - python push.py -s -t 1dtube_py
     after_failure:
-    - python push.py -t 1dtube
+    - python push.py -t 1dtube_py
+  - script:
+    - python system_testing.py -s 1dtube_cxx
+    name: "[16.04] elastictube1d - C++"
+    after_success:
+    - python push.py -s -t 1dtube_cxx
+    after_failure:
+    - python push.py -t 1dtube_cxx
