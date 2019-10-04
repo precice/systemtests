@@ -219,16 +219,16 @@ jobs:
     after_failure:
     - python push.py -t of-ccx_fsi
   - script:
-    - python system_testing.py -s 1dtube-py
+    - python system_testing.py -s 1dtube_py
     name: "[16.04] elastictube1d - Python"
     after_success:
-    - python push.py -s -t 1dtube-py
+    - python push.py -s -t 1dtube_py
     after_failure:
-    - python push.py -t 1dtube-py
+    - python push.py -t 1dtube_py
   - script:
-    - python system_testing.py -s 1dtube-cxx
+    - python system_testing.py -s 1dtube_cxx
     name: "[16.04] elastictube1d - C++"
     after_success:
-    - python push.py -s -t 1dtube-cxx
+    - python push.py -s -t 1dtube_cxx
     after_failure:
-    - python push.py -t 1dtube-cxx
+    - python push.py -t 1dtube_cxx
