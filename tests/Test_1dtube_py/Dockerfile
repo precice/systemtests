@@ -29,5 +29,5 @@ WORKDIR /home/precice/elastictube1d
 
 RUN ./Allrun
 
-# copy only VTKs, as iteration numbers differ when dockerized
+# transfer only VTK results
 RUN cp -r VTK /Output/
