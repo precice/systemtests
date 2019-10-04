@@ -11,7 +11,6 @@ ARG CACHEBUST
 
 RUN mkdir -p /Output/Postproc
 
-USER precice
 
 WORKDIR /home/precice/
 RUN git clone https://github.com/Eder-K/elastictube1d.git
@@ -20,6 +19,5 @@ WORKDIR /home/precice/elastictube1d/elastictube1d-cxx
 RUN cmake . && make all && ./Allrun-cxx
 
 # transfer results
-USER root
 RUN cp *.json *.log /Output/ && \
     cp Postproc/*.vtk /Output/Postproc/
