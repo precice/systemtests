@@ -21,5 +21,5 @@ RUN cmake . && make all && ./Allrun-cxx
 
 # transfer results
 USER root
-RUN cp *.json *.events *.log /Output/ && \
+RUN cp *.json *.log /Output/ && \
     cp Postproc/*.vtk /Output/Postproc/
