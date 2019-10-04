@@ -87,7 +87,7 @@ def create_job_log(test, log, exit_status):
             for adapter in adapters:
                 last_good_commits[adapter] = get_last_successfull_commit('precice', adapter).get('compare_url')
         last_good_commits['systemtests'] = get_last_successfull_commit('precice', 'systemtests').get('compare_url')
-        failed_info = "## Last succesfull commits \n* {commits} \n".format(commits = 
+        failed_info = "## Last succesfull commits \n* {commits} \n".format(commits =
                 "\n* ".join([make_md_link(name, commit) for name, commit in last_good_commits.items()]))
         log.write(failed_info)
 
@@ -145,7 +145,7 @@ if __name__ == "__main__":
 
     ccall("git clone https://github.com/precice/precice_st_output")
 
-    test_type = "Test" if args.test in ["bindings","1dtube"] else "TestCompose"
+    test_type = "Test" if args.test in ["bindings","1dtube_py","1dtube_cxx"] else "TestCompose"
     test_name = "{Type}_{test}.{base}".format(Type = test_type, test =
             args.test, base = args.base)
     if not os.path.isdir(test_name):
