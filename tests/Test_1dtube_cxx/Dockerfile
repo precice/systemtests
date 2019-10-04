@@ -20,5 +20,6 @@ WORKDIR /home/precice/elastictube1d/elastictube1d-cxx
 RUN cmake . && make all && ./Allrun-cxx
 
 # transfer results
+USER root
 RUN cp *.json *.events *.log /Output/ && \
     cp Postproc/*.vtk /Output/Postproc/
