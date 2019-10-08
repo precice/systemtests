@@ -185,7 +185,7 @@ jobs:
     - python push.py -t fe-fe --base Ubuntu1804.home
   - script:
     - python system_testing.py -s bindings
-    name: "[16.04] Bindings"
+    name: "[16.04] Bindings/Solverdummies"
     after_success:
     - python push.py -s -t bindings
     after_failure:
