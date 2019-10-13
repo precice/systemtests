@@ -23,7 +23,7 @@ jobs:
     - docker build -f precice/Dockerfile.Ubuntu1804.home -t precice --build-arg branch=master .
     after_success:
     - echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin
-    - docker push precice/precice-ubuntu1804.home-develop:latest
+    - docker push precice/precice-ubuntu1804.home-master:latest
 
   - stage: Building adapters
     name: FEniCS adapter (precice develop)
