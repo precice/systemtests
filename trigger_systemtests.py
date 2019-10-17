@@ -2,7 +2,7 @@
  Generate Travis API V3 request to trigger corresponding systemtests
  based on the adapter type. To adjust it for newly added system test modify
  struct `adapter_info` struct below with the name of the
- adapter repository, systemtests that should be run for it as 
+ adapter repository, systemtests that should be run for it as
  well as the base image
 """
 
@@ -83,7 +83,7 @@ def determine_image_tag():
     else:
         return branch
 
-def generate_travis_job(adapter, user, trigger_failure = True):
+def generate_travis_job(adapter, user, trigger_failure = True, systest_branch = "master"):
 
     triggered_by = os.environ["TRAVIS_JOB_WEB_URL"] if "TRAVIS_JOB_WEB_URL" in\
          os.environ else "manual script call"
@@ -107,9 +107,9 @@ def generate_travis_job(adapter, user, trigger_failure = True):
     build_template = {
         "stage": "Building adapter",
         "name": adapters_info[adapter].repo,
-        "script": adjust_travis_script(main_build_script, user, adapter), 
-        "after_success": 
-            [  'echo "$DOCKER_PASSWORD" | docker login -u {user} --password-stdin', 
+        "script": adjust_travis_script(main_build_script, user, adapter),
+        "after_success":
+            [  'echo "$DOCKER_PASSWORD" | docker login -u {user} --password-stdin',
                 "docker push {user}/{adapter}:{tag}".format(adapter =
                     adapters_info[adapter].repo, user = user,tag = determine_image_tag()) ]
         }
@@ -129,7 +129,7 @@ def generate_travis_job(adapter, user, trigger_failure = True):
     job_body={
         "request": {
           "message": "{} systemtests".format(adapter),
-          "branch": "master",
+          "branch": "{systest_branch}".format(systest_branch=systest_branch),
           "config": {
             # we need to use 'replace' to replace .travis.yml,
             # that is originally present in the repo
@@ -270,6 +270,9 @@ if __name__ == "__main__":
               action='store_true')
     parser.add_argument('--test', help='Only print generated job, do not send the request', 
             action='store_true')
+    parser.add_argument('--systest_branch', help='Specify the branch to use on the systemtests repository',
+            type=str, default='master')
+
     args = parser.parse_args()
 
     if args.failure:
@@ -278,12 +281,13 @@ if __name__ == "__main__":
     else:
         if args.test:
             job = generate_travis_job(args.adapter, args.owner, trigger_failure
-                    = False)
+                    = False, systest_branch = args.systest_branch)
             pprint.pprint(job)
         else:
             if args.wait:
                 trigger_travis_and_wait_and_respond(generate_travis_job(args.adapter, args.owner, trigger_failure
-                    = False), args.owner, 'systemtests' )
+                    = False, systest_branch = args.systest_branch), args.owner, 'systemtests' )
             else:
-                trigger_travis_build( generate_travis_job(args.adapter, args.owner),
+                trigger_travis_build( generate_travis_job(args.adapter, args.owner,
+                        systest_branch = args.systest_branch),
                         args.owner, 'systemtests' )
