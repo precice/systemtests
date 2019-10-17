@@ -2,7 +2,7 @@ from alpine
 ENV tutorial_path tutorials/HT/partitioned-heat/fenics-fenics
 RUN apk add git
 
-RUN git clone https://github.com/precice/tutorials
+RUN git clone https://github.com/IshaanDesai/tutorials.git -b complexDomain_HT_fenics-fenics
 RUN mkdir configs && sed -i 's|network="lo"|exchange-directory="/home/precice/Data/Exchange/" network="eth0"|g' $tutorial_path/precice-config.xml
 
 RUN addgroup -g 1000 precice && adduser -u 1000 -G precice -D precice && chown -R precice:precice tutorials configs
