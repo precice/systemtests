@@ -284,7 +284,7 @@ if __name__ == "__main__":
         else:
             if args.wait:
                 trigger_travis_and_wait_and_respond(generate_travis_job(args.adapter, args.owner, trigger_failure
-                    = False, systest_branch = args.systest_branch), args.owner, 'systemtests' )
+                    = False), args.owner, 'systemtests' )
             else:
                 trigger_travis_build( generate_travis_job(args.adapter, args.owner),
                         args.owner, 'systemtests' )
