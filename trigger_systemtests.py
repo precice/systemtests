@@ -95,9 +95,9 @@ def generate_travis_job(adapter, user, trigger_failure = True, systest_branch = 
 
     base_remote = "precice/precice-{base}-develop".format(base = base.lower())
     main_build_script = "docker build -f adapters/Dockerfile.{adapter} -t \
-        {user}/{adapter} --build-arg from={base_remote} .".format(adapter =
+        {user}/{adapter}:{tag} --build-arg from={base_remote} .".format(adapter =
                 adapters_info[adapter].repo, user = user, base_remote =
-                base_remote)
+                base_remote, tag = determine_image_tag())
 
     if trigger_failure:
         after_failure_action += " python trigger_systemtests.py --failure --owner {USER} --adapter {ADAPTER}"
@@ -109,7 +109,7 @@ def generate_travis_job(adapter, user, trigger_failure = True, systest_branch = 
         "name": adapters_info[adapter].repo,
         "script": adjust_travis_script(main_build_script, user, adapter),
         "after_success":
-            [  'echo "$DOCKER_PASSWORD" | docker login -u {user} --password-stdin',
+            [  'echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin',
                 "docker push {user}/{adapter}:{tag}".format(adapter =
                     adapters_info[adapter].repo, user = user,tag = determine_image_tag()) ]
         }
@@ -268,7 +268,7 @@ if __name__ == "__main__":
               action="store_true")
     parser.add_argument('--wait', help='Whether exit only when the triggered build succeeds',
               action='store_true')
-    parser.add_argument('--test', help='Only print generated job, do not send the request', 
+    parser.add_argument('--test', help='Only print generated job, do not send the request',
             action='store_true')
     parser.add_argument('--systest_branch', help='Specify the branch to use on the systemtests repository',
             type=str, default='master')
