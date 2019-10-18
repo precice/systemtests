@@ -95,9 +95,9 @@ def generate_travis_job(adapter, user, trigger_failure = True):
 
     base_remote = "precice/precice-{base}-develop".format(base = base.lower())
     main_build_script = "docker build -f adapters/Dockerfile.{adapter} -t \
-        {user}/{adapter} --build-arg from={base_remote} .".format(adapter =
+        {user}/{adapter}:{tag} --build-arg from={base_remote} .".format(adapter =
                 adapters_info[adapter].repo, user = user, base_remote =
-                base_remote)
+                base_remote, tag = determine_image_tag())
 
     if trigger_failure:
         after_failure_action += " python trigger_systemtests.py --failure --owner {USER} --adapter {ADAPTER}"
