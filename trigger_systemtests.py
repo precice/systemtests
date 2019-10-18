@@ -83,7 +83,7 @@ def determine_image_tag():
     else:
         return branch
 
-def generate_travis_job(adapter, user, trigger_failure = True, systest_branch = "master"):
+def generate_travis_job(adapter, user, trigger_failure = True):
 
     triggered_by = os.environ["TRAVIS_JOB_WEB_URL"] if "TRAVIS_JOB_WEB_URL" in\
          os.environ else "manual script call"
@@ -129,7 +129,7 @@ def generate_travis_job(adapter, user, trigger_failure = True, systest_branch = 
     job_body={
         "request": {
           "message": "{} systemtests".format(adapter),
-          "branch": "{systest_branch}".format(systest_branch=systest_branch),
+          "branch": "master",
           "config": {
             # we need to use 'replace' to replace .travis.yml,
             # that is originally present in the repo
@@ -270,8 +270,6 @@ if __name__ == "__main__":
               action='store_true')
     parser.add_argument('--test', help='Only print generated job, do not send the request',
             action='store_true')
-    parser.add_argument('--systest_branch', help='Specify the branch to use on the systemtests repository',
-            type=str, default='master')
 
     args = parser.parse_args()
 
@@ -281,13 +279,12 @@ if __name__ == "__main__":
     else:
         if args.test:
             job = generate_travis_job(args.adapter, args.owner, trigger_failure
-                    = False, systest_branch = args.systest_branch)
+                    = False)
             pprint.pprint(job)
         else:
             if args.wait:
                 trigger_travis_and_wait_and_respond(generate_travis_job(args.adapter, args.owner, trigger_failure
                     = False, systest_branch = args.systest_branch), args.owner, 'systemtests' )
             else:
-                trigger_travis_build( generate_travis_job(args.adapter, args.owner,
-                        systest_branch = args.systest_branch),
+                trigger_travis_build( generate_travis_job(args.adapter, args.owner),
                         args.owner, 'systemtests' )
