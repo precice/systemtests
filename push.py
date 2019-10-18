@@ -117,23 +117,29 @@ def add_job_log(systest, failed, log_dir):
         ccall("git add {log_name}".format(log_name = log_name))
 
 
-def generate_commit_message(output_dir, success):
+def generate_commit_message(output_dir, success, test, base):
 
     travis_build_number = os.environ["TRAVIS_BUILD_NUMBER"]
+    travis_build_web_url = os.environ["TRAVIS_BUILD_WEB_URL"]
+    travis_job_number = os.environ["TRAVIS_JOB_NUMBER"]
     travis_job_web_url = os.environ["TRAVIS_JOB_WEB_URL"]
     commit_msg_lines = []
 
     if success:
-        commit_msg_lines = ["Output == Reference build number: {}".format(travis_build_number)]
+        commit_msg_lines = ["Success Job: {}".format(travis_job_number)]
     else:
+        commit_msg_lines = ["Failure Job: {}".format(travis_job_number)]
         # folder with output was not created, we probably failed before producing
         # any of the results
         if not os.path.isdir(output_dir):
-            commit_msg_lines = ["Failed to produce results"]
-        else:
-            commit_msg_lines = ["Output != Reference build number: {}".format(travis_build_number)]
+            commit_msg_lines += ["[Failed to produce results]"]
 
-    return commit_msg_lines + ["Build url: {}".format(travis_job_web_url)]
+    commit_msg_lines += ["Base: {}".format(base)]
+    commit_msg_lines += ["Test: {}".format(test)]
+    commit_msg_lines += ["Build url: {}".format(travis_build_web_url)]
+    commit_msg_lines += ["Job url: {}".format(travis_job_web_url)]
+
+    return commit_msg_lines
 
 if __name__ == "__main__":
 
@@ -162,7 +168,7 @@ if __name__ == "__main__":
     add_output_files(output_dir, output_log_dir, args.success)
 
     # finally commit
-    commit_msg_lines = generate_commit_message(output_dir, args.success)
+    commit_msg_lines = generate_commit_message(output_dir, args.success, args.test, args.base)
     commit_msg = " ".join(map( lambda x: "-m \"" + x + "\"", commit_msg_lines))
     ccall("git commit " + commit_msg)
     ccall("git config user.name 'Precice Bot'")
