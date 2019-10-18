@@ -270,7 +270,6 @@ if __name__ == "__main__":
               action='store_true')
     parser.add_argument('--test', help='Only print generated job, do not send the request',
             action='store_true')
-
     args = parser.parse_args()
 
     if args.failure:
