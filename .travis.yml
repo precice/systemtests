@@ -82,7 +82,7 @@ jobs:
     - docker push precice/precice-ubuntu1804.sudo-develop
 
   - stage: Building preCICE
-  - name: "Ubuntu 18.04.sudo.mpich [Job failure permitted]"
+    name: "Ubuntu 18.04.sudo.mpich [Job failure permitted]"
     if: type = cron
     script:
     - docker build -f precice/Dockerfile.Ubuntu1804.sudo.mpich -t precice/precice-ubuntu1804.sudo.mpich-develop .
