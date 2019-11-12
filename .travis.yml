@@ -9,17 +9,6 @@ services:
 jobs:
   allow_failures:
     - name: "Ubuntu 18.04.sudo.mpich [Job failure permitted]"
-      if: type = cron
-      script:
-        - docker build -f precice/Dockerfile.Ubuntu1804.sudo.mpich -t precice/precice-ubuntu1804.sudo.mpich-develop .
-      deploy:
-        skip_cleanup: true
-        provider: script
-        on:
-          all_branches: true
-        script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin &&
-          docker push precice/precice-ubuntu1804.sudo.mpich-develop:latest
 
   include:
     - stage: Building preCICE
@@ -368,4 +357,3 @@ jobs:
         on:
           all_branches: true
         script: python push.py -s -t of-ccx_fsi
-        
