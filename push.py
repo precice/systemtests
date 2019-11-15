@@ -177,4 +177,4 @@ if __name__ == "__main__":
     ccall("git config user.name 'Precice Bot'")
     ccall("git config user.email ${PRECICE_BOT_EMAIL}")
     ccall("git remote set-url origin https://${GH_TOKEN}@github.com/precice/precice_st_output.git > /dev/null 2>&1")
-    ccall("git push")
+    ccall("git pull --rebase && git push")
