@@ -93,3 +93,48 @@ Then you are free to run your coupled simulation for each participant with:
 docker run --user=precice -it -v $(pwd)/HT/partitioned-heat/fenics-fenics:/home/precice/Data/Input -v exchange:/home/precice/Data/Exchange fenics-adapter-user /bin/bash```
 ```
 Output can then be copied from the containers.
+
+## If you want to run the tests based on code from a non-default branch
+
+Depending on the test case several code components are used (preCICE, bindings, adapter(s), tutorial). Sometimes it becomes necessary to use a branch that is different from the one that is used as default (e.g. `develop` is used for the preCICE images. See [here](https://github.com/precice/systemtests/blob/ec4ef9d4aedd0087dfb3a8ed98fdf7a1267c7751/precice/Dockerfile.Ubuntu1604.home#L50-L52)).
+
+### Non-default branch for preCICE 
+
+If you want to use a different branch for the preCICE image, you can just use the [`--branch` option](https://github.com/precice/systemtests/blob/master/system_testing.py#L178) when you run `system_testing.py`.
+
+### Non-default branch for other components
+
+For other components we do not have a nice interface (see https://github.com/precice/systemtests/issues/121). However, there is a workaround:
+
+We want to use the branch `feature` of the FEniCS adapter instead of the default branch `master` for the test `fe-fe`. We only want to run the test locally on our machine. 
+
+1. We have to modify the `Dockerfile` correspondingly to use the branch `feature`.
+2. Make sure that the modified `Dockerfile` is used to build the image `precice/fenics-adapter-ubuntu1804.home-develop`. 
+```
+$ docker image build -t precice/fenics-adapter-ubuntu1804.home-develop -f Dockerfile.fenics-adapter --build-arg from=precice/precice-ubuntu1804.home-develop .
+```
+3. The modified image will then be used in the test (see [here](https://github.com/precice/systemtests/blob/ec4ef9d4aedd0087dfb3a8ed98fdf7a1267c7751/tests/TestCompose_fe-fe.Ubuntu1804.home/docker-compose.yml#L19)), if we run the test locally.
+```
+$ python3 system_testing.py -s fe-fe --base Ubuntu1804.home
+```
+
+*Note:*
+
+If you really want to make sure that you do not use the wrong images, you can also use the hash (something like `c5f77b336bcb`) that you get from `docker image list` instead of the tag `precice/fenics-adapter-ubuntu1804.home-develop`
+
+```
+$ docker image list
+REPOSITORY                                                 TAG                 IMAGE ID            CREATED             SIZE
+precice/fenics-adapter-ubuntu1804.home-develop             latest              c5f77b336bcb        2 minutes ago       1.68GB
+```
+
+Use it in the docker compose file [`systemtests/tests/TestCompose_fe-fe.Ubuntu1804.home/docker-compose.yml`](https://github.com/precice/systemtests/blob/ec4ef9d4aedd0087dfb3a8ed98fdf7a1267c7751/tests/TestCompose_fe-fe.Ubuntu1804.home/docker-compose.yml#L19)
+
+change
+```
+image: "${SYSTEST_REMOTE}fenics-adapter${PRECICE_BASE}:${FENICS_TAG}"
+```
+to
+```
+image: "c5f77b336bcb"
+```
