@@ -18,20 +18,12 @@ RUN apt-get -qq update && apt-get -qq install \
 RUN wget -q https://bootstrap.pypa.io/get-pip.py -O get-pip.py && \
     python3 get-pip.py
 
-# Builds the python_future python bindings for python3
-WORKDIR $PRECICE_ROOT/src/precice/bindings/python_future
-RUN pip3 install --user .
-    
 # Builds the precice python bindings for python3
 WORKDIR $PRECICE_ROOT/src/precice/bindings/python
 RUN pip3 install --user .
 
 # Runs the python solverdummy with python3
 WORKDIR $PRECICE_ROOT/tools/solverdummies/python
-RUN python3 solverdummy.py ../precice-config.xml SolverOne MeshOne & python3 solverdummy.py ../precice-config.xml SolverTwo MeshTwo
-
-# Runs the python_future solverdummy with python3
-WORKDIR $PRECICE_ROOT/tools/solverdummies/python_future
 RUN python3 solverdummy.py ../precice-config.xml SolverOne MeshOne & python3 solverdummy.py ../precice-config.xml SolverTwo MeshTwo
 
 # Builds the C solverdummy
