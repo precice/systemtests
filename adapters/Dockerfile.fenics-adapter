@@ -29,10 +29,6 @@ RUN add-apt-repository -y ppa:fenics-packages/fenics && \
 RUN pip3 install --user cython  # TODO: can we put this dependency into requirements.txt of python_future?
 
 USER precice
-
-# Builds the python_future python bindings for python3
-RUN cd $PRECICE_ROOT/src/precice/bindings/python_future && \
-    pip3 install --user .
     
 # Builds the precice python bindings for python3
 RUN cd $PRECICE_ROOT/src/precice/bindings/python && \
