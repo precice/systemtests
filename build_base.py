@@ -10,7 +10,10 @@ if __name__ == "__main__":
     parser.add_argument('-f', '--force-rebuild', nargs='+', help="Force rebuild of variable parts of docker image",
                         default = [], choices  = ["precice", "tests"])
     args = parser.parse_args()
-    tag = args.docker_username.lower() + "/" + args.dockerfile.lower() + '-' + args.branch.lower() 
+    if args.petsc == "no":
+        tag = args.docker_username.lower() + "/" + args.dockerfile.lower() + '-' + args.branch.lower() 
+    elif args.petsc == "yes":
+        tag = args.docker_username.lower() + "/" + args.dockerfile.lower() + '.petsc' + '-' + args.branch.lower() 
     docker.build_image(tag = tag,
                        dockerfile = args.dockerfile,
                        build_args = {"branch" : args.branch, "petsc_para" : args.petsc},
