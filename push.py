@@ -56,9 +56,12 @@ def create_job_log(test, log, exit_status):
             name, link=link)
 
     build_url = os.environ["TRAVIS_BUILD_WEB_URL"]
+    build_number = os.environ["TRAVIS_BUILD_NUMBER"]
     event_type = os.environ["TRAVIS_EVENT_TYPE"]
     triggered_commit = os.environ["TRAVIS_COMMIT"]
     job_id = os.environ["TRAVIS_JOB_ID"]
+    job_number = os.environ["TRAVIS_JOB_NUMBER"]
+    job_url = os.environ["TRAVIS_JOB_WEB_URL"]
     commit_message = os.environ["TRAVIS_COMMIT_MESSAGE"]
 
     # Decipher commit from the job message
@@ -73,10 +76,10 @@ def create_job_log(test, log, exit_status):
     else:
         triggered_commit = get_job_commit(job_id)
 
-    log.write(" # Status : " + (" Passing " if not exit_status else\
-        "Failing") + "\n")
-    log.write(" # {link} \n".format(link = make_md_link("Job url", build_url)))
-    log.write("## Triggered by: {link} \n".format(link =
+    log.write("## Status: " + ("Passing" if not exit_status else "Failure") + " \n")
+    log.write("Build: {link} \n\n".format(link = make_md_link(build_number, build_url)))
+    log.write("Job: {link} \n\n".format(link = make_md_link(job_number, job_url)))
+    log.write("Triggered by: {link} \n".format(link =
         make_md_link(event_type, triggered_commit['compare_url'])))
 
     if exit_status:
@@ -87,14 +90,14 @@ def create_job_log(test, log, exit_status):
             for adapter in adapters:
                 last_good_commits[adapter] = get_last_successfull_commit('precice', adapter).get('compare_url')
         last_good_commits['systemtests'] = get_last_successfull_commit('precice', 'systemtests').get('compare_url')
-        failed_info = "## Last succesfull commits \n* {commits} \n".format(commits = 
+        failed_info = "Last successful commits \n* {commits} \n".format(commits =
                 "\n* ".join([make_md_link(name, commit) for name, commit in last_good_commits.items()]))
         log.write(failed_info)
 
-    log.write("## Last 100 lines of the job log at the moment of push...\n")
-    log.write('```\n {job_log} ```\n'.format(job_log =
+    log.write("\n---\nLast 100 lines of the job log at the moment of push:\n")
+    log.write('```\n{job_log}\n```\n'.format(job_log =
         get_travis_job_log(job_id)))
-    log.write(make_md_link("Full job log", "https://api.travis-ci.org/v3/job/{}/log.txt".format(job_id)))
+    log.write(make_md_link("\nFull job log", "https://api.travis-ci.org/v3/job/{}/log.txt".format(job_id)))
 
 
 def add_output_files(output_dir, output_log_dir, success):
@@ -117,23 +120,29 @@ def add_job_log(systest, failed, log_dir):
         ccall("git add {log_name}".format(log_name = log_name))
 
 
-def generate_commit_message(output_dir, success):
+def generate_commit_message(output_dir, success, test, base):
 
     travis_build_number = os.environ["TRAVIS_BUILD_NUMBER"]
+    travis_build_web_url = os.environ["TRAVIS_BUILD_WEB_URL"]
+    travis_job_number = os.environ["TRAVIS_JOB_NUMBER"]
     travis_job_web_url = os.environ["TRAVIS_JOB_WEB_URL"]
     commit_msg_lines = []
 
     if success:
-        commit_msg_lines = ["Output == Reference build number: {}".format(travis_build_number)]
+        commit_msg_lines = ["Success Job: {}".format(travis_job_number)]
     else:
+        commit_msg_lines = ["Failure Job: {}".format(travis_job_number)]
         # folder with output was not created, we probably failed before producing
         # any of the results
         if not os.path.isdir(output_dir):
-            commit_msg_lines = ["Failed to produce results"]
-        else:
-            commit_msg_lines = ["Output != Reference build number: {}".format(travis_build_number)]
+            commit_msg_lines += ["[Failed to produce results]"]
 
-    return commit_msg_lines + ["Build url: {}".format(travis_job_web_url)]
+    commit_msg_lines += ["Base: {}".format(base)]
+    commit_msg_lines += ["Test: {}".format(test)]
+    commit_msg_lines += ["Build url: {}".format(travis_build_web_url)]
+    commit_msg_lines += ["Job url: {}".format(travis_job_web_url)]
+
+    return commit_msg_lines
 
 if __name__ == "__main__":
 
@@ -162,10 +171,10 @@ if __name__ == "__main__":
     add_output_files(output_dir, output_log_dir, args.success)
 
     # finally commit
-    commit_msg_lines = generate_commit_message(output_dir, args.success)
+    commit_msg_lines = generate_commit_message(output_dir, args.success, args.test, args.base)
     commit_msg = " ".join(map( lambda x: "-m \"" + x + "\"", commit_msg_lines))
     ccall("git commit " + commit_msg)
     ccall("git config user.name 'Precice Bot'")
     ccall("git config user.email ${PRECICE_BOT_EMAIL}")
     ccall("git remote set-url origin https://${GH_TOKEN}@github.com/precice/precice_st_output.git > /dev/null 2>&1")
-    ccall("git push")
+    ccall("git pull --rebase && git push")
