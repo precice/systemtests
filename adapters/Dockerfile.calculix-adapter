@@ -26,7 +26,8 @@ USER precice
 # get calculix source
 WORKDIR /home/precice
 RUN curl -s http://www.dhondt.de/ccx_2.15.src.tar.bz2 | tar -xj
-RUN git clone https://github.com/precice/calculix-adapter.git
+ARG branch=develop
+RUN git clone --branch $branch https://github.com/precice/calculix-adapter.git
 WORKDIR calculix-adapter/
 # specify proper locations of libraries
 RUN sed -i  -e 's|CCX\s\+=.*|CCX	= /home/precice/CalculiX/ccx_2.15/src|g'\
