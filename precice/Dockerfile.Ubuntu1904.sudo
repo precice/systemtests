@@ -53,7 +53,7 @@ RUN mkdir /home/precice/precice-build && \
           -DPYTHON=$python_para \
           /home/precice/precice
 RUN cd /home/precice/precice-build && make -j$(nproc)
-# RUN cd /home/precice/precice-build && make test_base  # Tests do not work due to error: See ...
+RUN cd /home/precice/precice-build && make test_base  # Tests do not work due to error: See https://github.com/precice/systemtests/pull/97#issuecomment-532661075
 # user with sudo rights is needed to install preCICE in system directory
 USER root
 RUN cd /home/precice/precice-build && \
