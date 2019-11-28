@@ -138,7 +138,7 @@ def comparison(pathToRef, pathToOutput):
     ret = common.get_diff_files(filecmp.dircmp(pathToRef, pathToOutput, ignore = [".gitkeep"]))
     if ret[0] or ret[1] or ret[2]:
         # check the results numerically now
-        num_diff = call("bash ../compare_results.sh {} {}".format(pathToRef, pathToOutput))
+        num_diff = call("bash ../../compare_results.sh {} {}".format(pathToRef, pathToOutput))
         if num_diff == 1:
             raise IncorrectOutput(*ret)
 
@@ -174,11 +174,12 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Build local.')
     parser.add_argument('-l', '--local', action='store_true', help="use local preCICE image (default: use remote image)")
     parser.add_argument('-s', '--systemtest', type=str, help="choose system tests you want to use",
-                        choices = common.get_tests())
+                        choices = common.get_tests(), required = True)
     parser.add_argument('-b', '--branch', help="preCICE branch to use", default = "develop")
     parser.add_argument('-f', '--force_rebuild', nargs='+', help="Force rebuild of variable parts of docker image",
                         default = [], choices  = ["precice", "tests"])
-    parser.add_argument('--base', type=str,help="Base preCICE image to use", default= "Ubuntu1604.home")
+    parser.add_argument('--base', type=str,help="Base preCICE image to use",
+            default= "Ubuntu1604.home")
     args = parser.parse_args()
     # check if there is specialized dir for this version
     test_name = args.systemtest

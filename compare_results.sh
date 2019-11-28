@@ -10,8 +10,8 @@
 # Input: folder where results should be compared and (optional) maximum relative difference between
 # numerical values in the reference and obtained files ( averaged over the file and over the individual field)
 
-avg_diff_limit="0.01"
-max_diff_limit="0.01"
+avg_diff_limit="0.001"
+max_diff_limit="0.001"
 
 if [ $# -lt 2 ]; then
   echo 1>&2 "Usage: $0 folder1 folder2"
@@ -66,6 +66,7 @@ if [ -n "$diff_files" ]; then
     if [ -n "$filtered_diff" ]; then
       rel_max_difference=$( export max_diff_limit; export avg_diff_limit; echo "$filtered_diff" | awk 'function abs(v) {return v < 0 ? -v : v} { radius=NF/2;
               max_diff=0;
+              sum=0;
               for(i = 1; i <= radius; i++) {
               if ($i != 0) {
                 ind_diff= abs((($(i + radius)-$i)/$i ));
@@ -73,7 +74,7 @@ if [ -n "$diff_files" ]; then
                 if  (ind_diff > max_diff )  { max_diff = ind_diff }
               }
              }
-             } END { diff=sum/( NR*radius ); if (diff > ENVIRON["avg_diff_limit"] || max_diff > ENVIRON["max_diff_limit"])  { print diff, max_diff }}')
+             } END { diff=2*sum/( NR*NF ); if (diff > ENVIRON["avg_diff_limit"] || max_diff > ENVIRON["max_diff_limit"])  { print diff, max_diff }}')
     fi
 
     if [ -n "$rel_max_difference" ]; then

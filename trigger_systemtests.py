@@ -2,7 +2,7 @@
  Generate Travis API V3 request to trigger corresponding systemtests
  based on the adapter type. To adjust it for newly added system test modify
  struct `adapter_info` struct below with the name of the
- adapter repository, systemtests that should be run for it as 
+ adapter repository, systemtests that should be run for it as
  well as the base image
 """
 
@@ -94,10 +94,10 @@ def generate_travis_job(adapter, user, trigger_failure = True):
     main_test_script = "python system_testing.py -s {TEST} --base {BASE}"
 
     base_remote = "precice/precice-{base}-develop".format(base = base.lower())
-    main_build_script = "docker build -f Dockerfile.{adapter} -t \
-        {user}/{adapter} --build-arg from={base_remote} .".format(adapter =
+    main_build_script = "docker build -f adapters/Dockerfile.{adapter} -t \
+        {user}/{adapter}:{tag} --build-arg from={base_remote} .".format(adapter =
                 adapters_info[adapter].repo, user = user, base_remote =
-                base_remote)
+                base_remote, tag = determine_image_tag())
 
     if trigger_failure:
         after_failure_action += " python trigger_systemtests.py --failure --owner {USER} --adapter {ADAPTER}"
@@ -107,9 +107,9 @@ def generate_travis_job(adapter, user, trigger_failure = True):
     build_template = {
         "stage": "Building adapter",
         "name": adapters_info[adapter].repo,
-        "script": adjust_travis_script(main_build_script, user, adapter), 
-        "after_success": 
-            [  'echo "$DOCKER_PASSWORD" | docker login -u {user} --password-stdin', 
+        "script": adjust_travis_script(main_build_script, user, adapter),
+        "after_success":
+            [  'echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin',
                 "docker push {user}/{adapter}:{tag}".format(adapter =
                     adapters_info[adapter].repo, user = user,tag = determine_image_tag()) ]
         }
@@ -213,15 +213,17 @@ def trigger_travis_and_wait_and_respond(job_body, user, repo):
     if request_info["result"] != "approved":
         raise Exception("Systemtest build request did not get approved")
 
-    job_id = request_info['builds'][0]['id']
-
+    build_id = request_info['builds'][0]['id']
+    build_number = request_info['builds'][0]['number']
+    print("\nRequest approved!\n" +
+          "Assigned build on 'systemtests': {}\n\n".format(build_number))
     job_status = ''
     success_status = ["passed", "canceled"]
     failed_status = ["errored", "failed"]
 
     print ("Job started..")
     while not job_status in (success_status + failed_status):
-        job_status = check_job_status(job_id)
+        job_status = check_job_status(build_id)
         print ("Current job status is {}. Be patient...".format(job_status))
         time.sleep(60)
 
@@ -268,7 +270,7 @@ if __name__ == "__main__":
               action="store_true")
     parser.add_argument('--wait', help='Whether exit only when the triggered build succeeds',
               action='store_true')
-    parser.add_argument('--test', help='Only print generated job, do not send the request', 
+    parser.add_argument('--test', help='Only print generated job, do not send the request',
             action='store_true')
     args = parser.parse_args()
 

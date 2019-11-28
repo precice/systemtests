@@ -1,7 +1,7 @@
 # General architecture
 
-When running on Travis tests are executed in the several stages that are outlined below. 
-When it comes to local tests, steps are identical, but the push to the remote dockerhub repository is absent.
+When running on Travis tests are executed as specified in the file `.travis.yml` located in the root of the systemtests repository. The several stages of testing are outlined below.
+If running a local tests (compared to the standard build on the Travis servers) the steps are identical, but the push to the remote DockerHub repository is absent.
 
 ## Building preCICE
 
@@ -17,9 +17,8 @@ Resulting images are then stored on the [Dockerhub](https://hub.docker.com/u/pre
 
 ## Building adapters
 
-
 To build an adapter we follow a two-stage build, first importing from the preCICE image and then importing from the solver's image
-(if the solver's image is actually relevant for building the adapter).We can import from different preCICE base images by specifying `from` 
+(if the solver's image is actually relevant for building the adapter).We can import from different preCICE base images by specifying `from`
 argument during building of the image, e.g:
 ```
 docker build --build-arg from=precice/precice-ubuntu1804.home-develop -d Dockerfile.openfoam-adapter -t openfoam-adapter-ubuntu1804.home-develop .

@@ -1,7 +1,7 @@
 # System testing preCICE bindings
 
 # Building on top of the latets preCICE-build
-ARG from=precice/precice:develop
+ARG from=precice/precice-ubuntu1804.home-develop
 FROM $from
 
 USER root
@@ -49,7 +49,6 @@ RUN ./solverdummy ../precice-config.xml SolverOne MeshOne & ./solverdummy ../pre
 # Builds the f2003 solverdummy
 WORKDIR $PRECICE_ROOT/tools/solverdummies/f2003
 RUN gfortran $PRECICE_ROOT/src/precice/bindings/f2003/SolverInterfaceF2003.f90 -o solverdummy solverdummy.f03 $(pkg-config --libs-only-L --libs-only-l libprecice)
-)
 RUN ./solverdummy ../precice-config.xml SolverOne MeshOne & ./solverdummy ../precice-config.xml SolverTwo MeshTwo
 
 # Creating Output folder
