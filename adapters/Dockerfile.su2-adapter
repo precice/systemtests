@@ -24,8 +24,9 @@ ENV SU2_HOME="/home/precice/su2-source" \
     PATH="/home/precice/su2-bin/bin:${PATH}" \
     PYTHONPATH="/home/precice/su2-bin/bin:${PYTHONPATH}"
 
+ARG branch=develop
 RUN cd /home/precice && \
-    git clone https://github.com/precice/su2-adapter.git && cd su2-adapter &&  \
+    git clone --branch $branch https://github.com/precice/su2-adapter.git && cd su2-adapter &&  \
     ./su2AdapterInstall
 
 WORKDIR /home/precice/su2-source
