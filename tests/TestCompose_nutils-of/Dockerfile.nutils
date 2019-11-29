@@ -12,9 +12,6 @@ RUN wget -q https://bootstrap.pypa.io/get-pip.py -O get-pip.py && \
 
 USER precice
 
-WORKDIR $PRECICE_ROOT/src/precice/bindings/python_future
-RUN pip3 install --user .
-
 WORKDIR $PRECICE_ROOT/src/precice/bindings/python
 RUN pip3 install --user .
 
