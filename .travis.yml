@@ -198,6 +198,19 @@ jobs:
           echo "$DOCKER_PASSWORD" | docker login -u "precice" --password-stdin &&
           docker push precice/openfoam-adapter-ubuntu1604.home-develop
 
+    - name: [18.04] openFOAM adapter
+      if: fork = false
+      script:
+        - docker build -f adapters/Dockerfile.openfoam-adapter.Ubuntu1804 -t $DOCKER_USERNAME/openfoam-adapter-ubuntu1804.home-develop .
+      deploy:
+        skip_cleanup: true
+        provider: script
+        on:
+          all_branches: true
+        script: >-
+          echo "$DOCKER_PASSWORD" | docker login -u "precice" --password-stdin &&
+          docker push precice/openfoam-adapter-ubuntu1804.home-develop
+
     - name: FEniCS adapter
       if: fork = false
       script:
