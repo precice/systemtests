@@ -322,17 +322,17 @@ jobs:
           all_branches: true
         script: python push.py -s -t dealii-of
 
-    - name: "[16.04] nutils <-> OpenFOAM"
+    - name: "[18.04] nutils <-> OpenFOAM"
       script:
-        - python system_testing.py -s nutils-of
+        - python system_testing.py -s nutils-of --base Ubuntu1804.home
       after_failure:
-        - python push.py -t nutils-of
+        - python push.py -t nutils-of --base Ubuntu1804.home
       deploy:
         skip_cleanup: true
         provider: script
         on:
           all_branches: true
-        script: python push.py -s -t nutils-of
+        script: python push.py -s -t nutils-of --base Ubuntu1804.home
 
     - name: "[16.04] OpenFOAM <-> OpenFOAM [nearest projection]"
       script:
