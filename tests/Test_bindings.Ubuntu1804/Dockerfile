@@ -14,9 +14,13 @@ RUN apt-get -qq update && apt-get -qq install \
     cython3 python3-pip python3-numpy python3-mpi4py python3-setuptools python3-dev && \
     rm -rf /var/lib/apt/lists/*
 
+ARG branch=develop
+
 # Builds the precice python bindings for python3
-WORKDIR $PRECICE_ROOT/src/precice/bindings/python
-RUN pip3 install --user .
+WORKDIR /home/precice
+RUN git clone --branch $branch https://github.com/precice/python-bindings.git && \
+    cd python-bindings && \
+    pip3 install --user .
 
 # Runs the python solverdummy with python3
 WORKDIR $PRECICE_ROOT/tools/solverdummies/python

@@ -30,16 +30,19 @@ RUN pip3 install --user cython  # TODO: can we put this dependency into requirem
 
 USER precice
 
-# Builds the precice python bindings for python3
-RUN cd $PRECICE_ROOT/src/precice/bindings/python && \
-    pip3 install --user .
-
 # Rebuild image if force_rebuild after that command
 ARG CACHEBUST
 
+ARG branch=develop
+
+# Builds the precice python bindings for python3
+WORKDIR /home/precice
+RUN git clone --branch $branch https://github.com/precice/python-bindings.git && \
+    cd python-bindings && \
+    pip3 install --user .
+
 # Building fenics-adapter
 WORKDIR /home/precice
-ARG branch=develop
 RUN git clone  --branch $branch https://github.com/precice/fenics-adapter.git && \
     cd fenics-adapter && \
     pip3 install --user . && \
