@@ -32,6 +32,9 @@ for i in {1..10}; do
   sleep 60
 done
 
+echo "Timeout!"
+echo "Printing logs for services:"
+
 # probably failed due to communication issues,
 # list individual logs and exit
 for service in ${services[@]}; do
