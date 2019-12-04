@@ -1,5 +1,5 @@
 ARG from=precice/precice-ubuntu1804.home-develop
-ARG base_solver=precice/openfoam
+ARG base_solver=precice/openfoam.ubuntu1804
 FROM ${base_solver} as openfoam
 FROM $from
 
@@ -15,13 +15,14 @@ RUN apt-get -qq update && apt-get -qq install \
 
 ARG CACHEBUST
 
-COPY --from=openfoam /opt/openfoam4 /opt/openfoam4/
+COPY --from=openfoam /opt/openfoam5 /opt/openfoam5/
 
 # Building openfoam-adapter
 USER precice
+SHELL ["/bin/bash", "-c"]  # without this command /opt/openfoam5/etc/bashrc cannot be sources
 WORKDIR /home/precice
 ARG branch=develop
-RUN git clone --branch $branch https://github.com/precice/openfoam-adapter.git
+RUN git clone  --branch $branch https://github.com/precice/openfoam-adapter.git
 WORKDIR /home/precice/openfoam-adapter
-RUN . /opt/openfoam4/etc/bashrc && ./Allwmake
+RUN . /opt/openfoam5/etc/bashrc && ./Allwmake
 RUN cd $HOME && mkdir -p Data/Input Data/Output Data/Exchange
