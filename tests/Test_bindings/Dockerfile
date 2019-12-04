@@ -24,10 +24,7 @@ RUN pip3 install --user cython mpi4py numpy enum34
 ARG branch=develop
 
 # Builds the precice python bindings for python3
-WORKDIR /home/precice
-RUN git clone --branch $branch https://github.com/precice/python-bindings.git && \
-    cd python-bindings && \
-    pip3 install --user .
+RUN pip3 install --user https://github.com/precice/python-bindings/archive/$branch.zip
 
 # Runs the python solverdummy with python3
 WORKDIR $PRECICE_ROOT/tools/solverdummies/python
