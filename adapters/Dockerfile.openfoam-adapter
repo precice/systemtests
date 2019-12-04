@@ -19,6 +19,7 @@ COPY --from=openfoam /opt/openfoam4 /opt/openfoam4/
 
 # Building openfoam-adapter
 USER precice
+SHELL ["/bin/bash", "-c"]
 WORKDIR /home/precice
 ARG branch=develop
 RUN git clone  --branch $branch https://github.com/precice/openfoam-adapter.git
