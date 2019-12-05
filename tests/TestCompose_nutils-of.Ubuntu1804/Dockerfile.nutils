@@ -12,13 +12,12 @@ RUN wget -q https://bootstrap.pypa.io/get-pip.py -O get-pip.py && \
 
 USER precice
 
-WORKDIR /home/precice/
-RUN git clone https://github.com/nutils/nutils.git && \
-    python3 -m pip install --user --editable nutils
-
 WORKDIR $PRECICE_ROOT/src/precice/bindings/python
 RUN pip3 install --user .
 
 WORKDIR /home/precice/
+RUN git clone https://github.com/nutils/nutils.git && \
+    python3 -m pip install --user --editable nutils
+
 RUN mkdir -p Data/Input Data/Output Data/Exchange
 WORKDIR /home/precice/nutils
