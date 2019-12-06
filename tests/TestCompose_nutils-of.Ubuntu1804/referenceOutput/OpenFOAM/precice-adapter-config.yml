@@ -1,6 +1,6 @@
 participant: OpenFOAM
 
-precice-config-file: ../precice-config.xml
+precice-config-file: configs/precice-config.xml
 
 interfaces:
 - mesh: OpenFOAM-Mesh
