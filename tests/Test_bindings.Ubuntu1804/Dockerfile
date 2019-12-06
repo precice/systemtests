@@ -16,9 +16,10 @@ RUN apt-get -qq update && apt-get -qq install \
     
 USER precice
 
+ARG branch=develop
+
 # Builds the precice python bindings for python3
-WORKDIR $PRECICE_ROOT/src/precice/bindings/python
-RUN pip3 install --user .
+RUN pip3 install --user https://github.com/precice/python-bindings/archive/$branch.zip
 
 # Runs the python solverdummy with python3
 WORKDIR $PRECICE_ROOT/tools/solverdummies/python
