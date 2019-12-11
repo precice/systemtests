@@ -16,7 +16,7 @@ jobs:
       name: "Arch Linux"
       if: fork = false
       script:
-        - python build_base.py --dockerfile precice/Dockerfile.Arch
+        - python build_precice.py --dockerfile precice/Dockerfile.Arch
       deploy:
         skip_cleanup: true
         provider: script
@@ -24,13 +24,13 @@ jobs:
           all_branches: true
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_base.py --dockerfile precice/Dockerfile.Arch
+          python push_precice.py --dockerfile precice/Dockerfile.Arch
 
     - stage: Building preCICE
       name: "Ubuntu 16.04 home"
       if: fork = false
       script:
-        - python build_base.py --dockerfile precice/Dockerfile.Ubuntu1604.home
+        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.home
       deploy:
         skip_cleanup: true
         provider: script
@@ -38,13 +38,13 @@ jobs:
           all_branches: true
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_base.py --dockerfile precice/Dockerfile.Ubuntu1604.home
+          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.home
 
     - stage: Building preCICE
       name: "Ubuntu 16.04 home PETSc [Job failure permitted]"
       if: fork = false
       script:
-        - python build_base.py --dockerfile precice/Dockerfile.Ubuntu1604.home --petsc yes
+        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.home --petsc yes
       deploy:
         skip_cleanup: true
         provider: script
@@ -52,13 +52,13 @@ jobs:
           all_branches: true
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_base.py --dockerfile precice/Dockerfile.Ubuntu1604.home --petsc yes
+          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.home --petsc yes
 
     - stage: Building preCICE
       name: "Ubuntu 16.04.sudo"
       if: type = cron
       script:
-        - python build_base.py --dockerfile precice/Dockerfile.Ubuntu1604.sudo
+        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.sudo
       deploy:
         skip_cleanup: true
         provider: script
@@ -66,13 +66,13 @@ jobs:
           all_branches: true
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_base.py --dockerfile precice/Dockerfile.Ubuntu1604.sudo
+          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.sudo
 
     - stage: Building preCICE
       name: "Ubuntu 16.04.package"
       if: type = cron
       script:
-        - python build_base.py --dockerfile precice/Dockerfile.Ubuntu1604.package
+        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.package
       deploy:
         skip_cleanup: true
         provider: script
@@ -80,13 +80,13 @@ jobs:
           all_branches: true
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_base.py --dockerfile precice/Dockerfile.Ubuntu1604.package
+          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.package
 
     - stage: Building preCICE
       name: "Ubuntu 18.04.home"
       if: fork = false
       script:
-        - python build_base.py --dockerfile precice/Dockerfile.Ubuntu1804.home
+        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.home
       deploy:
         skip_cleanup: true
         provider: script
@@ -94,13 +94,13 @@ jobs:
           all_branches: true
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_base.py --dockerfile precice/Dockerfile.Ubuntu1804.home
+          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.home
 
     - stage: Building preCICE
       name: "Ubuntu 18.04.sudo"
       if: type = cron
       script:
-        - python build_base.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo
+        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo
       deploy:
         skip_cleanup: true
         provider: script
@@ -108,13 +108,13 @@ jobs:
           all_branches: true
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_base.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo
+          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo
 
     - stage: Building preCICE
       name: "Ubuntu 18.04.sudo.mpich [Job failure permitted]"
       if: type = cron
       script:
-        - python build_base.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo.mpich
+        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo.mpich
       deploy:
         skip_cleanup: true
         provider: script
@@ -122,13 +122,13 @@ jobs:
           all_branches: true
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_base.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo.mpich          
+          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo.mpich          
 
     - stage: Building preCICE
       name: "Ubuntu 18.04.package"
       if: fork = false
       script:
-        - python build_base.py --dockerfile precice/Dockerfile.Ubuntu1804.package
+        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.package
       deploy:
         skip_cleanup: true
         provider: script
@@ -136,7 +136,7 @@ jobs:
           all_branches: true
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_base.py --dockerfile precice/Dockerfile.Ubuntu1804.package
+          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.package
 
     - name: "[Build preCICE on fork] Using cached version"
       if: fork = true
