@@ -175,7 +175,7 @@ if __name__ == "__main__":
     parser.add_argument('-l', '--local', action='store_true', help="use local preCICE image (default: use remote image)")
     parser.add_argument('-s', '--systemtest', type=str, help="choose system tests you want to use",
                         choices = common.get_tests(), required = True)
-    parser.add_argument('-b', '--branch', help="preCICE branch to use", default = "develop")
+    parser.add_argument('-b', '--branch', help="preCICE branch to use", default=os.environ["TRAVIS_BRANCH"])  # make sure that branch corresponding to system tests branch is used, if no branch is explicitly specified.
     parser.add_argument('-f', '--force_rebuild', nargs='+', help="Force rebuild of variable parts of docker image",
                         default = [], choices  = ["precice", "tests"])
     parser.add_argument('--base', type=str,help="Base preCICE image to use",

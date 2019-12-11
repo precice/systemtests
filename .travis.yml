@@ -15,7 +15,7 @@ jobs:
       name: "Arch Linux"
       if: fork = false
       script:
-        - docker build -f precice/Dockerfile.Arch -t precice/precice-arch-develop .
+        - docker build -f precice/Dockerfile.Arch -t precice/precice-arch-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH .
       deploy:
         skip_cleanup: true
         provider: script
@@ -23,13 +23,13 @@ jobs:
           all_branches: true
         script: >-
           echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin &&
-          docker push precice/precice-arch-develop:latest
+          docker push precice/precice-arch-$TRAVIS_BRANCH:latest
 
     - stage: Building preCICE
       name: "Ubuntu 16.04 home"
       if: fork = false
       script:
-        - docker build -f precice/Dockerfile.Ubuntu1604.home -t precice/precice-ubuntu1604.home-develop .
+        - docker build -f precice/Dockerfile.Ubuntu1604.home -t precice/precice-ubuntu1604.home-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH.
       deploy:
         skip_cleanup: true
         provider: script
@@ -37,14 +37,14 @@ jobs:
           all_branches: true
         script: >-
           echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin &&
-          docker push precice/precice-ubuntu1604.home-develop:latest
+          docker push precice/precice-ubuntu1604.home-$TRAVIS_BRANCH:latest
 
     - stage: Building preCICE
       name: "Ubuntu 16.04 home PETSc"
       if: fork = false
       script:
         - >
-          docker build -f precice/Dockerfile.Ubuntu1604.home -t precice/precice-ubuntu1604.home.petsc-develop .
+          docker build -f precice/Dockerfile.Ubuntu1604.home -t precice/precice-ubuntu1604.home.petsc-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH.
           --build-arg petsc_para=yes
       deploy:
         skip_cleanup: true
@@ -53,13 +53,13 @@ jobs:
           all_branches: true
         script: >-
           echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin &&
-          docker push precice/precice-ubuntu1604.home.petsc-develop:latest
+          docker push precice/precice-ubuntu1604.home.petsc-$TRAVIS_BRANCH:latest
 
     - stage: Building preCICE
       name: "Ubuntu 16.04.sudo"
       if: type = cron
       script:
-        - docker build -f precice/Dockerfile.Ubuntu1604.sudo -t precice/precice-ubuntu1604.sudo-develop .
+        - docker build -f precice/Dockerfile.Ubuntu1604.sudo -t precice/precice-ubuntu1604.sudo-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH .
       deploy:
         skip_cleanup: true
         provider: script
@@ -67,13 +67,13 @@ jobs:
           all_branches: true
         script: >-
           echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin &&
-          docker push precice/precice-ubuntu1604.sudo-develop:latest
+          docker push precice/precice-ubuntu1604.sudo-$TRAVIS_BRANCH:latest
 
     - stage: Building preCICE
       name: "Ubuntu 16.04.package"
       if: type = cron
       script:
-        - docker build -f precice/Dockerfile.Ubuntu1604.package -t precice/precice-ubuntu1604.package-develop .
+        - docker build -f precice/Dockerfile.Ubuntu1604.package -t precice/precice-ubuntu1604.package-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH .
       deploy:
         skip_cleanup: true
         provider: script
@@ -81,13 +81,13 @@ jobs:
           all_branches: true
         script: >-
           echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin &&
-          docker push precice/precice-ubuntu1604.package-develop:latest
+          docker push precice/precice-ubuntu1604.package-$TRAVIS_BRANCH:latest
 
     - stage: Building preCICE
       name: "Ubuntu 18.04.home"
       if: fork = false
       script:
-        - docker build -f precice/Dockerfile.Ubuntu1804.home -t precice/precice-ubuntu1804.home-develop .
+        - docker build -f precice/Dockerfile.Ubuntu1804.home -t precice/precice-ubuntu1804.home-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH .
       deploy:
         skip_cleanup: true
         provider: script
@@ -95,13 +95,13 @@ jobs:
           all_branches: true
         script: >-
           echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin &&
-          docker push precice/precice-ubuntu1804.home-develop:latest
+          docker push precice/precice-ubuntu1804.home-$TRAVIS_BRANCH:latest
 
     - stage: Building preCICE
       name: "Ubuntu 18.04.sudo"
       if: type = cron
       script:
-        - docker build -f precice/Dockerfile.Ubuntu1804.sudo -t precice/precice-ubuntu1804.sudo-develop .
+        - docker build -f precice/Dockerfile.Ubuntu1804.sudo -t precice/precice-ubuntu1804.sudo-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH .
       deploy:
         skip_cleanup: true
         provider: script
@@ -109,13 +109,13 @@ jobs:
           all_branches: true
         script: >-
           echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin &&
-          docker push precice/precice-ubuntu1804.sudo-develop
+          docker push precice/precice-ubuntu1804.sudo-$TRAVIS_BRANCH
 
     - stage: Building preCICE
       name: "Ubuntu 18.04.sudo.mpich [Job failure permitted]"
       if: type = cron
       script:
-        - docker build -f precice/Dockerfile.Ubuntu1804.sudo.mpich -t precice/precice-ubuntu1804.sudo.mpich-develop .
+        - docker build -f precice/Dockerfile.Ubuntu1804.sudo.mpich -t precice/precice-ubuntu1804.sudo.mpich-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH .
       deploy:
         skip_cleanup: true
         provider: script
@@ -123,13 +123,13 @@ jobs:
           all_branches: true
         script: >-
           echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin &&
-          docker push precice/precice-ubuntu1804.sudo.mpich-develop:latest
+          docker push precice/precice-ubuntu1804.sudo.mpich-$TRAVIS_BRANCH:latest
 
     - stage: Building preCICE
       name: "Ubuntu 18.04.package"
       if: fork = false
       script:
-        - docker build -f precice/Dockerfile.Ubuntu1804.package -t precice/precice-ubuntu1804.package-develop .
+        - docker build -f precice/Dockerfile.Ubuntu1804.package -t precice/precice-ubuntu1804.package-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH .
       deploy:
         skip_cleanup: true
         provider: script
@@ -137,7 +137,7 @@ jobs:
           all_branches: true
         script: >-
           echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin &&
-          docker push precice/precice-ubuntu1804.package-develop
+          docker push precice/precice-ubuntu1804.package-$TRAVIS_BRANCH
 
     - name: "[Build preCICE on fork] Using cached version"
       if: fork = true
@@ -149,7 +149,7 @@ jobs:
       name: SU2 adapter
       if: fork = false
       script:
-        - docker build -f adapters/Dockerfile.su2-adapter -t precice/su2-adapter-ubuntu1604.home-develop .
+        - docker build -f adapters/Dockerfile.su2-adapter -t precice/su2-adapter-ubuntu1604.home-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH .
       deploy:
         skip_cleanup: true
         provider: script
@@ -157,12 +157,12 @@ jobs:
           all_branches: true
         script: >-
           echo "$DOCKER_PASSWORD" | docker login -u "precice" --password-stdin &&
-          docker push precice/su2-adapter-ubuntu1604.home-develop
+          docker push precice/su2-adapter-ubuntu1604.home-$TRAVIS_BRANCH
 
     - name: CalculiX adapter
       if: fork = false
       script:
-        - docker build -f adapters/Dockerfile.calculix-adapter -t $DOCKER_USERNAME/calculix-adapter-ubuntu1604.home-develop .
+        - docker build -f adapters/Dockerfile.calculix-adapter -t $DOCKER_USERNAME/calculix-adapter-ubuntu1604.home-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH .
       deploy:
         skip_cleanup: true
         provider: script
@@ -170,12 +170,12 @@ jobs:
           all_branches: true
         script: >-
           echo "$DOCKER_PASSWORD" | docker login -u "precice" --password-stdin &&
-          docker push precice/calculix-adapter-ubuntu1604.home-develop
+          docker push precice/calculix-adapter-ubuntu1604.home-$TRAVIS_BRANCH
 
     - name: deal.ii adapter
       if: fork = false
       script:
-        - docker build -f adapters/Dockerfile.dealii-adapter -t $DOCKER_USERNAME/dealii-adapter-ubuntu1604.home-develop .
+        - docker build -f adapters/Dockerfile.dealii-adapter -t $DOCKER_USERNAME/dealii-adapter-ubuntu1604.home-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH .
       deploy:
         skip_cleanup: true
         provider: script
@@ -183,12 +183,12 @@ jobs:
           all_branches: true
         script: >-
           echo "$DOCKER_PASSWORD" | docker login -u "precice" --password-stdin &&
-          docker push precice/dealii-adapter-ubuntu1604.home-develop
+          docker push precice/dealii-adapter-ubuntu1604.home-$TRAVIS_BRANCH
 
     - name: openFOAM adapter
       if: fork = false
       script:
-        - docker build -f adapters/Dockerfile.openfoam-adapter -t $DOCKER_USERNAME/openfoam-adapter-ubuntu1604.home-develop .
+        - docker build -f adapters/Dockerfile.openfoam-adapter -t $DOCKER_USERNAME/openfoam-adapter-ubuntu1604.home-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH .
       deploy:
         skip_cleanup: true
         provider: script
@@ -196,14 +196,14 @@ jobs:
           all_branches: true
         script: >-
           echo "$DOCKER_PASSWORD" | docker login -u "precice" --password-stdin &&
-          docker push precice/openfoam-adapter-ubuntu1604.home-develop
+          docker push precice/openfoam-adapter-ubuntu1604.home-$TRAVIS_BRANCH
 
     - name: FEniCS adapter
       if: fork = false
       script:
         - >
-          docker build -f adapters/Dockerfile.fenics-adapter -t $DOCKER_USERNAME/fenics-adapter-ubuntu1804.home-develop
-          --build-arg from=precice/precice-ubuntu1804.home-develop .
+          docker build -f adapters/Dockerfile.fenics-adapter -t $DOCKER_USERNAME/fenics-adapter-ubuntu1804.home-$TRAVIS_BRANCH
+          --build-arg from=precice/precice-ubuntu1804.home-$TRAVIS_BRANCH .
       deploy:
         skip_cleanup: true
         provider: script
@@ -211,14 +211,14 @@ jobs:
           all_branches: true
         script: >-
           echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin &&
-          docker push $DOCKER_USERNAME/fenics-adapter-ubuntu1804.home-develop
+          docker push $DOCKER_USERNAME/fenics-adapter-ubuntu1804.home-$TRAVIS_BRANCH
 
     - name: openFOAM adapter [PETSc]
       if: fork = false
       script:
         - >
-          docker build -f adapters/Dockerfile.openfoam-adapter -t $DOCKER_USERNAME/openfoam-adapter-ubuntu1604.home.petsc-develop
-          --build-arg from=precice/precice-ubuntu1604.home.petsc-develop .
+          docker build -f adapters/Dockerfile.openfoam-adapter -t $DOCKER_USERNAME/openfoam-adapter-ubuntu1604.home.petsc-$TRAVIS_BRANCH
+          --build-arg from=precice/precice-ubuntu1604.home.petsc-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH .
       deploy:
         skip_cleanup: true
         provider: script
@@ -226,14 +226,14 @@ jobs:
           all_branches: true
         script: >-
           echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin &&
-          docker push $DOCKER_USERNAME/openfoam-adapter-ubuntu1604.home.petsc-develop
+          docker push $DOCKER_USERNAME/openfoam-adapter-ubuntu1604.home.petsc-$TRAVIS_BRANCH
 
     - name: CalculiX adapter [PETSc]
       if: fork = false
       script:
         - >
-          docker build -f adapters/Dockerfile.calculix-adapter -t $DOCKER_USERNAME/calculix-adapter-ubuntu1604.home.petsc-develop
-          --build-arg from=precice/precice-ubuntu1604.home.petsc-develop .
+          docker build -f adapters/Dockerfile.calculix-adapter -t $DOCKER_USERNAME/calculix-adapter-ubuntu1604.home.petsc-$TRAVIS_BRANCH
+          --build-arg from=precice/precice-ubuntu1604.home.petsc-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH .
       deploy:
         skip_cleanup: true
         provider: script
@@ -241,7 +241,7 @@ jobs:
           all_branches: true
         script: >-
           echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin &&
-          docker push $DOCKER_USERNAME/calculix-adapter-ubuntu1604.home.petsc-develop
+          docker push $DOCKER_USERNAME/calculix-adapter-ubuntu1604.home.petsc-$TRAVIS_BRANCH
 
     - name: "[Build adapters on fork] Using cached version"
       if: fork = true
