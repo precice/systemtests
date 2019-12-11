@@ -169,6 +169,16 @@ def build_run_compare(test, tag, branch, local_precice, force_rebuild, rm_all):
             comparison(pathToRef, pathToOutput)
 
 
+def compose_tag(docker_username, dockerfilepath, branch, petsc):
+    """ Compose a tag based on certain features of the image """
+    dockerfile = os.path.basename(dockerfilepath)
+    if petsc == "no":
+        tag = docker_username.lower() + "/" + dockerfile.lower() + '-' + branch.lower() 
+    elif petsc == "yes":
+        tag = docker_username.lower() + "/" + dockerfile.lower() + '.petsc' + '-' + branch.lower()
+    return tag
+
+
 if __name__ == "__main__":
     # Parsing flags
     parser = argparse.ArgumentParser(description='Build local.')
