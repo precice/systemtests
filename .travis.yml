@@ -148,7 +148,7 @@ jobs:
       name: SU2 adapter
       if: fork = false
       script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.su2-adapter --operating-system ubuntu1604 --precice-installation home .
+        - python build_adapter.py --dockerfile adapters/Dockerfile.su2-adapter --operating-system ubuntu1604 --precice-installation home
       deploy:
         skip_cleanup: true
         provider: script
@@ -161,7 +161,7 @@ jobs:
     - name: CalculiX adapter
       if: fork = false
       script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1604 --precice-installation home .
+        - python build_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1604 --precice-installation home
       deploy:
         skip_cleanup: true
         provider: script
@@ -174,7 +174,7 @@ jobs:
     - name: deal.ii adapter
       if: fork = false
       script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter --operating-system ubuntu1604 --precice-installation home .
+        - python build_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter --operating-system ubuntu1604 --precice-installation home
       deploy:
         skip_cleanup: true
         provider: script
@@ -187,7 +187,7 @@ jobs:
     - name: openFOAM adapter
       if: fork = false
       script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1604 --precice-installation home .
+        - python build_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1604 --precice-installation home
       deploy:
         skip_cleanup: true
         provider: script
@@ -200,7 +200,7 @@ jobs:
     - name: FEniCS adapter
       if: fork = false
       script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.fenics-adapter --operating-system ubuntu1804 --precice-installation home .
+        - python build_adapter.py --dockerfile adapters/Dockerfile.fenics-adapter --operating-system ubuntu1804 --precice-installation home
       deploy:
         skip_cleanup: true
         provider: script
@@ -213,7 +213,7 @@ jobs:
     - name: openFOAM adapter [PETSc]
       if: fork = false
       script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1604 --precice-installation home --petsc yes .
+        - python build_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1604 --precice-installation home --petsc yes
       deploy:
         skip_cleanup: true
         provider: script
@@ -226,7 +226,7 @@ jobs:
     - name: CalculiX adapter [PETSc]
       if: fork = false
       script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1604 --precice-installation home --petsc yes .
+        - python build_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1604 --precice-installation home --petsc yes
       deploy:
         skip_cleanup: true
         provider: script
