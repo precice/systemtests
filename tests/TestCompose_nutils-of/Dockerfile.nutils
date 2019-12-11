@@ -11,12 +11,10 @@ RUN wget -q https://bootstrap.pypa.io/get-pip.py -O get-pip.py && \
     pip3 install Cython mpi4py numpy enum34
 
 USER precice
+ARG branch=develop
 
-WORKDIR $PRECICE_ROOT/src/precice/bindings/python_future
-RUN pip3 install --user .
-
-WORKDIR $PRECICE_ROOT/src/precice/bindings/python
-RUN pip3 install --user .
+# Builds the precice python bindings for python3
+RUN pip3 install --user https://github.com/precice/python-bindings/archive/$branch.zip
 
 WORKDIR /home/precice/
 RUN git clone https://github.com/nutils/nutils.git && \

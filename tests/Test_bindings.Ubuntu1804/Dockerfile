@@ -1,6 +1,6 @@
 # System testing preCICE bindings
 
-# Building on top of the latets preCICE-build
+# Building on top of the latest preCICE-build
 ARG from=precice/precice-ubuntu1804.home-develop
 FROM $from
 
@@ -13,10 +13,13 @@ ENV FORTRAN=gfortran
 RUN apt-get -qq update && apt-get -qq install \
     cython3 python3-pip python3-numpy python3-mpi4py python3-setuptools python3-dev && \
     rm -rf /var/lib/apt/lists/*
+    
+USER precice
+
+ARG branch=develop
 
 # Builds the precice python bindings for python3
-WORKDIR $PRECICE_ROOT/src/precice/bindings/python
-RUN pip3 install --user .
+RUN pip3 install --user https://github.com/precice/python-bindings/archive/$branch.zip
 
 # Runs the python solverdummy with python3
 WORKDIR $PRECICE_ROOT/tools/solverdummies/python
@@ -44,4 +47,6 @@ RUN gfortran $PRECICE_ROOT/src/precice/bindings/f2003/SolverInterfaceF2003.f90 -
 RUN ./solverdummy ../precice-config.xml SolverOne MeshOne & ./solverdummy ../precice-config.xml SolverTwo MeshTwo
 
 # Creating Output folder
+USER root
 RUN mkdir /Output
+USER precice
