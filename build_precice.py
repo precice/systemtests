@@ -14,9 +14,11 @@ if __name__ == "__main__":
 
     dockerfile = os.path.basename(args.dockerfile)
     assert(dockerfile.split(".")[0] == "Dockerfile")  # We have the convention that our Dockerfiles always start with the term "Dockerfile"
-    features = ".".join(dockerfile.split(".")[1:])  # Extract features from filename and join features with "." as separator.
+    features = dockerfile.split(".")[1:]  # Extract features from filename and join features with "." as separator.
+    if args.petsc == "yes":
+        features.append("petsc")
 
-    tag = system_testing.compose_tag(args.docker_username, "precice", features, args.branch, args.petsc)
+    tag = system_testing.compose_tag(args.docker_username, "precice", features, args.branch)
     docker.build_image(tag=tag,
                        dockerfile=args.dockerfile,
                        build_args={"branch" : args.branch, "petsc_para" : args.petsc},
