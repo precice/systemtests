@@ -15,128 +15,127 @@ jobs:
       name: "Arch Linux"
       if: fork = false
       script:
-        - python build_base.py --dockerfile precice/Dockerfile.Arch --docker-username $DOCKER_USERNAME
+        - python build_base.py --dockerfile precice/Dockerfile.Arch
       deploy:
         skip_cleanup: true
         provider: script
         on:
           all_branches: true
         script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin &&
-          docker push precice/precice-arch-develop:latest
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
+          python push_base.py --dockerfile precice/Dockerfile.Arch
 
     - stage: Building preCICE
       name: "Ubuntu 16.04 home"
       if: fork = false
       script:
-        - python build_base.py --dockerfile precice/Dockerfile.Ubuntu1604.home --docker-username $DOCKER_USERNAME
+        - python build_base.py --dockerfile precice/Dockerfile.Ubuntu1604.home
       deploy:
         skip_cleanup: true
         provider: script
         on:
           all_branches: true
         script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin &&
-          docker push precice/precice-ubuntu1604.home-develop:latest
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
+          python push_base.py --dockerfile precice/Dockerfile.Ubuntu1604.home
 
     - stage: Building preCICE
       name: "Ubuntu 16.04 home PETSc"
       if: fork = false
       script:
-        - >
-          python build_base.py --dockerfile precice/Dockerfile.Ubuntu1604.home --petsc yes --docker-username $DOCKER_USERNAME
+        - python build_base.py --dockerfile precice/Dockerfile.Ubuntu1604.home --petsc yes
       deploy:
         skip_cleanup: true
         provider: script
         on:
           all_branches: true
         script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin &&
-          docker push precice/precice-ubuntu1604.home.petsc-develop:latest
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
+          python push_base.py --dockerfile precice/Dockerfile.Ubuntu1604.home --petsc yes
 
     - stage: Building preCICE
       name: "Ubuntu 16.04.sudo"
       if: type = cron
       script:
-        - python build_base.py --dockerfile precice/Dockerfile.Ubuntu1604.sudo --docker-username $DOCKER_USERNAME
+        - python build_base.py --dockerfile precice/Dockerfile.Ubuntu1604.sudo
       deploy:
         skip_cleanup: true
         provider: script
         on:
           all_branches: true
         script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin &&
-          docker push precice/precice-ubuntu1604.sudo-develop:latest
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
+          python push_base.py --dockerfile precice/Dockerfile.Ubuntu1604.sudo
 
     - stage: Building preCICE
       name: "Ubuntu 16.04.package"
       if: type = cron
       script:
-        - python build_base.py --dockerfile precice/Dockerfile.Ubuntu1604.package --docker-username $DOCKER_USERNAME
+        - python build_base.py --dockerfile precice/Dockerfile.Ubuntu1604.package
       deploy:
         skip_cleanup: true
         provider: script
         on:
           all_branches: true
         script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin &&
-          docker push precice/precice-ubuntu1604.package-develop:latest
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
+          python push_base.py --dockerfile precice/Dockerfile.Ubuntu1604.package
 
     - stage: Building preCICE
       name: "Ubuntu 18.04.home"
       if: fork = false
       script:
-        - python build_base.py --dockerfile precice/Dockerfile.Ubuntu1804.home --docker-username $DOCKER_USERNAME
+        - python build_base.py --dockerfile precice/Dockerfile.Ubuntu1804.home
       deploy:
         skip_cleanup: true
         provider: script
         on:
           all_branches: true
         script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin &&
-          docker push precice/precice-ubuntu1804.home-develop:latest
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
+          python push_base.py --dockerfile precice/Dockerfile.Ubuntu1804.home
 
     - stage: Building preCICE
       name: "Ubuntu 18.04.sudo"
       if: type = cron
       script:
-        - python build_base.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo --docker-username $DOCKER_USERNAME        
+        - python build_base.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo
       deploy:
         skip_cleanup: true
         provider: script
         on:
           all_branches: true
         script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin &&
-          docker push precice/precice-ubuntu1804.sudo-develop
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
+          python push_base.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo
 
     - stage: Building preCICE
       name: "Ubuntu 18.04.sudo.mpich [Job failure permitted]"
       if: type = cron
       script:
-        - python build_base.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo.mpich --docker-username $DOCKER_USERNAME        
+        - python build_base.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo.mpich
       deploy:
         skip_cleanup: true
         provider: script
         on:
           all_branches: true
         script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin &&
-          docker push precice/precice-ubuntu1804.sudo.mpich-develop:latest
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
+          python push_base.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo.mpich          
 
     - stage: Building preCICE
       name: "Ubuntu 18.04.package"
       if: fork = false
       script:
-        - python build_base.py --dockerfile precice/Dockerfile.Ubuntu1804.package --docker-username $DOCKER_USERNAME        
+        - python build_base.py --dockerfile precice/Dockerfile.Ubuntu1804.package
       deploy:
         skip_cleanup: true
         provider: script
         on:
           all_branches: true
         script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin &&
-          docker push precice/precice-ubuntu1804.package-develop
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
+          python push_base.py --dockerfile precice/Dockerfile.Ubuntu1804.package
 
     - name: "[Build preCICE on fork] Using cached version"
       if: fork = true
@@ -155,7 +154,7 @@ jobs:
         on:
           all_branches: true
         script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u "precice" --password-stdin &&
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
           docker push precice/su2-adapter-ubuntu1604.home-develop
 
     - name: CalculiX adapter
@@ -168,7 +167,7 @@ jobs:
         on:
           all_branches: true
         script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u "precice" --password-stdin &&
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
           docker push precice/calculix-adapter-ubuntu1604.home-develop
 
     - name: deal.ii adapter
@@ -181,7 +180,7 @@ jobs:
         on:
           all_branches: true
         script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u "precice" --password-stdin &&
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
           docker push precice/dealii-adapter-ubuntu1604.home-develop
 
     - name: openFOAM adapter
@@ -194,7 +193,7 @@ jobs:
         on:
           all_branches: true
         script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u "precice" --password-stdin &&
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
           docker push precice/openfoam-adapter-ubuntu1604.home-develop
 
     - name: FEniCS adapter
@@ -209,7 +208,7 @@ jobs:
         on:
           all_branches: true
         script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin &&
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
           docker push $DOCKER_USERNAME/fenics-adapter-ubuntu1804.home-develop
 
     - name: openFOAM adapter [PETSc]
@@ -224,7 +223,7 @@ jobs:
         on:
           all_branches: true
         script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin &&
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
           docker push $DOCKER_USERNAME/openfoam-adapter-ubuntu1604.home.petsc-develop
 
     - name: CalculiX adapter [PETSc]
@@ -239,7 +238,7 @@ jobs:
         on:
           all_branches: true
         script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin &&
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
           docker push $DOCKER_USERNAME/calculix-adapter-ubuntu1604.home.petsc-develop
 
     - name: "[Build adapters on fork] Using cached version"
