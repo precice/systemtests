@@ -9,10 +9,9 @@ if __name__ == "__main__":
     parser.add_argument('-b', '--branch', help="preCICE branch to use", default="develop")
     parser.add_argument('-p', '--petsc', help="set 'yes', if you want to build with PETSc.", default="no", choices={'yes', 'no'})
     parser.add_argument('-u', '--docker-username', help="docker username", default=os.environ["DOCKER_USERNAME"])
-    parser.add_argument('-f', '--force-rebuild', nargs='+', help="Force rebuild of variable parts of docker image",
-                        default = [], choices  = ["precice", "tests"])
+    parser.add_argument('-f', '--force-rebuild', nargs='+', help="Force rebuild of variable parts of docker image", default = [], choices  = ["precice", "tests"])
     args = parser.parse_args()
-    tag = system_testing.compose_tag(args.docker_username, args.dockerfile, args.branch, args.petsc)
+    tag = system_testing.compose_tag(args.docker_username, "precice", args.dockerfile, args.branch, args.petsc)
     docker.build_image(tag=tag,
                        dockerfile=args.dockerfile,
                        build_args={"branch" : args.branch, "petsc_para" : args.petsc},

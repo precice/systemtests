@@ -11,7 +11,7 @@ if __name__ == "__main__":
     parser.add_argument('-u', '--docker-username', help="docker username", default=os.environ["DOCKER_USERNAME"])
 
     args = parser.parse_args()
-    tag = system_testing.compose_tag(args.docker_username, args.dockerfile, args.branch, args.petsc)
+    tag = system_testing.compose_tag(args.docker_username, "precice", args.dockerfile, args.branch, args.petsc)
     docker.push_image(tag=tag,
                       namespace="")
                        

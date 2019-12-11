@@ -169,13 +169,35 @@ def build_run_compare(test, tag, branch, local_precice, force_rebuild, rm_all):
             comparison(pathToRef, pathToOutput)
 
 
-def compose_tag(docker_username, dockerfilepath, branch, petsc):
-    """ Compose a tag based on certain features of the image """
+def compose_tag(docker_username, base, dockerfilepath, branch, petsc):
+    """
+    Compose a tag based on certain features of the image. Our tagging system follows this scheme:
+
+        DOCKER_USER/BASE-FEATURES-BRANCH
+
+    Example:
+        precice/precice-ubuntu1604.home-develop
+        describes an image with the following properties:
+
+    DOCKER_USER is precice.
+        I.e. image will be pushed to https://hub.docker.com/u/precice
+
+    BASE is precice.
+        I.e. the image contains a build of precice.
+
+    FEATURES are ubuntu1604 and home.
+        I.e. ubuntu1604 is used as operating system and preCICE is installed in a user directory
+
+    BRANCH is develop.
+        I.e. image is based on the source code provided at precice:develop, https://github.com/precice/precice/tree/develop.
+    """
     dockerfile = os.path.basename(dockerfilepath)
+    assert(dockerfile.split(".")[0] == "Dockerfile")  # We have the convention that our Dockerfiles always start with the term "Dockerfile"
+    features = ".".join(dockerfile.split(".")[1:])  # Extract features from filename and join features with "." as separator.
     if petsc == "no":
-        tag = docker_username.lower() + "/" + dockerfile.lower() + '-' + branch.lower() 
+        tag = docker_username.lower() + "/" + base + "-" + features.lower() + '-' + branch.lower()
     elif petsc == "yes":
-        tag = docker_username.lower() + "/" + dockerfile.lower() + '.petsc' + '-' + branch.lower()
+        tag = docker_username.lower() + "/" + base + "-" + features.lower() + '.petsc' + '-' + branch.lower()
     return tag
 
 
