@@ -29,7 +29,7 @@ jobs:
       name: "Ubuntu 16.04 home"
       if: fork = false
       script:
-        - docker build -f precice/Dockerfile.Ubuntu1604.home -t precice/precice-ubuntu1604.home-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH.
+        - docker build -f precice/Dockerfile.Ubuntu1604.home -t precice/precice-ubuntu1604.home-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH .
       deploy:
         skip_cleanup: true
         provider: script
@@ -44,7 +44,7 @@ jobs:
       if: fork = false
       script:
         - >
-          docker build -f precice/Dockerfile.Ubuntu1604.home -t precice/precice-ubuntu1604.home.petsc-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH.
+          docker build -f precice/Dockerfile.Ubuntu1604.home -t precice/precice-ubuntu1604.home.petsc-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH .
           --build-arg petsc_para=yes
       deploy:
         skip_cleanup: true
