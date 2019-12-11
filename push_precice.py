@@ -9,9 +9,13 @@ if __name__ == "__main__":
     parser.add_argument('-b', '--branch', help="preCICE branch to use", default="develop")
     parser.add_argument('-p', '--petsc', help="set 'yes', if you want to build with PETSc.", default="no", choices={'yes', 'no'})
     parser.add_argument('-u', '--docker-username', help="docker username", default=os.environ["DOCKER_USERNAME"])
-
     args = parser.parse_args()
-    tag = system_testing.compose_tag(args.docker_username, "precice", args.dockerfile, args.branch, args.petsc)
+
+    dockerfile = os.path.basename(dockerfilepath)
+    assert(dockerfile.split(".")[0] == "Dockerfile")  # We have the convention that our Dockerfiles always start with the term "Dockerfile"
+    features = ".".join(dockerfile.split(".")[1:])  # Extract features from filename and join features with "." as separator.
+
+    tag = system_testing.compose_tag(args.docker_username, "precice", features, args.branch, args.petsc)
     docker.push_image(tag=tag,
                       namespace="")
                        

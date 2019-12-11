@@ -11,7 +11,12 @@ if __name__ == "__main__":
     parser.add_argument('-u', '--docker-username', help="docker username", default=os.environ["DOCKER_USERNAME"])
     parser.add_argument('-f', '--force-rebuild', nargs='+', help="Force rebuild of variable parts of docker image", default = [], choices  = ["precice", "tests"])
     args = parser.parse_args()
-    tag = system_testing.compose_tag(args.docker_username, "precice", args.dockerfile, args.branch, args.petsc)
+
+    dockerfile = os.path.basename(dockerfilepath)
+    assert(dockerfile.split(".")[0] == "Dockerfile")  # We have the convention that our Dockerfiles always start with the term "Dockerfile"
+    features = ".".join(dockerfile.split(".")[1:])  # Extract features from filename and join features with "." as separator.
+
+    tag = system_testing.compose_tag(args.docker_username, "precice", features, args.branch, args.petsc)
     docker.build_image(tag=tag,
                        dockerfile=args.dockerfile,
                        build_args={"branch" : args.branch, "petsc_para" : args.petsc},
