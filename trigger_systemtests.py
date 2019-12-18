@@ -238,7 +238,7 @@ def trigger_travis_and_wait_and_respond(job_body, user, repo):
         exit(1)
 
 
-def generate_failure_callback():
+def generate_failure_callback(branch="master"):
     """ Generates travis job body, that simply fails without
     running anything
     """
@@ -248,7 +248,7 @@ def generate_failure_callback():
     callback_body = {
         "request": {
             "message": "Systemtests failed. Build url:{}".format(triggered_by),
-            "branch": "master",
+            "branch": "{}".format(branch),
             "config": {
                 "merge_mode": "replace",
                 "sudo": "true",
@@ -279,7 +279,7 @@ if __name__ == "__main__":
 
     if args.failure:
         repo = adapters_info[args.adapter].repo
-        trigger_travis_build(generate_failure_callback(), args.owner, repo)
+        trigger_travis_build(generate_failure_callback(branch=args.branch), args.owner, repo)
     else:
         if args.test:
             job = generate_travis_job(args.adapter, args.owner, trigger_failure=False, branch=args.branch)
