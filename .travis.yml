@@ -10,6 +10,7 @@ jobs:
   allow_failures:
     - name: "Ubuntu 18.04.sudo.mpich [Job failure permitted]"
     - name: "Ubuntu 16.04 home PETSc [Job failure permitted]"
+    - name: "[16.04] nutils <-> OpenFOAM [Job failure permitted]"
 
   include:
     - stage: Building preCICE
@@ -315,7 +316,7 @@ jobs:
           all_branches: true
         script: python push.py -s -t dealii-of
 
-    - name: "[16.04] nutils <-> OpenFOAM"
+    - name: "[16.04] nutils <-> OpenFOAM [Job failure permitted]"
       script:
         - python system_testing.py -s nutils-of
       after_failure:
