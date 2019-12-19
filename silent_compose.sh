@@ -9,7 +9,7 @@ failed=0
 docker-compose up -d || exit 1
 services=($(docker-compose ps | awk '{print $1}'| tail -n +3))
 
-# maximum test time out is 10 minutes
+# maximum test timeout is 10 minutes
 for i in {1..10}; do
   for service in ${services[@]}; do
     # check if the service is still running
