@@ -21,9 +21,10 @@ RUN wget -q https://bootstrap.pypa.io/get-pip.py -O get-pip.py && \
 USER precice
 RUN pip3 install --user cython mpi4py numpy enum34
 
+ARG branch=develop
+
 # Builds the precice python bindings for python3
-WORKDIR $PRECICE_ROOT/src/precice/bindings/python
-RUN pip3 install --user .
+RUN pip3 install --user https://github.com/precice/python-bindings/archive/$branch.zip
 
 # Runs the python solverdummy with python3
 WORKDIR $PRECICE_ROOT/tools/solverdummies/python

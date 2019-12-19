@@ -146,7 +146,7 @@ def comparison(pathToRef, pathToOutput):
 
 def build_run_compare(test, tag, branch, local_precice, force_rebuild, rm_all):
     """ Runs and compares test, using precice branch. """
-
+    print("######################this is now the newest commit!##################")
     compose_tests = ["dealii-of", "of-of", "su2-ccx", "of-ccx", "of-of_np",
             "fe-fe","nutils-of", "of-ccx_fsi"]
     test_basename = test.split(".")[0]
