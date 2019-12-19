@@ -34,7 +34,7 @@ if __name__ == "__main__":
     if args.petsc == "yes":
         features["petsc"] = "yes"
 
-    print("building preCICE image with the following features:{}".format(features))
+    print("Building preCICE image with the following features: {}".format(features))
 
     tag = system_testing.compose_tag(args.docker_username, "precice", features, args.branch)
     docker.build_image(tag=tag,
