@@ -4,7 +4,7 @@ import os
                            
 if __name__ == "__main__":
     # Parsing flags
-    parser = argparse.ArgumentParser(description='Build local.')
+    parser = argparse.ArgumentParser(description='Build local docker image of an adapter.')
     parser.add_argument('-d', '--dockerfile', type=str, help="Choose Dockerfile you want to build", default="adapters/Dockerfile.fenics-adapter")
     parser.add_argument('-b', '--branch', help="preCICE branch to use", default="develop")
     parser.add_argument('-u', '--docker-username', help="docker username", default=os.environ["DOCKER_USERNAME"] if "DOCKER_USERNAME" in os.environ else "precice")
