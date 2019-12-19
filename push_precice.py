@@ -4,7 +4,7 @@ import os
                            
 if __name__ == "__main__":
     # Parsing flags
-    parser = argparse.ArgumentParser(description='Build local.')
+    parser = argparse.ArgumentParser(description='Build local preCICE image to Docker Hub.')
     parser.add_argument('-d', '--dockerfile', type=str, help="Choose Dockerfile you want to build", default="precice/Dockerfile.Ubuntu1604.home")
     parser.add_argument('-b', '--branch', help="preCICE branch to use", default="develop")
     parser.add_argument('-p', '--petsc', help="set 'yes', if you want to build with PETSc.", default="no", choices={'yes', 'no'})
