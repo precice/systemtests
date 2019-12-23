@@ -12,23 +12,23 @@ jobs:
       name: "Ubuntu 18.04.home"
       if: fork = false
       script:
-        - docker build -f precice/Dockerfile.Ubuntu1804.home -t benjaminrueth/precice-ubuntu1804.home-develop .
+        - docker build -f precice/Dockerfile.Ubuntu1804.home -t $DOCKER_USERNAME/precice-ubuntu1804.home-develop .
       deploy:
         skip_cleanup: true
         provider: script
         on:
           all_branches: true
         script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin &&
-          docker push benjaminrueth/precice-ubuntu1804.home-develop:latest
+          echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin &&
+          docker push $DOCKER_USERNAME/precice-ubuntu1804.home-develop:latest
 
     - stage: Building Adapters
       name: FEniCS adapter
       if: fork = false
       script:
         - >
-          docker build -f adapters/Dockerfile.fenics-adapter -t benjaminrueth/fenics-adapter-ubuntu1804.home-develop
-          --build-arg from=benjaminrueth/precice-ubuntu1804.home-develop .
+          docker build -f adapters/Dockerfile.fenics-adapter -t $DOCKER_USERNAME/fenics-adapter-ubuntu1804.home-develop
+          --build-arg from=$DOCKER_USERNAME/precice-ubuntu1804.home-develop .
       deploy:
         skip_cleanup: true
         provider: script
@@ -36,7 +36,7 @@ jobs:
           all_branches: true
         script: >-
           echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin &&
-          docker push benjaminrueth/fenics-adapter-ubuntu1804.home-develop
+          docker push $DOCKER_USERNAME/fenics-adapter-ubuntu1804.home-develop
 
     - stage: Running tests
       name: "[18.04] FEniCS <-> FEniCS"
