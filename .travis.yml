@@ -22,7 +22,8 @@ jobs:
           echo "$DOCKER_PASSWORD" | docker login -u precice --password-stdin &&
           docker push benjaminrueth/precice-ubuntu1804.home-develop:latest
 
-    - name: FEniCS adapter
+    - stage: Building Adapters
+      name: FEniCS adapter
       if: fork = false
       script:
         - >
@@ -37,7 +38,8 @@ jobs:
           echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin &&
           docker push benjaminrueth/fenics-adapter-ubuntu1804.home-develop
 
-    - name: "[18.04] FEniCS <-> FEniCS"
+    - stage: Running tests
+      name: "[18.04] FEniCS <-> FEniCS"
       script:
         - python system_testing.py -s fe-fe --base Ubuntu1804.home
       after_failure:
