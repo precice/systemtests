@@ -12,7 +12,7 @@ jobs:
       name: "Ubuntu 18.04.home"
       if: fork = false
       script:
-        - docker build -f benjaminrueth/Dockerfile.Ubuntu1804.home -t benjaminrueth/precice-ubuntu1804.home-develop .
+        - docker build -f precice/Dockerfile.Ubuntu1804.home -t benjaminrueth/precice-ubuntu1804.home-develop .
       deploy:
         skip_cleanup: true
         provider: script
