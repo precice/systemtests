@@ -1,8 +1,7 @@
-"""
-!!!!!!!!!!!!!!!!! WIP !!!!!!!!!!!!!!!!!!!!
-Script for pushing travis internal files to a github repository.
+"""Script for pushing output and logfile to a repository.
 
-This script pushes to: https://github.com/precice/precice_st_output.
+This script pushes output files of a system test, if they exists, and a logfile
+to the repository: https://github.com/precice/precice_st_output.
 
     Example:
         Example use to push output files and logfile of system test of-of:
@@ -147,28 +146,35 @@ def generate_commit_message(output_dir, success, test, base):
 
 if __name__ == "__main__":
 
+    parser = argparse.ArgumentParser(description='Push information about the test to the output repository')
+    parser.add_argument('-t', '--test', help="Choose systemtest, results of which to push")
+    parser.add_argument('-s', '--success', action='store_true' ,help="Whether test was successfull")
+    parser.add_argument('-b', '--base', type=str, help="Base image of the test", default="Ubuntu1604.home")
+    args = parser.parse_args()
 
-    ccall("git clone -b EderK-push_files https://github.com/precice/precice_st_output")
+    ccall("git clone https://github.com/precice/precice_st_output")
 
-    log_dir = os.path.join(os.getcwd(), "precice_st_output")
+    test_type = "Test" if args.test == "bindings" else "TestCompose"
+    test_name = "{Type}_{test}.{base}".format(Type = test_type, test =
+            args.test, base = args.base)
+    if not os.path.isdir(test_name):
+        test_name = test_name.split(".")[0]
+
+    log_dir = os.path.join(os.getcwd(), "precice_st_output", args.base)
+    output_log_dir = os.path.join(log_dir, "Output_{}_{}".format(test_type, args.test))
+    output_dir = os.path.join(os.getcwd(), "tests", test_name, "Output")
     ccall("mkdir -p {}".format(log_dir))
-
-
-    path_to_output = os.path.join(os.getcwd(), "testOutput")
-    ccall("mkdir {}".format(path_to_output))
-    ccall("docker cp tutorial-data:/Output {}".format(path_to_output))
-    ccall("cp -r {} {}".format(path_to_output, log_dir))
 
     os.chdir(log_dir)
 
-    with chdir(log_dir):
-        ccall("git add testOutput")
-
+    add_job_log(args.test, not args.success, log_dir)
+    add_output_files(output_dir, output_log_dir, args.success)
 
     # finally commit
-    commit_msg = "attempt file upload to git (TEST)"
-    ccall("git commit -m '{}'".format(commit_msg))
+    commit_msg_lines = generate_commit_message(output_dir, args.success, args.test, args.base)
+    commit_msg = " ".join(map( lambda x: "-m \"" + x + "\"", commit_msg_lines))
+    ccall("git commit " + commit_msg)
     ccall("git config user.name 'Precice Bot'")
     ccall("git config user.email ${PRECICE_BOT_EMAIL}")
     ccall("git remote set-url origin https://${GH_TOKEN}@github.com/precice/precice_st_output.git > /dev/null 2>&1")
-    ccall("git push")
+    ccall("git pull --rebase && git push")
