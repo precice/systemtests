@@ -148,9 +148,9 @@ def generate_commit_message(output_dir, success, test, base):
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description='Push results from containers to output repository')
-    # parser.add_argument('-t', '--test', help="Choose systemtest, results of which to push")
+    parser.add_argument('-t', '--test', help="Choose systemtest, results of which to push")
     parser.add_argument('-s', '--success', action='store_true' ,help="If test was successful")
-    # parser.add_argument('-b', '--base', type=str, help="Base image of the test", default="Ubuntu1604.home")
+    parser.add_argument('-b', '--base', type=str, help="Base image of the test", default="Ubuntu1604.home")
     args = parser.parse_args()
 
 
@@ -180,4 +180,3 @@ if __name__ == "__main__":
     ccall("git config user.email ${PRECICE_BOT_EMAIL}")
     ccall("git remote set-url origin https://${GH_TOKEN}@github.com/precice/precice_st_output.git > /dev/null 2>&1")
     ccall("git pull --rebase && git push")
-    
