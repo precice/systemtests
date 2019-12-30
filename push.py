@@ -169,7 +169,7 @@ if __name__ == "__main__":
     ccall("docker cp tutorial-data:/Output {}".format(file_path))
 
     readme_text = "'Job URL: {}'".format(os.environ["TRAVIS_JOB_WEB_URL"])
-    readme_path = os.path.join(filepath, 'README.md')
+    readme_path = os.path.join(file_path, 'README.md')
     ccall("echo {text} > {path}".format(text=readme_text, path=readme_path))
 
     os.chdir(repo_path)
