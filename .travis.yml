@@ -10,7 +10,6 @@ jobs:
   allow_failures:
     - name: "Ubuntu 18.04.sudo.mpich [Job failure permitted]"
     - name: "Ubuntu 16.04 home PETSc [Job failure permitted]"
-    - name: "[16.04] nutils <-> OpenFOAM [Job failure permitted]"
 
   include:
     - stage: Building preCICE
@@ -200,6 +199,19 @@ jobs:
           echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin &&
           docker push $DOCKER_USERNAME/openfoam-adapter-ubuntu1604.home-develop
 
+    - name: "[18.04] openFOAM adapter"
+      if: fork = false
+      script:
+        - docker build -f adapters/Dockerfile.openfoam-adapter.Ubuntu1804 -t $DOCKER_USERNAME/openfoam-adapter-ubuntu1804.home-develop .
+      deploy:
+        skip_cleanup: true
+        provider: script
+        on:
+          all_branches: true
+        script: >-
+          echo "$DOCKER_PASSWORD" | docker login -u "precice" --password-stdin &&
+          docker push precice/openfoam-adapter-ubuntu1804.home-develop
+
     - name: FEniCS adapter
       if: fork = false
       script:
@@ -324,17 +336,17 @@ jobs:
           all_branches: true
         script: python push.py -s -t dealii-of
 
-    - name: "[16.04] nutils <-> OpenFOAM [Job failure permitted]"
+    - name: "[18.04] nutils <-> OpenFOAM"
       script:
-        - python system_testing.py -s nutils-of
+        - python system_testing.py -s nutils-of --base Ubuntu1804.home
       after_failure:
-        - python push.py -t nutils-of
+        - python push.py -t nutils-of --base Ubuntu1804.home
       deploy:
         skip_cleanup: true
         provider: script
         on:
           all_branches: true
-        script: python push.py -s -t nutils-of
+        script: python push.py -s -t nutils-of --base Ubuntu1804.home
 
     - name: "[16.04] OpenFOAM <-> OpenFOAM [nearest projection]"
       script:
