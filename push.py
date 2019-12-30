@@ -166,8 +166,11 @@ if __name__ == "__main__":
     ccall("mkdir -p {}".format(file_path))
 
     # extract files from container
-    ccall("docker cp tutorial-data:/Output/* {}".format(file_path))
+    ccall("docker cp tutorial-data:/Output {}".format(file_path))
 
+    readme_text = "'Job URL: {}'".format(os.environ["TRAVIS_JOB_WEB_URL"])
+    readme_path = os.path.join(filepath, 'README.md')
+    ccall("echo {text} > {path}".format(text=readme_text, path=readme_path))
 
     os.chdir(repo_path)
     with chdir(repo_path):
