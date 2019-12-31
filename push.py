@@ -27,7 +27,7 @@ from common import ccall, capture_output, get_test_participants, chdir
 #     url = "https://api.{TRAVIS_URL}/repo/{USER}%2F{REPO}/builds?offset={OFFSET}".format(TRAVIS_URL="travis-ci.org",
 #             USER=user, REPO=repo, OFFSET = offset)
 #     return get_json_response(url)
-# 
+#
 # def get_last_successfull_commit(user, repo):
 #     """ Identify last commit the passed on Travis """
 #
@@ -162,11 +162,18 @@ if __name__ == "__main__":
 
     repo_path = os.path.join(os.getcwd(), repo_folder)
     file_path = os.path.join(os.getcwd(), repo_folder, build_folder, job_folder)
+    output_path = os.path.join(file_path, "Output")
 
     ccall("mkdir -p {}".format(file_path))
 
     # extract files from container
     ccall("docker cp tutorial-data:/Output {}".format(file_path))
+
+    # Check if Output directory is empty. If yes, include a small README.
+    if not os.listdir(output_path):
+        ccall("echo '# No Output files found!' > {path}".format(path=
+        os.path.join(output_path, "README.md")))
+
 
     readme_text = "'Job URL: {}'".format(os.environ["TRAVIS_JOB_WEB_URL"])
     readme_path = os.path.join(file_path, 'README.md')
@@ -182,4 +189,11 @@ if __name__ == "__main__":
     ccall("git config user.name 'Precice Bot'")
     ccall("git config user.email ${PRECICE_BOT_EMAIL}")
     ccall("git remote set-url origin https://${GH_TOKEN}@github.com/precice/precice_st_output.git > /dev/null 2>&1")
-    ccall("git pull --rebase && git push")
+
+    failed_push_count = 0
+    # push, retry if failed
+    while call("git push"):
+        ccall("git pull --rebase")
+        failed_push_count += 1
+        if failed_push_count >= 50:
+            break
