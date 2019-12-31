@@ -170,9 +170,11 @@ if __name__ == "__main__":
     ccall("docker cp tutorial-data:/Output {}".format(file_path))
 
     # Check if Output directory is empty. If yes, include a small README.
+    no_output = False
     if not os.listdir(output_path):
         ccall("echo '# No Output files found!' > {path}".format(path=
         os.path.join(output_path, "README.md")))
+        no_output = True
 
 
     readme_text = "'Job URL: {}'".format(os.environ["TRAVIS_JOB_WEB_URL"])
@@ -185,6 +187,9 @@ if __name__ == "__main__":
 
     # finally commit
     commit_msg = "Job Success" if args.success else "Job Failure"
+    # Use special commit message if no Output generated
+    if no_output:
+        commit_msg += ", NO OUTPUT!"
     ccall("git commit -m '{}'".format(commit_msg))
     ccall("git config user.name 'Precice Bot'")
     ccall("git config user.email ${PRECICE_BOT_EMAIL}")
