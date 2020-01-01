@@ -14,7 +14,7 @@ This script pushes to: https://github.com/precice/precice_st_output.
 # from urllib.parse import urlencode
 # from urllib.request import Request, urlopen
 import argparse, os, sys, time
-from common import ccall, capture_output, get_test_participants, chdir
+from common import call, ccall, capture_output, get_test_participants, chdir
 #
 # def get_job_commit(job_id):
 #     """ Checks commit that triggered travis job"""
