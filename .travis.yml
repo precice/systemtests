@@ -10,7 +10,6 @@ jobs:
   allow_failures:
     - name: "Ubuntu 18.04.sudo.mpich [Job failure permitted]"
     - name: "Ubuntu 16.04 home PETSc [Job failure permitted]"
-    - name: "[16.04] nutils <-> OpenFOAM [Job failure permitted]"
 
   include:
     - stage: Building preCICE
@@ -123,7 +122,7 @@ jobs:
           all_branches: true
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo.mpich          
+          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo.mpich
 
     - stage: Building preCICE
       name: "Ubuntu 18.04.package"
@@ -157,7 +156,7 @@ jobs:
           all_branches: true
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          docker push precice/su2-adapter-ubuntu1604.home-develop
+          python push_adapter.py --dockerfile adapters/Dockerfile.su2-adapter --operating-system ubuntu1604 --precice-installation home
 
     - name: CalculiX adapter
       if: fork = false
@@ -170,7 +169,7 @@ jobs:
           all_branches: true
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          docker push precice/calculix-adapter-ubuntu1604.home-develop
+          python push_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1604 --precice-installation home
 
     - name: deal.ii adapter
       if: fork = false
@@ -183,9 +182,9 @@ jobs:
           all_branches: true
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          docker push precice/dealii-adapter-ubuntu1604.home-develop
+          python push_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter --operating-system ubuntu1604 --precice-installation home
 
-    - name: openFOAM adapter
+    - name: "[16.04] openFOAM adapter"
       if: fork = false
       script:
         - python build_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1604 --precice-installation home
@@ -196,7 +195,20 @@ jobs:
           all_branches: true
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          docker push precice/openfoam-adapter-ubuntu1604.home-develop
+          python push_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1604 --precice-installation home
+
+    - name: "[18.04] openFOAM adapter"
+      if: fork = false
+      script:
+        - python build_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1804 --precice-installation home
+      deploy:
+        skip_cleanup: true
+        provider: script
+        on:
+          all_branches: true
+        script: >-
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
+          python push_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1804 --precice-installation home
 
     - name: FEniCS adapter
       if: fork = false
@@ -209,7 +221,7 @@ jobs:
           all_branches: true
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          docker push $DOCKER_USERNAME/fenics-adapter-ubuntu1804.home-develop
+          python push_adapter.py --dockerfile adapters/Dockerfile.fenics-adapter --operating-system ubuntu1804 --precice-installation home
 
     - name: openFOAM adapter [PETSc]
       if: fork = false
@@ -222,7 +234,7 @@ jobs:
           all_branches: true
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          docker push $DOCKER_USERNAME/openfoam-adapter-ubuntu1604.home.petsc-develop
+          python push_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1604 --precice-installation home --petsc yes
 
     - name: CalculiX adapter [PETSc]
       if: fork = false
@@ -235,7 +247,7 @@ jobs:
           all_branches: true
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          docker push $DOCKER_USERNAME/calculix-adapter-ubuntu1604.home.petsc-develop
+          python push_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1604 --precice-installation home --petsc yes
 
     - name: "[Build adapters on fork] Using cached version"
       if: fork = true
@@ -316,17 +328,17 @@ jobs:
           all_branches: true
         script: python push.py -s -t dealii-of
 
-    - name: "[16.04] nutils <-> OpenFOAM [Job failure permitted]"
+    - name: "[18.04] nutils <-> OpenFOAM"
       script:
-        - python system_testing.py -s nutils-of
+        - python system_testing.py -s nutils-of --base Ubuntu1804.home
       after_failure:
-        - python push.py -t nutils-of
+        - python push.py -t nutils-of --base Ubuntu1804.home
       deploy:
         skip_cleanup: true
         provider: script
         on:
           all_branches: true
-        script: python push.py -s -t nutils-of
+        script: python push.py -s -t nutils-of --base Ubuntu1804.home
 
     - name: "[16.04] OpenFOAM <-> OpenFOAM [nearest projection]"
       script:
