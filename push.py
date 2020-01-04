@@ -149,6 +149,7 @@ def write_readme(*tags):
     """
     Create a README.md at the location specified by readme_path.
     """
+    tags = list(tags)
     job_link = os.environ["TRAVIS_JOB_WEB_URL"]
     job_name = os.environ["TRAVIS_JOB_NAME"]
     job_status = "Success" if (os.environ["TRAVIS_TEST_RESULT"] == 0) else "Failure"
@@ -158,7 +159,7 @@ def write_readme(*tags):
                      [Link to Job page on TravisCI]({link})
                      ---
                      ### Additional Information:
-                     """
+                     """.format(name=job_name, status=job_status, link=job_link)
     if not tags:
         readme_text += "_None._\n"
     if 'no_output' in tags:
