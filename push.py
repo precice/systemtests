@@ -174,7 +174,7 @@ def write_readme(*tags):
     return readme_text
 
 def store_readme(readme_text, readme_path):
-    ccall("echo {text} > {path}".format(text=readme_text, pat=readme_path))
+    ccall("echo {text} > {path}".format(text=readme_text, path=readme_path))
 
 
 if __name__ == "__main__":
