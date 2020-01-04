@@ -170,7 +170,7 @@ def write_readme(*tags):
                   ---
                   """.format(name=job_name, status=job_status, link=job_link)
 
-    inspect.cleandoc(readme_text) # cleans indentation
+    readme_text = inspect.cleandoc(readme_text) # cleans indentation
 
     # If any tags were supplied, provide addition information
     if tags:
