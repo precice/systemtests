@@ -210,7 +210,7 @@ if __name__ == "__main__":
 
     # Store README with general job info in main folder
     readme_path = os.path.join(file_path, 'README.md')
-    readme_txt = write_readme('no_output' if no_output,
+    readme_txt = write_readme('no_output' if no_output else 'output',
                               'test-tag1',
                               'test-tag2')
 
