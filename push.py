@@ -15,6 +15,7 @@ This script pushes to: https://github.com/precice/precice_st_output.
 # from urllib.request import Request, urlopen
 import argparse, os, sys, time
 from common import call, ccall, capture_output, get_test_participants, chdir
+import inspect
 #
 # def get_job_commit(job_id):
 #     """ Checks commit that triggered travis job"""
@@ -145,6 +146,11 @@ from common import call, ccall, capture_output, get_test_participants, chdir
 #
 #     return commit_msg_lines
 
+tag_descriptions = {
+    'no_output' : "\n- **This test generated no Output files!** These should normally be stored in the folder '/Output' located at the root of the 'tutorial-data' container, but no files were found there.\n",
+    'allowed_failure' : "\n- This test has been marked as allowed failure.\n"
+}
+
 def write_readme(*tags):
     """
     Create a README.md at the location specified by readme_path.
@@ -154,22 +160,31 @@ def write_readme(*tags):
     job_name = os.environ["TRAVIS_JOB_NAME"]
     job_status = "Success" if (os.environ["TRAVIS_TEST_RESULT"] == 0) else "Failure"
 
-    readme_text = """# {name}
-                     Job Status: **{status}**
-                     [Link to Job page on TravisCI]({link})
-                     ---
-                     ### Additional Information:
-                     """.format(name=job_name, status=job_status, link=job_link)
-    if not tags:
-        readme_text += "_None._\n"
-    if 'no_output' in tags:
-        tags.remove('no_output')
-        readme_text += "- **This test generated no Output files!** These should normally be stored in the folder '/Output' located at the root of the 'tutorial-data' container, but no files were found there.\n"
-    if 'allowed_failure' in tags:
-        tags.remove('allowed_failure')
-        readme_text += "- This test has been marked as allowed failure.\n"
-    if len(tags) > 0:
-        readme_text += "- Further keywords: {tags}".format(tags=tags)
+    readme_text = """
+                  # {name}
+
+                  Job Status: **{status}**
+
+                  [Link to Job page on TravisCI]({link})
+
+                  ---
+                  """.format(name=job_name, status=job_status, link=job_link)
+
+    inspect.cleandoc(readme_text) # cleans indentation
+
+    # If any tags were supplied, provide addition information
+    if tags:
+        readme_text += "\n### Additional Information:\n"
+        unknown_tags = []
+        for tag in tags:
+            # check if desciption exists for current tag
+            if tag in tag_descriptions:
+              readme_text += tag_descriptions[tag]
+            else:
+              unknown_tags.append(tag)
+
+        if len(unknown_tags) > 0:
+            readme_text += "\n- Further keywords: {tags}".format(tags=unknown_tags)
 
     return readme_text
 
