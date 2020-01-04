@@ -145,6 +145,37 @@ from common import call, ccall, capture_output, get_test_participants, chdir
 #
 #     return commit_msg_lines
 
+def write_readme(*tags):
+    """
+    Create a README.md at the location specified by readme_path.
+    """
+    job_link = os.environ["TRAVIS_JOB_WEB_URL"]
+    job_name = os.environ["TRAVIS_JOB_NAME"]
+    job_status = "Success" if (os.environ["TRAVIS_TEST_RESULT"] == 0) else "Failure"
+
+    readme_text = """# {name}
+                     Job Status: **{status}**
+                     [Link to Job page on TravisCI]({link})
+                     ---
+                     ### Additional Information:
+                     """
+    if not tags:
+        readme_text += "_None._\n"
+    if 'no_output' in tags:
+        tags.remove('no_output')
+        readme_text += "- **This test generated no Output files!** These should normally be stored in the folder '/Output' located at the root of the 'tutorial-data' container, but no files were found there.\n"
+    if 'allowed_failure' in tags:
+        tags.remove('allowed_failure')
+        readme_text += "- This test has been marked as allowed failure.\n"
+    if len(tags) > 0:
+        readme_text += "- Further keywords: {tags}".format(tags=tags)
+
+    return readme_text
+
+def store_readme(readme_text, readme_path):
+    ccall("echo {text} > {path}".format(text=readme_text, pat=readme_path))
+
+
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description='Push results from containers to output repository')
@@ -158,6 +189,7 @@ if __name__ == "__main__":
     build_folder = os.environ["TRAVIS_BUILD_NUMBER"]
     job_folder = os.environ["TRAVIS_JOB_NUMBER"]
 
+    # TODO: change this to master branch when merging
     ccall("git clone -b EderK-push_files https://github.com/precice/precice_st_output")
 
     repo_path = os.path.join(os.getcwd(), repo_folder)
@@ -169,17 +201,20 @@ if __name__ == "__main__":
     # extract files from container
     ccall("docker cp tutorial-data:/Output {}".format(file_path))
 
-    # Check if Output directory is empty. If yes, include a small README.
+    # Check if Output directory is empty. If yes, include a small README
     no_output = False
     if not os.listdir(output_path):
         ccall("echo '# No Output files found!' > {path}".format(path=
         os.path.join(output_path, "README.md")))
         no_output = True
 
-
-    readme_text = "'Job URL: {}'".format(os.environ["TRAVIS_JOB_WEB_URL"])
+    # Store README with general job info in main folder
     readme_path = os.path.join(file_path, 'README.md')
-    ccall("echo {text} > {path}".format(text=readme_text, path=readme_path))
+    readme_txt = write_readme('no_output' if no_output,
+                              'test-tag1',
+                              'test-tag2')
+
+    store_readme(readme_txt, readme_path)
 
     os.chdir(repo_path)
     with chdir(repo_path):
