@@ -1,7 +1,7 @@
 from alpine
 ENV tutorial_path tutorials/HT/partitioned-heat/fenics-fenics
 RUN apk add git
-ARG branch=develop
+ARG branch=compatibility_PR_572_on_precice_core
 RUN git clone --branch $branch https://github.com/precice/tutorials
 RUN mkdir configs && sed -i 's|network="lo"|exchange-directory="/home/precice/Data/Exchange/" network="eth0"|g' $tutorial_path/precice-config.xml
 
