@@ -193,8 +193,8 @@ def compose_tag(docker_username, base, features, branch):
     features_list = []
     features_list.append(features.get("os"))
     features_list.append(features.get("installation"))
-    features_list.append("petsc") if (features.get("petsc") is "yes") else None
-    features_list.append("mpich") if (features.get("mpich") is "yes") else None
+    if (features.get("petsc") is "yes"): features_list.append("petsc")
+    if (features.get("mpich") is "yes"): features_list.append("mpich")
     features_list = list(filter(None, features_list))  # filter "None" features that might have been added by dict.get(key), if key did not exist.
 
     if features_list:  # list of features is not empty
