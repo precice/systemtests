@@ -103,7 +103,7 @@ def generate_travis_job(adapter, user, trigger_failure=True, branch="master"):
                                                                         tag=determine_image_tag())
 
     if trigger_failure:
-        after_failure_action += " python trigger_systemtests.py --failure --owner {USER} --adapter {ADAPTER}"
+         after_failure_action += " python trigger_systemtests.py --failure --owner {USER} --adapter {ADAPTER}" + "--branch {}".format(os.environ["TRAVIS_BRANCH"])
 
     # template for building this particular adapter
     build_template = {
