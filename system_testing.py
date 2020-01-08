@@ -191,10 +191,10 @@ def compose_tag(docker_username, base, features, branch):
         I.e. image is based on the source code provided at precice:develop, https://github.com/precice/precice/tree/develop.
     """
     features_list = []
-    features_list.append(features["os"]) if "os" in features else None
-    features_list.append(features["installation"]) if "installation" in features else None
-    features_list.append("petsc") if ("petsc" in features and features["petsc"] is "yes") else None
-    features_list.append("mpich") if ("mpich" in features and features["mpich"] is "yes") else None
+    features_list.append(features.get("os"))
+    features_list.append(features.get("installation"))
+    features_list.append("petsc") if (features.get("installation") is "yes") else None
+    features_list.append("mpich") if (features.get("mpich") is "yes") else None
 
     if features_list:  # list of features is not empty
         tag = docker_username.lower() + "/" + base + "-" + ".".join(features_list).lower() + '-' + branch.lower()
