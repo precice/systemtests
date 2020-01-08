@@ -44,7 +44,7 @@ def build_adapters(systest, tag, branch, local, force_rebuild):
     docker_args = { 'tag': '',
                    'build_args': {"from": docker.get_namespace() + baseimage_name if local
                         else 'precice/' + baseimage_name },
-                   'force_rebuild': force_rebuild, 
+                   'force_rebuild': force_rebuild,
                    'dockerfile': 'Dockerfile'}
 
     with common.chdir(os.path.join(os.getcwd(), 'adapters')):
@@ -84,8 +84,8 @@ def run_compose(systest, branch, local, tag, force_rebuild, rm_all):
 
         # cleanup previous results
         shutil.rmtree("Output", ignore_errors=True)
-        
-        try: 
+
+        try:
             for command in commands_main:
                 ccall(command)
 
@@ -98,7 +98,7 @@ def run_compose(systest, branch, local, tag, force_rebuild, rm_all):
                 for command in commands_cleanup:
                     ccall(command)
 
-        except (CalledProcessError, IncorrectOutput)  as e: 
+        except (CalledProcessError, IncorrectOutput)  as e:
             # cleanup in either case
             if rm_all:
                 for command in commands_cleanup:
@@ -141,6 +141,13 @@ def comparison(pathToRef, pathToOutput):
         num_diff = call("bash ../../compare_results.sh {} {}".format(pathToRef, pathToOutput))
         if num_diff == 1:
             raise IncorrectOutput(*ret)
+        elif num_diff != 0:
+            raise ValueError("compare_results.sh exited with {}.".num_diff)
+        else:
+            print("TEST SUCCESSFUL! File differences within tolerance.")
+    # if code passes clause, test succeeded
+    print("TEST SUCCESSFUL! No file differences found.")
+
 
 
 
