@@ -28,6 +28,7 @@ jobs:
 
     - stage: Building preCICE
       name: "Ubuntu 16.04 home"
+      if: fork = false
       script:
         - docker build -f precice/Dockerfile.Ubuntu1604.home -t $DOCKER_USERNAME/precice-ubuntu1604.home-develop .
       deploy:
@@ -85,6 +86,7 @@ jobs:
 
     - stage: Building preCICE
       name: "Ubuntu 18.04.home"
+      if: fork = false
       script:
         - docker build -f precice/Dockerfile.Ubuntu1804.home -t $DOCKER_USERNAME/precice-ubuntu1804.home-develop .
       deploy:
@@ -146,6 +148,7 @@ jobs:
 
     - stage: Building adapters
       name: SU2 adapter
+      if: fork = false
       script:
         - docker build -f adapters/Dockerfile.su2-adapter -t $DOCKER_USERNAME/su2-adapter-ubuntu1604.home-develop .
       deploy:
@@ -158,6 +161,7 @@ jobs:
           docker push $DOCKER_USERNAME/su2-adapter-ubuntu1604.home-develop
 
     - name: CalculiX adapter
+      if: fork = false
       script:
         - docker build -f adapters/Dockerfile.calculix-adapter -t $DOCKER_USERNAME/calculix-adapter-ubuntu1604.home-develop .
       deploy:
@@ -170,6 +174,7 @@ jobs:
           docker push $DOCKER_USERNAME/calculix-adapter-ubuntu1604.home-develop
 
     - name: deal.ii adapter
+      if: fork = false
       script:
         - docker build -f adapters/Dockerfile.dealii-adapter -t $DOCKER_USERNAME/dealii-adapter-ubuntu1604.home-develop .
       deploy:
@@ -182,6 +187,7 @@ jobs:
           docker push $DOCKER_USERNAME/dealii-adapter-ubuntu1604.home-develop
 
     - name: openFOAM adapter
+      if: fork = false
       script:
         - docker build -f adapters/Dockerfile.openfoam-adapter -t $DOCKER_USERNAME/openfoam-adapter-ubuntu1604.home-develop .
       deploy:
@@ -207,6 +213,7 @@ jobs:
           docker push precice/openfoam-adapter-ubuntu1804.home-develop
 
     - name: FEniCS adapter
+      if: fork = false
       script:
         - >
           docker build -f adapters/Dockerfile.fenics-adapter -t $DOCKER_USERNAME/fenics-adapter-ubuntu1804.home-develop
@@ -221,6 +228,7 @@ jobs:
           docker push $DOCKER_USERNAME/fenics-adapter-ubuntu1804.home-develop
 
     - name: openFOAM adapter [PETSc]
+      if: fork = false
       script:
         - >
           docker build -f adapters/Dockerfile.openfoam-adapter -t $DOCKER_USERNAME/openfoam-adapter-ubuntu1604.home.petsc-develop
@@ -235,6 +243,7 @@ jobs:
           docker push $DOCKER_USERNAME/openfoam-adapter-ubuntu1604.home.petsc-develop
 
     - name: CalculiX adapter [PETSc]
+      if: fork = false
       script:
         - >
           docker build -f adapters/Dockerfile.calculix-adapter -t $DOCKER_USERNAME/calculix-adapter-ubuntu1604.home.petsc-develop
