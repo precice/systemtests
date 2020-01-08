@@ -3,7 +3,7 @@ ENV tutorial_path tutorials/HT/partitioned-heat/fenics-fenics
 RUN apk add git
 ARG branch=simplify-parallel-config
 RUN git clone --branch $branch https://github.com/uekerman/tutorials
-RUN mkdir configs && sed -i 's|network="lo"|exchange-directory="/home/precice/Data/Exchange/" network="eth0"|g' $tutorial_path/precice-config.xml
+RUN mkdir configs && sed -i 's|<m2n:sockets from="HeatDirichlet" to="HeatNeumann"/>|<m2n:sockets from="HeatDirichlet" to="HeatNeumann" exchange-directory="/home/precice/Data/Exchange/" network="eth0"/>|g' $tutorial_path/precice-config.xml
 
 RUN addgroup -g 1000 precice && adduser -u 1000 -G precice -D precice && chown -R precice:precice tutorials configs
 USER precice
