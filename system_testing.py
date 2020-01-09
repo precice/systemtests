@@ -42,9 +42,10 @@ def build_adapters(systest, tag, branch, local, force_rebuild):
 
     participants = get_test_participants(systest)
     docker_args = { 'tag': '',
-                   'build_args': {"from": docker.get_namespace() + baseimage_name if local
-                        else 'precice/' + baseimage_name },
-                   'force_rebuild': force_rebuild, 
+                   'build_args': {
+                       "from": docker.get_namespace() + baseimage_name if local else 'precice/' + baseimage_name,
+                       "branch": branch},
+                   'force_rebuild': force_rebuild,
                    'dockerfile': 'Dockerfile'}
 
     with common.chdir(os.path.join(os.getcwd(), 'adapters')):
