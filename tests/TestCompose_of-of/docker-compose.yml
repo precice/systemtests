@@ -10,7 +10,7 @@ services:
     command: >
       /bin/bash -c "source /opt/openfoam4/etc/bashrc && 
       cd /home/precice/openfoam-adapter/tutorials/CHT/flow-over-plate/buoyantPimpleFoam-laplacianFoam &&
-      sed -i 's|<m2n:sockets from="Fluid" to="Solid"/>|<m2n:sockets from="Fluid" to="Solid" exchange-directory=\"/home/precice/Data/Exchange/\" network=\"eth0\"/>|g' precice-config.xml &&
+      sed -i 's|<m2n:sockets from=\"Fluid\" to=\"Solid\"/>|<m2n:sockets from=\"Fluid\" to=\"Solid\" exchange-directory=\"/home/precice/Data/Exchange/\" network=\"eth0\"/>|g' precice-config.xml &&
       ./runFluid &&
       cp -r Fluid/ /home/precice/Data/Output/"
     container_name: openfoam-adapter-fluid
