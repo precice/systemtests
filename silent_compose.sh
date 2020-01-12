@@ -6,7 +6,7 @@
 taillen=500
 failed=0
 
-docker-compose up -d
+docker-compose up
 # docker-compose up -d || exit 1
 # services=($(docker-compose ps | awk '{print $1}'| tail -n +3))
 #
