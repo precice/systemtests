@@ -12,7 +12,7 @@ services:
     command: >
             /bin/bash -c "ln -sf /home/precice/Data/Input Solid;
             ln -sf /home/precice/calculix-adapter/configs/* . &&
-            ccx_preCICE -i Solid/flap -precice-participant Calculix > systest_ccx.log 2>&1 &&
+            ccx_preCICE -i Solid/flap -precice-participant Calculix > /dev/null 2>&1 &&
             cp   Solid/*.dat  Solid/*.cvg Solid/*.sta *.log *.out /home/precice/Data/Output/"
     container_name: calculix-adapter
     depends_on:
