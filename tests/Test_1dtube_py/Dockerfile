@@ -7,19 +7,21 @@ RUN apt-get -qq update && apt-get -qq install \
     libsm6 libgl1 && \
     rm -rf /var/lib/apt/lists/*
 
+# Installing necessary python dependecies; we have to use pip, since cython provided by apt-get is too old.
 RUN wget -q https://bootstrap.pypa.io/get-pip.py -O get-pip.py && \
-    python3 get-pip.py && \
-    pip install Cython mpi4py numpy enum34 matplotlib vtk
+    python3 get-pip.py
+
+USER precice
+RUN pip3 install --user cython mpi4py numpy enum34 matplotlib vtk
+
+ARG branch=develop
 
 ARG CACHEBUST
 
 RUN mkdir /Output
 
-WORKDIR $PRECICE_ROOT/src/precice/bindings/python_future
-RUN pip3 install --user .
-
-WORKDIR $PRECICE_ROOT/src/precice/bindings/python
-RUN pip3 install --user .
+# Builds the precice python bindings for python3
+RUN pip3 install --user https://github.com/precice/python-bindings/archive/$branch.zip
 
 WORKDIR /home/precice/
 RUN git clone https://github.com/Eder-K/elastictube1d.git
