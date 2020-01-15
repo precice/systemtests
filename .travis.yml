@@ -261,8 +261,6 @@ jobs:
       if: fork = true
       script: true
 
-
-
     - stage: Tests
       name: "[16.04] SU2 <-> Calculix"
       script:
