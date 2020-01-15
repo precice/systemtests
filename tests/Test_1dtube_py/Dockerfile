@@ -26,8 +26,7 @@ RUN pip3 install --user https://github.com/precice/python-bindings/archive/$bran
 WORKDIR /home/precice/
 RUN git clone https://github.com/precice/elastictube1d.git
 
-WORKDIR /home/precice/elastictube1d
-
+WORKDIR /home/precice/elastictube1d/python
 
 RUN ./Allrun
 
