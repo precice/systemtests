@@ -16,23 +16,18 @@ RUN apt-get -qq update && apt-get -qq install \
 
 # Installing necessary python dependecies; we have to use pip, since cython provided by apt-get is too old.
 RUN wget -q https://bootstrap.pypa.io/get-pip.py -O get-pip.py && \
-    python3 get-pip.py && \
-    pip3 install Cython mpi4py numpy enum34
+    python3 get-pip.py
 
-# Builds the python_future python bindings for python3
-WORKDIR $PRECICE_ROOT/src/precice/bindings/python_future
-RUN pip3 install --user .
-    
+USER precice
+RUN pip3 install --user cython mpi4py numpy enum34
+
+ARG branch=develop
+
 # Builds the precice python bindings for python3
-WORKDIR $PRECICE_ROOT/src/precice/bindings/python
-RUN pip3 install --user .
+RUN pip3 install --user https://github.com/precice/python-bindings/archive/$branch.zip
 
 # Runs the python solverdummy with python3
 WORKDIR $PRECICE_ROOT/tools/solverdummies/python
-RUN python3 solverdummy.py ../precice-config.xml SolverOne MeshOne & python3 solverdummy.py ../precice-config.xml SolverTwo MeshTwo
-
-# Runs the python_future solverdummy with python3
-WORKDIR $PRECICE_ROOT/tools/solverdummies/python_future
 RUN python3 solverdummy.py ../precice-config.xml SolverOne MeshOne & python3 solverdummy.py ../precice-config.xml SolverTwo MeshTwo
 
 # Builds the C solverdummy
@@ -57,4 +52,6 @@ RUN gfortran $PRECICE_ROOT/src/precice/bindings/f2003/SolverInterfaceF2003.f90 -
 RUN ./solverdummy ../precice-config.xml SolverOne MeshOne & ./solverdummy ../precice-config.xml SolverTwo MeshTwo
 
 # Creating Output folder
+USER root
 RUN mkdir /Output
+USER precice
