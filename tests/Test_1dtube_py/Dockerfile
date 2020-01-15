@@ -11,14 +11,14 @@ RUN apt-get -qq update && apt-get -qq install \
 RUN wget -q https://bootstrap.pypa.io/get-pip.py -O get-pip.py && \
     python3 get-pip.py
 
+RUN mkdir /Output
+
 USER precice
 RUN pip3 install --user cython mpi4py numpy enum34 matplotlib vtk
 
 ARG branch=develop
 
 ARG CACHEBUST
-
-RUN mkdir /Output
 
 # Builds the precice python bindings for python3
 RUN pip3 install --user https://github.com/precice/python-bindings/archive/$branch.zip
@@ -32,4 +32,5 @@ WORKDIR /home/precice/elastictube1d
 RUN ./Allrun
 
 # transfer only VTK results
+USER root
 RUN cp -r VTK /Output/
