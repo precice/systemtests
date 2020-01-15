@@ -16,8 +16,9 @@ USER precice
 WORKDIR /home/precice/
 RUN git clone https://github.com/precice/elastictube1d.git
 
-WORKDIR /home/precice/elastictube1d/elastictube1d-cxx
-RUN cmake . && make all && ./Allrun-cxx
+WORKDIR /home/precice/elastictube1d/cxx
+RUN cmake . && make all && ./Allrun
+# TODO: Also run parallel case in test?
 
 USER root
 # transfer results
