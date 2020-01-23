@@ -335,7 +335,6 @@ jobs:
         provider: script
         on:
           all_branches: true
-      script:
         script: python push.py -s -t dealii-of
 
     - name: "[18.04] nutils <-> OpenFOAM"
