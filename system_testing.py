@@ -149,9 +149,11 @@ def comparison(pathToRef, pathToOutput):
         elif num_diff != 0:
             raise ValueError('compare_results.sh exited with unknown code {}'.format(num_diff))
         else:
-            print('Test succeeded! Differences to referenceOutput within tolerance.')
+            print('TEST SUCCEEDED - Differences to referenceOutput within tolerance.')
+            sys.exit(0)
     else:
-        print('Test succeeded! No difference to referenceOutput found.')
+        print('TEST SUCCEEDED - No difference to referenceOutput found.')
+        sys.exit(0)
 
 
 def build_run_compare(test, tag, branch, local_precice, force_rebuild, rm_all=False, verbose=False):
