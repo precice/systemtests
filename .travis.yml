@@ -15,7 +15,7 @@ jobs:
   include:
     - name: "[18.04] nutils <-> OpenFOAM"
       script:
-        - python system_testing.py -s nutils-of --base Ubuntu1804.home
+        - python system_testing.py -s nutils-of --base Ubuntu1804.home -v
       after_failure:
         - python push.py -t nutils-of --base Ubuntu1804.home
       deploy:
