@@ -325,6 +325,18 @@ jobs:
           all_branches: true
         script: python push.py -s -t bindings
 
+    - name: "[18.04] Bindings/Solverdummies"
+      script:
+        - python system_testing.py -s bindings --base Ubuntu1804.home
+      after_failure:
+        - python push.py -t bindings --base Ubuntu1804.home
+      deploy:
+        skip_cleanup: true
+        provider: script
+        on:
+          all_branches: true
+        script: python push.py -s -t bindings --base Ubuntu1804.home
+
     - name: "[16.04] deal.ii <-> OpenFOAM"
       script:
         - python system_testing.py -s dealii-of
