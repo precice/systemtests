@@ -148,15 +148,10 @@ def get_travis_job_log(job_id, tail = 0):
     # if log cutoff is enabled
     if tail > 0:
         job_log = "\n".join( response.split("\n")[-tail:] )
-        else
+    else:
         job_log = response
 
-        return job_log
-
-tag_descriptions = {
-    'no_output' : "\n- **This test generated no Output files!** These should normally be stored in the folder '/Output' located at the root of the 'tutorial-data' container, but no files were found there.\n",
-    'allowed_failure' : "\n- This test has been marked as allowed failure.\n"
-}
+    return job_log
 
 def add_readme(job_path, job_result):
     """
