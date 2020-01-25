@@ -256,8 +256,9 @@ if __name__ == "__main__":
 
     # finally commit
     commit_msg = "Job Success" if job_success else "Job Failure"
-    if output_missing:
-        commit_msg += ", MISSING OUTPUT"
+    if args.output:
+        if output_missing:
+            commit_msg += ", MISSING OUTPUT"
     if logs_missing:
         commit_msg += ", MISSING LOGS"
     ccall("git commit -m '{}'".format(commit_msg))
