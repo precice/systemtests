@@ -12,7 +12,7 @@ This script pushes to: https://github.com/precice/precice_st_output.
 
 # from trigger_systemtests import get_json_response
 # from urllib.parse import urlencode
-# from urllib.request import Request, urlopen
+from urllib.request import Request, urlopen
 import argparse, os, sys, time
 from common import call, ccall, capture_output, get_test_participants, chdir
 import inspect
