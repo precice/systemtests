@@ -191,9 +191,7 @@ if __name__ == "__main__":
     job_folder = os.environ["TRAVIS_JOB_NUMBER"]
     job_id = os.environ["TRAVIS_JOB_ID"]
     job_result = os.environ["TRAVIS_TEST_RESULT"]
-    print(job_result)
-    job_success = True if (job_result == 0) else False
-    print(job_success)
+    job_success = True if (job_result == '0') else False
 
     # TODO: change default to master branch when merging
     ccall("git clone -b {st_branch} https://github.com/precice/precice_st_output".\
@@ -235,7 +233,6 @@ if __name__ == "__main__":
 
     # create README
     add_readme(job_path, job_success)
-    print(job_success)
 
     # Check if Output is missing, given it is enabled
     if args.output:
