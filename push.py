@@ -208,19 +208,26 @@ if __name__ == "__main__":
     # Path to Output folder inside a job folder
     output_path = os.path.join(file_path, "Output")
     # Path to Logs folder inside a job folder
-    logs_path = os.path.join(file_path, "Logs")
+    log_path = os.path.join(file_path, "Logs")
 
+    ccall("mkdir -p {}".format(logs_path))
     # Dont need to mkdir, will be done by docker cp
-    # ccall("mkdir -p {}".format(logs_path))
     # ccall("mkdir -p {}".format(output_path))
 
     # extract files from container
-    ccall("docker cp tutorial-data:/Output {}".format(file_path))
-    # move container logs into correct folder
-    ccall("docker cp tutorial-data:/Logs {}".format(file_path))
+    ccall("docker cp tutorial-data:/Output {}".format(job_path))
+
+    # move container logs into correct folder, if using compose
+    compose_tests = ["dealii-of", "of-of", "su2-ccx", "of-ccx", "of-of_np",
+            "fe-fe","nutils-of", "of-ccx_fsi"]
+    if args.test in compose_tests:
+        test_dirname = "TestCompose_{systest}".format(systest=args.test)
+        test_path = os.path.join(os.getcwd(), 'tests', test_dirname)
+        ccall("cp -r {test_path}/Logs {job_path}".\
+               format(test_path=test_path, job_path=job_path))
 
     # create travis log
-    with chdir(logs_path):
+    with chdir(log_path):
         with open("travis-log.md", "w") as log:
             log.write('```\n{log}\n```\n'.format(log=get_travis_job_log(job_id)))
 
@@ -236,14 +243,14 @@ if __name__ == "__main__":
         no_output = True
     # Check if Logs directory is empty. If yes, include a small README
     no_logs = False
-    if not os.listdir(logs_path):
+    if not os.listdir(log_path):
         ccall("echo '# No log files found!' > {path}".format(path=
-        os.path.join(output_path, "README.md")))
+        os.path.join(log_path, "README.md")))
         no_output = True
 
     os.chdir(repo_path)
     with chdir(repo_path):
-        ccall("git add {}".format(file_path))
+        ccall("git add {}".format(job_path))
 
     # finally commit
     commit_msg = "Job Success" if job_success else "Job Failure"
