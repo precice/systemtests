@@ -212,7 +212,7 @@ if __name__ == "__main__":
 
 
     # extract files from container, IF ENABLED
-    if atgs.output:
+    if args.output:
         ccall("docker cp tutorial-data:/Output {}".format(job_path))
 
 
