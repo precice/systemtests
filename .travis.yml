@@ -10,6 +10,7 @@ jobs:
   allow_failures:
     - name: "Ubuntu 18.04.sudo.mpich [Job failure permitted]"
     - name: "Ubuntu 16.04 home PETSc [Job failure permitted]"
+    - name: "[16.04 PETSc] OpenFOAM <-> CalculiX [FSI] [Job failure permitted]"
 
   include:
     - stage: Building preCICE
@@ -352,7 +353,7 @@ jobs:
           all_branches: true
         script: python push.py -s -t of-of_np
 
-    - name: "[16.04 PETSc] OpenFOAM <-> CalculiX [FSI]"
+    - name: "[16.04 PETSc] OpenFOAM <-> CalculiX [FSI] [Job failure permitted]"
       script:
         - python system_testing.py -s of-ccx_fsi --base Ubuntu1604.home.PETSc
       after_failure:
