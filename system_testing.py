@@ -72,12 +72,13 @@ def run_compose(systest, branch, local, tag, force_rebuild, rm_all=False, verbos
     compose_config_cmd = "docker-compose config && "
     compose_exec_cmd = "bash ../../silent_compose.sh {}".format('debug' if verbose else "")
     copy_cmd = "docker cp tutorial-data:/Output ."
+    log_cmd = "mkdir Logs && docker-compose logs > Logs/container-logs.md"
 
     commands_main = [export_cmd +
                      extra_cmd +
                      compose_config_cmd +
                      compose_exec_cmd,
-                     copy_cmd]
+                     copy_cmd, log_cmd]
     # rebuild tutorials image if needed
     if force_rebuild:
         commands_main.insert(0, "docker-compose build --no-cache")
