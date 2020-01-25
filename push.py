@@ -201,11 +201,11 @@ if __name__ == "__main__":
     # Path to job folder
     job_path = os.path.join(os.getcwd(), repo_folder, build_folder, job_folder)
     # Path to Output folder inside a job folder
-    output_path = os.path.join(file_path, "Output")
+    output_path = os.path.join(job, "Output")
     # Path to Logs folder inside a job folder
-    log_path = os.path.join(file_path, "Logs")
+    log_path = os.path.join(job_path, "Logs")
 
-    ccall("mkdir -p {}".format(logs_path))
+    ccall("mkdir -p {}".format(log_path))
     # Dont need to mkdir, will be done by docker cp
     # ccall("mkdir -p {}".format(output_path))
 
