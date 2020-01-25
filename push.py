@@ -191,6 +191,7 @@ if __name__ == "__main__":
     job_folder = os.environ["TRAVIS_JOB_NUMBER"]
     job_id = os.environ["TRAVIS_JOB_ID"]
     job_result = os.environ["TRAVIS_TEST_RESULT"]
+    print(job_result)
     job_success = True if (job_result == 0) else False
 
     # TODO: change default to master branch when merging
