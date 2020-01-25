@@ -237,7 +237,7 @@ if __name__ == "__main__":
 
 
     # Check if Output is missing, given it is enabled
-    if output:
+    if args.output:
         output_missing = False
         if not os.listdir(output_path):
             ccall("echo '# Output was enabled, but no output files found!' > {path}".format(path=
