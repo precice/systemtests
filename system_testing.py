@@ -72,7 +72,7 @@ def run_compose(systest, branch, local, tag, force_rebuild, rm_all=False, verbos
     compose_config_cmd = "docker-compose config && "
     compose_exec_cmd = "bash ../../silent_compose.sh {}".format('debug' if verbose else "")
     copy_cmd = "docker cp tutorial-data:/Output ."
-    log_cmd = "mkdir Logs && docker-compose logs > Logs/container-logs.md"
+    log_cmd = "mkdir Logs && docker-compose logs > Logs/container.log"
 
     commands_main = [export_cmd +
                      extra_cmd +
