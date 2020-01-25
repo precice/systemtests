@@ -179,9 +179,10 @@ def add_readme(job_path, job_result):
 
 if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser(description='Push results from containers to output repository')
+    parser = argparse.ArgumentParser(description='Push test output and logs to output repository')
     parser.add_argument('-t', '--test', help="Choose systemtest, results of which to push")
     parser.add_argument('-b', '--base', type=str, help="Base image of the test", default="Ubuntu1604.home")
+    parser.add_argument('-o', '--output', action='store_true', help="Enable result storage (disabled by default)", )
     parser.add_argument('--st-branch', type=str, help="Branch of precice_st_output to push to", default="EderK-push_files")
     args = parser.parse_args()
 
@@ -205,12 +206,15 @@ if __name__ == "__main__":
     # Path to Logs folder inside a job folder
     log_path = os.path.join(job_path, "Logs")
 
-    ccall("mkdir -p {}".format(log_path))
-    # Dont need to mkdir, will be done by docker cp
+    # Dont need to mkdir, will be done by docker cp/systemtests.py
+    # ccall("mkdir -p {}".format(log_path))
     # ccall("mkdir -p {}".format(output_path))
 
-    # extract files from container
-    ccall("docker cp tutorial-data:/Output {}".format(job_path))
+
+    # extract files from container, IF ENABLED
+    if output:
+        ccall("docker cp tutorial-data:/Output {}".format(job_path))
+
 
     # move container logs into correct folder, if using compose
     compose_tests = ["dealii-of", "of-of", "su2-ccx", "of-ccx", "of-of_np",
@@ -221,27 +225,31 @@ if __name__ == "__main__":
         ccall("cp -r {test_path}/Logs {job_path}".\
                format(test_path=test_path, job_path=job_path))
 
+
     # create travis log
     with chdir(log_path):
         with open("travis.log", "w") as log:
             log.write(get_travis_job_log(job_id))
 
+
     # create README
     add_readme(job_path, job_success)
 
 
-    # Check if Output directory is empty. If yes, include a small README
-    no_output = False
-    if not os.listdir(output_path):
-        ccall("echo '# No output files found!' > {path}".format(path=
-        os.path.join(output_path, "README.md")))
-        no_output = True
+    # Check if Output is missing, given it is enabled
+    if output:
+        output_missing = False
+        if not os.listdir(output_path):
+            ccall("echo '# Output was enabled, but no output files found!' > {path}".format(path=
+            os.path.join(output_path, "README.md")))
+            output_missing = True
+
     # Check if Logs directory is empty. If yes, include a small README
-    no_logs = False
+    logs_missing = False
     if not os.listdir(log_path):
         ccall("echo '# No log files found!' > {path}".format(path=
         os.path.join(log_path, "README.md")))
-        no_output = True
+        logs_missing= True
 
     os.chdir(repo_path)
     with chdir(repo_path):
@@ -249,10 +257,10 @@ if __name__ == "__main__":
 
     # finally commit
     commit_msg = "Job Success" if job_success else "Job Failure"
-    if no_output:
-        commit_msg += ", NO OUTPUT"
-    if no_logs:
-        commit_msg += ", NO LOGS"
+    if output_missing:
+        commit_msg += ", MISSING OUTPUT"
+    if logs_missing:
+        commit_msg += ", MISSING LOGS"
     ccall("git commit -m '{}'".format(commit_msg))
     ccall("git config user.name 'Precice Bot'")
     ccall("git config user.email ${PRECICE_BOT_EMAIL}")
