@@ -174,7 +174,7 @@ def add_readme(job_path, job_result):
     readme_text = inspect.cleandoc(readme_text) # cleans indentation
     with chdir(job_path):
         with open("README.md", "w") as readme:
-            readme.write(readme_txt)
+            readme.write(readme_text)
         ccall("git add README.md")
 
 if __name__ == "__main__":
