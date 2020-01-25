@@ -153,13 +153,13 @@ def get_travis_job_log(job_id, tail = 0):
 
     return job_log
 
-def add_readme(job_path, job_result):
+def add_readme(job_path, job_success):
     """
     Create a README.md at the location specified by readme_path.
     """
     job_link = os.environ["TRAVIS_JOB_WEB_URL"]
     job_name = os.environ["TRAVIS_JOB_NAME"]
-    job_status = "Success" if job_result else "Failure"
+    job_status = "Success" if job_success else "Failure"
 
     readme_text = """
     # {name}
@@ -193,6 +193,7 @@ if __name__ == "__main__":
     job_result = os.environ["TRAVIS_TEST_RESULT"]
     print(job_result)
     job_success = True if (job_result == 0) else False
+    print(job_success)
 
     # TODO: change default to master branch when merging
     ccall("git clone -b {st_branch} https://github.com/precice/precice_st_output".\
@@ -234,7 +235,7 @@ if __name__ == "__main__":
 
     # create README
     add_readme(job_path, job_success)
-
+    print(job_success)
 
     # Check if Output is missing, given it is enabled
     if args.output:
