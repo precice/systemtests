@@ -223,8 +223,8 @@ if __name__ == "__main__":
 
     # create travis log
     with chdir(log_path):
-        with open("travis-log.md", "w") as log:
-            log.write('```\n{log}\n```\n'.format(log=get_travis_job_log(job_id)))
+        with open("travis.log", "w") as log:
+            log.write(get_travis_job_log(job_id))
 
     # create README
     add_readme(job_path, job_success)
