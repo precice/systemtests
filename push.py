@@ -206,9 +206,8 @@ if __name__ == "__main__":
     # Path to Logs folder inside a job folder
     log_path = os.path.join(job_path, "Logs")
 
-    # Dont need to mkdir, will be done by docker cp/systemtests.py
-    # ccall("mkdir -p {}".format(log_path))
-    # ccall("mkdir -p {}".format(output_path))
+    ccall("mkdir -p {}".format(log_path))
+    ccall("mkdir -p {}".format(output_path))
 
 
     # extract files from container, IF ENABLED
