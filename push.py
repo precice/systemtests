@@ -201,7 +201,7 @@ if __name__ == "__main__":
     # Path to job folder
     job_path = os.path.join(os.getcwd(), repo_folder, build_folder, job_folder)
     # Path to Output folder inside a job folder
-    output_path = os.path.join(job, "Output")
+    output_path = os.path.join(job_path, "Output")
     # Path to Logs folder inside a job folder
     log_path = os.path.join(job_path, "Logs")
 
