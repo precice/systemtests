@@ -18,12 +18,15 @@ USER precice
 
 ARG branch=develop
 
-# Builds the precice python bindings for python3
-RUN pip3 install --user https://github.com/precice/python-bindings/archive/$branch.zip
+# Clones the precice python bindings
+WORKDIR /home/precice
+RUN git clone https://github.com/precice/python-bindings/archive/$branch.zip
+# Builds the precice python bindings
+WORKDIR /home/precic/python-bindings
+RUN pip3 install --user .
 
-# Runs the python solverdummy with python3
-WORKDIR $PRECICE_ROOT/tools/solverdummies/python
-RUN python3 solverdummy.py ../precice-config.xml SolverOne MeshOne & python3 solverdummy.py ../precice-config.xml SolverTwo MeshTwo
+# Runs the python solverdummy
+RUN cd solverdummy && python3 solverdummy.py precice-config.xml SolverOne MeshOne & python3 solverdummy.py precice-config.xml SolverTwo MeshTwo
 
 # Builds the C solverdummy
 WORKDIR $PRECICE_ROOT/tools/solverdummies/c
