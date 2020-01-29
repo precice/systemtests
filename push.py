@@ -66,13 +66,20 @@ def create_job_log(test, log, exit_status):
 
     # Decipher commit from the job message
     if (event_type == "api"):
-        job_that_triggered = commit_message.split("Triggered by:")[-1]
-        if job_that_triggered == "manual script call":
-           event_type = "manual trigger"
+        
+        # Check if api request came from triggering script
+        if ("Triggered by:" in commit_message):
+            job_that_triggered = commit_message.split("Triggered by:")[-1]
+            if job_that_triggered == "manual script call":
+                event_type = "manual trigger"
+            else:
+                *_, adapter_name, _, adapter_job_id = job_that_triggered.split('/')
+                triggered_commit = get_job_commit(adapter_job_id)
+                event_type = "commit to the {}".format(adapter_name)
+            
+        # Otherwise request was sent from TravisCI website
         else:
-           *_, adapter_name, _, adapter_job_id = job_that_triggered.split('/')
-           triggered_commit = get_job_commit(adapter_job_id)
-           event_type = "commit to the {}".format(adapter_name)
+            event_type = "website trigger"            
     else:
         triggered_commit = get_job_commit(job_id)
 
