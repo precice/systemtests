@@ -157,6 +157,7 @@ def get_travis_job_log(job_id, tail = 0):
 
 def add_readme(
         job_path,
+        output=False,
         output_missing=False,
         logs_missing=False,
         message=None
@@ -246,8 +247,8 @@ if __name__ == "__main__":
 
 
     # Check if Output is missing, given it is enabled
+    output_missing = False
     if args.output:
-        output_missing = False
         if not os.listdir(output_path):
             ccall("echo '# Output was enabled, but no output files found!' > {path}".format(path=
             os.path.join(output_path, "README.md")))
@@ -264,7 +265,7 @@ if __name__ == "__main__":
     # create README
     add_readme(
         job_path,
-        job_success,
+        output=args.output,
         output_missing=output_missing,
         logs_missing=logs_missing)
 
