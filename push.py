@@ -12,10 +12,11 @@ This script pushes to: https://github.com/precice/precice_st_output.
 
 # from trigger_systemtests import get_json_response
 # from urllib.parse import urlencode
+from jinja2 import Template
 from urllib.request import Request, urlopen
 import argparse, os, sys, time
 from common import call, ccall, capture_output, get_test_participants, chdir
-import inspect
+# import inspect
 #
 # def get_job_commit(job_id):
 #     """ Checks commit that triggered travis job"""
@@ -153,29 +154,33 @@ def get_travis_job_log(job_id, tail = 0):
 
     return job_log
 
-def add_readme(job_path, job_success):
+
+def add_readme(
+        job_path,
+        job_success,
+        no_output=False,
+        message=None
+        ):
     """
     Create a README.md at the location specified by readme_path.
     """
     job_link = os.environ["TRAVIS_JOB_WEB_URL"]
     job_name = os.environ["TRAVIS_JOB_NAME"]
-    job_status = "Success" if job_success else "Failure"
 
-    readme_text = """
-    # {name}
+    if (no_output or message):
+        additional_info = True
+    else:
+        additional_info = False
 
-    Job Status: **{status}**
+    with open(os.path.join('templates','test_template', 'README.md')) as f:
+        tmp = Template(f.read())
+        readme_rendered = tmp.render(locals())
 
-    [Link to Job page on TravisCI]({link})
-
-    ---
-    """.format(name=job_name, status=job_status, link=job_link)
-
-    readme_text = inspect.cleandoc(readme_text) # cleans indentation
     with chdir(job_path):
-        with open("README.md", "w") as readme:
-            readme.write(readme_text)
+        with open("README.md", "w") as f:
+            f.write(readme_rendered)
         ccall("git add README.md")
+
 
 if __name__ == "__main__":
 
