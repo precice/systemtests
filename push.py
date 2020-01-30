@@ -157,8 +157,8 @@ def get_travis_job_log(job_id, tail = 0):
 
 def add_readme(
         job_path,
-        job_success,
-        no_output=False,
+        output_missing=False,
+        logs_missing=False,
         message=None
         ):
     """
@@ -166,8 +166,9 @@ def add_readme(
     """
     job_link = os.environ["TRAVIS_JOB_WEB_URL"]
     job_name = os.environ["TRAVIS_JOB_NAME"]
+    job_success = True if (os.environ["TRAVIS_TEST_RESULT"] == '0') else False
 
-    if (no_output or message):
+    if (output_missing or logs_missing or message):
         additional_info = True
     else:
         additional_info = False
@@ -200,6 +201,8 @@ if __name__ == "__main__":
     job_id = os.environ["TRAVIS_JOB_ID"]
     job_result = os.environ["TRAVIS_TEST_RESULT"]
     job_success = True if (job_result == '0') else False
+    job_name = os.environ["TRAVIS_JOB_NAME"]
+
 
     # TODO: change default to master branch when merging
     ccall("git clone -b {st_branch} https://github.com/precice/precice_st_output".\
@@ -241,8 +244,6 @@ if __name__ == "__main__":
             log.write(get_travis_job_log(job_id))
 
 
-    # create README
-    add_readme(job_path, job_success)
 
     # Check if Output is missing, given it is enabled
     if args.output:
@@ -255,16 +256,26 @@ if __name__ == "__main__":
     # Check if Logs directory is empty. If yes, include a small README
     logs_missing = False
     if not os.listdir(log_path):
-        ccall("echo '# No log files found!' > {path}".format(path=
+        ccall("echo '# No log files found!' > {path}".format(path=Job Success
         os.path.join(log_path, "README.md")))
         logs_missing= True
+
+
+    # create README
+    add_readme(
+        job_path,
+        job_success,
+        output_missing=output_missing,
+        logs_missing=logs_missing)
+
 
     os.chdir(repo_path)
     with chdir(repo_path):
         ccall("git add {}".format(job_path))
 
     # finally commit
-    commit_msg = "Job Success" if job_success else "Job Failure"
+    commit_msg = "Success" if job_success else "Failure"
+    commit_msg += ": {}".format(job_name)
     if args.output:
         if output_missing:
             commit_msg += ", MISSING OUTPUT"
