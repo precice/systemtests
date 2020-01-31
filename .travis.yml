@@ -72,20 +72,6 @@ jobs:
           docker push $DOCKER_USERNAME/precice-ubuntu1604.sudo-develop:latest
 
     - stage: Building preCICE
-      name: "Ubuntu 16.04.package"
-      if: type = cron
-      script:
-        - docker build -f precice/Dockerfile.Ubuntu1604.package -t $DOCKER_USERNAME/precice-ubuntu1604.package-develop .
-      deploy:
-        skip_cleanup: true
-        provider: script
-        on:
-          all_branches: true
-        script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin &&
-          docker push $DOCKER_USERNAME/precice-ubuntu1604.package-develop:latest
-
-    - stage: Building preCICE
       name: "Ubuntu 18.04.home"
       if: fork = false
       script:
