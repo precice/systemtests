@@ -6,13 +6,13 @@ FROM ubuntu:16.04
 # Installing necessary dependacies for preCICE
 RUN apt-get -qq update && apt-get -qq install \
     build-essential \
-    libeigen3-dev \
     libxml2-dev \
     petsc-dev \
     git \
     python-numpy \
     python-dev \
     wget \
+    pkg-config \    
     bzip2 && \
     rm -rf /var/lib/apt/lists/*
 
@@ -20,6 +20,11 @@ RUN apt-get -qq update && apt-get -qq install \
 WORKDIR /cmake
 RUN wget -q -O- 'https://github.com/Kitware/CMake/releases/download/v3.13.4/cmake-3.13.4-Linux-x86_64.tar.gz' | tar xz
 ENV PATH="/cmake/cmake-3.13.4-Linux-x86_64/bin:$PATH"
+
+# Installing eigen from source
+WORKDIR /eigen
+RUN wget -nv 'https://gitlab.com/libeigen/eigen/-/archive/3.3.7/eigen-3.3.7.tar.bz2' -O - | tar xj
+ENV Eigen3_ROOT="/eigen/eigen-3.3.7"
 
 # Installing boost from source
 WORKDIR /boost-build
