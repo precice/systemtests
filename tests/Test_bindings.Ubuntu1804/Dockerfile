@@ -26,7 +26,8 @@ WORKDIR /home/precice/python-bindings
 RUN pip3 install --user .
 
 # Runs the python solverdummy
-RUN cd solverdummy && python3 solverdummy.py precice-config.xml SolverOne MeshOne & python3 solverdummy.py precice-config.xml SolverTwo MeshTwo
+WORKDIR /home/precice/python-bindings/solverdummy
+RUN python3 solverdummy.py precice-config.xml SolverOne MeshOne & python3 solverdummy.py precice-config.xml SolverTwo MeshTwo
 
 # Builds the C solverdummy
 WORKDIR $PRECICE_ROOT/examples/solverdummies/c
@@ -46,7 +47,7 @@ RUN ./solverdummy ../precice-config.xml SolverOne MeshOne & ./solverdummy ../pre
 
 # Clones the fortran-module
 WORKDIR /home/precice
-RUN git clone --branch $branch https://github.com/precice/fortran-module.git
+RUN git clone https://github.com/precice/fortran-module.git
 # Builds the fortran module
 WORKDIR /home/precice/fortran-module
 RUN make
