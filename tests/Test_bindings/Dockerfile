@@ -27,7 +27,7 @@ ARG branch=develop
 WORKDIR /home/precice
 RUN git clone --branch $branch https://github.com/precice/python-bindings.git
 # Builds the precice python bindings
-WORKDIR /home/precic/python-bindings
+WORKDIR /home/precice/python-bindings
 RUN pip3 install --user .
 
 # Runs the python solverdummy
