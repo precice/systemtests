@@ -12,6 +12,7 @@ RUN apt-get -qq update && apt-get -qq install \
     python-numpy \
     python-dev \
     wget \
+    pkg-config \    
     bzip2 && \
     rm -rf /var/lib/apt/lists/*
 
