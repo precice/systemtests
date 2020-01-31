@@ -57,7 +57,7 @@ WORKDIR /home/precice/fortran-module
 RUN make
 # Builds the f2003 solverdummy
 WORKDIR /home/precice/fortran-module/examples/solverdummy
-RUN gfortran solverdummy.f03 -I../.. -L$(pkg-config --libs libprecice)
+RUN make
 RUN ./solverdummy precice-config.xml SolverOne MeshOne & ./solverdummy precice-config.xml SolverTwo MeshTwo
 
 # Creating Output folder
