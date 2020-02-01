@@ -38,7 +38,7 @@ RUN git clone --branch $branch https://github.com/precice/precice.git /home/prec
 # Some parameters for the build, you can set them in the build command e.g.
 # sudo docker build Dockerfile.precice --build-arg petsc_para=yes --build-arg mpi_para=yes .
 # this will result in
-# cmake -DPETSC=yes -DMPI=yes -DPYTHON=no -DCMAKE_CXX_COMPILER=mpicxx -j2 /home/precice/precice
+# cmake -DPRECICE_PETScMapping=yes -DPRECICE_MPICommunicator=yes -DPRECICE_PythonActions=no -DCMAKE_CXX_COMPILER=mpicxx -j2 /home/precice/precice
 ARG petsc_para=no
 ARG mpi_para=yes
 ARG python_para=no
@@ -48,9 +48,9 @@ RUN mkdir /home/precice/precice-build && \
     cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo \
           -DBUILD_SHARED_LIBS=ON \
           -DCMAKE_INSTALL_PREFIX=/usr/local \
-          -DPETSC=$petsc_para \
-          -DMPI=$mpi_para \
-          -DPYTHON=$python_para \
+          -DPRECICE_PETScMapping=$petsc_para \
+          -DPRECICE_MPICommunicator=$mpi_para \
+          -DPRECICE_PythonActions=$python_para \
           /home/precice/precice && \
     make -j$(nproc) && \
     make test_base
