@@ -40,7 +40,7 @@ RUN mkdir /home/precice/precice-build && \
           -DPRECICE_CTEST_MPI_FLAGS="--oversubscribe" \
           -DCMAKE_INSTALL_PREFIX=/home/precice/precice-install \
           -DPRECICE_PETScMapping=$petsc_para \
-          -DPRECICE_MPICommunicator=$mpi_para \
+          -DPRECICE_MPICommunication=$mpi_para \
           -DPRECICE_PythonActions=$python_para \
           /home/precice/precice && \
     make -j$(nproc) && \
