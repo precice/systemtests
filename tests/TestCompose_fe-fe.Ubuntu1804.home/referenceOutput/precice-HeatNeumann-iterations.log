@@ -1,4 +1,4 @@
-Timesteps  Total_Iterations  Iterations  Convergence  avgConvRate(0)  avgConvRate(1)  deleted_Columns  
+Timestep  TotalIterations  Iteration  Convergence  AvgConvRate(Flux)  AvgConvRate(Temperature)  DeletedColumns
 1  10  10  1  0.3045404350460303  0.2786432187347547  0  
 2  21  11  1  0.3549790438495221  0.2957268946442810  0  
 3  32  11  1  0.3701497273033688  0.3268613841856929  0  

@@ -1,4 +1,4 @@
-Timestep  Iteration  resNorm(0)  resNorm(1)  
+Timestep  Iteration  ResNorm(Flux)  ResNorm(Temperature)
 1  1  1.0000000000000000  0.0540307098735447  
 1  2  0.0049500440057879  0.0530086177001827  
 1  3  0.2834662615032725  0.0019539378062266  
