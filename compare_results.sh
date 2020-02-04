@@ -59,8 +59,7 @@ if [ -n "$diff_files" ]; then
     # Filter output files, ignore lines with words (probably not the results)
     # removes |<>() characters
     # Do not delete "e", since it can be used as exponent
-    # filtered_diff=$( echo "$rawdiff" | sed 's/(\|)\||\|>\|<//g; /[a-df-zA-Z]\|Version/d' )
-    filtered_diff=$rawdiff
+    filtered_diff=$( echo "$rawdiff" | sed 's/(\|)\||\|>\|<//g; /[a-df-zA-Z]\|Version/d' )
 
     # Paiwise compares files fields, that are produces from diffs and computes average and maximum
     # relative differences
