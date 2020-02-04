@@ -1,5 +1,5 @@
-TimeWindow  TotalIterations  Iterations  Convergence  AvgConvRate(Temperature)  DeletedColumns
-1  6  6  1  0.1065922205296589  0  
+TimeWindow  TotalIterations  Iterations  Convergence  AvgConvRate(Temperature)  DeletedColumns  
+1  6  6  1  0.1065922205296589  0
 2  8  2  1  0.0323100130227184  0
 3  10  2  1  0.0242405366277447  0
 4  12  2  1  0.0253757972818089  0
