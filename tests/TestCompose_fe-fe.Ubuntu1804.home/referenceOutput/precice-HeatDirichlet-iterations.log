@@ -1,4 +1,4 @@
-Timestep  TotalIterations  Iteration  Convergence  
+TimeWindow  TotalIterations  Iterations  Convergence  
 1  10  10  1  
 2  21  11  1  
 3  32  11  1  
