@@ -9,8 +9,7 @@ ENV USER=root
 # Install dependecies
 RUN apt-get -qq update && apt-get -qq install \
     software-properties-common \
-    wget apt-transport-https \
-    libyaml-cpp-dev && \
+    wget apt-transport-https && \
     rm -rf /var/lib/apt/lists/*
 
 ARG CACHEBUST
@@ -19,7 +18,7 @@ COPY --from=openfoam /opt/openfoam5 /opt/openfoam5/
 
 # Building openfoam-adapter
 USER precice
-SHELL ["/bin/bash", "-c"]  # without this command /opt/openfoam5/etc/bashrc cannot be sources
+SHELL ["/bin/bash", "-c"]  # without this command /opt/openfoam5/etc/bashrc cannot be sourced
 WORKDIR /home/precice
 ARG branch=develop
 RUN git clone  --branch $branch https://github.com/precice/openfoam-adapter.git
