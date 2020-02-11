@@ -9,8 +9,7 @@ ENV USER=root
 # Install dependecies
 RUN apt-get -qq update && apt-get -qq install \
     software-properties-common \
-    wget apt-transport-https \
-    libyaml-cpp-dev && \
+    wget apt-transport-https && \
     rm -rf /var/lib/apt/lists/*
 
 ARG CACHEBUST

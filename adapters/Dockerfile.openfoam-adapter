@@ -9,8 +9,7 @@ ENV USER=root
 # Install dependecies
 RUN apt-get -qq update && apt-get -qq install \
     software-properties-common \
-    wget apt-transport-https \
-    libyaml-cpp-dev && \
+    wget apt-transport-https && \
     rm -rf /var/lib/apt/lists/*
 
 ARG CACHEBUST
@@ -24,5 +23,5 @@ WORKDIR /home/precice
 ARG branch=develop
 RUN git clone  --branch $branch https://github.com/precice/openfoam-adapter.git
 WORKDIR /home/precice/openfoam-adapter
-RUN . /opt/openfoam4/etc/bashrc && ./Allwmake
+RUN . /opt/openfoam4/etc/bashrc && ./Allwmake; cat wmake.log
 RUN cd $HOME && mkdir -p Data/Input Data/Output Data/Exchange
