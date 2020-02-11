@@ -29,7 +29,11 @@ More information can be found in the [docs](docs/)
 To run OpenFOAM-OpenFOAM system test using Ubuntu 16.04 as the base for building preCICE and adapters:
 
 ```
-   python3 local_test.py -s of-of -f Dockerfile.Ubuntu1604.home
+   python3 local_test.py -s of-of -d Dockerfile.Ubuntu1604.home
 ```
-
 Run `python3 local_test.py -h` for more information.
+
+Alternatively, for debugging purposes, it might be useful to execute `system_testing.py` directly to emulate a TravisCI run. Here an example Fenics-Fenics test using Ubuntu 18.04 with verbose container output (`-v`) enabled:
+```
+python system_testing.py -s fe-fe --base Ubuntu1804.home -v
+```

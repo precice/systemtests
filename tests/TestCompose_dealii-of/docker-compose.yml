@@ -1,9 +1,9 @@
 version : '3'
 services:
-  
-  dealii-adapter: 
+
+  dealii-adapter:
     image: "${SYSTEST_REMOTE}dealii-adapter${PRECICE_BASE}:${DEALII_TAG}"
-    networks: 
+    networks:
       - precicecomm
     volumes:
       - exchange:/home/precice/Data/Exchange/
@@ -12,16 +12,16 @@ services:
       - output:/home/precice/Data/Output/
     command: >
       /bin/bash -c "
-      ln -sf configs/* . && 
+      ln -sf configs/* . &&
       ./coupled_elasto_dynamics /home/precice/Data/Input/parameters.prm"
     container_name: dealii-adapter
     depends_on:
       - tutorial-data
       - openfoam-adapter
-    
-  openfoam-adapter: 
+
+  openfoam-adapter:
     image: "${SYSTEST_REMOTE}openfoam-adapter${PRECICE_BASE}:${OPENFOAM_TAG}"
-    networks: 
+    networks:
       - precicecomm
     volumes:
       - exchange:/home/precice/Data/Exchange/
@@ -29,7 +29,7 @@ services:
       - configs:/home/precice/openfoam-adapter/configs/
       - output:/home/precice/Data/Output/
     command: >
-      /bin/bash -c "source /opt/openfoam4/etc/bashrc && 
+      /bin/bash -c "source /opt/openfoam4/etc/bashrc &&
       ln -sf configs/* . &&
       blockMesh -case /home/precice/Data/Input &&
       checkMesh -case /home/precice/Data/Input &&
