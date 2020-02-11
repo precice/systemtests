@@ -160,7 +160,7 @@ jobs:
           all_branches: true
         script: >-
           echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin &&
-          docker push precice/calculix-adapter-ubuntu1604.home-$TRAVIS_BRANCH
+          docker push $DOCKER_USERNAME/calculix-adapter-ubuntu1604.home-$TRAVIS_BRANCH
 
     - name: deal.ii adapter
       if: fork = false
