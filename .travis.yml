@@ -17,7 +17,6 @@ jobs:
   include:
     - stage: Building preCICE
       name: "Arch Linux"
-      if: fork = false
       script:
         - docker build -f precice/Dockerfile.Arch -t $DOCKER_USERNAME/precice-arch-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH .
       deploy:
@@ -31,7 +30,6 @@ jobs:
 
     - stage: Building preCICE
       name: "Ubuntu 16.04 home"
-      if: fork = false
       script:
         - docker build -f precice/Dockerfile.Ubuntu1604.home -t $DOCKER_USERNAME/precice-ubuntu1604.home-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH .
       deploy:
@@ -45,7 +43,6 @@ jobs:
 
     - stage: Building preCICE
       name: "Ubuntu 16.04 home PETSc [Job failure permitted]"
-      if: fork = false
       script:
         - >
           docker build -f precice/Dockerfile.Ubuntu1604.home -t $DOCKER_USERNAME/precice-ubuntu1604.home.petsc-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH .
@@ -61,7 +58,6 @@ jobs:
 
     - stage: Building preCICE
       name: "Ubuntu 16.04.sudo"
-      if: type = cron
       script:
         - docker build -f precice/Dockerfile.Ubuntu1604.sudo -t $DOCKER_USERNAME/precice-ubuntu1604.sudo-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH .
       deploy:
@@ -75,7 +71,6 @@ jobs:
 
     - stage: Building preCICE
       name: "Ubuntu 18.04.home"
-      if: fork = false
       script:
         - docker build -f precice/Dockerfile.Ubuntu1804.home -t $DOCKER_USERNAME/precice-ubuntu1804.home-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH .
       deploy:
@@ -89,7 +84,6 @@ jobs:
 
     - stage: Building preCICE
       name: "Ubuntu 18.04.sudo"
-      if: type = cron
       script:
         - docker build -f precice/Dockerfile.Ubuntu1804.sudo -t $DOCKER_USERNAME/precice-ubuntu1804.sudo-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH .
       deploy:
@@ -103,7 +97,6 @@ jobs:
 
     - stage: Building preCICE
       name: "Ubuntu 18.04.sudo.mpich [Job failure permitted]"
-      if: type = cron
       script:
         - docker build -f precice/Dockerfile.Ubuntu1804.sudo.mpich -t $DOCKER_USERNAME/precice-ubuntu1804.sudo.mpich-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH .
       deploy:
@@ -117,7 +110,6 @@ jobs:
 
     - stage: Building preCICE
       name: "Ubuntu 18.04.package"
-      if: fork = false
       script:
         - docker build -f precice/Dockerfile.Ubuntu1804.package -t $DOCKER_USERNAME/precice-ubuntu1804.package-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH .
       deploy:
@@ -129,15 +121,8 @@ jobs:
           echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin &&
           docker push $DOCKER_USERNAME/precice-ubuntu1804.package-$TRAVIS_BRANCH
 
-    - name: "[Build preCICE on fork] Using cached version"
-      if: fork = true
-      script: true
-
-
-
     - stage: Building adapters
       name: SU2 adapter
-      if: fork = false
       script:
         - docker build -f adapters/Dockerfile.su2-adapter -t $DOCKER_USERNAME/su2-adapter-ubuntu1604.home-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH --build-arg from=$DOCKER_USERNAME/precice-ubuntu1604.home-$TRAVIS_BRANCH .
       deploy:
@@ -150,7 +135,6 @@ jobs:
           docker push $DOCKER_USERNAME/su2-adapter-ubuntu1604.home-$TRAVIS_BRANCH
 
     - name: CalculiX adapter
-      if: fork = false
       script:
         - docker build -f adapters/Dockerfile.calculix-adapter -t $DOCKER_USERNAME/calculix-adapter-ubuntu1604.home-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH --build-arg from=$DOCKER_USERNAME/precice-ubuntu1604.home-$TRAVIS_BRANCH .
       deploy:
@@ -163,7 +147,6 @@ jobs:
           docker push $DOCKER_USERNAME/calculix-adapter-ubuntu1604.home-$TRAVIS_BRANCH
 
     - name: deal.ii adapter
-      if: fork = false
       script:
         - docker build -f adapters/Dockerfile.dealii-adapter -t $DOCKER_USERNAME/dealii-adapter-ubuntu1604.home-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH --build-arg from=$DOCKER_USERNAME/precice-ubuntu1604.home-$TRAVIS_BRANCH .
       deploy:
@@ -176,7 +159,6 @@ jobs:
           docker push $DOCKER_USERNAME/dealii-adapter-ubuntu1604.home-$TRAVIS_BRANCH
 
     - name: openFOAM adapter
-      if: fork = false
       script:
         - docker build -f adapters/Dockerfile.openfoam-adapter -t $DOCKER_USERNAME/openfoam-adapter-ubuntu1604.home-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH --build-arg from=$DOCKER_USERNAME/precice-ubuntu1604.home-$TRAVIS_BRANCH .
       deploy:
@@ -189,7 +171,6 @@ jobs:
           docker push $DOCKER_USERNAME/openfoam-adapter-ubuntu1604.home-$TRAVIS_BRANCH
 
     - name: "[18.04] openFOAM adapter"
-      if: fork = false
       script:
         - docker build -f adapters/Dockerfile.openfoam-adapter.Ubuntu1804 -t $DOCKER_USERNAME/openfoam-adapter-ubuntu1804.home-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH --build-arg from=$DOCKER_USERNAME/precice-ubuntu1804.home-$TRAVIS_BRANCH .
       deploy:
@@ -202,7 +183,6 @@ jobs:
           docker push $DOCKER_USERNAME/openfoam-adapter-ubuntu1804.home-$TRAVIS_BRANCH
 
     - name: FEniCS adapter
-      if: fork = false
       script:
         - >
           docker build -f adapters/Dockerfile.fenics-adapter -t $DOCKER_USERNAME/fenics-adapter-ubuntu1804.home-$TRAVIS_BRANCH
@@ -217,7 +197,6 @@ jobs:
           docker push $DOCKER_USERNAME/fenics-adapter-ubuntu1804.home-$TRAVIS_BRANCH
 
     - name: openFOAM adapter [PETSc] [Job failure permitted]
-      if: fork = false
       script:
         - >
           docker build -f adapters/Dockerfile.openfoam-adapter -t $DOCKER_USERNAME/openfoam-adapter-ubuntu1604.home.petsc-$TRAVIS_BRANCH
@@ -232,7 +211,6 @@ jobs:
           docker push $DOCKER_USERNAME/openfoam-adapter-ubuntu1604.home.petsc-$TRAVIS_BRANCH
 
     - name: CalculiX adapter [PETSc] [Job failure permitted]
-      if: fork = false
       script:
         - >
           docker build -f adapters/Dockerfile.calculix-adapter -t $DOCKER_USERNAME/calculix-adapter-ubuntu1604.home.petsc-$TRAVIS_BRANCH
@@ -245,12 +223,6 @@ jobs:
         script: >-
           echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin &&
           docker push $DOCKER_USERNAME/calculix-adapter-ubuntu1604.home.petsc-$TRAVIS_BRANCH
-
-    - name: "[Build adapters on fork] Using cached version"
-      if: fork = true
-      script: true
-
-
 
     - stage: Tests
       name: "[16.04] SU2 <-> Calculix"
