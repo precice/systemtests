@@ -69,6 +69,10 @@ def add_readme(
     job_name = os.environ["TRAVIS_JOB_NAME"]
     job_success = True if (os.environ["TRAVIS_TEST_RESULT"] == '0') else False
 
+    branch = os.environ["TRAVIS_BRANCH"]
+    pr_branch = os.environ["TRAVIS_PULL_REQUEST_BRANCH"]
+    is_pr = False if (pr_branch == "") else True
+
     if (output_missing or logs_missing or message):
         additional_info = True
     else:
