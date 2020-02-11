@@ -15,7 +15,6 @@ from urllib.request import Request, urlopen
 import argparse, os, sys, time
 from common import call, ccall, capture_output, get_test_participants, chdir
 
-
 def generate_commit_message(output_dir, success, test, base):
 
     travis_build_number = os.environ["TRAVIS_BUILD_NUMBER"]

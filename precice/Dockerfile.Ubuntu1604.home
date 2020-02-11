@@ -12,6 +12,7 @@ RUN apt-get -qq update && apt-get -qq install \
     python-numpy \
     python-dev \
     wget \
+    pkg-config \    
     bzip2 && \
     rm -rf /var/lib/apt/lists/*
 
@@ -58,7 +59,7 @@ WORKDIR /home/precice/precice
 # Some parameters for the build, you can set them in the build command e.g.
 # sudo docker build Dockerfile.precice --build-arg petsc_para=yes --build-arg mpi_para=yes .
 # this will result in
-# cmake -DPETSC=yes -DMPI=yes -DPYTHON=no -DCMAKE_CXX_COMPILER=mpicxx -j2 /precice
+# cmake -DPRECICE_PETScMapping=yes -DPRECICE_MPICommunication=yes -DPRECICE_PythonActions=no -DCMAKE_CXX_COMPILER=mpicxx -j2 /precice
 ARG petsc_para=no
 ARG mpi_para=yes
 ARG python_para=no
@@ -69,9 +70,9 @@ RUN mkdir /home/precice/precice-build && \
     cmake -DBUILD_SHARED_LIBS=ON \
           -DCMAKE_BUILD_TYPE=RelWithDebInfo \
           -DCMAKE_INSTALL_PREFIX=/home/precice/precice-install \
-          -DPETSC=$petsc_para \
-          -DMPI=$mpi_para \
-          -DPYTHON=$python_para \
+          -DPRECICE_PETScMapping=$petsc_para \
+          -DPRECICE_MPICommunication=$mpi_para \
+          -DPRECICE_PythonActions=$python_para \
           /home/precice/precice && \
     make -j$(nproc) && \
     make test_base && \
