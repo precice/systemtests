@@ -1,17 +1,26 @@
 # {{job_name}}
 
 {% if job_success %}
-_Job succeeded!_
+**Job succeeded!**
 {% else %}
 **Job failed!**
 {% endif %}
+
+{% if is_pr %}
+This build was triggered by a pull request from `{{pr_pranch}}` → `{{branch}}`.
+{% else %}
+This build was triggered by a push to `{{branch}}`.
+{% endif %}
+
 
 [Link to job page]({[job_link]})
 
 
 This job folder contains
-- An `Output` directory containing result files generated during the running of the test
 - A `Logs` directory containing log files from TravisCI and the participant containers
+{% if output %}
+- An `Output` directory containing result files generated during the running of the test
+{% endif %}
 
 ---
 
