@@ -199,7 +199,7 @@ jobs:
           all_branches: true
         script: >-
           echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin &&
-          docker push precice/openfoam-adapter-ubuntu1804.home-develop
+          docker push $DOCKER_USERNAME/openfoam-adapter-ubuntu1804.home-$TRAVIS_BRANCH
 
     - name: FEniCS adapter
       if: fork = false
