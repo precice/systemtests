@@ -236,7 +236,7 @@ jobs:
       script:
         - >
           docker build -f adapters/Dockerfile.calculix-adapter -t $DOCKER_USERNAME/calculix-adapter-ubuntu1604.home.petsc-$TRAVIS_BRANCH
-          --build-arg from=precice/precice-ubuntu1604.home.petsc-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH .
+          --build-arg from=$DOCKER_USERNAME/precice-ubuntu1604.home.petsc-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH .
       deploy:
         skip_cleanup: true
         provider: script
