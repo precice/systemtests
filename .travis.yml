@@ -178,7 +178,7 @@ jobs:
     - name: openFOAM adapter
       if: fork = false
       script:
-        - docker build -f adapters/Dockerfile.openfoam-adapter -t $DOCKER_USERNAME/openfoam-adapter-ubuntu1604.home-develop .
+        - docker build -f adapters/Dockerfile.openfoam-adapter -t $DOCKER_USERNAME/openfoam-adapter-ubuntu1604.home-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH --build-arg from=$DOCKER_USERNAME/precice-ubuntu1604.home-$TRAVIS_BRANCH .
       deploy:
         skip_cleanup: true
         provider: script
@@ -191,7 +191,7 @@ jobs:
     - name: "[18.04] openFOAM adapter"
       if: fork = false
       script:
-        - docker build -f adapters/Dockerfile.openfoam-adapter.Ubuntu1804 -t $DOCKER_USERNAME/openfoam-adapter-ubuntu1804.home-develop .
+        - docker build -f adapters/Dockerfile.openfoam-adapter.Ubuntu1804 -t $DOCKER_USERNAME/openfoam-adapter-ubuntu1804.home-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH --build-arg from=$DOCKER_USERNAME/precice-ubuntu1804.home-$TRAVIS_BRANCH .
       deploy:
         skip_cleanup: true
         provider: script
