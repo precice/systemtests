@@ -243,7 +243,7 @@ jobs:
         on:
           all_branches: true
         script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin &&
+          echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin &&
           docker push $DOCKER_USERNAME/calculix-adapter-ubuntu1604.home.petsc-$TRAVIS_BRANCH
 
     - name: "[Build adapters on fork] Using cached version"
