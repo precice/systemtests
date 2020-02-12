@@ -29,7 +29,7 @@ services:
       - configs:/home/precice/openfoam-adapter/configs/
       - output:/home/precice/Data/Output/
     command: >
-      /bin/bash -c "source /opt/openfoam4/etc/bashrc &&
+      /bin/bash -c "source /opt/openfoam5/etc/bashrc &&
       ln -sf configs/* . &&
       blockMesh -case /home/precice/Data/Input &&
       checkMesh -case /home/precice/Data/Input &&

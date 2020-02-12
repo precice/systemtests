@@ -1,14 +1,14 @@
 version : '3'
 services:
-  openfoam-adapter-fluid: 
+  openfoam-adapter-fluid:
     image: "${SYSTEST_REMOTE}openfoam-adapter${PRECICE_BASE}:${OPENFOAM_TAG}"
-    networks: 
+    networks:
       - precicecomm
     volumes:
       - exchange:/home/precice/Data/Exchange
       - output:/home/precice/Data/Output
     command: >
-      /bin/bash -c "source /opt/openfoam4/etc/bashrc && 
+      /bin/bash -c "source /opt/openfoam5/etc/bashrc && 
       cd /home/precice/openfoam-adapter/tutorials/CHT/flow-over-plate/buoyantPimpleFoam-laplacianFoam &&
       sed -i 's|<m2n:sockets from=\"Fluid\" to=\"Solid\"/>|<m2n:sockets from=\"Fluid\" to=\"Solid\" exchange-directory=\"/home/precice/Data/Exchange/\" network=\"eth0\"/>|g' precice-config.xml &&
       ./runFluid &&
@@ -17,13 +17,13 @@ services:
 
   openfoam-adapter-solid:
     image: "${SYSTEST_REMOTE}openfoam-adapter${PRECICE_BASE}:${OPENFOAM_TAG}"
-    networks: 
+    networks:
       - precicecomm
     volumes:
       - exchange:/home/precice/Data/Exchange
       - output:/home/precice/Data/Output
     command: >
-      /bin/bash -c "source /opt/openfoam4/etc/bashrc && 
+      /bin/bash -c "source /opt/openfoam5/etc/bashrc &&
       cd /home/precice/openfoam-adapter/tutorials/CHT/flow-over-plate/buoyantPimpleFoam-laplacianFoam &&
       sed -i 's|<m2n:sockets from=\"Fluid\" to=\"Solid\"/>|<m2n:sockets from=\"Fluid\" to=\"Solid\" exchange-directory=\"/home/precice/Data/Exchange/\" network=\"eth0\"/>|g' precice-config.xml &&
       ./runSolid &&
