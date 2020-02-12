@@ -18,33 +18,43 @@ USER precice
 
 ARG branch=develop
 
-# Builds the precice python bindings for python3
-RUN pip3 install --user https://github.com/precice/python-bindings/archive/$branch.zip
+# Clones the precice python bindings
+WORKDIR /home/precice
+RUN git clone --branch $branch https://github.com/precice/python-bindings.git
+# Builds the precice python bindings
+WORKDIR /home/precice/python-bindings
+RUN pip3 install --user .
 
-# Runs the python solverdummy with python3
-WORKDIR $PRECICE_ROOT/tools/solverdummies/python
-RUN python3 solverdummy.py ../precice-config.xml SolverOne MeshOne & python3 solverdummy.py ../precice-config.xml SolverTwo MeshTwo
+# Runs the python solverdummy
+WORKDIR /home/precice/python-bindings/solverdummy
+RUN python3 solverdummy.py precice-config.xml SolverOne MeshOne & python3 solverdummy.py precice-config.xml SolverTwo MeshTwo
 
 # Builds the C solverdummy
-WORKDIR $PRECICE_ROOT/tools/solverdummies/c
+WORKDIR $PRECICE_ROOT/examples/solverdummies/c
 RUN cmake . && make
 RUN ./solverdummy ../precice-config.xml SolverOne MeshOne & ./solverdummy ../precice-config.xml SolverTwo MeshTwo
 
 # Builds the C++ solverdummy
-WORKDIR $PRECICE_ROOT/tools/solverdummies/cpp
+WORKDIR $PRECICE_ROOT/examples/solverdummies/cpp
 RUN cmake . && make
 RUN ./solverdummy ../precice-config.xml SolverOne MeshOne & ./solverdummy ../precice-config.xml SolverTwo MeshTwo
 
 # Builds the Fortran solverdummy
-WORKDIR $PRECICE_ROOT/tools/solverdummies/fortran
+WORKDIR $PRECICE_ROOT/examples/solverdummies/fortran
 RUN make
 RUN cd ..
 RUN ./solverdummy ../precice-config.xml SolverOne MeshOne & ./solverdummy ../precice-config.xml SolverTwo MeshTwo
 
+# Clones the fortran-module
+WORKDIR /home/precice
+RUN git clone https://github.com/precice/fortran-module.git
+# Builds the fortran module
+WORKDIR /home/precice/fortran-module
+RUN make
 # Builds the f2003 solverdummy
-WORKDIR $PRECICE_ROOT/tools/solverdummies/f2003
-RUN gfortran $PRECICE_ROOT/src/precice/bindings/f2003/SolverInterfaceF2003.f90 -o solverdummy solverdummy.f03 $(pkg-config --libs-only-L --libs-only-l libprecice)
-RUN ./solverdummy ../precice-config.xml SolverOne MeshOne & ./solverdummy ../precice-config.xml SolverTwo MeshTwo
+WORKDIR /home/precice/fortran-module/examples/solverdummy
+RUN make
+RUN ./solverdummy precice-config.xml SolverOne MeshOne & ./solverdummy precice-config.xml SolverTwo MeshTwo
 
 # Creating Output folder
 USER root

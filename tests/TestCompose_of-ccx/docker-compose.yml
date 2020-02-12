@@ -1,9 +1,9 @@
 version: '3'
 services:
-  
-  openfoam-adapter-inner: 
+
+  openfoam-adapter-inner:
     image: "${SYSTEST_REMOTE}openfoam-adapter${PRECICE_BASE}:${OPENFOAM_TAG}"
-    networks: 
+    networks:
       - precicecomm
     volumes:
       - exchange:/home/precice/Data/Exchange/
@@ -11,18 +11,18 @@ services:
       - inner_fluid_input:/home/precice/Data/Input/
       - configs:/home/precice/openfoam-adapter/configs/
     command: >
-      /bin/bash -c "source /opt/openfoam4/etc/bashrc 
-      && ln -sf configs/* . 
+      /bin/bash -c "source /opt/openfoam5/etc/bashrc
+      && ln -sf configs/* .
       && buoyantSimpleFoam -case /home/precice/Data/Input
-      && cp -r /home/precice/Data/Input/. /home/precice/Data/Output/Inner-Fluid" 
+      && cp -r /home/precice/Data/Input/. /home/precice/Data/Output/Inner-Fluid"
     container_name: openfoam-adapter-inner
     depends_on:
       - tutorial-data
-    
+
   # outer-fluid 
-  openfoam-adapter-outer: 
+  openfoam-adapter-outer:
     image: "${SYSTEST_REMOTE}openfoam-adapter${PRECICE_BASE}:${OPENFOAM_TAG}"
-    networks: 
+    networks:
       - precicecomm
     volumes:
       - exchange:/home/precice/Data/Exchange/
@@ -30,10 +30,10 @@ services:
       - outer_fluid_input:/home/precice/Data/Input/
       - configs:/home/precice/openfoam-adapter/configs/
     command: >
-      /bin/bash -c "source /opt/openfoam4/etc/bashrc
-      && ln -sf configs/* . 
+      /bin/bash -c "source /opt/openfoam5/etc/bashrc
+      && ln -sf configs/* .
       && buoyantSimpleFoam -case /home/precice/Data/Input
-      && cp -r /home/precice/Data/Input/. /home/precice/Data/Output/Outer-Fluid" 
+      && cp -r /home/precice/Data/Input/. /home/precice/Data/Output/Outer-Fluid"
     container_name: openfoam-adapter-outer
     depends_on:
       - tutorial-data
@@ -41,7 +41,7 @@ services:
   # solid
   calculix-adapter-solid:
     image: "${SYSTEST_REMOTE}calculix-adapter${PRECICE_BASE}:${CALCULIX_TAG}"
-    networks: 
+    networks:
       - precicecomm
     volumes:
       - exchange:/home/precice/Data/Exchange/
@@ -50,7 +50,7 @@ services:
       - configs:/home/precice/calculix-adapter/configs/
     command: >
       /bin/bash -c "ln -s /home/precice/Data/Input/ Solid
-      && ln -sf configs/* . 
+      && ln -sf configs/* .
       && ccx_preCICE -i Solid/solid -precice-participant Solid"
     container_name: calculix-adapter-solid
     depends_on:

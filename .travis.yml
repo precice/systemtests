@@ -10,142 +10,11 @@ jobs:
   allow_failures:
     - name: "Ubuntu 18.04.sudo.mpich [Job failure permitted]"
     - name: "Ubuntu 16.04 home PETSc [Job failure permitted]"
+    - name: "[16.04 PETSc] OpenFOAM <-> CalculiX [FSI] [Job failure permitted]"
+    - name: "openFOAM adapter [PETSc] [Job failure permitted]"
+    - name: "CalculiX adapter [PETSc] [Job failure permitted]"
 
   include:
-    - stage: Building preCICE
-      name: "Arch Linux"
-      if: fork = false
-      script:
-        - docker build -f precice/Dockerfile.Arch -t $DOCKER_USERNAME/precice-arch-develop .
-      deploy:
-        skip_cleanup: true
-        provider: script
-        on:
-          all_branches: true
-        script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin &&
-          docker push $DOCKER_USERNAME/precice-arch-develop:latest
-
-    - stage: Building preCICE
-      name: "Ubuntu 16.04 home"
-      if: fork = false
-      script:
-        - docker build -f precice/Dockerfile.Ubuntu1604.home -t $DOCKER_USERNAME/precice-ubuntu1604.home-develop .
-      deploy:
-        skip_cleanup: true
-        provider: script
-        on:
-          all_branches: true
-        script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin &&
-          docker push $DOCKER_USERNAME/precice-ubuntu1604.home-develop:latest
-
-    - stage: Building preCICE
-      name: "Ubuntu 16.04 home PETSc [Job failure permitted]"
-      if: fork = false
-      script:
-        - >
-          docker build -f precice/Dockerfile.Ubuntu1604.home -t $DOCKER_USERNAME/precice-ubuntu1604.home.petsc-develop .
-          --build-arg petsc_para=yes
-      deploy:
-        skip_cleanup: true
-        provider: script
-        on:
-          all_branches: true
-        script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin &&
-          docker push $DOCKER_USERNAME/precice-ubuntu1604.home.petsc-develop:latest
-
-    - stage: Building preCICE
-      name: "Ubuntu 16.04.sudo"
-      if: type = cron
-      script:
-        - docker build -f precice/Dockerfile.Ubuntu1604.sudo -t $DOCKER_USERNAME/precice-ubuntu1604.sudo-develop .
-      deploy:
-        skip_cleanup: true
-        provider: script
-        on:
-          all_branches: true
-        script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin &&
-          docker push $DOCKER_USERNAME/precice-ubuntu1604.sudo-develop:latest
-
-    - stage: Building preCICE
-      name: "Ubuntu 16.04.package"
-      if: type = cron
-      script:
-        - docker build -f precice/Dockerfile.Ubuntu1604.package -t $DOCKER_USERNAME/precice-ubuntu1604.package-develop .
-      deploy:
-        skip_cleanup: true
-        provider: script
-        on:
-          all_branches: true
-        script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin &&
-          docker push $DOCKER_USERNAME/precice-ubuntu1604.package-develop:latest
-
-    - stage: Building preCICE
-      name: "Ubuntu 18.04.home"
-      if: fork = false
-      script:
-        - docker build -f precice/Dockerfile.Ubuntu1804.home -t $DOCKER_USERNAME/precice-ubuntu1804.home-develop .
-      deploy:
-        skip_cleanup: true
-        provider: script
-        on:
-          all_branches: true
-        script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin &&
-          docker push $DOCKER_USERNAME/precice-ubuntu1804.home-develop:latest
-
-    - stage: Building preCICE
-      name: "Ubuntu 18.04.sudo"
-      if: type = cron
-      script:
-        - docker build -f precice/Dockerfile.Ubuntu1804.sudo -t $DOCKER_USERNAME/precice-ubuntu1804.sudo-develop .
-      deploy:
-        skip_cleanup: true
-        provider: script
-        on:
-          all_branches: true
-        script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin &&
-          docker push $DOCKER_USERNAME/precice-ubuntu1804.sudo-develop
-
-    - stage: Building preCICE
-      name: "Ubuntu 18.04.sudo.mpich [Job failure permitted]"
-      if: type = cron
-      script:
-        - docker build -f precice/Dockerfile.Ubuntu1804.sudo.mpich -t $DOCKER_USERNAME/precice-ubuntu1804.sudo.mpich-develop .
-      deploy:
-        skip_cleanup: true
-        provider: script
-        on:
-          all_branches: true
-        script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin &&
-          docker push $DOCKER_USERNAME/precice-ubuntu1804.sudo.mpich-develop:latest
-
-    - stage: Building preCICE
-      name: "Ubuntu 18.04.package"
-      if: fork = false
-      script:
-        - docker build -f precice/Dockerfile.Ubuntu1804.package -t $DOCKER_USERNAME/precice-ubuntu1804.package-develop .
-      deploy:
-        skip_cleanup: true
-        provider: script
-        on:
-          all_branches: true
-        script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin &&
-          docker push $DOCKER_USERNAME/precice-ubuntu1804.package-develop
-
-    - name: "[Build preCICE on fork] Using cached version"
-      if: fork = true
-      script: true
-
-
-
     - stage: Building adapters
       name: SU2 adapter
       if: fork = false
@@ -227,7 +96,7 @@ jobs:
           echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin &&
           docker push $DOCKER_USERNAME/fenics-adapter-ubuntu1804.home-develop
 
-    - name: openFOAM adapter [PETSc]
+    - name: openFOAM adapter [PETSc] [Job failure permitted]
       if: fork = false
       script:
         - >
@@ -242,7 +111,7 @@ jobs:
           echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin &&
           docker push $DOCKER_USERNAME/openfoam-adapter-ubuntu1604.home.petsc-develop
 
-    - name: CalculiX adapter [PETSc]
+    - name: CalculiX adapter [PETSc] [Job failure permitted]
       if: fork = false
       script:
         - >
@@ -358,7 +227,7 @@ jobs:
           all_branches: true
         script: python push.py -s -t of-of_np
 
-    - name: "[16.04 PETSc] OpenFOAM <-> CalculiX [FSI]"
+    - name: "[16.04 PETSc] OpenFOAM <-> CalculiX [FSI] [Job failure permitted]"
       script:
         - python system_testing.py -s of-ccx_fsi --base Ubuntu1604.home.PETSc
       after_failure:

@@ -66,21 +66,33 @@ def create_job_log(test, log, exit_status):
 
     # Decipher commit from the job message
     if (event_type == "api"):
-        job_that_triggered = commit_message.split("Triggered by:")[-1]
-        if job_that_triggered == "manual script call":
-           event_type = "manual trigger"
+
+        # Check if api request came from triggering script
+        if ("Triggered by:" in commit_message):
+            job_that_triggered = commit_message.split("Triggered by:")[-1]
+            if job_that_triggered == "manual script call":
+                event_type = "manual trigger"
+                commit_link = build_url
+
+            else:
+                *_, adapter_name, _, adapter_job_id = job_that_triggered.split('/')
+                triggered_commit = get_job_commit(adapter_job_id)
+                commit_link = triggered_commit['compare_url']
+                event_type = "commit to the {}".format(adapter_name)
+
+        # Otherwise request was sent from TravisCI website
         else:
-           *_, adapter_name, _, adapter_job_id = job_that_triggered.split('/')
-           triggered_commit = get_job_commit(adapter_job_id)
-           event_type = "commit to the {}".format(adapter_name)
+            event_type = "website trigger"
+            commit_link = build_url
     else:
         triggered_commit = get_job_commit(job_id)
+        commit_link = triggered_commit['compare_url']
 
     log.write("## Status: " + ("Passing" if not exit_status else "Failure") + " \n")
     log.write("Build: {link} \n\n".format(link = make_md_link(build_number, build_url)))
     log.write("Job: {link} \n\n".format(link = make_md_link(job_number, job_url)))
     log.write("Triggered by: {link} \n".format(link =
-        make_md_link(event_type, triggered_commit['compare_url'])))
+        make_md_link(event_type, commit_link)))
 
     if exit_status:
 

@@ -8,7 +8,7 @@ RUN git clone --branch $branch https://github.com/precice/tutorials
 # Copy modified configs
 COPY controlDict $tutorial_path/Inner-Fluid/system/controlDict
 COPY controlDict $tutorial_path/Outer-Fluid/system/controlDict
-COPY precice-config_serial.xml configs/precice-config.xml
+COPY precice-config.xml configs/precice-config.xml
 
 # Download meshes
 WORKDIR $tutorial_path
