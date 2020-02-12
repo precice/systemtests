@@ -1,4 +1,4 @@
-Timestep  TotalIterations  Iteration  Convergence  AvgConvRate(DisplacementDeltas0)  AvgConvRate(Forces0)  DeletedColumns  
+TimeWindow  TotalIterations  Iterations  Convergence  AvgConvRate(DisplacementDeltas0)  AvgConvRate(Forces0)  DeletedColumns  
 1  5  5  1  0.0000000000000000  0.2407318172598388  0  
 2  10  5  1  0.2195306308150729  0.1496570737334093  0  
 3  14  4  1  0.1524900090133109  0.1612897210919889  0  
