@@ -13,6 +13,10 @@
 avg_diff_limit="0.001"
 max_diff_limit="0.001"
 
+RED='\033[1;31m'
+GRN='\033[1;32m'
+NC='\033[0m' # No Color
+
 if [ $# -lt 2 ]; then
   echo 1>&2 "Usage: $0 folder1 folder2"
   exit 1
@@ -55,16 +59,20 @@ if [ -n "$diff_files" ]; then
   do
     file1=$( echo "${array_files[i]}" | awk '{print $1}' )
     file2=$( echo "${array_files[i]}" | awk '{print $2}' )
-    rawdiff=$( diff -y --speed-large-files --suppress-common-lines "$file1" "$file2" )
+
+    raw_diff=$( diff --color -y --speed-large-files --suppress-common-lines "$file1" "$file2" )
+    num_diff=$( echo "$raw_diff" | sed '/[A-Za-df-z]/d' )
+    text_diff=$( echo "$raw_diff" | sed '/[A-Za-df-z]/!d' )
     # Filter output files, ignore lines with words (probably not the results)
     # removes |<>() characters
     # Do not delete "e", since it can be used as exponent
-    filtered_diff=$( echo "$rawdiff" | sed 's/(\|)\||\|>\|<//g; /[a-df-zA-Z]\|Version/d' )
+
+    # filtered_diff=$( echo "$rawdiff" | sed 's/(\|)\||\|>\|<//g; /[a-df-zA-Z]\|Version/d' )
 
     # Paiwise compares files fields, that are produces from diffs and computes average and maximum
     # relative differences
-    if [ -n "$filtered_diff" ]; then
-      rel_max_difference=$( export max_diff_limit; export avg_diff_limit; echo "$filtered_diff" | awk 'function abs(v) {return v < 0 ? -v : v} { radius=NF/2;
+    if [ -n "$num_diff" ]; then
+      rel_max_difference=$( export max_diff_limit; export avg_diff_limit; echo "$num_diff" | awk 'function abs(v) {return v < 0 ? -v : v} { radius=NF/2;
               max_diff=0;
               sum=0;
               for(i = 1; i <= radius; i++) {
@@ -80,8 +88,16 @@ if [ -n "$diff_files" ]; then
     if [ -n "$rel_max_difference" ]; then
       # Split by space and transform into the array
       difference=( $rel_max_difference )
-      echo "Difference between numerical fields in $file1 and $file2 -  Average: ${difference[0]}. Maximum: ${difference[1]}"
-      diff -yr --suppress-common-lines $folder1 $folder2
+      echo -e "Numerical difference in $file1 and $file2"
+      echo -e "  > Average: ${difference[0]} ; Maximum: ${difference[1]} ${NC}"
+      # echo ""
+      # diff -yr --suppress-common-lines $folder1 $folder2
+      ret=1
+    fi
+    if [ -n "$text_diff" ]; then
+      echo -e "Text difference in $file1 and $file2"
+      echo -e "  > $text_diff"
+      # echo ""
       ret=1
     fi
   done
@@ -90,7 +106,9 @@ fi
 # Files that are present only in reference or obtained
 # folder
 if [ -n "$only_files" ]; then
-  echo "$only_files"
+  echo -e "The following files exist in only one folder:"
+  echo -e "  > $only_files"
+  # echo ""
   ret=1
 fi
 
