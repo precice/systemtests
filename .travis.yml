@@ -143,12 +143,12 @@ jobs:
     - name: "[16.04] OpenFOAM <-> OpenFOAM"
       script:
         - python system_testing.py -s of-of
-        - python push.py -t of-of
+        - python push.py -t of-of -o
 
     - name: "[16.04] Calculix <-> OpenFOAM"
       script:
         - python system_testing.py -s of-ccx
-        - python push.py -t of-ccx
+        - python push.py -t of-ccx -o
 
     - name: "[18.04] FEniCS <-> FEniCS"
       script:
@@ -163,19 +163,19 @@ jobs:
     - name: "[16.04] deal.ii <-> OpenFOAM"
       script:
         - python system_testing.py -s dealii-of
-        - python push.py -t dealii-of
+        - python push.py -t dealii-of -o
 
     - name: "[18.04] nutils <-> OpenFOAM"
       script:
         - python system_testing.py -s nutils-of --base Ubuntu1804.home -v
-        - python push.py -t nutils-of --base Ubuntu1804.home
+        - python push.py -t nutils-of --base Ubuntu1804.home -o
 
     - name: "[16.04] OpenFOAM <-> OpenFOAM [nearest projection]"
       script:
         - python system_testing.py -s of-of_np
-        - python push.py -t of-of_np
+        - python push.py -t of-of_np -o
 
     - name: "[16.04 PETSc] OpenFOAM <-> CalculiX [FSI] [Job failure permitted]"
       script:
         - python system_testing.py -s of-ccx_fsi --base Ubuntu1604.home.PETSc
-        - python push.py -t of-ccx_fsi
+        - python push.py -t of-ccx_fsi -o
