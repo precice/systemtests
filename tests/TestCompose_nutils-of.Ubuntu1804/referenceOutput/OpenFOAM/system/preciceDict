@@ -7,7 +7,7 @@ FoamFile
     object      preciceDict;
 }
 
-preciceConfig "../precice-config.xml";
+preciceConfig "configs/precice-config.xml";
 
 participant OpenFOAM;
 
