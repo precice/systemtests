@@ -77,7 +77,7 @@ def add_readme(
     else:
         additional_info = False
 
-    with open(os.path.join('templates','test_template', 'README.md')) as f:
+    with open(os.path.join('templates','readme_template', 'README.md')) as f:
         tmp = Template(f.read())
         readme_rendered = tmp.render(locals())
 
