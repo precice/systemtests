@@ -5,6 +5,8 @@ python:
   - "3.5"
 services:
   - docker
+install:
+  - pip install Jinja2
 
 jobs:
   allow_failures:
