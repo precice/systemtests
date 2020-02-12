@@ -161,7 +161,7 @@ if __name__ == "__main__":
     # Check if Logs directory is empty. If yes, include a small README
     logs_missing = False
     if not os.listdir(log_path):
-        ccall("echo '# No log files found!' > {path}".format(path=Job Success
+        ccall("echo '# No log files found!' > {path}".format(path=
         os.path.join(log_path, "README.md")))
         logs_missing= True
 
