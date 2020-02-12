@@ -227,54 +227,54 @@ jobs:
     - stage: Tests
       name: "[16.04] SU2 <-> Calculix"
       script:
-        - python system_testing.py -s su2-ccx
+        - python system_testing.py -s su2-ccx --branch $TRAVIS_BRANCH
       after_failure:
         - python push.py -t su2-ccx
 
     - name: "[16.04] OpenFOAM <-> OpenFOAM"
       script:
-        - python system_testing.py -s of-of
+        - python system_testing.py -s of-of --branch $TRAVIS_BRANCH
       after_failure:
         - python push.py -t of-of
 
     - name: "[16.04] Calculix <-> OpenFOAM"
       script:
-        - python system_testing.py -s of-ccx
+        - python system_testing.py -s of-ccx --branch $TRAVIS_BRANCH
       after_failure:
         - python push.py -t of-ccx
 
     - name: "[18.04] FEniCS <-> FEniCS"
       script:
-        - python system_testing.py -s fe-fe --base Ubuntu1804.home
+        - python system_testing.py -s fe-fe --base Ubuntu1804.home --branch $TRAVIS_BRANCH
       after_failure:
         - python push.py -t fe-fe --base Ubuntu1804.home
 
     - name: "[16.04] Bindings/Solverdummies"
       script:
-        - python system_testing.py -s bindings
+        - python system_testing.py -s bindings --branch $TRAVIS_BRANCH
       after_failure:
         - python push.py -t bindings
 
     - name: "[16.04] deal.ii <-> OpenFOAM"
       script:
-        - python system_testing.py -s dealii-of
+        - python system_testing.py -s dealii-of --branch $TRAVIS_BRANCH
       after_failure:
         - python push.py -t dealii-of
 
     - name: "[18.04] nutils <-> OpenFOAM"
       script:
-        - python system_testing.py -s nutils-of --base Ubuntu1804.home
+        - python system_testing.py -s nutils-of --base Ubuntu1804.home --branch $TRAVIS_BRANCH
       after_failure:
         - python push.py -t nutils-of --base Ubuntu1804.home
 
     - name: "[16.04] OpenFOAM <-> OpenFOAM [nearest projection]"
       script:
-        - python system_testing.py -s of-of_np
+        - python system_testing.py -s of-of_np --branch $TRAVIS_BRANCH
       after_failure:
         - python push.py -t of-of_np
 
     - name: "[16.04 PETSc] OpenFOAM <-> CalculiX [FSI] [Job failure permitted]"
       script:
-        - python system_testing.py -s of-ccx_fsi --base Ubuntu1604.home.PETSc
+        - python system_testing.py -s of-ccx_fsi --base Ubuntu1604.home.PETSc --branch $TRAVIS_BRANCH
       after_failure:
         - python push.py -t of-ccx_fsi
