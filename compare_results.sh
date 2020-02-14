@@ -61,7 +61,7 @@ if [ -n "$diff_files" ]; then
     file2=$( echo "${array_files[i]}" | awk '{print $2}' )
 
     raw_diff=$( diff -y --speed-large-files --suppress-common-lines "$file1" "$file2" )
-    num_diff=$( echo "$raw_diff" | sed sed 's/(\|)\||\|>\|<//g; /[a-df-zA-Z]\|Version/d' )
+    num_diff=$( echo "$raw_diff" | sed 's/(\|)\||\|>\|<//g; /[a-df-zA-Z]\|Version/d' )
     text_diff=$( echo "$raw_diff" | sed '/[A-Za-df-z]/!d' )
     # Filter output files, ignore lines with words (probably not the results)
     # removes |<>() characters
