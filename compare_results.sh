@@ -96,7 +96,7 @@ if [ -n "$diff_files" ]; then
     fi
     if [ -n "$text_diff" ]; then
       echo -e "Text difference in $file1 and $file2"
-      echo -e "  > $text_diff"
+      echo -e "$text_diff"
       # echo ""
       ret=1
     fi
