@@ -13,9 +13,6 @@
 avg_diff_limit="0.001"
 max_diff_limit="0.001"
 
-RED='\033[1;31m'
-GRN='\033[1;32m'
-NC='\033[0m' # No Color
 
 if [ $# -lt 2 ]; then
   echo 1>&2 "Usage: $0 folder1 folder2"
@@ -61,13 +58,13 @@ if [ -n "$diff_files" ]; then
     file2=$( echo "${array_files[i]}" | awk '{print $2}' )
 
     raw_diff=$( diff -y --speed-large-files --suppress-common-lines "$file1" "$file2" )
-    num_diff=$( echo "$raw_diff" | sed 's/(\|)\||\|>\|<//g; /[a-df-zA-Z]\|Version/d' )
-    text_diff=$( echo "$raw_diff" | sed '/[A-Za-df-z]/!d' )
     # Filter output files, ignore lines with words (probably not the results)
     # removes |<>() characters
     # Do not delete "e", since it can be used as exponent
+    num_diff=$( echo "$raw_diff" | sed 's/(\|)\||\|>\|<//g; /[a-df-zA-Z]\|Version/d' )
+    # Filter for text lines. Compare these seperately from numerical lines
+    text_diff=$( echo "$raw_diff" | sed '/[A-Za-df-z]/!d' )
 
-    # filtered_diff=$( echo "$rawdiff" | sed 's/(\|)\||\|>\|<//g; /[a-df-zA-Z]\|Version/d' )
 
     # Paiwise compares files fields, that are produces from diffs and computes average and maximum
     # relative differences
@@ -90,24 +87,19 @@ if [ -n "$diff_files" ]; then
       difference=( $rel_max_difference )
       echo -e "> Numerical difference in $file1 and $file2"
       echo -e "Average: ${difference[0]} ; Maximum: ${difference[1]} ${NC}"
-      # echo ""
-      # diff -yr --suppress-common-lines $folder1 $folder2
       ret=1
     fi
     if [ -n "$text_diff" ]; then
       echo -e "> Text difference in $file1 and $file2"
       echo -e "$text_diff"
-      # echo ""
       ret=1
     fi
   done
 fi
 
-# Files that are present only in reference or obtained
-# folder
+# Files that are present only in reference or output folder
 if [ -n "$only_files" ]; then
   echo -e "> $only_files"
-  # echo ""
   ret=1
 fi
 
