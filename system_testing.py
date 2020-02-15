@@ -34,6 +34,7 @@ def run(systest, tag, branch):
     test_tag = docker.get_namespace() + systest + "-" + tag + "-" + branch
     ccall("docker run -it -d --name " + test_tag + " " + test_tag)
     shutil.rmtree("Output", ignore_errors=True)
+    shutil.rmtree("Logs", ignore_errors=True)
     ccall("docker cp " + test_tag + ":Output . ")
 
 def build_adapters(systest, tag, branch, local, force_rebuild):
@@ -90,6 +91,7 @@ def run_compose(systest, branch, local, tag, force_rebuild, rm_all=False, verbos
 
         # cleanup previous results
         shutil.rmtree("Output", ignore_errors=True)
+        shutil.rmtree("Logs", ignore_errors=True)
 
         try:
             for command in commands_main:
