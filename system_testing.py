@@ -72,12 +72,13 @@ def run_compose(systest, branch, local, tag, force_rebuild, rm_all=False, verbos
     compose_config_cmd = "docker-compose config && "
     compose_exec_cmd = "bash ../../silent_compose.sh {}".format('debug' if verbose else "")
     copy_cmd = "docker cp tutorial-data:/Output ."
+    log_cmd = "mkdir Logs && docker-compose logs > Logs/container.log"
 
     commands_main = [export_cmd +
                      extra_cmd +
                      compose_config_cmd +
                      compose_exec_cmd,
-                     copy_cmd]
+                     copy_cmd, log_cmd]
     # rebuild tutorials image if needed
     if force_rebuild:
         commands_main.insert(0, "docker-compose build --no-cache")
@@ -180,6 +181,42 @@ def build_run_compare(test, tag, branch, local_precice, force_rebuild, rm_all=Fa
             comparison(pathToRef, pathToOutput)
 
 
+def compose_tag(docker_username, base, features, branch):
+    """
+    Compose a tag based on certain features of the image. Our tagging system follows this scheme:
+
+        DOCKER_USER/BASE-FEATURES-BRANCH
+
+    Example:
+        precice/precice-ubuntu1604.home-develop
+        describes an image with the following properties:
+
+    DOCKER_USER is precice.
+        I.e. image will be pushed to https://hub.docker.com/u/precice
+
+    BASE is precice.
+        I.e. the image contains a build of precice.
+
+    FEATURES are ubuntu1604 and home.
+        I.e. ubuntu1604 is used as operating system and preCICE is installed in a user directory
+
+    BRANCH is develop.
+        I.e. image is based on the source code provided at precice:develop, https://github.com/precice/precice/tree/develop.
+    """
+    features_list = []
+    features_list.append(features.get("os"))
+    features_list.append(features.get("installation"))
+    if (features.get("petsc") is "yes"): features_list.append("petsc")
+    if (features.get("mpich") is "yes"): features_list.append("mpich")
+    features_list = list(filter(None, features_list))  # filter "None" features that might have been added by dict.get(key), if key did not exist.
+
+    if features_list:  # list of features is not empty
+        tag = docker_username.lower() + "/" + base + "-" + ".".join(features_list).lower() + '-' + branch.lower()
+    else:  # list of features is empty
+        tag = docker_username.lower() + "/" + base + '-' + branch.lower()
+    return tag
+
+
 if __name__ == "__main__":
     # Parsing flags
     parser = argparse.ArgumentParser(description='Build local.')
@@ -191,7 +228,7 @@ if __name__ == "__main__":
                         default = [], choices  = ["precice", "tests"])
     parser.add_argument('--base', type=str,help="Base preCICE image to use",
             default= "Ubuntu1604.home")
-    parser.add_argument('-v', '--verbose', action='store_true',help="Verbose output of participant containers")
+    parser.add_argument('-v', '--verbose', action='store_true', help="Verbose output of participant containers")
     args = parser.parse_args()
     # check if there is specialized dir for this version
     test_name = args.systemtest
