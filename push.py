@@ -101,13 +101,13 @@ if __name__ == "__main__":
     parser.add_argument('--st-branch', type=str, help="Branch of precice_st_output to push to", default=default_st_branch)
     args = parser.parse_args()
 
-    build_folder = os.environ["TRAVIS_BUILD_NUMBER"]
-    job_folder = os.environ["TRAVIS_JOB_NUMBER"]
     job_id = os.environ["TRAVIS_JOB_ID"]
     job_result = os.environ["TRAVIS_TEST_RESULT"]
     job_success = True if (job_result == '0') else False
     job_name = os.environ["TRAVIS_JOB_NAME"]
 
+    build_folder = os.environ["TRAVIS_BUILD_NUMBER"]
+    job_folder = os.environ["TRAVIS_JOB_NUMBER"] + " - " + job_name
 
     # TODO: change default to master branch when merging
     ccall("git clone -b {st_branch} https://github.com/precice/precice_st_output".\
@@ -179,8 +179,7 @@ if __name__ == "__main__":
         ccall("git add {}".format(job_path))
 
     # finally commit
-    commit_msg = "Success" if job_success else "Failure"
-    commit_msg += ": {}".format(job_name)
+    commit_msg = "Success" if job_success else "FAILURE"
     if args.output:
         if output_missing:
             commit_msg += ", MISSING OUTPUT"
