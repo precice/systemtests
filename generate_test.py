@@ -8,7 +8,7 @@ import os
 def generate_test_structure(test_name = None, base_image = None,
         participants = None, tutorial_path = None):
 
-    tmp_files = os.listdir('templates')
+    tmp_files = os.listdir(os.path.join('templates','test_template'))
 
     # adjust variables for easier reading in template files
     adapters      = [ p.split(':')[0] for p in participants ]
@@ -21,7 +21,7 @@ def generate_test_structure(test_name = None, base_image = None,
 
     renders = {t.replace('.jinja', ''): '' for t in tmp_files}
     for tmp_file in tmp_files:
-        with open(os.path.join('templates', tmp_file)) as f:
+        with open(os.path.join('templates','test_template', tmp_file)) as f:
             tmp = Template(f.read())
             renders[tmp_file.replace('.jinja', '')] = tmp.render(locals())
 

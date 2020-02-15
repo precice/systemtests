@@ -1,8 +1,8 @@
 version : '3'
 services:
-  calculix-adapter: 
+  calculix-adapter:
     image: "${SYSTEST_REMOTE}calculix-adapter${PRECICE_BASE}:${CALCULIX_TAG}"
-    networks: 
+    networks:
       - precicecomm
     volumes:
       - exchange:/home/precice/Data/Exchange/
@@ -10,7 +10,7 @@ services:
       - input_solid:/home/precice/Data/Input/
       - configs:/home/precice/calculix-adapter/configs
     command: >
-            /bin/bash -c "ln -sf /home/precice/Data/Input Solid; 
+            /bin/bash -c "ln -sf /home/precice/Data/Input Solid;
             ln -sf /home/precice/calculix-adapter/configs/* . &&
             ccx_preCICE -i Solid/flap -precice-participant Calculix &&
             cp   Solid/*.dat  Solid/*.cvg Solid/*.sta *.log *.out /home/precice/Data/Output/"
@@ -20,20 +20,20 @@ services:
 
   su2-adapter:
     image: "${SYSTEST_REMOTE}su2-adapter${PRECICE_BASE}:${SU2_TAG}"
-    networks: 
+    networks:
       - precicecomm
     volumes:
       - exchange:/home/precice/Data/Exchange/
       - output:/home/precice/Data/Output/
       - input_fluid:/home/precice/Data/Input/
       - configs:/home/precice/su2-adapter/configs
-    command: >  
-              /bin/bash -c "ln -sf /home/precice/Data/Input Fluid && 
+    command: >
+              /bin/bash -c "ln -sf /home/precice/Data/Input Fluid &&
                 ln -sf /home/precice/su2-adapter/configs/* . &&
                 SU2_CFD Fluid/euler_config_coupled.cfg &&
                 cp flow*.vtk *.csv *.dat *SU2*.log /home/precice/Data/Output/"
     container_name: su2-adapter
-    depends_on: 
+    depends_on:
     - tutorial-data
 
   tutorial-data:
@@ -45,7 +45,7 @@ services:
       - input_fluid:/tutorials/FSI/flap_perp/SU2-CalculiX/Fluid
       - configs:/configs/
       - output:/Output/
-    container_name: tutorial-data 
+    container_name: tutorial-data
 
 networks:
   precicecomm:
