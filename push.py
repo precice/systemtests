@@ -92,7 +92,7 @@ if __name__ == "__main__":
 
     repo_folder = "precice_st_output"
     default_base = "Ubuntu1604.home"
-    default_st_branch = "EderK-push_files"
+    default_st_branch = "master"
 
     parser = argparse.ArgumentParser(description='Push test output and logs to output repository')
     parser.add_argument('-t', '--test', help="Choose systemtest, results of which to push")
