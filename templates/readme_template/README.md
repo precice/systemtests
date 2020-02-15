@@ -7,7 +7,7 @@
 {% endif %}
 
 {% if is_pr %}
-This build was triggered by a pull request from `{{pr_pranch}}` → `{{branch}}`.
+This build was triggered by a pull request from `{{pr_branch}}` → `{{branch}}`.
 {% else %}
 This build was triggered by a push to `{{branch}}`.
 {% endif %}
