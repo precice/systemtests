@@ -88,14 +88,14 @@ if [ -n "$diff_files" ]; then
     if [ -n "$rel_max_difference" ]; then
       # Split by space and transform into the array
       difference=( $rel_max_difference )
-      echo -e "Numerical difference in $file1 and $file2"
-      echo -e "  > Average: ${difference[0]} ; Maximum: ${difference[1]} ${NC}"
+      echo -e "> Numerical difference in $file1 and $file2"
+      echo -e "Average: ${difference[0]} ; Maximum: ${difference[1]} ${NC}"
       # echo ""
       # diff -yr --suppress-common-lines $folder1 $folder2
       ret=1
     fi
     if [ -n "$text_diff" ]; then
-      echo -e "Text difference in $file1 and $file2"
+      echo -e "> Text difference in $file1 and $file2"
       echo -e "$text_diff"
       # echo ""
       ret=1
@@ -106,8 +106,7 @@ fi
 # Files that are present only in reference or obtained
 # folder
 if [ -n "$only_files" ]; then
-  echo -e "The following files exist in only one folder:"
-  echo -e "  > $only_files"
+  echo -e "> $only_files"
   # echo ""
   ret=1
 fi
