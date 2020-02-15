@@ -64,17 +64,33 @@ if [ -n "$diff_files" ]; then
     # Paiwise compares files fields, that are produces from diffs and computes average and maximum
     # relative differences
     if [ -n "$filtered_diff" ]; then
-      rel_max_difference=$( export max_diff_limit; export avg_diff_limit; echo "$filtered_diff" | awk 'function abs(v) {return v < 0 ? -v : v} { radius=NF/2;
-              max_diff=0;
-              sum=0;
-              for(i = 1; i <= radius; i++) {
+      rel_max_difference=$( export max_diff_limit; export avg_diff_limit;
+          echo "$filtered_diff" | awk 'function abs(v) {return v < 0 ? -v : v}
+          {
+            radius=NF/2;
+            max_diff=0;
+            sum=0;
+            if ( NR*NF <= 0 ) {
+              printf("%s:%d: invalid value: NR*NF <= 0, compared files are invalid!",FILENAME,FNR) > "/dev/stderr";
+              _invalid_value_ = 1
+            }
+            for(i = 1; i <= radius; i++) {
               if ($i != 0) {
                 ind_diff= abs((($(i + radius)-$i)/$i ));
                 sum += ind_diff;
                 if  (ind_diff > max_diff )  { max_diff = ind_diff }
               }
-             }
-             } END { diff=2*sum/( NR*NF ); if (diff > ENVIRON["avg_diff_limit"] || max_diff > ENVIRON["max_diff_limit"])  { print diff, max_diff }}')
+            }
+          }
+          END {
+            if (_invalid_value_) {
+              exit 1;
+            }
+            diff=2*sum/( NR*NF );
+            if (diff > ENVIRON["avg_diff_limit"] || max_diff > ENVIRON["max_diff_limit"]) {
+              print diff, max_diff
+            }
+          }' )
     fi
 
     if [ -n "$rel_max_difference" ]; then
