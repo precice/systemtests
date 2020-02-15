@@ -72,12 +72,13 @@ def run_compose(systest, branch, local, tag, force_rebuild, rm_all=False, verbos
     compose_config_cmd = "docker-compose config && "
     compose_exec_cmd = "bash ../../silent_compose.sh {}".format('debug' if verbose else "")
     copy_cmd = "docker cp tutorial-data:/Output ."
+    log_cmd = "mkdir Logs && docker-compose logs > Logs/container.log"
 
     commands_main = [export_cmd +
                      extra_cmd +
                      compose_config_cmd +
                      compose_exec_cmd,
-                     copy_cmd]
+                     copy_cmd, log_cmd]
     # rebuild tutorials image if needed
     if force_rebuild:
         commands_main.insert(0, "docker-compose build --no-cache")
@@ -227,7 +228,7 @@ if __name__ == "__main__":
                         default = [], choices  = ["precice", "tests"])
     parser.add_argument('--base', type=str,help="Base preCICE image to use",
             default= "Ubuntu1604.home")
-    parser.add_argument('-v', '--verbose', action='store_true',help="Verbose output of participant containers")
+    parser.add_argument('-v', '--verbose', action='store_true', help="Verbose output of participant containers")
     args = parser.parse_args()
     # check if there is specialized dir for this version
     test_name = args.systemtest
