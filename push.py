@@ -107,7 +107,7 @@ if __name__ == "__main__":
     job_name = os.environ["TRAVIS_JOB_NAME"]
 
     build_folder = os.environ["TRAVIS_BUILD_NUMBER"]
-    job_folder = os.environ["TRAVIS_JOB_NUMBER"] + " - " + job_name
+    job_folder = os.environ["TRAVIS_JOB_NUMBER"]
 
     # TODO: change default to master branch when merging
     ccall("git clone -b {st_branch} https://github.com/precice/precice_st_output".\
@@ -179,7 +179,8 @@ if __name__ == "__main__":
         ccall("git add {}".format(job_path))
 
     # finally commit
-    commit_msg = "Success" if job_success else "FAILURE"
+    commit_msg = job_name
+    commit_msg += " - Success" if job_success else " - FAILURE"
     if args.output:
         if output_missing:
             commit_msg += ", MISSING OUTPUT"
