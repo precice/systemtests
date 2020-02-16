@@ -10,7 +10,7 @@ services:
       - openfoam_input:/home/precice/Data/Input/
       - configs:/home/precice/openfoam-adapter/configs/
     command: >
-      /bin/bash -c "sleep 2 && source /opt/openfoam5/etc/bashrc
+      /bin/bash -c "source /opt/openfoam5/etc/bashrc
       && blockMesh -case /home/precice/Data/Input
       && buoyantPimpleFoam -case /home/precice/Data/Input
       && cp -r /home/precice/Data/Input/. /home/precice/Data/Output/OpenFOAM"
