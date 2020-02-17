@@ -24,7 +24,7 @@ ARG CACHEBUST
 # create user precice
 ARG uid=1000
 ARG gid=1000
-RUN groupadd -g ${gid} precice \ 
+RUN groupadd -g ${gid} precice \
     && useradd -u ${uid} -g ${gid} -m -s /bin/bash precice
 USER precice
 WORKDIR /home/precice
@@ -51,7 +51,7 @@ RUN mkdir /home/precice/precice-build && \
     cd /home/precice/precice-build && \
     mkdir /home/precice/precice-install && \
     cmake -DBUILD_SHARED_LIBS=ON \
-          -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+          -DCMAKE_BUILD_TYPE=Debug \
           -DCMAKE_INSTALL_PREFIX=/home/precice/precice-install \
           -DPRECICE_PETScMapping=$petsc_para \
           -DPRECICE_MPICommunication=$mpi_para \
