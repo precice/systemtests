@@ -36,7 +36,7 @@ RUN mkdir /home/precice/precice-build && \
     cd /home/precice/precice-build && \
     mkdir /home/precice/precice-install && \
     cmake -DBUILD_SHARED_LIBS=ON \
-          -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+          -DCMAKE_BUILD_TYPE=Debug \
           -DPRECICE_CTEST_MPI_FLAGS="--oversubscribe" \
           -DCMAKE_INSTALL_PREFIX=/home/precice/precice-install \
           -DPRECICE_PETScMapping=$petsc_para \
