@@ -46,7 +46,7 @@ ARG python_para=no
 # Build preCICE, install into /usr/local and clean-up the build directory
 RUN mkdir /home/precice/precice-build && \
     cd /home/precice/precice-build && \
-    cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+    cmake -DCMAKE_BUILD_TYPE=Debug \
           -DBUILD_SHARED_LIBS=ON \
           -DCMAKE_INSTALL_PREFIX=/usr/local \
           -DPRECICE_PETScMapping=$petsc_para \
