@@ -17,16 +17,16 @@ import common, docker
 from subprocess import CalledProcessError
 from common import call, ccall, get_test_variants, filter_tests, get_test_participants
 
-def build(systest, tag, branch, local, force_rebuild):
+def build(systest, tag, branch, docker_username, local, force_rebuild):
     """ Builds a docker image for systest. """
 
-    baseimage_name = "precice-{tag}-{branch}:latest".format(tag = tag, branch=branch)
+    baseimage_name = "precice-{tag}-{branch}:latest".format(tag=tag, branch=branch)
     test_tag = "-".join([systest, tag, branch])
 
     docker.build_image(tag = test_tag,
             build_args = {"from" : docker.get_namespace() +
                 baseimage_name if local
-                else 'precice/' + baseimage_name},
+                else docker_username + '/' + baseimage_name},
             force_rebuild = force_rebuild)
 
 def run(systest, tag, branch):
@@ -37,14 +37,14 @@ def run(systest, tag, branch):
     shutil.rmtree("Logs", ignore_errors=True)
     ccall("docker cp " + test_tag + ":Output . ")
 
-def build_adapters(systest, tag, branch, local, force_rebuild):
+def build_adapters(systest, tag, branch, local, docker_username, force_rebuild):
     """ Builds a docker images for a preCICE adapter, participating in tests """
     baseimage_name = "precice-{tag}-{branch}:latest".format(tag = tag, branch=branch)
 
     participants = get_test_participants(systest)
     docker_args = { 'tag': '',
                    'build_args': {"from": docker.get_namespace() + baseimage_name if local
-                        else 'precice/' + baseimage_name },
+                        else docker_username + '/' + baseimage_name },
                    'force_rebuild': force_rebuild,
                    'dockerfile': 'Dockerfile'}
 
@@ -58,7 +58,7 @@ def build_adapters(systest, tag, branch, local, force_rebuild):
             if os.path.exists("Dockerfile.{}".format(participant)):
                 docker.build_image(**docker_args)
 
-def run_compose(systest, branch, local, tag, force_rebuild, rm_all=False, verbose=False):
+def run_compose(systest, branch, docker_username, local, tag, force_rebuild, rm_all=False, verbose=False):
     """ Runs necessary systemtest with docker compose """
 
     test_dirname = "TestCompose_{systest}".format(systest = systest)
@@ -69,7 +69,7 @@ def run_compose(systest, branch, local, tag, force_rebuild, rm_all=False, verbos
     # set up environment variables, to detect precice base image, that we
     # should run with and docker images location
     export_cmd = "export PRECICE_BASE=-{}; ".format(adapter_base_name)
-    extra_cmd = "export SYSTEST_REMOTE={}; ".format(docker.get_namespace()) if local else ""
+    extra_cmd = "export SYSTEST_REMOTE={}; ".format(docker.get_namespace() if local else docker_username + "/")
     compose_config_cmd = "docker-compose config && "
     compose_exec_cmd = "bash ../../silent_compose.sh {}".format('debug' if verbose else "")
     copy_cmd = "docker cp tutorial-data:/Output ."
@@ -159,22 +159,22 @@ def comparison(pathToRef, pathToOutput):
         sys.exit(0)
 
 
-def build_run_compare(test, tag, branch, local_precice, force_rebuild, rm_all=False, verbose=False):
+def build_run_compare(test, tag, branch, docker_username, local_precice, force_rebuild, rm_all=False, verbose=False):
     """ Runs and compares test, using precice branch. """
     compose_tests = ["dealii-of", "of-of", "su2-ccx", "of-ccx", "of-of_np",
             "fe-fe","nutils-of", "of-ccx_fsi"]
     test_basename = test.split(".")[0]
     if local_precice:
-        build_adapters(test_basename, tag, branch, local_precice, force_rebuild)
+        build_adapters(test_basename, tag, branch, docker_username, local_precice, force_rebuild)
     if test_basename in compose_tests:
-        run_compose(test, branch, local_precice, tag, force_rebuild, rm_all, verbose)
+        run_compose(test, branch, docker_username, local_precice, tag, force_rebuild, rm_all, verbose)
     else:
         # remaining, non-compose tests
         test_dirname = "Test_{systest}".format(systest=test)
         test_path = os.path.join(os.getcwd(), 'tests', test_dirname)
         with common.chdir(test_path):
             # Build
-            build(test_basename, tag, branch, local_precice, force_rebuild)
+            build(test_basename, tag, branch, docker_username, local_precice, force_rebuild)
             run(test_basename, tag, branch)
             # Preparing string for path
             pathToRef = os.path.join(os.getcwd(), "referenceOutput")
@@ -225,7 +225,8 @@ if __name__ == "__main__":
     parser.add_argument('-l', '--local', action='store_true', help="Use local preCICE image (default: use remote image)")
     parser.add_argument('-s', '--systemtest', type=str, help="Choose system tests you want to use",
                         choices = common.get_tests(), required = True)
-    parser.add_argument('-b', '--branch', help="preCICE branch to use", default=os.environ["TRAVIS_BRANCH"] if os.environ["TRAVIS_PULL_REQUEST"] == "false" else os.environ["TRAVIS_PULL_REQUEST_BRANCH"])  # make sure that branch corresponding to system tests branch is used, if no branch is explicitly specified. If we are testing a pull request, make sure to test agains branch from which PR originated.
+    parser.add_argument('-b', '--branch', help="preCICE branch to use", default=os.environ["TRAVIS_BRANCH"] if ("TRAVIS_BRANCH" in os.environ and os.environ["TRAVIS_PULL_REQUEST"] == "false") else (os.environ["TRAVIS_PULL_REQUEST_BRANCH"] if ("TRAVIS_PULL_REQUEST_BRANCH" in os.environ) else "develop"))  # make sure that branch corresponding to system tests branch is used, if no branch is explicitly specified. If we are testing a pull request, make sure to test agains branch from which PR originated.
+    parser.add_argument('-u', '--docker-username', help="docker username", default=os.environ["DOCKER_USERNAME"] if "DOCKER_USERNAME" in os.environ else "precice")
     parser.add_argument('-f', '--force_rebuild', nargs='+', help="Force rebuild of variable parts of docker image",
                         default = [], choices  = ["precice", "tests"])
     parser.add_argument('--base', type=str,help="Base preCICE image to use",
@@ -241,5 +242,5 @@ if __name__ == "__main__":
     else:
         test = test[0]
     tag = args.base.lower()
-    build_run_compare(test, tag, args.branch.lower(), args.local,
+    build_run_compare(test, tag, args.branch.lower(), args.docker_username, args.local,
             args.force_rebuild, rm_all=False, verbose=args.verbose)
