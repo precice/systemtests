@@ -1,7 +1,7 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  4.1                                   |
+|  \\    /   O peration     | Version:  5.x                                   |
 |   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
@@ -2524,7 +2524,7 @@ internalField   nonuniform List<scalar>
 1.56663
 0.958672
 0.446886
-0.0277089
+0.027709
 -0.304313
 -0.556171
 -0.735995

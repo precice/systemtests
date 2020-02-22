@@ -18,263 +18,246 @@ jobs:
     - stage: Building preCICE
       name: "Arch Linux"
       script:
-        - docker build -f precice/Dockerfile.Arch -t $DOCKER_USERNAME/precice-arch-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH .
+        - python build_precice.py --dockerfile precice/Dockerfile.Arch --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
       deploy:
         skip_cleanup: true
         provider: script
         on:
           all_branches: true
         script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin &&
-          docker push $DOCKER_USERNAME/precice-arch-$TRAVIS_BRANCH:latest
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
+          python push_precice.py --dockerfile precice/Dockerfile.Arch --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
 
     - stage: Building preCICE
       name: "Ubuntu 16.04 home"
       script:
-        - docker build -f precice/Dockerfile.Ubuntu1604.home -t $DOCKER_USERNAME/precice-ubuntu1604.home-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH .
+        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
       deploy:
         skip_cleanup: true
         provider: script
         on:
           all_branches: true
         script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin &&
-          docker push $DOCKER_USERNAME/precice-ubuntu1604.home-$TRAVIS_BRANCH:latest
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
+          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
 
     - stage: Building preCICE
       name: "Ubuntu 16.04 home PETSc [Job failure permitted]"
       script:
-        - >
-          docker build -f precice/Dockerfile.Ubuntu1604.home -t $DOCKER_USERNAME/precice-ubuntu1604.home.petsc-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH .
-          --build-arg petsc_para=yes
+        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.home --petsc yes --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
       deploy:
         skip_cleanup: true
         provider: script
         on:
           all_branches: true
         script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin &&
-          docker push $DOCKER_USERNAME/precice-ubuntu1604.home.petsc-$TRAVIS_BRANCH:latest
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
+          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.home --petsc yes --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
 
     - stage: Building preCICE
       name: "Ubuntu 16.04.sudo"
       script:
-        - docker build -f precice/Dockerfile.Ubuntu1604.sudo -t $DOCKER_USERNAME/precice-ubuntu1604.sudo-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH .
+        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.sudo --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
       deploy:
         skip_cleanup: true
         provider: script
         on:
           all_branches: true
         script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin &&
-          docker push $DOCKER_USERNAME/precice-ubuntu1604.sudo-$TRAVIS_BRANCH:latest
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
+          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.sudo --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
 
     - stage: Building preCICE
       name: "Ubuntu 18.04.home"
       script:
-        - docker build -f precice/Dockerfile.Ubuntu1804.home -t $DOCKER_USERNAME/precice-ubuntu1804.home-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH .
+        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
       deploy:
         skip_cleanup: true
         provider: script
         on:
           all_branches: true
         script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin &&
-          docker push $DOCKER_USERNAME/precice-ubuntu1804.home-$TRAVIS_BRANCH:latest
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
+          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
 
     - stage: Building preCICE
       name: "Ubuntu 18.04.sudo"
       script:
-        - docker build -f precice/Dockerfile.Ubuntu1804.sudo -t $DOCKER_USERNAME/precice-ubuntu1804.sudo-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH .
+        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
       deploy:
         skip_cleanup: true
         provider: script
         on:
           all_branches: true
         script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin &&
-          docker push $DOCKER_USERNAME/precice-ubuntu1804.sudo-$TRAVIS_BRANCH
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
+          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
 
     - stage: Building preCICE
       name: "Ubuntu 18.04.sudo.mpich [Job failure permitted]"
       script:
-        - docker build -f precice/Dockerfile.Ubuntu1804.sudo.mpich -t $DOCKER_USERNAME/precice-ubuntu1804.sudo.mpich-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH .
+        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo.mpich --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
       deploy:
         skip_cleanup: true
         provider: script
         on:
           all_branches: true
         script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin &&
-          docker push $DOCKER_USERNAME/precice-ubuntu1804.sudo.mpich-$TRAVIS_BRANCH:latest
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
+          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo.mpich --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
 
     - stage: Building preCICE
       name: "Ubuntu 18.04.package"
       script:
-        - docker build -f precice/Dockerfile.Ubuntu1804.package -t $DOCKER_USERNAME/precice-ubuntu1804.package-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH .
+        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.package --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
       deploy:
         skip_cleanup: true
         provider: script
         on:
           all_branches: true
         script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin &&
-          docker push $DOCKER_USERNAME/precice-ubuntu1804.package-$TRAVIS_BRANCH
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
+          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.package --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
 
     - stage: Building adapters
       name: SU2 adapter
       script:
-        - docker build -f adapters/Dockerfile.su2-adapter -t $DOCKER_USERNAME/su2-adapter-ubuntu1604.home-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH --build-arg from=$DOCKER_USERNAME/precice-ubuntu1604.home-$TRAVIS_BRANCH .
+        - python build_adapter.py --dockerfile adapters/Dockerfile.su2-adapter --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
       deploy:
         skip_cleanup: true
         provider: script
         on:
           all_branches: true
         script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin &&
-          docker push $DOCKER_USERNAME/su2-adapter-ubuntu1604.home-$TRAVIS_BRANCH
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
+          python push_adapter.py --dockerfile adapters/Dockerfile.su2-adapter --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
 
     - name: CalculiX adapter
       script:
-        - docker build -f adapters/Dockerfile.calculix-adapter -t $DOCKER_USERNAME/calculix-adapter-ubuntu1604.home-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH --build-arg from=$DOCKER_USERNAME/precice-ubuntu1604.home-$TRAVIS_BRANCH .
+        - python build_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
       deploy:
         skip_cleanup: true
         provider: script
         on:
           all_branches: true
         script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin &&
-          docker push $DOCKER_USERNAME/calculix-adapter-ubuntu1604.home-$TRAVIS_BRANCH
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
+          python push_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
 
     - name: deal.ii adapter
       script:
-        - docker build -f adapters/Dockerfile.dealii-adapter -t $DOCKER_USERNAME/dealii-adapter-ubuntu1604.home-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH --build-arg from=$DOCKER_USERNAME/precice-ubuntu1604.home-$TRAVIS_BRANCH .
+        - python build_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
       deploy:
         skip_cleanup: true
         provider: script
         on:
           all_branches: true
         script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin &&
-          docker push $DOCKER_USERNAME/dealii-adapter-ubuntu1604.home-$TRAVIS_BRANCH
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
+          python push_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
 
-    - name: openFOAM adapter
+    - name: "[16.04] openFOAM adapter"
       script:
-        - docker build -f adapters/Dockerfile.openfoam-adapter -t $DOCKER_USERNAME/openfoam-adapter-ubuntu1604.home-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH --build-arg from=$DOCKER_USERNAME/precice-ubuntu1604.home-$TRAVIS_BRANCH .
+        - python build_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
       deploy:
         skip_cleanup: true
         provider: script
         on:
           all_branches: true
         script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin &&
-          docker push $DOCKER_USERNAME/openfoam-adapter-ubuntu1604.home-$TRAVIS_BRANCH
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
+          python push_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
 
     - name: "[18.04] openFOAM adapter"
       script:
-        - docker build -f adapters/Dockerfile.openfoam-adapter.Ubuntu1804 -t $DOCKER_USERNAME/openfoam-adapter-ubuntu1804.home-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH --build-arg from=$DOCKER_USERNAME/precice-ubuntu1804.home-$TRAVIS_BRANCH .
+        - python build_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
       deploy:
         skip_cleanup: true
         provider: script
         on:
           all_branches: true
         script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin &&
-          docker push $DOCKER_USERNAME/openfoam-adapter-ubuntu1804.home-$TRAVIS_BRANCH
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
+          python push_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
 
     - name: FEniCS adapter
       script:
-        - >
-          docker build -f adapters/Dockerfile.fenics-adapter -t $DOCKER_USERNAME/fenics-adapter-ubuntu1804.home-$TRAVIS_BRANCH
-          --build-arg from=$DOCKER_USERNAME/precice-ubuntu1804.home-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH .
+        - python build_adapter.py --dockerfile adapters/Dockerfile.fenics-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
       deploy:
         skip_cleanup: true
         provider: script
         on:
           all_branches: true
         script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin &&
-          docker push $DOCKER_USERNAME/fenics-adapter-ubuntu1804.home-$TRAVIS_BRANCH
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
+          python push_adapter.py --dockerfile adapters/Dockerfile.fenics-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
 
     - name: openFOAM adapter [PETSc] [Job failure permitted]
       script:
-        - >
-          docker build -f adapters/Dockerfile.openfoam-adapter -t $DOCKER_USERNAME/openfoam-adapter-ubuntu1604.home.petsc-$TRAVIS_BRANCH
-          --build-arg from=$DOCKER_USERNAME/precice-ubuntu1604.home.petsc-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH .
+        - python build_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1604 --precice-installation home --petsc yes --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
       deploy:
         skip_cleanup: true
         provider: script
         on:
           all_branches: true
         script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin &&
-          docker push $DOCKER_USERNAME/openfoam-adapter-ubuntu1604.home.petsc-$TRAVIS_BRANCH
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
+          python push_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1604 --precice-installation home --petsc yes --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
 
     - name: CalculiX adapter [PETSc] [Job failure permitted]
       script:
-        - >
-          docker build -f adapters/Dockerfile.calculix-adapter -t $DOCKER_USERNAME/calculix-adapter-ubuntu1604.home.petsc-$TRAVIS_BRANCH
-          --build-arg from=$DOCKER_USERNAME/precice-ubuntu1604.home.petsc-$TRAVIS_BRANCH --build-arg branch=$TRAVIS_BRANCH .
+        - python build_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1604 --precice-installation home --petsc yes --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
       deploy:
         skip_cleanup: true
         provider: script
         on:
           all_branches: true
         script: >-
-          echo "$DOCKER_PASSWORD" | docker login -u $DOCKER_USERNAME --password-stdin &&
-          docker push $DOCKER_USERNAME/calculix-adapter-ubuntu1604.home.petsc-$TRAVIS_BRANCH
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
+          python push_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1604 --precice-installation home --petsc yes --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
 
     - stage: Tests
       name: "[16.04] SU2 <-> Calculix"
       script:
         - python system_testing.py -s su2-ccx --branch $TRAVIS_BRANCH
-      after_failure:
         - python push.py -t su2-ccx
 
     - name: "[16.04] OpenFOAM <-> OpenFOAM"
       script:
         - python system_testing.py -s of-of --branch $TRAVIS_BRANCH
-      after_failure:
         - python push.py -t of-of
 
     - name: "[16.04] Calculix <-> OpenFOAM"
       script:
         - python system_testing.py -s of-ccx --branch $TRAVIS_BRANCH
-      after_failure:
         - python push.py -t of-ccx
 
     - name: "[18.04] FEniCS <-> FEniCS"
       script:
         - python system_testing.py -s fe-fe --base Ubuntu1804.home --branch $TRAVIS_BRANCH
-      after_failure:
         - python push.py -t fe-fe --base Ubuntu1804.home
 
     - name: "[16.04] Bindings/Solverdummies"
       script:
         - python system_testing.py -s bindings --branch $TRAVIS_BRANCH
-      after_failure:
         - python push.py -t bindings
 
     - name: "[16.04] deal.ii <-> OpenFOAM"
       script:
         - python system_testing.py -s dealii-of --branch $TRAVIS_BRANCH
-      after_failure:
         - python push.py -t dealii-of
 
     - name: "[18.04] nutils <-> OpenFOAM"
       script:
         - python system_testing.py -s nutils-of --base Ubuntu1804.home --branch $TRAVIS_BRANCH
-      after_failure:
         - python push.py -t nutils-of --base Ubuntu1804.home
 
     - name: "[16.04] OpenFOAM <-> OpenFOAM [nearest projection]"
       script:
         - python system_testing.py -s of-of_np --branch $TRAVIS_BRANCH
-      after_failure:
         - python push.py -t of-of_np
 
     - name: "[16.04 PETSc] OpenFOAM <-> CalculiX [FSI] [Job failure permitted]"
       script:
         - python system_testing.py -s of-ccx_fsi --base Ubuntu1604.home.PETSc --branch $TRAVIS_BRANCH
-      after_failure:
-        - python push.py -t of-ccx_fsi
+        - python push.py -t of-ccx_fsi --petsc
