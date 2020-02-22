@@ -5,6 +5,8 @@ python:
   - "3.5"
 services:
   - docker
+install:
+  - pip install Jinja2
 
 jobs:
   allow_failures:
@@ -17,8 +19,9 @@ jobs:
   include:
     - stage: Building preCICE
       name: "Arch Linux"
+      if: fork = false
       script:
-        - python build_precice.py --dockerfile precice/Dockerfile.Arch --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
+        - python build_precice.py --dockerfile precice/Dockerfile.Arch
       deploy:
         skip_cleanup: true
         provider: script
@@ -26,12 +29,13 @@ jobs:
           all_branches: true
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_precice.py --dockerfile precice/Dockerfile.Arch --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
+          python push_precice.py --dockerfile precice/Dockerfile.Arch
 
     - stage: Building preCICE
       name: "Ubuntu 16.04 home"
+      if: fork = false
       script:
-        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
+        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.home
       deploy:
         skip_cleanup: true
         provider: script
@@ -39,12 +43,13 @@ jobs:
           all_branches: true
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
+          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.home
 
     - stage: Building preCICE
       name: "Ubuntu 16.04 home PETSc [Job failure permitted]"
+      if: fork = false
       script:
-        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.home --petsc yes --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
+        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.home --petsc yes
       deploy:
         skip_cleanup: true
         provider: script
@@ -52,12 +57,13 @@ jobs:
           all_branches: true
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.home --petsc yes --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
+          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.home --petsc yes
 
     - stage: Building preCICE
       name: "Ubuntu 16.04.sudo"
+      if: type = cron
       script:
-        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.sudo --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
+        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.sudo
       deploy:
         skip_cleanup: true
         provider: script
@@ -65,12 +71,13 @@ jobs:
           all_branches: true
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.sudo --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
+          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.sudo
 
     - stage: Building preCICE
       name: "Ubuntu 18.04.home"
+      if: fork = false
       script:
-        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
+        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.home
       deploy:
         skip_cleanup: true
         provider: script
@@ -78,12 +85,13 @@ jobs:
           all_branches: true
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
+          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.home
 
     - stage: Building preCICE
       name: "Ubuntu 18.04.sudo"
+      if: type = cron
       script:
-        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
+        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo
       deploy:
         skip_cleanup: true
         provider: script
@@ -91,12 +99,13 @@ jobs:
           all_branches: true
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
+          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo
 
     - stage: Building preCICE
       name: "Ubuntu 18.04.sudo.mpich [Job failure permitted]"
+      if: type = cron
       script:
-        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo.mpich --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
+        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo.mpich
       deploy:
         skip_cleanup: true
         provider: script
@@ -104,12 +113,13 @@ jobs:
           all_branches: true
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo.mpich --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
+          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo.mpich
 
     - stage: Building preCICE
       name: "Ubuntu 18.04.package"
+      if: fork = false
       script:
-        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.package --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
+        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.package
       deploy:
         skip_cleanup: true
         provider: script
@@ -117,12 +127,19 @@ jobs:
           all_branches: true
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.package --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
+          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.package
+
+    - name: "[Build preCICE on fork] Using cached version"
+      if: fork = true
+      script: true
+
+
 
     - stage: Building adapters
       name: SU2 adapter
+      if: fork = false
       script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.su2-adapter --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
+        - python build_adapter.py --dockerfile adapters/Dockerfile.su2-adapter --operating-system ubuntu1604 --precice-installation home
       deploy:
         skip_cleanup: true
         provider: script
@@ -130,11 +147,12 @@ jobs:
           all_branches: true
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_adapter.py --dockerfile adapters/Dockerfile.su2-adapter --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
+          python push_adapter.py --dockerfile adapters/Dockerfile.su2-adapter --operating-system ubuntu1604 --precice-installation home
 
     - name: CalculiX adapter
+      if: fork = false
       script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
+        - python build_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1604 --precice-installation home
       deploy:
         skip_cleanup: true
         provider: script
@@ -142,11 +160,12 @@ jobs:
           all_branches: true
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
+          python push_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1604 --precice-installation home
 
     - name: deal.ii adapter
+      if: fork = false
       script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
+        - python build_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter --operating-system ubuntu1604 --precice-installation home
       deploy:
         skip_cleanup: true
         provider: script
@@ -154,11 +173,12 @@ jobs:
           all_branches: true
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
+          python push_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter --operating-system ubuntu1604 --precice-installation home
 
     - name: "[16.04] openFOAM adapter"
+      if: fork = false
       script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
+        - python build_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1604 --precice-installation home
       deploy:
         skip_cleanup: true
         provider: script
@@ -166,11 +186,12 @@ jobs:
           all_branches: true
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
+          python push_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1604 --precice-installation home
 
     - name: "[18.04] openFOAM adapter"
+      if: fork = false
       script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
+        - python build_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1804 --precice-installation home
       deploy:
         skip_cleanup: true
         provider: script
@@ -178,11 +199,12 @@ jobs:
           all_branches: true
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
+          python push_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1804 --precice-installation home
 
     - name: FEniCS adapter
+      if: fork = false
       script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.fenics-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
+        - python build_adapter.py --dockerfile adapters/Dockerfile.fenics-adapter --operating-system ubuntu1804 --precice-installation home
       deploy:
         skip_cleanup: true
         provider: script
@@ -190,11 +212,12 @@ jobs:
           all_branches: true
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_adapter.py --dockerfile adapters/Dockerfile.fenics-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
+          python push_adapter.py --dockerfile adapters/Dockerfile.fenics-adapter --operating-system ubuntu1804 --precice-installation home
 
     - name: openFOAM adapter [PETSc] [Job failure permitted]
+      if: fork = false
       script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1604 --precice-installation home --petsc yes --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
+        - python build_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1604 --precice-installation home --petsc yes
       deploy:
         skip_cleanup: true
         provider: script
@@ -202,11 +225,12 @@ jobs:
           all_branches: true
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1604 --precice-installation home --petsc yes --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
+          python push_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1604 --precice-installation home --petsc yes
 
     - name: CalculiX adapter [PETSc] [Job failure permitted]
+      if: fork = false
       script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1604 --precice-installation home --petsc yes --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
+        - python build_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1604 --precice-installation home --petsc yes
       deploy:
         skip_cleanup: true
         provider: script
@@ -214,50 +238,56 @@ jobs:
           all_branches: true
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1604 --precice-installation home --petsc yes --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
+          python push_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1604 --precice-installation home --petsc yes
+
+    - name: "[Build adapters on fork] Using cached version"
+      if: fork = true
+      script: true
+
+
 
     - stage: Tests
       name: "[16.04] SU2 <-> Calculix"
       script:
-        - python system_testing.py -s su2-ccx --branch $TRAVIS_BRANCH
+        - python system_testing.py -s su2-ccx
         - python push.py -t su2-ccx
 
     - name: "[16.04] OpenFOAM <-> OpenFOAM"
       script:
-        - python system_testing.py -s of-of --branch $TRAVIS_BRANCH
+        - python system_testing.py -s of-of
         - python push.py -t of-of
 
     - name: "[16.04] Calculix <-> OpenFOAM"
       script:
-        - python system_testing.py -s of-ccx --branch $TRAVIS_BRANCH
+        - python system_testing.py -s of-ccx
         - python push.py -t of-ccx
 
     - name: "[18.04] FEniCS <-> FEniCS"
       script:
-        - python system_testing.py -s fe-fe --base Ubuntu1804.home --branch $TRAVIS_BRANCH
+        - python system_testing.py -s fe-fe --base Ubuntu1804.home
         - python push.py -t fe-fe --base Ubuntu1804.home
 
     - name: "[16.04] Bindings/Solverdummies"
       script:
-        - python system_testing.py -s bindings --branch $TRAVIS_BRANCH
+        - python system_testing.py -s bindings
         - python push.py -t bindings
 
     - name: "[16.04] deal.ii <-> OpenFOAM"
       script:
-        - python system_testing.py -s dealii-of --branch $TRAVIS_BRANCH
+        - python system_testing.py -s dealii-of
         - python push.py -t dealii-of
 
     - name: "[18.04] nutils <-> OpenFOAM"
       script:
-        - python system_testing.py -s nutils-of --base Ubuntu1804.home --branch $TRAVIS_BRANCH
+        - python system_testing.py -s nutils-of --base Ubuntu1804.home
         - python push.py -t nutils-of --base Ubuntu1804.home
 
     - name: "[16.04] OpenFOAM <-> OpenFOAM [nearest projection]"
       script:
-        - python system_testing.py -s of-of_np --branch $TRAVIS_BRANCH
+        - python system_testing.py -s of-of_np
         - python push.py -t of-of_np
 
     - name: "[16.04 PETSc] OpenFOAM <-> CalculiX [FSI] [Job failure permitted]"
       script:
-        - python system_testing.py -s of-ccx_fsi --base Ubuntu1604.home.PETSc --branch $TRAVIS_BRANCH
+        - python system_testing.py -s of-ccx_fsi --base Ubuntu1604.home.PETSc
         - python push.py -t of-ccx_fsi --petsc
