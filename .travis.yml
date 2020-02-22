@@ -285,6 +285,7 @@ jobs:
     - name: "[16.04] OpenFOAM <-> OpenFOAM [nearest projection]"
       script:
         - python system_testing.py -s of-of_np --branch $TRAVIS_BRANCH
+        - python push.py -t of-of_np
 
     - name: "[16.04 PETSc] OpenFOAM <-> CalculiX [FSI] [Job failure permitted]"
       script:
