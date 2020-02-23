@@ -51,10 +51,9 @@ All adapters are built using user `precice` with `gid` and `uid` equal to 1000 (
 
 This is done to ensure consistent user rights for writing and reading from mounted directories without a need to use root user on the host system. Running root within container will work, but will lead to output directory being owned by root on host. Running with different users in different directories will cause problems with access to e.g. `/home/precice/Data/Exchange` directory. More information and motivation behind the solution can be found [this blogs post](https://medium.com/@nielssj/docker-volumes-and-file-system-permissions-772c1aee23ca) and [this issue](https://github.com/moby/moby/issues/2259).
 
-## Running tests
+## The tests
 
-At this stage, we spawn containers with the necessary solvers for the simulation. The execution is controlled using [docker-compose](https://docs.docker.com/compose/). Separate volumes are created for the input and the output of every adapter. An additional docker network is created and used for the communication between containers. Exchange of data is done using an additional, common volume. The general pattern across the tests for such volumes are paths
-such as `/home/precice/Data/Exchange`, `/home/precice/Data/Input`, `/home/precice/Data/Output`, as explained above.
+The actual tests are provided in `systemtests/tests`. For testing, we spawn containers with the necessary solvers for the simulation. The execution is controlled using [docker-compose](https://docs.docker.com/compose/). Separate volumes are created for the input and the output of every adapter. An additional docker network is created and used for the communication between containers. Exchange of data is done using an additional, common volume. The general pattern across the tests for such volumes are paths such as `/home/precice/Data/Exchange`, `/home/precice/Data/Input`, `/home/precice/Data/Output`, as explained above.
 
 The tests are based on the corresponding tutorials from the [tutorials repository](https://github.com/precice/tutorials). Since tests run using independent containers, several modifications are necessary to split the input to solvers in different directories, to adjust the simulated time, or to potentially change a solver's version, as well as to modify the `precice-config.xml` for the communication pattern we use in docker. This is done using the `Dockerfile.tutorial_data` image, which clones the tutorial data and adjusts and splits the input to different solvers. It is then used as the first container spawned by `docker-compose`.
 
@@ -64,3 +63,18 @@ Since it is possible for the output of two identical tests to differ in floating
 the files are also compared numerically using `compare_results.sh`. This script strips away non-numerical data and then compares files field by field with respect to a specified relative tolerance (default maximum allowed difference is 1 percent)
 
 In either case after a test finishes, all the related volumes, networks and containers are removed.
+
+### Required environment variables
+
+The following environment variables are required for running the tests:
+
+* `SYSTEST_REMOTE`: Specifies the user on Dockerhub from which the baseimage is pulled. Example: `precice/`
+* `PRECICE_BASE`: Specifies the features of the baseimage used for running the test. Example: `ubuntu1604.home-develop` or `ubuntu1804.home-develop`
+* `<PARTICIPANT>_TAG`: Specifies the tag that will be used for the baseimage for each of the participants. Example: `latest`
+
+### Running the tests
+
+There are two possibilities for running the tests:
+
+1. Use `system_testing.py`: Go to `systemtests` and run `python3 system_testing.py -s <TESTCASE>` (e.g. `python3 system_testing.py -s fe-fe --base Ubuntu1804.home`). For more information on the script run `python3 system_testing.py --help`.
+2. Use `docker compose up`: Go to the corresponding test (e.g. `systemtests/tests/TestCompose_fe-fe.Ubuntu1804.home`) and run `docker-compose up`. Note that `.env` defines the previously mentioned environment variables required for running the tests.

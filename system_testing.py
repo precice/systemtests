@@ -226,10 +226,10 @@ if __name__ == "__main__":
     parser.add_argument('-s', '--systemtest', type=str, help="Choose system tests you want to use",
                         choices = common.get_tests(), required = True)
     parser.add_argument('-b', '--branch', help="preCICE branch to use", default=os.environ["TRAVIS_BRANCH"] if ("TRAVIS_BRANCH" in os.environ and os.environ["TRAVIS_PULL_REQUEST"] == "false") else (os.environ["TRAVIS_PULL_REQUEST_BRANCH"] if ("TRAVIS_PULL_REQUEST_BRANCH" in os.environ) else "develop"))  # make sure that branch corresponding to system tests branch is used, if no branch is explicitly specified. If we are testing a pull request, make sure to test agains branch from which PR originated.
-    parser.add_argument('-u', '--docker-username', help="docker username", default=os.environ["DOCKER_USERNAME"] if "DOCKER_USERNAME" in os.environ else "precice")
+    parser.add_argument('-u', '--docker-username', default=os.environ["DOCKER_USERNAME"] if "DOCKER_USERNAME" in os.environ else "precice", help="Name of the docker user on dockerhub that provides the preCICE and adapter base images for the tests. Defines the environment variable SYSTEST_REMOTE.")
     parser.add_argument('-f', '--force_rebuild', nargs='+', help="Force rebuild of variable parts of docker image",
                         default = [], choices  = ["precice", "tests"])
-    parser.add_argument('--base', type=str,help="Base preCICE image to use",
+    parser.add_argument('--base', type=str, help="Base preCICE image to use. Defines the environmental variable PRECICE_BASE.",
             default= "Ubuntu1604.home")
     parser.add_argument('-v', '--verbose', action='store_true', help="Verbose output of participant containers")
     args = parser.parse_args()
