@@ -66,7 +66,7 @@ if [ -n "$diff_files" ]; then
     text_diff=$( echo "$raw_diff" | sed '/[A-Za-df-z]/!d' )
 
 
-    # Paiwise compares files fields, that are produces from diffs and computes average and maximum
+    # Pairwise compares files fields, that are produces from diffs and computes average and maximum
     # relative differences
     if [ -n "$num_diff" ]; then
       rel_max_difference=$( export max_diff_limit; export avg_diff_limit; echo "$num_diff" | awk 'function abs(v) {return v < 0 ? -v : v} { radius=NF/2;
