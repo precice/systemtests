@@ -26,6 +26,7 @@ RUN add-apt-repository -y ppa:fenics-packages/fenics && \
     apt-get -qq install --no-install-recommends fenics && \
     rm -rf /var/lib/apt/lists/*
 
+# Using pip3 pip-wrapper will trigger a warning. See https://github.com/precice/systemtests/issues/186.
 RUN pip3 install --user cython  # TODO: can we put this dependency into requirements.txt of python?
 
 USER precice
