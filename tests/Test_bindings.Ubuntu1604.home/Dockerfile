@@ -26,6 +26,7 @@ WORKDIR /home/precice
 RUN git clone --branch $branch https://github.com/precice/python-bindings.git
 # Builds the precice python bindings
 WORKDIR /home/precice/python-bindings
+# Using pip3 pip-wrapper will trigger a warning. See https://github.com/precice/systemtests/issues/186.
 RUN pip3 install --user .
 
 # Runs the python solverdummy
