@@ -24,10 +24,6 @@ def generate_test_structure(test_name = None, base_image = None,
     for tmp_file in tmp_files:
         with open(os.path.join('templates','test_template', tmp_file)) as f:
             tmp = Template(f.read())
-            print("###")
-            print(f)
-            print(tmp.render(locals()))
-            print("###")
             renders[tmp_file.replace('.jinja', '')] = tmp.render(locals())
 
     otp_dir = os.path.join('tests', "TestCompose_{test}.{base}".format(test =
