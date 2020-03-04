@@ -1,9 +1,9 @@
 version: '3'
 services:
-  
+
   openfoam-adapter-fluid:
     image: "${SYSTEST_REMOTE}openfoam-adapter${PRECICE_BASE}:${OPENFOAM_TAG}"
-    networks: 
+    networks:
       - precicecomm
     volumes:
       - exchange:/home/precice/Data/Exchange/
@@ -11,7 +11,7 @@ services:
       - configs:/home/precice/openfoam-adapter/configs/
       - output:/home/precice/Data/Output/
     command: >
-      /bin/bash -c "source /opt/openfoam4/etc/bashrc && 
+      /bin/bash -c "source /opt/openfoam5/etc/bashrc &&
       ln -sf configs/* . &&
       cp -r /home/precice/Data/Input/0.orig /home/precice/Data/Input/0 &&
       blockMesh -case /home/precice/Data/Input &&
@@ -20,7 +20,7 @@ services:
     container_name: openfoam-adapter-fluid
     depends_on:
       - tutorial-data
-    
+
   # solid
   calculix-adapter-solid:
     image: "${SYSTEST_REMOTE}calculix-adapter${PRECICE_BASE}:${CALCULIX_TAG}"
