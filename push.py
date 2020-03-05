@@ -99,6 +99,7 @@ if __name__ == "__main__":
     parser.add_argument('-b', '--base', type=str, help="Base image of the test", default=default_base)
     parser.add_argument('-o', '--output', action='store_true', help="Enable result storage (disabled by default)", )
     parser.add_argument('--st-branch', type=str, help="Branch of precice_st_output to push to", default=default_st_branch)
+    parser.add_argument('--petsc', action='store_true', help="Use preCICE with PETSc as base image")
     args = parser.parse_args()
 
     job_id = os.environ["TRAVIS_JOB_ID"]
@@ -131,13 +132,14 @@ if __name__ == "__main__":
         ccall("docker cp tutorial-data:/Output {}".format(job_path))
 
 
-    # move container logs into correct folder, if using compose
+    # move container logs into correct folder, only compose tests have containers
     compose_tests = ["dealii-of", "of-of", "su2-ccx", "of-ccx", "of-of_np",
             "fe-fe","nutils-of", "of-ccx_fsi"]
     if args.test in compose_tests:
         test_dirname = "TestCompose_{systest}".format(systest=args.test)
-        if args.base is not default_base:
-            test_dirname += "." + args.base
+        test_dirname += "." + args.base
+        if args.petsc:
+            test_dirname += ".PETSc"
         test_path = os.path.join(os.getcwd(), 'tests', test_dirname)
         ccall("cp -r {test_path}/Logs {job_path}".\
                format(test_path=test_path, job_path=job_path))
