@@ -192,12 +192,7 @@ jobs:
       if: fork = false
       script:
         - python build_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1804 --precice-installation home
-      deploy:
-        skip_cleanup: true
-        provider: script
-        on:
-          all_branches: true
-        script: >-
+      after_success: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
           python push_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1804 --precice-installation home
 
