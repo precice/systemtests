@@ -28,7 +28,7 @@ ENV Eigen3_ROOT="/eigen/eigen-3.3.7"
 
 # Installing boost from source
 WORKDIR /boost-build
-RUN wget -nv 'https://dl.bintray.com/boostorg/release/1.65.1/source/boost_1_65_1.tar.bz2' -O - | tar xj && \
+RUN wget -nv 'https://downloads.sourceforge.net/project/boost/boost/1.65.1/boost_1_65_1.tar.bz2' -O - | tar xj && \
     cd boost_1_65_1 && \
     ./bootstrap.sh --with-libraries=log,thread,system,filesystem,program_options,test --prefix=/usr/local && \
     ./b2 -j$(nproc) install && \
@@ -66,11 +66,11 @@ RUN mkdir /home/precice/precice-build && \
           -DPRECICE_Packages=ON \
           -DPRECICE_InstallTest=ON \
           -DCMAKE_INSTALL_PREFIX=/usr \
-          -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+          -DCMAKE_BUILD_TYPE=Debug \
           -DPRECICE_PETScMapping=$petsc_para \
           -DPRECICE_MPICommunication=$mpi_para \
           -DPRECICE_PythonActions=$python_para \
-          /home/precice/precice && \ 
+          /home/precice/precice && \
     make -j$(nproc) && \
     make test_base && \
     make package && \
