@@ -1,5 +1,4 @@
 """
-### WIP ###
 Script for pushing travis internal files to a github repository.
 
 This script pushes to: https://github.com/precice/precice_st_output.
@@ -56,7 +55,7 @@ def get_travis_job_log(job_id, tail = 0):
 
 def add_readme(
         job_path,
-        output=False,
+        output_enabled=False,
         output_missing=False,
         logs_missing=False,
         message=None
@@ -79,7 +78,18 @@ def add_readme(
 
     with open(os.path.join('templates','readme_template', 'README.md')) as f:
         tmp = Template(f.read())
-        readme_rendered = tmp.render(locals())
+        readme_rendered = tmp.render(
+            job_name=job_name,
+            job_success=job_success,
+            branch=branch,
+            pr_branch=pr_branch,
+            is_pr=is_pr,
+            job_link=job_link,
+            output=output,
+            output_missing=output_missing,
+            additional_info=additional_info,
+            logs_missing=logs_missing,
+            message=message)
 
     with chdir(job_path):
         with open("README.md", "w") as f:
@@ -171,7 +181,7 @@ if __name__ == "__main__":
     # create README
     add_readme(
         job_path,
-        output=args.output,
+        output_enabled=args.output,
         output_missing=output_missing,
         logs_missing=logs_missing)
 
