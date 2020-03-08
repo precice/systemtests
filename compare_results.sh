@@ -47,6 +47,9 @@ diff_result=$( diff -rq $folder1 $folder2 )
 diff_files=$( echo "$diff_result" | sed '/Only/d' )
 only_files=$( echo "$diff_result" | sed '/differ/d')
 
+
+echo "------------- Comparing files -------------"
+
 # Pairwise compare files
 if [ -n "$diff_files" ]; then
   mapfile -t array_files < <( echo "$diff_files"  | sed 's/Files\|and\|differ//g' )
@@ -102,5 +105,7 @@ if [ -n "$only_files" ]; then
   echo -e "> $only_files"
   ret=1
 fi
+
+echo "------------- Comparison finished -------------"
 
 exit $ret
