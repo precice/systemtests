@@ -191,10 +191,10 @@ jobs:
     - name: "[18.04] openFOAM adapter"
       if: fork = false
       script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1804 --precice-installation home
+        - python build_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter.Ubuntu1804 --operating-system ubuntu1804 --precice-installation home
       after_success: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1804 --precice-installation home
+          python push_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter.Ubuntu1804 --operating-system ubuntu1804 --precice-installation home
 
     - name: FEniCS adapter
       if: fork = false
