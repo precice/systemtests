@@ -85,7 +85,7 @@ def add_readme(
             pr_branch=pr_branch,
             is_pr=is_pr,
             job_link=job_link,
-            output=output,
+            output_enabled=output_enabled,
             output_missing=output_missing,
             additional_info=additional_info,
             logs_missing=logs_missing,
