@@ -105,7 +105,6 @@ if [ -n "$only_files" ]; then
   echo -e "> $only_files"
   ret=1
 fi
-
-echo "------------- Comparison finished -------------"
+echo "----------- Comparison finished -----------"
 
 exit $ret
