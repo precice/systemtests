@@ -12,7 +12,7 @@ ENV FORTRAN=gfortran
 # Installing necessary dependecies
 # Only install minimal python dependencies; pip should take care of installing all other dependencies
 RUN apt-get -qq update && apt-get -qq install \
-    python3 python3-dev python3-pip && \
+    python3-pip && \
     rm -rf /var/lib/apt/lists/*
     
 USER precice
