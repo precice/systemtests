@@ -18,7 +18,7 @@ This build was triggered by a push to `{{branch}}`.
 
 This job folder contains
 - A `Logs` directory containing log files from TravisCI and the participant containers
-{% if output %}
+{% if output_enabled %}
 - An `Output` directory containing result files generated during the running of the test
 {% endif %}
 
@@ -27,7 +27,7 @@ This job folder contains
 {% if additional_info %}
 **Additional job information:**
 
-{% if output %}
+{% if output_enabled %}
 - Output was enabled for this job.
 {% if not output_missing %}
 	- Result files have been stored in the `Output` folder.
