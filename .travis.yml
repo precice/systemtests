@@ -274,7 +274,7 @@ jobs:
 
     - name: "[18.04] Bindings/Solverdummies"
       script:
-        - python system_testing.py -s bindings --base Ubuntu1804.home
+        - python system_testing.py -s bindings --base Ubuntu1804.home --branch $TRAVIS_BRANCH
         - python push.py -t bindings --base Ubuntu1804.home
 
     - name: "[16.04] deal.ii <-> OpenFOAM"
