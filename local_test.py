@@ -30,6 +30,7 @@ if __name__ == "__main__":
             choices = common.get_tests())
 
     parser.add_argument('-f', '--force_rebuild', nargs='+', help="Force rebuild of variable parts of docker image", default = [], choices  = ["precice", "tests"])
+    parser.add_argument('-v', '--verbose', action='store_true', help="Verbose output of participant containers")
     args = parser.parse_args()
     test_names = args.systemtest
     
@@ -65,7 +66,7 @@ if __name__ == "__main__":
         try:
             build_run_compare(test, args.dockerfile.lower(),
                     args.branch.lower(), True, "tests" in args.force_rebuild,
-                    not args.keep)
+                    not args.keep, args.verbose)
         except subprocess.CalledProcessError:
             failed.append(test_basename)
         else:
