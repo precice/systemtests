@@ -15,6 +15,7 @@ def generate_test_structure(test_name = None, base_image = None,
     solvers       = [ a.replace('-adapter','') for a in adapters ]
     participants  = [ p.replace(':','_') for p in participants]
     input_volumes = ['input_' + p  for p in participants]
+    precice_base  = '-' + base_image.lower() + '-develop'
     # to pass zip to jinja
     zipped_input = zip(participants, solvers, adapters)
 
