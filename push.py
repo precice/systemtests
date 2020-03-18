@@ -104,13 +104,26 @@ if __name__ == "__main__":
     default_base = "Ubuntu1604.home"
     default_st_branch = "master"
 
-    parser = argparse.ArgumentParser(description='Push test output and logs to output repository')
-    parser.add_argument('-t', '--test', help="Choose systemtest, results of which to push")
-    parser.add_argument('-b', '--base', type=str, help="Base image of the test", default=default_base)
-    parser.add_argument('-o', '--output', action='store_true', help="Enable result storage (disabled by default)", )
+    parser = argparse.ArgumentParser(description='Push build/test logs to output repository. Optionally includes result data (for tests only).')
+    parser.add_argument('--test', type=str, help="Which test to upload logs for.")
+    parser.add_argument('--adapter', type=str, help="Which adapter build to upload logs for.")
+    parser.add_argument('--precice', type=str, help="Which preCICE build to upload logs for.")
+    parser.add_argument('-b', '--base', type=str, help="Base image used", default=default_base)
+    parser.add_argument('-o', '--output', action='store_true', help="Enable result storage (only for tests, disabled by default)", )
     parser.add_argument('--st-branch', type=str, help="Branch of precice_st_output to push to", default=default_st_branch)
     parser.add_argument('--petsc', action='store_true', help="Use preCICE with PETSc as base image")
     args = parser.parse_args()
+
+    # Check that only one of test/adapter/precice is supplied
+    if sum(x is not None for x in [args.test, args.adapter, args.precice]) is not 1:
+        raise ValueError("You may only choose one of ['test', 'adapter', 'precice'].")
+
+    if args.test:
+        type = 'test'
+    elif args.adapter:
+        type = 'adapter'
+    elif args.precice:
+        type = 'precice'
 
     job_id = os.environ["TRAVIS_JOB_ID"]
     job_result = os.environ["TRAVIS_TEST_RESULT"]
@@ -120,7 +133,6 @@ if __name__ == "__main__":
     build_folder = os.environ["TRAVIS_BUILD_NUMBER"]
     job_folder = os.environ["TRAVIS_JOB_NUMBER"]
 
-    # TODO: change default to master branch when merging
     ccall("git clone -b {st_branch} https://github.com/precice/precice_st_output".\
         format(st_branch=args.st_branch))
 
@@ -128,47 +140,43 @@ if __name__ == "__main__":
     repo_path = os.path.join(os.getcwd(), repo_folder)
     # Path to job folder
     job_path = os.path.join(os.getcwd(), repo_folder, build_folder, job_folder)
-    # Path to Output folder inside a job folder
-    output_path = os.path.join(job_path, "Output")
     # Path to Logs folder inside a job folder
     log_path = os.path.join(job_path, "Logs")
-
     ccall("mkdir -p {}".format(log_path))
-    ccall("mkdir -p {}".format(output_path))
 
+    if args.test:
+        # Path to Output folder inside a job folder
+        output_path = os.path.join(job_path, "Output")
+        ccall("mkdir -p {}".format(output_path))
+        # extract files from container, IF ENABLED
+        if args.output:
+            ccall("docker cp tutorial-data:/Output {}".format(job_path))
 
-    # extract files from container, IF ENABLED
-    if args.output:
-        ccall("docker cp tutorial-data:/Output {}".format(job_path))
+        # move container logs into correct folder, only compose tests have containers
+        compose_tests = ["dealii-of", "of-of", "su2-ccx", "of-ccx", "of-of_np",
+        "fe-fe","nutils-of", "of-ccx_fsi"]
 
+        if args.test in compose_tests:
+            test_dirname = "TestCompose_{systest}".format(systest=args.test)
+            test_dirname += "." + args.base
+            if args.petsc:
+                test_dirname += ".PETSc"
+            test_path = os.path.join(os.getcwd(), 'tests', test_dirname)
+            ccall("cp -r {test_path}/Logs {job_path}".\
+                   format(test_path=test_path, job_path=job_path))
 
-    # move container logs into correct folder, only compose tests have containers
-    compose_tests = ["dealii-of", "of-of", "su2-ccx", "of-ccx", "of-of_np",
-            "fe-fe","nutils-of", "of-ccx_fsi"]
-    if args.test in compose_tests:
-        test_dirname = "TestCompose_{systest}".format(systest=args.test)
-        test_dirname += "." + args.base
-        if args.petsc:
-            test_dirname += ".PETSc"
-        test_path = os.path.join(os.getcwd(), 'tests', test_dirname)
-        ccall("cp -r {test_path}/Logs {job_path}".\
-               format(test_path=test_path, job_path=job_path))
-
+       # Check if Output is missing, given it is enabled
+       output_missing = False
+       if args.output:
+           if not os.listdir(output_path):
+               ccall("echo '# Output was enabled, but no output files found!' > {path}".format(path=
+               os.path.join(output_path, "README.md")))
+               output_missing = True
 
     # create travis log
     with chdir(log_path):
         with open("travis.log", "w") as log:
             log.write(get_travis_job_log(job_id))
-
-
-
-    # Check if Output is missing, given it is enabled
-    output_missing = False
-    if args.output:
-        if not os.listdir(output_path):
-            ccall("echo '# Output was enabled, but no output files found!' > {path}".format(path=
-            os.path.join(output_path, "README.md")))
-            output_missing = True
 
     # Check if Logs directory is empty. If yes, include a small README
     logs_missing = False
@@ -176,7 +184,6 @@ if __name__ == "__main__":
         ccall("echo '# No log files found!' > {path}".format(path=
         os.path.join(log_path, "README.md")))
         logs_missing= True
-
 
     # create README
     add_readme(
@@ -193,7 +200,7 @@ if __name__ == "__main__":
     # finally commit
     commit_msg = job_name
     commit_msg += " - Success" if job_success else " - FAILURE"
-    if args.output:
+    if args.test and args.output:
         if output_missing:
             commit_msg += ", MISSING OUTPUT"
     if logs_missing:
