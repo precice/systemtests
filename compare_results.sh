@@ -64,9 +64,11 @@ if [ -n "$diff_files" ]; then
     # Filter output files, ignore lines with words (probably not the results)
     # removes |<>() characters
     # Do not delete "e", since it can be used as exponent
-    num_diff=$( echo "$raw_diff" | sed 's/(\|)\||\|>\|<//g; /[a-df-zA-Z]\|Version/d' )
+    num_diff=$( echo "$raw_diff" | sed 's/(\|)\||\|>\|<//g; /[a-df-zA-Z]\|[vV]ersion/d' )
     # Filter for text lines. Compare these seperately from numerical lines
     text_diff=$( echo "$raw_diff" | sed '/[A-Za-df-z]/!d' )
+    # Ignore any timestamps
+    text_diff=$( echo "$text_diff" | sed 's/[0-9][0-9]:[0-9][0-9]:[0-9][0-9]//g; /Timestamp/d' )
 
 
     # Pairwise compares files fields, that are produces from diffs and computes average and maximum
