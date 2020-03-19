@@ -165,9 +165,9 @@ if __name__ == "__main__":
             ccall("cp -r {test_path}/Logs {job_path}".\
                    format(test_path=test_path, job_path=job_path))
 
-       # Check if Output is missing, given it is enabled
-       output_missing = False
-       if args.output:
+        # Check if Output is missing, given it is enabled
+        output_missing = False
+        if args.output:
            if not os.listdir(output_path):
                ccall("echo '# Output was enabled, but no output files found!' > {path}".format(path=
                os.path.join(output_path, "README.md")))
