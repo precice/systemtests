@@ -144,6 +144,8 @@ if __name__ == "__main__":
     log_path = os.path.join(job_path, "Logs")
     ccall("mkdir -p {}".format(log_path))
 
+    output_missing = False
+    
     if args.test:
         # Path to Output folder inside a job folder
         output_path = os.path.join(job_path, "Output")
@@ -166,7 +168,6 @@ if __name__ == "__main__":
                    format(test_path=test_path, job_path=job_path))
 
         # Check if Output is missing, given it is enabled
-        output_missing = False
         if args.output:
            if not os.listdir(output_path):
                ccall("echo '# Output was enabled, but no output files found!' > {path}".format(path=
