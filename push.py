@@ -55,6 +55,7 @@ def get_travis_job_log(job_id, tail = 0):
 
 def add_readme(
         job_path,
+        type='test'
         output_enabled=False,
         output_missing=False,
         logs_missing=False,
@@ -79,6 +80,7 @@ def add_readme(
     with open(os.path.join('templates','readme_template', 'README.md')) as f:
         tmp = Template(f.read())
         readme_rendered = tmp.render(
+            type=type,
             job_name=job_name,
             job_success=job_success,
             branch=branch,
@@ -116,7 +118,7 @@ if __name__ == "__main__":
 
     # Check that only one of test/adapter/precice is supplied
     if sum(x is not None for x in [args.test, args.adapter, args.precice]) is not 1:
-        raise ValueError("You may only choose one of ['test', 'adapter', 'precice'].")
+        raise ValueError("You may only choose one of ['--test', '--adapter', '--precice'].")
 
     if args.test:
         type = 'test'
@@ -140,13 +142,17 @@ if __name__ == "__main__":
     repo_path = os.path.join(os.getcwd(), repo_folder)
     # Path to job folder
     job_path = os.path.join(os.getcwd(), repo_folder, build_folder, job_folder)
-    # Path to Logs folder inside a job folder
-    log_path = os.path.join(job_path, "Logs")
-    ccall("mkdir -p {}".format(log_path))
 
     output_missing = False
-    
+
+    if args.adapter:
+        ccall("docker cp $_DOCKER_IMAGE_TAG:/Logs {}".format(job_path))
+
+
     if args.test:
+        # Path to Logs folder inside a job folder
+        log_path = os.path.join(job_path, "Logs")
+        ccall("mkdir -p {}".format(log_path))
         # Path to Output folder inside a job folder
         output_path = os.path.join(job_path, "Output")
         ccall("mkdir -p {}".format(output_path))
@@ -189,6 +195,7 @@ if __name__ == "__main__":
     # create README
     add_readme(
         job_path,
+        type=type,
         output_enabled=args.output,
         output_missing=output_missing,
         logs_missing=logs_missing)
