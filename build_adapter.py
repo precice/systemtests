@@ -1,7 +1,7 @@
 import argparse, docker
 import system_testing
 import os
-                           
+
 if __name__ == "__main__":
     # Parsing flags
     parser = argparse.ArgumentParser(description='Build local docker image of an adapter.')
@@ -51,4 +51,6 @@ if __name__ == "__main__":
                                    "from" : precice_base_tag},
                        force_rebuild=args.force_rebuild,
                        namespace="")
-                       
+
+    # export tag information for other use
+    os.environ["_DOCKER_IMAGE_TAG"] = tag
