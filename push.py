@@ -145,16 +145,16 @@ if __name__ == "__main__":
 
     output_missing = False
 
+    # Path to Logs folder inside a job folder
+    log_path = os.path.join(job_path, "Logs")
+    # Path to Output folder inside a job folder
+    output_path = os.path.join(job_path, "Output")
+
     if args.adapter:
         ccall("docker cp $_DOCKER_IMAGE_TAG:/Logs {}".format(job_path))
 
-
     if args.test:
-        # Path to Logs folder inside a job folder
-        log_path = os.path.join(job_path, "Logs")
         ccall("mkdir -p {}".format(log_path))
-        # Path to Output folder inside a job folder
-        output_path = os.path.join(job_path, "Output")
         ccall("mkdir -p {}".format(output_path))
         # extract files from container, IF ENABLED
         if args.output:
