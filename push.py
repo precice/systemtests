@@ -153,6 +153,7 @@ if __name__ == "__main__":
     output_path = os.path.join(job_path, "Output")
 
     if args.adapter:
+        ccall("echo $_DOCKER_IMAGE_TAG")
         ccall("docker cp $_DOCKER_IMAGE_TAG:/Logs {}".format(job_path))
 
     if args.test:
