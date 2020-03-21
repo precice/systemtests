@@ -55,7 +55,7 @@ def get_travis_job_log(job_id, tail = 0):
 
 def add_readme(
         job_path,
-        type='test'
+        type='test',
         output_enabled=False,
         output_missing=False,
         logs_missing=False,
