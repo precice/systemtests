@@ -147,6 +147,7 @@ if __name__ == "__main__":
 
     # Path to Logs folder inside a job folder
     log_path = os.path.join(job_path, "Logs")
+    print(log_path)
     ccall("mkdir -p {}".format(log_path))
     # Path to Output folder inside a job folder
     output_path = os.path.join(job_path, "Output")
