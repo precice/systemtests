@@ -229,3 +229,5 @@ if __name__ == "__main__":
         failed_push_count += 1
         if failed_push_count >= failed_push_limit:
             break
+
+    print("Finished pushing to {}-{}.".format(repo_folder,branch))
