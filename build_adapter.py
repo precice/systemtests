@@ -53,4 +53,4 @@ if __name__ == "__main__":
                        force_rebuild=args.force_rebuild,
                        namespace="")
 
-    ccall("echo _DOCKER_IMAGE_TAG={} > .variables")
+    ccall("echo '_DOCKER_IMAGE_TAG={}' > .variables")
