@@ -1,6 +1,7 @@
 import argparse, docker
 import system_testing
 import os
+from common import ccall
 
 if __name__ == "__main__":
     # Parsing flags
