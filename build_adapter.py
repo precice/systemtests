@@ -51,3 +51,5 @@ if __name__ == "__main__":
                                    "from" : precice_base_tag},
                        force_rebuild=args.force_rebuild,
                        namespace="")
+
+    ccall("echo _DOCKER_IMAGE_TAG={} > .variables")
