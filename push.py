@@ -153,7 +153,10 @@ if __name__ == "__main__":
     output_path = os.path.join(job_path, "Output")
 
     if args.adapter:
-        ccall(". ./.variables && echo $_DOCKER_IMAGE_TAG && docker cp $_DOCKER_IMAGE_TAG:/Logs {}".format(job_path))
+        docker_tag = ""
+        with open("./.docker_tag","r") as f:
+            docker_tag = f.read()
+        ccall("docker cp {}:/Logs {}".format(docker_tag,job_path))
 
     if args.test:
         ccall("mkdir -p {}".format(output_path))
