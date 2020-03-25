@@ -156,6 +156,7 @@ if __name__ == "__main__":
         docker_tag = ""
         with open("./.docker_tag","r") as f:
             docker_tag = f.read()
+        ccall("docker container ls -a")
         ccall("docker cp {}:/Logs {}".format(docker_tag,job_path))
 
     if args.test:
