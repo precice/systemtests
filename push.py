@@ -233,4 +233,4 @@ if __name__ == "__main__":
         if failed_push_count >= failed_push_limit:
             break
 
-    print("Finished pushing to {}-{}.".format(repo_folder,args.st_branch))
+    print("Finished pushing to {}-{}!".format(repo_folder,args.st_branch))
