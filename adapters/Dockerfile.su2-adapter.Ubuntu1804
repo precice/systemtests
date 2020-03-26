@@ -1,0 +1,39 @@
+ARG from=precice/precice-ubuntu1804.home-develop
+FROM $from
+
+USER root
+ENV CXX="g++"
+
+RUN apt-get -qq update && apt-get -qq install \
+    dh-autoreconf \
+    automake \
+    autoconf \
+    autotools-dev \
+    ccache \
+    time
+
+ARG CACHEBUST
+
+USER precice
+WORKDIR /home/precice
+RUN git clone --branch v6.0.0 https://github.com/su2code/SU2.git su2-source
+
+ENV SU2_HOME="/home/precice/su2-source" \
+    SU2_BIN="/home/precice/su2-bin" \
+    SU2_RUN="/home/precice/su2-bin/bin" \
+    PATH="/home/precice/su2-bin/bin:${PATH}" \
+    PYTHONPATH="/home/precice/su2-bin/bin:${PYTHONPATH}"
+
+ARG branch=develop
+RUN cd /home/precice && \
+    git clone --branch $branch https://github.com/precice/su2-adapter.git && cd su2-adapter &&  \
+    ./su2AdapterInstall
+
+WORKDIR /home/precice/su2-source
+RUN ./configure --disable-metis --disable-parmetis --disable-cgns --disable-DOT \
+    --disable-MSH --disable-DEF --disable-SOL --disable-GEO \
+    --prefix=${SU2_BIN} CXXFLAGS="-std=c++11" && \
+    make -j $(nproc) install && find . -type f -name "*.o" -exec rm {} \;
+
+RUN cd $HOME && mkdir -p Data/Input Data/Output Data/Exchange
+WORKDIR /home/precice/su2-bin/bin/

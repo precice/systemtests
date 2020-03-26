@@ -149,6 +149,19 @@ jobs:
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
           python push_adapter.py --dockerfile adapters/Dockerfile.su2-adapter --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
 
+    - name: "[18.04] SU2 adapter"
+      if: fork = false
+      script:
+        - python build_adapter.py --dockerfile adapters/Dockerfile.su2-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
+      deploy:
+        skip_cleanup: true
+        provider: script
+        on:
+          all_branches: true
+        script: >-
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
+          python push_adapter.py --dockerfile adapters/Dockerfile.su2-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
+
     - name: "[16.04] CalculiX adapter"
       if: fork = false
       script:
@@ -251,6 +264,11 @@ jobs:
       script:
         - python system_testing.py -s su2-ccx --branch $TRAVIS_BRANCH
         - python push.py -t su2-ccx
+
+    - name: "[18.04] SU2 <-> Calculix"
+      script:
+        - python system_testing.py -s su2-ccx --base Ubuntu1804.home --branch $TRAVIS_BRANCH
+        - python push.py -t su2-cc --base Ubuntu1804.home
 
     - name: "[16.04] OpenFOAM <-> OpenFOAM"
       script:
