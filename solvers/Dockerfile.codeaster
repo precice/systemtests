@@ -1,0 +1,65 @@
+ARG from=ubuntu:18.04
+From $from
+
+USER root
+ENV USER=root
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install dependencies
+RUN apt-get -qq update && apt-get -qq install \
+    build-essential \
+    bison \
+    cmake \
+    make \
+    flex \
+    g++ \
+    gcc \
+    gdb \
+    gfortran \
+    grace \
+    liblapack-dev \
+    libblas-dev \
+    libboost-numpy-dev \
+    libboost-python-dev \
+    python3 python3-dev \
+    python3-numpy \
+    tk zlib1g-dev && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN apt-get update && apt-get install -y wget
+
+ENV \
+    CA_VERSION=14.4.0 \
+    CA_REVISION=1
+
+RUN \
+    wget -nv http://www.web-code-aster.org/FICHIERS/aster-full-src-14.4.0-1.noarch.tar.gz
+
+RUN \
+     tar -xzf aster-full-src-14.4.0-1.noarch.tar.gz \
+    # && rm aster-full-src-14.4.0-1.noarch.tar.gz \
+    && mkdir /Code_Aster
+
+RUN \
+    apt-get install -y gedit gdb
+
+ENV \
+    PYTHONIOENCODING=utf8
+
+RUN apt-get update && apt-get install -y locales && locale-gen en_US.UTF-8
+
+RUN locale-gen en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
+
+RUN \
+    cd aster-full-src-14.4.0 \
+    && yes | python3 setup.py install --prefix=/Code_Aster
+# Should be in bashrc
+    #source /etc/codeaster/profile.sh
+
+RUN \
+    cd /14.4/lib/aster/execution && \
+    wget https://raw.githubusercontent.com/precice/code_aster-adapter/master/cht/adapter.py && \
+    cd /
