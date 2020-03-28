@@ -156,7 +156,7 @@ if __name__ == "__main__":
         docker_tag = ""
         with open("./.docker_tag","r") as f:
             docker_tag = f.read()
-        ccall("docker create {} bash --name adapter".format(docker_tag))
+        ccall("docker create --name adapter -it {} bash ".format(docker_tag))
         ccall("docker container ls -a")
         ccall("docker cp adapter:/Logs {}".format(docker_tag,job_path))
         # remove file after reading
