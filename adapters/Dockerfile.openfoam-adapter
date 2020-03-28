@@ -20,9 +20,10 @@ COPY --from=openfoam /opt/openfoam5 /opt/openfoam5/
 USER precice
 SHELL ["/bin/bash", "-c"]
 WORKDIR /home/precice
+RUN mkdir Logs
 ARG branch=develop
 RUN git clone  --branch $branch https://github.com/precice/openfoam-adapter.git
 WORKDIR /home/precice/openfoam-adapter
 RUN . /opt/openfoam5/etc/bashrc && ./Allwmake
-RUN mkdir $HOME/Logs && cp wmake.log Allwmake.log ldd.log $HOME/Logs
-RUN cd $HOME && mkdir -p Data/Input Data/Output Data/Exchange
+RUN cp wmake.log Allwmake.log ldd.log Logs
+RUN mkdir -p Data/Input Data/Output Data/Exchange
