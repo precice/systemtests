@@ -11,6 +11,7 @@ This script pushes to: https://github.com/precice/precice_st_output.
 
 from jinja2 import Template
 from urllib.request import Request, urlopen
+import urllib.error.HTTPError
 import argparse, os, sys, time
 from common import call, ccall, capture_output, get_test_participants, chdir
 
@@ -192,10 +193,11 @@ if __name__ == "__main__":
     with chdir(log_path):
         with open("travis.log", "w") as log:
             try:
-                log.write(get_travis_job_log(job_id))
+                travis_log = get_travis_job_log(job_id)
             except urllib.error.HTTPError:
-                log.write("ERROR: TravisCI log request failed!")
+                travis_log = "ERROR: TravisCI log request failed!"
                 print("TravisCI job log request was denied!")
+            log.write(travis_log)
     # Check if Logs directory is empty. If yes, include a small README
     logs_missing = False
     if not os.listdir(log_path):
