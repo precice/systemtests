@@ -10,7 +10,7 @@ COPY --from=deal.ii /root/dealii/ /home/precice/dealii/
 USER precice
 WORKDIR /home/precice
 RUN git clone https://github.com/precice/dealii-adapter.git
-RUN cd dealii-adapter && \
+RUN cd dealii-adapter/coupled_elasto_dynamics/ && \
     cmake -DDEAL_II_DIR=$HOME/dealii -DDIM=3 -DCMAKE_BUILD_TYPE=Release . && \
     make -j $(nproc) 
 
