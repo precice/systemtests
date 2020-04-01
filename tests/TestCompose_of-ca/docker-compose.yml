@@ -1,5 +1,7 @@
 version : '3'
 services:
+
+# OpenFOAM Adapter
   openfoam-adapter-fluid:
     image: "${SYSTEST_REMOTE}openfoam-adapter${PRECICE_BASE}:${OPENFOAM_TAG}"
     networks:
@@ -15,25 +17,29 @@ services:
       cp -r Fluid/ /home/precice/Data/Output/"
     container_name: openfoam-adapter-fluid
 
+# Code_Aster Adapter
   codeaster-adapter-solid:
-    image: "${SYSTEST_REMOTE}codeaster-adapter${PRECICE_BASE}:${CODEASTER_TAG}"
+    image: ca_adapter
     networks:
       - precicecomm
     volumes:
       - exchange:/home/precice/Data/Exchange
       - output:/home/precice/Data/Output
     command: >
-
+      source /Code_Aster/etc/codeaster/profile.sh
     container_name: codeaster-adapter-solid
 
+# Tutorial
   tutorial-data:
-    image: alpine
+    build:
+      context: .
+      dockerfile: Dockerfile.tutorial_data
     volumes:
       - output:/Output/
     container_name: tutorial-data
 
-networks:
-  precicecomm:
-volumes:
-  exchange:
-  output:
+  networks:
+    precicecomm:
+  volumes:
+    exchange:
+    output:

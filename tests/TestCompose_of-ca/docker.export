@@ -1,0 +1,26 @@
+P actions make_etude
+P aster_root /opt/aster
+P consbtc oui
+P debug nodebug
+P display docker:0
+P follow_output yes
+P mclient docker
+P memjob 524288
+P memory_limit 512.0
+P mode interactif
+P ncpus 1
+P nomjob linear-thermic
+P origine salomemeca_asrun 1.10.0
+P protocol_copyfrom asrun.plugins.server.SCPServer
+P protocol_copyto asrun.plugins.server.SCPServer
+P protocol_exec asrun.plugins.server.SSHServer
+P rep_trav /tmp/root-23129e00f0db-interactif_4800
+P serveur localhost
+P soumbtc oui
+P time_limit 600.0
+P tpsjob 11
+P uclient docker
+P username docker
+P version stable
+A memjeveux 64.0
+A tpmax 600.0

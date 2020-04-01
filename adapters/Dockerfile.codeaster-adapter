@@ -11,6 +11,8 @@ RUN apt-get -qq update && apt-get -qq install \
     git && \
     rm -rf /var/lib/apt/lists/*
 
+COPY --from=codeaster /Code_Aster /Code_Aster
+
 # Building Code_Aster-adapter
 USER precice
 WORKDIR /home/precice
