@@ -133,8 +133,10 @@ if __name__ == "__main__":
     job_success = True if (job_result == '0') else False
     job_name = os.environ["TRAVIS_JOB_NAME"]
 
-    build_folder = os.environ["TRAVIS_BUILD_NUMBER"]
-    job_folder = os.environ["TRAVIS_JOB_NUMBER"]
+    build_folder = os.environ["TRAVIS_BUILD_NUMBER"] # example: "1832"
+    job_folder_unpadded = os.environ["TRAVIS_JOB_NUMBER"] # example: "1832.8"
+    job_folder = "{}.{:02d}".format(build_folder, int(job_folder_unpadded.split('.')[1]))
+
 
     ccall("git clone -b {st_branch} https://github.com/precice/precice_st_output".\
         format(st_branch=args.st_branch))
