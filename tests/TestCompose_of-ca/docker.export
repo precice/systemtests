@@ -1,5 +1,5 @@
 P actions make_etude
-P aster_root /opt/aster
+P aster_root /Code_aster
 P consbtc oui
 P debug nodebug
 P display docker:0

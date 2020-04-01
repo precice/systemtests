@@ -7,14 +7,14 @@ services:
     networks:
       - precicecomm
     volumes:
-      - exchange:/home/precice/Data/Exchange
       - output:/home/precice/Data/Output
+      - input:/home/precice/Data/Input
+      - exchange:/home/precice/Data/Exchange
     command: >
       /bin/bash -c "source /opt/openfoam4/etc/bashrc &&
-      cd /home/precice/openfoam-adapter/tutorials/CHT/flow-over-plate/buoyantPimpleFoam-laplacianFoam &&
-      sed -i 's|gather-scatter\"|gather-scatter\" exchange-directory=\"/home/precice/Data/Exchange/\" network=\"eth0\"|g' precice-config_serial.xml &&
+      cd /home/precice/Data/Input &&
       ./runFluid &&
-      cp -r Fluid/ /home/precice/Data/Output/"
+      cp -r Fluid/ /home/precice/Data/Output"
     container_name: openfoam-adapter-fluid
 
 # Code_Aster Adapter
@@ -23,23 +23,33 @@ services:
     networks:
       - precicecomm
     volumes:
-      - exchange:/home/precice/Data/Exchange
       - output:/home/precice/Data/Output
+      - input:/home/precice/Data/Input
+      - exchange:/home/precice/Data/Exchange
     command: >
-      source /Code_Aster/etc/codeaster/profile.sh
+      /bin/bash -c "source /Code_Aster/etc/codeaster/profile.sh &&
+      cd /home/precice/Data/Input &&
+      ./runSolid &&
+      cp -r Solid/ /home/Output/"
     container_name: codeaster-adapter-solid
 
 # Tutorial
   tutorial-data:
+    # image: tutorial_ca_of
     build:
       context: .
       dockerfile: Dockerfile.tutorial_data
     volumes:
       - output:/Output/
+      - input:/tutorials/CHT/flow-over-plate/buoyantSimpleFoam-aster
+    command: >
+      /bin/bash -c "cd /tutorials/CHT/flow-over-plate/buoyantSimpleFoam-aster &&
+      sed -i 's/path\/to\/tutorials\/CHT\/flow-over-plate\/buoyantSimpleFoam-aster/home\/precice\/Data\/Exchange/g' precice-config.xml"
     container_name: tutorial-data
 
-  networks:
-    precicecomm:
-  volumes:
-    exchange:
-    output:
+networks:
+  precicecomm:
+volumes:
+  output:
+  input:
+  exchange:
