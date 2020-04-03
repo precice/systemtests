@@ -129,7 +129,7 @@ def generate_travis_job(adapter, user, trigger_failure = True):
     job_body={
         "request": {
           "message": "{} systemtests".format(adapter),
-          "branch": "master",
+          "branch": "develop",
           "config": {
             # we need to use 'replace' to replace .travis.yml,
             # that is originally present in the repo
@@ -242,7 +242,7 @@ def generate_failure_callback():
 
     callback_body={
     "request": {
-     "message": "Systemtests failed. Build url:{}".format(triggered_by),
+     "message": "Systemtests failed. Build url: {}".format(triggered_by),
       "branch": "master",
         "config": {
           "merge_mode": "replace",
