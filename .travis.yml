@@ -15,15 +15,15 @@ jobs:
       script:
         - travis_wait 60 python trigger_systemtests.py --adapter dealii --wait
 
-    - name: fenics
-      script:
-        - travis_wait 60 python trigger_systemtests.py --adapter fenics --wait
-    - name: su2
-      script:
-        - travis_wait 60 python trigger_systemtests.py --adapter su2 --wait
-    - name: calculix
-      script:
-        - travis_wait 60 python trigger_systemtests.py --adapter calculix --wait
-    - name: openfoam
-      script:
-        - travis_wait 60 python trigger_systemtests.py --adapter openfoam --wait
+    # - name: fenics
+    #   script:
+    #     - travis_wait 60 python trigger_systemtests.py --adapter fenics --wait
+    # - name: su2
+    #   script:
+    #     - travis_wait 60 python trigger_systemtests.py --adapter su2 --wait
+    # - name: calculix
+    #   script:
+    #     - travis_wait 60 python trigger_systemtests.py --adapter calculix --wait
+    # - name: openfoam
+    #   script:
+    #     - travis_wait 60 python trigger_systemtests.py --adapter openfoam --wait
