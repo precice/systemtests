@@ -208,7 +208,7 @@ def trigger_travis_and_wait_and_respond(job_body, user, repo):
         # for ther reference in case of failures
         print ("Current request status is '{}'.".format(request_info['state']))
         request_info = query_request_info(user, repo, request_id)
-        time.sleep(60)
+        time.sleep(20)
 
     if request_info["result"] != "approved":
         raise Exception("Systemtest build request did not get approved.")
@@ -216,18 +216,17 @@ def trigger_travis_and_wait_and_respond(job_body, user, repo):
     build_id = request_info['builds'][0]['id']
     build_number = request_info['builds'][0]['number']
     print("\nRequest approved!\n" +
-          "Assigned build on 'systemtests': {}\n\n".format(build_number))
+          "Assigned build on 'systemtests': {}\n".format(build_number) +
+          "Link to build: https://travis-ci.org/github/precice/systemtests/builds/{}\n\n".format(build_id))
     job_status = ''
     success_status = ["passed", "canceled"]
     failed_status = ["errored", "failed"]
 
-    print ("Job started...")
-    i = 1
+    print ("Job started!")
     while not job_status in (success_status + failed_status):
         job_status = check_job_status(build_id)
-        print ("\rCurrent job status is '{}'. Be patient{}".format(job_status, i*"."), end="\r")
-        i = (i + 1) % 3 + 1
-        time.sleep(5)
+        print ("\rCurrent job status is '{}'. Please wait...".format(job_status))
+        time.sleep(20)
 
     if job_status in success_status:
         exit(0)

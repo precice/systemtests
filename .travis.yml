@@ -13,7 +13,7 @@ jobs:
     - stage: Testing systest trigger
       name: dealii
       script:
-        - travis_wait 60 python trigger_systemtests.py --adapter dealii --wait
+        - python trigger_systemtests.py --adapter dealii --wait
 
     # - name: fenics
     #   script:
