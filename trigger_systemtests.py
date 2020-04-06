@@ -222,15 +222,18 @@ def trigger_travis_and_wait_and_respond(job_body, user, repo):
     success_status = ["passed", "canceled"]
     failed_status = ["errored", "failed"]
 
-    print ("Job started!", flush=True)
+    print("Job started!", flush=True)
     while not job_status in (success_status + failed_status):
-        job_status = check_job_status(build_id)
-        print ("Current job status is '{}'. Please wait...".format(job_status), flush=True)
         time.sleep(20)
+        job_status = check_job_status(build_id)
+        print("Current job status is '{}'. Please wait...".format(job_status), flush=True)
 
     if job_status in success_status:
+        print("Systemtest succeeded!")
         exit(0)
     else:
+        print("Systemtest failed!\n" +
+              "For more information, view the associated systemtest build.\n")
         exit(1)
 
 
