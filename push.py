@@ -43,6 +43,7 @@ def get_travis_job_log(job_id, tail = 0):
 
     txt_url = "https://api.travis-ci.org/v3/job/{}/log.txt".format(job_id)
     req = Request(txt_url)
+    print(req) # debug print
     response = urlopen( req ).read().decode()
 
     # if log cutoff is enabled
