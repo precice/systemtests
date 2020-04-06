@@ -203,10 +203,10 @@ def trigger_travis_and_wait_and_respond(job_body, user, repo):
     # it case request is being processes slow for whatever reasons
     # (e.g) multiple requests were triggered, we don't yet have
     # info about job_id, so we'll wait until we have it
-    print ("Request pending...")
+    print("Request pending...", flush=True)
     while request_info.get('state') == 'pending':
         # for ther reference in case of failures
-        print ("Current request status is '{}'.".format(request_info['state']))
+        print("Current request status is '{}'.".format(request_info['state']), flush=True)
         request_info = query_request_info(user, repo, request_id)
         time.sleep(20)
 
@@ -222,10 +222,10 @@ def trigger_travis_and_wait_and_respond(job_body, user, repo):
     success_status = ["passed", "canceled"]
     failed_status = ["errored", "failed"]
 
-    print ("Job started!")
+    print ("Job started!", flush=True)
     while not job_status in (success_status + failed_status):
         job_status = check_job_status(build_id)
-        print ("\rCurrent job status is '{}'. Please wait...".format(job_status))
+        print ("Current job status is '{}'. Please wait...".format(job_status), flush=True)
         time.sleep(20)
 
     if job_status in success_status:
