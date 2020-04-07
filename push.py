@@ -43,7 +43,6 @@ def get_travis_job_log(job_id, tail = 0):
 
     txt_url = "https://api.travis-ci.org/v3/job/{}/log.txt".format(job_id)
     req = Request(txt_url)
-    print(req) # debug print
     response = urlopen( req ).read().decode()
 
     # if log cutoff is enabled
@@ -151,7 +150,6 @@ if __name__ == "__main__":
 
     # Path to Logs folder inside a job folder
     log_path = os.path.join(job_path, "Logs")
-    print(log_path)
     ccall("mkdir -p {}".format(log_path))
     # Path to Output folder inside a job folder
     output_path = os.path.join(job_path, "Output")
