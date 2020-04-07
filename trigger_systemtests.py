@@ -218,7 +218,7 @@ def trigger_travis_and_wait_and_respond(job_body, user, repo):
     print("###############################\n" +
           "Request approved!\n" +
           "Assigned build on 'systemtests': {}\n".format(build_number) +
-          "Link to build: https://travis-ci.org/github/precice/systemtests/builds/{}\n".format(build_id) +
+          "<a href='https://travis-ci.org/github/precice/systemtests/builds/{}'>Link to build</a>\n".format(build_id) +
           "###############################\n")
     job_status = ''
     success_status = ["passed", "canceled"]
