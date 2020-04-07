@@ -193,11 +193,7 @@ if __name__ == "__main__":
     # create travis log
     with chdir(log_path):
         with open("travis.log", "w") as log:
-            try:
-                travis_log = get_travis_job_log(job_id)
-            except HTTPError:
-                travis_log = "ERROR: TravisCI log request failed!"
-                print("TravisCI job log request was denied!")
+            travis_log = get_travis_job_log(job_id)
             log.write(travis_log)
     # Check if Logs directory is empty. If yes, include a small README
     logs_missing = False
