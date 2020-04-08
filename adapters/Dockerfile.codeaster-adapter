@@ -1,6 +1,6 @@
 ARG from=precice/precice-ubuntu1804.home-develop
-#ARG base_solver=precice/code_aster-adapter
-#FROM ${base_solver} as codeaster
+ARG base_solver=codeaster
+FROM ${base_solver}
 FROM $from
 
 USER root
@@ -8,15 +8,28 @@ ENV USER=root
 
 # Install dependecies
 RUN apt-get -qq update && apt-get -qq install \
-    git && \
+    git \
+    locales \
+    python3-pip \
+    python3-numpy && \
     rm -rf /var/lib/apt/lists/*
 
-COPY --from=codeaster /Code_Aster /Code_Aster
+RUN locale-gen en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
 
 # Building Code_Aster-adapter
 USER precice
 WORKDIR /home/precice
+
+COPY --from=codeaster /home/precice/Code_Aster /home/precice/Code_Aster
+
 RUN git clone https://github.com/precice/code_aster-adapter.git
 
 RUN \
     mkdir Data && cd Data && mkdir Exchange Input Output
+
+# Installing python bindings for preCICE
+RUN \
+    pip3 install --upgrade pip && pip3 install --user pyprecice

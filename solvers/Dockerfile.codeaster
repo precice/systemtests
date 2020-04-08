@@ -34,6 +34,11 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
+RUN \
+    useradd -m -s /bin/bash precice
+
+USER precice
+WORKDIR /home/precice
 
 ENV \
     CA_VERSION=14.4.0 \
@@ -48,9 +53,9 @@ RUN \
 
 RUN \
     cd aster-full-src-14.4.0 \
-    && yes | python3 setup.py install --prefix=/Code_Aster
+    && yes | python3 setup.py install --prefix=/home/precice/Code_Aster
 
 RUN \
-    cd /Code_Aster/14.4/lib/aster/Execution && \
+    cd /home/precice/Code_Aster/14.4/lib/aster/Execution && \
     wget https://raw.githubusercontent.com/precice/code_aster-adapter/master/cht/adapter.py && \
     cd /
