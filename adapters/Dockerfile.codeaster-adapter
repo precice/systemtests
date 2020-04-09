@@ -23,7 +23,7 @@ ENV LC_ALL en_US.UTF-8
 USER precice
 WORKDIR /home/precice
 
-COPY --from=${base_solver} /home/precice/Code_Aster /home/precice/Code_Aster
+COPY --from=precice/codeaster /home/precice/Code_Aster /home/precice/Code_Aster
 
 RUN git clone https://github.com/precice/code_aster-adapter.git
 
