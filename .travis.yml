@@ -215,9 +215,9 @@ jobs:
           python push_adapter.py --dockerfile adapters/Dockerfile.fenics-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
 
     - name: "[18.04] Code_Aster adapter"
-    if: fork = false
-    script:
-      - python build_adapter.py --dockerfile adapters/Dockerfile.codeaster-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
+      if: fork = false
+      script:
+        - python build_adapter.py --dockerfile adapters/Dockerfile.codeaster-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
       deploy:
         skip_cleanup: true
         provider: script
