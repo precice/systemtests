@@ -1,5 +1,5 @@
 ARG from=precice/precice-ubuntu1804.home-develop
-ARG base_solver=codeaster
+ARG base_solver=precice/codeaster
 FROM ${base_solver}
 FROM $from
 
