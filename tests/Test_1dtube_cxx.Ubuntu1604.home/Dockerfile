@@ -18,9 +18,8 @@ RUN git clone https://github.com/precice/elastictube1d.git
 
 WORKDIR /home/precice/elastictube1d/cxx
 RUN cmake . && make all && ./Allrun
-# TODO: Also run parallel case in test?
 
 USER root
 # transfer results
-RUN cp *.json *.log /Output/ && \
+RUN cp *.log /Output/ && \
     cp Postproc/*.vtk /Output/Postproc/
