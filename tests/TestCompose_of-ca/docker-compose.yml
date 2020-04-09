@@ -21,7 +21,7 @@ services:
 
 # Code_Aster Adapter
   codeaster-adapter-solid:
-    image: ca_adapter
+    image: "${SYSTEST_REMOTE}codeaster-adapter-ubuntu1804.home-develop"
     networks:
       - precicecomm
     volumes:
