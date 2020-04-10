@@ -225,7 +225,7 @@ if __name__ == "__main__":
     parser.add_argument('-l', '--local', action='store_true', help="Use local preCICE image (default: use remote image)")
     parser.add_argument('-s', '--systemtest', type=str, help="Choose system tests you want to use",
                         choices = common.get_tests(), required = True)
-    parser.add_argument('-b', '--branch', help="preCICE branch to use", default = "develop")
+    parser.add_argument('-b', '--branch', help="preCICE branch to use", default=os.environ["TRAVIS_BRANCH"] if os.environ["TRAVIS_PULL_REQUEST"] == "false" else os.environ["TRAVIS_PULL_REQUEST_BRANCH"])  # make sure that branch corresponding to system tests branch is used, if no branch is explicitly specified. If we are testing a pull request, make sure to test agains branch from which PR originated.
     parser.add_argument('-f', '--force_rebuild', nargs='+', help="Force rebuild of variable parts of docker image",
                         default = [], choices  = ["precice", "tests"])
     parser.add_argument('--base', type=str,help="Base preCICE image to use",

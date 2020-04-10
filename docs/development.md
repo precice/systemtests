@@ -15,13 +15,13 @@ If something fails during building, you can determine the failing command and co
 ```
 Usually it is much easier to debug in this way.
 
-If you are developing a new base image for preCICE, make sure you create a user `precice`, in group `precice` with `uid` and `gid` equal to 1000, as done in 
-other base dockerfiles. Additionally, make sure that precice in installed in `/home/precice/precice`, and create folders `/home/precice/Data/Exchange`, 
+If you are developing a new base image for preCICE, make sure you create a user `precice`, in group `precice` with `uid` and `gid` equal to 1000, as done in
+other base dockerfiles. Additionally, make sure that precice in installed in `/home/precice/precice`, and create folders `/home/precice/Data/Exchange`,
 `/home/precice/Data/Input` and `/home/precice/Data/Output`, that should be owned by `precice` user.
 
 ## During development of the test cases
 
-There is a `generate_test.py` script provided, that make is easier to generate all the necessary docker configuration files. Make sure to read through the generated files, 
+There is a `generate_test.py` script provided, that make is easier to generate all the necessary docker configuration files. Make sure to read through the generated files,
 make sure it suits your test case and adjust where needed.
 
 If something fails during running `docker-compose` due to communication problems or invalid input, the easiest way to debug is:
@@ -47,6 +47,16 @@ You should also make sure that running both on a local and a remote machine work
    python3 system_testing.py -s su2-ccx
 ```
 4. If it fails locally, use above-mentioned techniques to debug it. If is does not, bad luck.
+
+## If a systemtest request fails with 'HTTP Error 403: Forbidden'
+
+It might happen at some point that the `trigger_systemtests.py` script responsible for triggering builds through the Travis API starts to fail with the error above. This could happen due to the `TRAVIS_ACCESS_TOKEN` expiring and is potentially easy to fix. To renew the token, generate a new one locally using the Travis CLI (taken from [here](https://blog.travis-ci.com/2013-01-28-token-token-token)):
+
+```
+gem install travis && travis login && travis token
+```
+
+and replace the current `TRAVIS_ACCESS_TOKEN` value in the TravisCI systemtests dashboard.
 
 ## If there are network problems
 
