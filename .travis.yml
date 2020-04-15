@@ -17,6 +17,10 @@ jobs:
     - name: "CalculiX adapter [PETSc] [Job failure permitted]"
 
   include:
+    - stage: Testing trigger
+      name: "dealii test"
+      script: python trigger_systemtests.py --adapter dealii --wait
+
     - stage: Building preCICE
       name: "Arch Linux"
       if: fork = false
