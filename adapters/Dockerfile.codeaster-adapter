@@ -28,6 +28,12 @@ COPY --from=precice/codeaster /home/precice/Code_Aster /home/precice/Code_Aster
 RUN git clone https://github.com/precice/code_aster-adapter.git
 
 RUN \
+    sed -i "s|.rmed|.resu|g" code_aster-adapter/cht/adapter.comm && \
+    sed -i "s|TYPE='BINARY'|TYPE='ASCII'|g" code_aster-adapter/cht/adapter.comm && \
+    sed -i "s|FORMAT='MED'|FORMAT='RESULTAT'|g" code_aster-adapter/cht/adapter.comm && \
+    sed -i "s|RESU=_F(RESULTAT=TEMP)|RESU=(_F(RESULTAT=TEMP, NOM_CHAM='TEMP', FORM_TABL='EXCEL', TOUT_PARA+'OUI', FORMAT_R='E14.5'))|g" code_aster-adapter/cht/adapter.comm
+    
+RUN \
     mkdir Data && cd Data && mkdir Exchange Input Output
 
 # Installing python bindings for preCICE

@@ -21,7 +21,6 @@ RUN \
     && echo "R repe $workdir_path/Solid/REPE_OUT D 0" >> solid.export \
     && echo "R repe $workdir_path/Solid/REPE_OUT R 0" >> solid.export \
     && echo "F mess $workdir_path/Solid/solid.mess R 6" >> solid.export \
-    && echo "F rmed $workdir_path/Solid/solid.rmed R 80" >> solid.export \
     && echo "F resu $workdir_path/Solid/solid.resu R 8" >> solid.export
 
 RUN \
