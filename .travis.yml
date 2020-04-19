@@ -15,6 +15,10 @@ jobs:
     - name: "[16.04 PETSc] OpenFOAM <-> CalculiX [FSI] [Job failure permitted]"
     - name: "openFOAM adapter [PETSc] [Job failure permitted]"
     - name: "CalculiX adapter [PETSc] [Job failure permitted]"
+    - name: "[16.04] Bindings/Solverdummies"
+    - name: "[18.04] Bindings/Solverdummies"
+    - name: "[16.04] deal.ii adapter"
+    - name: "[18.04] nutils <-> OpenFOAM"
 
   include:
     - stage: Building preCICE
