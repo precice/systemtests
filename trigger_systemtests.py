@@ -24,6 +24,12 @@ adapters_info = {"openfoam": adapter_info('openfoam-adapter', ['of-of', 'of-ccx'
                 "dealii":    adapter_info('dealii-adapter',   ['dealii-of'],        'Ubuntu1604.home'),
                 "fenics":    adapter_info('fenics-adapter',   ['fe-fe'],            'Ubuntu1804.home')}
 
+class msg_color:
+    green = "\033[92m"
+    bold = "\033[1m"
+    end = "\033[0m"
+
+
 def get_json_response(url, **kwargs):
 
     headers = {
@@ -215,11 +221,13 @@ def trigger_travis_and_wait_and_respond(job_body, user, repo):
 
     build_id = request_info['builds'][0]['id']
     build_number = request_info['builds'][0]['number']
-    print("###############################\n" +
+    print(msg_color.green +
+          "###############################\n" +
           "Request approved!\n" +
           "Assigned build on 'systemtests': {}\n".format(build_number) +
-          "<a href='https://travis-ci.org/github/precice/systemtests/builds/{}'>Link to build</a>\n".format(build_id) +
-          "###############################\n")
+          "Link to build: https://travis-ci.org/github/precice/systemtests/builds/{}\n".format(build_id) +
+          "###############################\n" +
+          msg_color.end)
     job_status = ''
     success_status = ["passed", "canceled"]
     failed_status = ["errored", "failed"]
