@@ -15,6 +15,21 @@ from urllib.error import HTTPError
 import argparse, os, sys, time
 from common import call, ccall, capture_output, get_test_participants, chdir
 
+
+def get_response(url, **kwargs):
+
+    headers = {
+      "Travis-API-Version": "3",
+      "Authorization": "token {}".format(os.environ['TRAVIS_ACCESS_TOKEN'])
+    }
+
+    req = Request(url, headers = headers, **kwargs )
+    response = urlopen( req ).read().decode()
+
+    return response
+
+
+
 def generate_commit_message(output_dir, success, test, base):
 
     travis_build_number = os.environ["TRAVIS_BUILD_NUMBER"]
@@ -42,7 +57,7 @@ def generate_commit_message(output_dir, success, test, base):
 def get_travis_job_log(job_id, tail = 0):
 
     txt_url = "https://api.travis-ci.org/v3/job/{}/log.txt".format(job_id)
-    response = urlopen(txt_url).read().decode()
+    response = get_response(text_url)
 
     # if log cutoff is enabled
     if tail > 0:
