@@ -57,7 +57,7 @@ def generate_commit_message(output_dir, success, test, base):
 def get_travis_job_log(job_id, tail = 0):
 
     txt_url = "https://api.travis-ci.org/v3/job/{}/log.txt".format(job_id)
-    response = get_response(text_url)
+    response = get_response(txt_url)
 
     # if log cutoff is enabled
     if tail > 0:
