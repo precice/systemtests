@@ -70,10 +70,10 @@ def run_compose(systest, branch, local, tag, force_rebuild, rm_all=False, verbos
     # should run with and docker images location
     export_cmd = "export PRECICE_BASE=-{}; ".format(adapter_base_name)
     extra_cmd = "export SYSTEST_REMOTE={}; ".format(docker.get_namespace()) if local else ""
-    compose_config_cmd = "docker-compose config && "
+    compose_config_cmd = "mkdir Logs; docker-compose config && "
     compose_exec_cmd = "bash ../../silent_compose.sh {}".format('debug' if verbose else "")
     copy_cmd = "docker cp tutorial-data:/Output ."
-    log_cmd = "mkdir Logs && docker-compose logs > Logs/container.log"
+    log_cmd = "docker-compose logs > Logs/container.log"
 
     commands_main = [export_cmd +
                      extra_cmd +

@@ -1,7 +1,8 @@
 import argparse, docker
 import system_testing
 import os
-                           
+from common import ccall
+
 if __name__ == "__main__":
     # Parsing flags
     parser = argparse.ArgumentParser(description='Build local docker image of an adapter.')
@@ -51,4 +52,6 @@ if __name__ == "__main__":
                                    "from" : precice_base_tag},
                        force_rebuild=args.force_rebuild,
                        namespace="")
-                       
+
+    with open(".docker_tag","w") as f:
+        f.write(tag)
