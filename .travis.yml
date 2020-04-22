@@ -263,60 +263,60 @@ jobs:
     - stage: Tests
       name: "[16.04] SU2 <-> Calculix"
       script:
-        - python system_testing.py -s su2-ccx
+        - python system_testing.py -s su2-ccx --branch develop
         - python push.py --test su2-ccx
 
     - name: "[16.04] OpenFOAM <-> OpenFOAM"
       script:
-        - python system_testing.py -s of-of
+        - python system_testing.py -s of-of --branch develop
         - python push.py --test of-of
 
     - name: "[16.04] Calculix <-> OpenFOAM"
       script:
-        - python system_testing.py -s of-ccx
+        - python system_testing.py -s of-ccx --branch develop
         - python push.py --test of-ccx
 
     - name: "[18.04] FEniCS <-> FEniCS"
       script:
-        - python system_testing.py -s fe-fe --base Ubuntu1804.home
+        - python system_testing.py -s fe-fe --base Ubuntu1804.home --branch develop
         - python push.py --test fe-fe --base Ubuntu1804.home
 
     - name: "[16.04] Bindings/Solverdummies"
       script:
-        - python system_testing.py -s bindings
+        - python system_testing.py -s bindings --branch develop
         - python push.py --test bindings
 
     - name: "[18.04] Bindings/Solverdummies"
       script:
-        - python system_testing.py -s bindings --base Ubuntu1804.home
+        - python system_testing.py -s bindings --base Ubuntu1804.home --branch develop
         - python push.py --test bindings --base Ubuntu1804.home
 
     - name: "[16.04] deal.ii <-> OpenFOAM"
       script:
-        - python system_testing.py -s dealii-of
+        - python system_testing.py -s dealii-of --branch develop
         - python push.py --test dealii-of
 
     - name: "[18.04] nutils <-> OpenFOAM"
       script:
-        - python system_testing.py -s nutils-of --base Ubuntu1804.home
+        - python system_testing.py -s nutils-of --base Ubuntu1804.home --branch develop
         - python push.py --test nutils-of --base Ubuntu1804.home
 
     - name: "[16.04] OpenFOAM <-> OpenFOAM [nearest projection]"
       script:
-        - python system_testing.py -s of-of_np
+        - python system_testing.py -s of-of_np --branch develop
         - python push.py --test of-of_np
 
     - name: "[16.04 PETSc] OpenFOAM <-> CalculiX [FSI] [Job failure permitted]"
       script:
-        - python system_testing.py -s of-ccx_fsi --base Ubuntu1604.home.PETSc
+        - python system_testing.py -s of-ccx_fsi --base Ubuntu1604.home.PETSc --branch develop
         - python push.py -t of-ccx_fsi --petsc
 
     - name: "[16.04] Elastictube1D - Python"
       script:
-        - python system_testing.py -s 1dtube_py
+        - python system_testing.py -s 1dtube_py --branch develop
         - python push.py -t 1dtube_py
 
     - name: "[16.04] Elastictube1D - C++"
       script:
-        - python system_testing.py -s 1dtube_cxx
+        - python system_testing.py -s 1dtube_cxx --branch develop
         - python push.py -t 1dtube_cxx
