@@ -12,13 +12,15 @@ jobs:
   allow_failures:
     - name: "Ubuntu 18.04.sudo.mpich [Job failure permitted]"
     - name: "Ubuntu 16.04 home PETSc [Job failure permitted]"
-    - name: "[16.04 PETSc] OpenFOAM <-> CalculiX [FSI] [Job failure permitted]"
     - name: "openFOAM adapter [PETSc] [Job failure permitted]"
     - name: "CalculiX adapter [PETSc] [Job failure permitted]"
-    - name: "[16.04] deal.ii <-> OpenFOAM"
-    - name: "[16.04] Bindings/Solverdummies"
-    - name: "[18.04] Bindings/Solverdummies"
-    - name: "[18.04] nutils <-> OpenFOAM"
+    - name: "[16.04] OpenFOAM <-> OpenFOAM [Job failure permitted]"
+    - name: "[16.04] Bindings/Solverdummies [Job failure permitted]"
+    - name: "[18.04] Bindings/Solverdummies [Job failure permitted]"
+    - name: "[16.04] deal.ii <-> OpenFOAM [Job failure permitted]"
+    - name: "[18.04] nutils <-> OpenFOAM [Job failure permitted]"
+    - name: "[16.04] OpenFOAM <-> OpenFOAM [nearest projection][Job failure permitted]"
+    - name: "[16.04 PETSc] OpenFOAM <-> CalculiX [FSI] [Job failure permitted]"
 
   include:
     - stage: Building preCICE
@@ -272,7 +274,7 @@ jobs:
         - python system_testing.py -s su2-ccx --branch $TRAVIS_BRANCH
         - python push.py --test su2-ccx
 
-    - name: "[16.04] OpenFOAM <-> OpenFOAM"
+    - name: "[16.04] OpenFOAM <-> OpenFOAM [Job failure permitted]"
       script:
         - python system_testing.py -s of-of --branch $TRAVIS_BRANCH
         - python push.py --test of-of
@@ -287,27 +289,27 @@ jobs:
         - python system_testing.py -s fe-fe --base Ubuntu1804.home --branch $TRAVIS_BRANCH
         - python push.py --test fe-fe --base Ubuntu1804.home
 
-    - name: "[16.04] Bindings/Solverdummies"
+    - name: "[16.04] Bindings/Solverdummies [Job failure permitted]"
       script:
         - python system_testing.py -s bindings --branch $TRAVIS_BRANCH
         - python push.py --test bindings
 
-    - name: "[18.04] Bindings/Solverdummies"
+    - name: "[18.04] Bindings/Solverdummies [Job failure permitted]"
       script:
         - python system_testing.py -s bindings --base Ubuntu1804.home --branch $TRAVIS_BRANCH
         - python push.py --test bindings --base Ubuntu1804.home
 
-    - name: "[16.04] deal.ii <-> OpenFOAM"
+    - name: "[16.04] deal.ii <-> OpenFOAM [Job failure permitted]"
       script:
         - python system_testing.py -s dealii-of --branch $TRAVIS_BRANCH
         - python push.py --test dealii-of
 
-    - name: "[18.04] nutils <-> OpenFOAM"
+    - name: "[18.04] nutils <-> OpenFOAM [Job failure permitted]"
       script:
         - python system_testing.py -s nutils-of --base Ubuntu1804.home --branch $TRAVIS_BRANCH
         - python push.py --test nutils-of --base Ubuntu1804.home
 
-    - name: "[16.04] OpenFOAM <-> OpenFOAM [nearest projection]"
+    - name: "[16.04] OpenFOAM <-> OpenFOAM [nearest projection][Job failure permitted]"
       script:
         - python system_testing.py -s of-of_np --branch $TRAVIS_BRANCH
         - python push.py --test of-of_np
