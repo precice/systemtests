@@ -42,6 +42,5 @@ RUN pip3 install --user https://github.com/precice/python-bindings/archive/$bran
 RUN pip3 install --user https://github.com/precice/fenics-adapter/archive/$branch.zip
 
 WORKDIR /home/precice
-RUN mkdir Logs
-RUN mkdir -p Data/Input Data/Output Data/Exchange
+RUN mkdir -p Logs Data/Input Data/Output Data/Exchange
 WORKDIR /home/precice/fenics-adapter
