@@ -266,7 +266,7 @@ jobs:
       name: "[16.04] SU2 <-> Calculix"
       script:
         - python system_testing.py -s su2-ccx --branch develop -v
-        - python push.py --test su2-ccx
+        - python push.py --test su2-ccx -o
 
     - name: "[16.04] OpenFOAM <-> OpenFOAM"
       script:
@@ -301,7 +301,7 @@ jobs:
     - name: "[18.04] nutils <-> OpenFOAM"
       script:
         - python system_testing.py -s nutils-of --base Ubuntu1804.home --branch develop -v
-        - python push.py --test nutils-of --base Ubuntu1804.home
+        - python push.py --test nutils-of --base Ubuntu1804.home -o
 
     - name: "[16.04] OpenFOAM <-> OpenFOAM [nearest projection]"
       script:
