@@ -11,7 +11,7 @@ services:
     command: >
        /bin/bash -c "cd /home/precice
        && python3 /home/precice/Data/Input/heat.py -d -i simple
-       && cp *iterations.log *convergence.log /home/precice/Data/Output"
+       && cp *iterations.log /home/precice/Data/Output"
     container_name: fenics-adapter-dirichlet
     depends_on:
       - tutorial-data
