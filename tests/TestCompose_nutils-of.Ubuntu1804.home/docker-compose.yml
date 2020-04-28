@@ -35,7 +35,7 @@ services:
     command: >
       /bin/bash -c "ln -sf /home/precice/Data/Input/* .
       && python3 cht.py
-      && mkdir -p /home/precice/Data/Output/Nutils &&  cp *.log *.vtk /home/precice/Data/Output/Nutils"
+      && mkdir -p /home/precice/Data/Output/Nutils &&  cp *convergence.log *iterations.log *.vtk /home/precice/Data/Output/Nutils"
     container_name: nutils-adapter
     depends_on:
       - tutorial-data
