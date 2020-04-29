@@ -42,7 +42,6 @@ RUN make -j $(nproc)
 
 # create directory for input/out/exchange
 WORKDIR /home/precice
-RUN mkdir Logs
-RUN mkdir -p Data/Input Data/Output Data/Exchange
+RUN mkdir -p Logs Data/Input Data/Output Data/Exchange
 ENV PATH="/home/precice/calculix-adapter/bin:${PATH}"
 WORKDIR /home/precice/calculix-adapter

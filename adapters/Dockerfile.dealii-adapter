@@ -9,12 +9,11 @@ COPY --from=deal.ii /root/dealii/ /home/precice/dealii/
 
 USER precice
 WORKDIR /home/precice
-RUN mkdir Logs
+RUN mkdir -p Logs Data/Input Data/Output Data/Exchange
 ARG branch=develop
 RUN git clone --branch $branch https://github.com/precice/dealii-adapter.git
 RUN cd dealii-adapter/coupled_elasto_dynamics/ && \
     cmake -DDEAL_II_DIR=$HOME/dealii -DDIM=3 -DCMAKE_BUILD_TYPE=Release . && \
     make -j $(nproc)
 
-RUN mkdir -p Data/Input Data/Output Data/Exchange
 WORKDIR /home/precice/dealii-adapter

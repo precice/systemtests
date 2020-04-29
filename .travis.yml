@@ -6,19 +6,17 @@ python:
 services:
   - docker
 install:
-  - pip install Jinja2
+  - pip install Jinja2  # Required for README templates in push.py
 
 jobs:
   allow_failures:
+    # Currently unstable tests that do not affect the build status
+    # To add a test here, list its exact name
     - name: "Ubuntu 18.04.sudo.mpich [Job failure permitted]"
     - name: "Ubuntu 16.04 home PETSc [Job failure permitted]"
-    - name: "[16.04 PETSc] OpenFOAM <-> CalculiX [FSI] [Job failure permitted]"
     - name: "openFOAM adapter [PETSc] [Job failure permitted]"
     - name: "CalculiX adapter [PETSc] [Job failure permitted]"
-    - name: "[16.04] deal.ii <-> OpenFOAM"
-    - name: "[16.04] Bindings/Solverdummies"
-    - name: "[18.04] Bindings/Solverdummies"
-    - name: "[18.04] nutils <-> OpenFOAM"
+    - name: "[16.04 PETSc] OpenFOAM <-> CalculiX [FSI] [Job failure permitted]"
 
 
   include:

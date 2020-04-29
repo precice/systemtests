@@ -13,7 +13,7 @@ services:
     command: >
       /bin/bash -c "
       ln -sf configs/* . &&
-      ./coupled_elasto_dynamics /home/precice/Data/Input/parameters.prm"
+      ./coupled_elasto_dynamics/coupled_elasto_dynamics /home/precice/Data/Input/parameters.prm"
     container_name: dealii-adapter
     depends_on:
       - tutorial-data
