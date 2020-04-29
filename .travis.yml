@@ -268,7 +268,7 @@ jobs:
       name: "[16.04] SU2 <-> Calculix"
       script:
         - python system_testing.py -s su2-ccx
-        - python push.py --test su2-ccx
+        - python push.py --test su2-ccx -o
 
     - name: "[16.04] OpenFOAM <-> OpenFOAM"
       script:
