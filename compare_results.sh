@@ -99,6 +99,7 @@ if [ -n "$diff_files" ]; then
       # Split by space and transform into the array
       difference=( $rel_max_difference )
       echo -e "> Numerical difference in $file1 and $file2"
+      echo -e "$num_diff"
       echo -e "Average: ${difference[0]} ; Maximum: ${difference[1]} ${NC}"
       ret=1
     fi
