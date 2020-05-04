@@ -308,14 +308,14 @@ jobs:
     - name: "[16.04 PETSc] OpenFOAM <-> CalculiX [FSI] [Job failure permitted]"
       script:
         - python system_testing.py -s of-ccx_fsi --base Ubuntu1604.home.PETSc
-        - python push.py -t of-ccx_fsi --petsc -o
+        - python push.py --test of-ccx_fsi --petsc -o
 
     - name: "[16.04] Elastictube1D - Python"
       script:
         - python system_testing.py -s 1dtube_py
-        - python push.py -t 1dtube_py
+        - python push.py --test 1dtube_py
 
     - name: "[16.04] Elastictube1D - C++"
       script:
         - python system_testing.py -s 1dtube_cxx
-        - python push.py -t 1dtube_cxx
+        - python push.py --test 1dtube_cxx
