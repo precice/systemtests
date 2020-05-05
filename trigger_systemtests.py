@@ -101,9 +101,9 @@ def generate_travis_job(adapter, user, trigger_failure = True):
 
     base_remote = "precice/precice-{base}-develop".format(base = base.lower())
     main_build_script = "docker build -f adapters/Dockerfile.{adapter} -t \
-        {user}/{adapter}:{tag} --build-arg from={base_remote} .".format(adapter =
+        {user}/{adapter}-{base}-develop:{tag} --build-arg from={base_remote} .".format(adapter =
                 adapters_info[adapter].repo, user = user, base_remote =
-                base_remote, tag = determine_image_tag())
+                base_remote, tag = determine_image_tag(), base=base.lower())
 
     if trigger_failure:
         after_failure_action += " python trigger_systemtests.py --failure --owner {USER} --adapter {ADAPTER}"
@@ -116,7 +116,7 @@ def generate_travis_job(adapter, user, trigger_failure = True):
         "script": adjust_travis_script(main_build_script, user, adapter),
         "after_success":
             [  'echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin',
-                "docker push {user}/{adapter}:{tag}".format(adapter =
+                'python push_adapter.py --dockerfile adapters/Dockerfile.{adapter} --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH'.format(adapter =
                     adapters_info[adapter].repo, user = user,tag = determine_image_tag()) ]
         }
 
