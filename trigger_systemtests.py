@@ -96,8 +96,8 @@ def generate_travis_job(adapter, user, trigger_failure = True):
 
     base = adapters_info[adapter].base
 
-    after_failure_action = "python push.py -t {TEST} --base {BASE} ;"
-    main_test_script = "python system_testing.py -s {TEST} --base {BASE}"
+    after_failure_action = ""
+    main_test_script = "python system_testing.py -s {TEST} --base {BASE} -v"
 
     base_remote = "precice/precice-{base}-develop".format(base = base.lower())
     main_build_script = "docker build -f adapters/Dockerfile.{adapter} -t \
@@ -126,9 +126,9 @@ def generate_travis_job(adapter, user, trigger_failure = True):
         "stage": "Running tests",
         "name":          "[{BASE}] {TESTNAME} <-> {TESTNAME}",
         # force docker-compose to consider an image with a particular tag
-        "script":        "export ${adapter_tag}={tag}; ".format(adapter_tag = adapter.upper() + "_TAG", tag = determine_image_tag()) \
-                        + main_test_script + "; " + \
-                        "python push.py -t {TEST}",
+        "script":      ["export {adapter_tag}={tag}; ".format(adapter_tag = adapter.upper() + "_TAG", tag = determine_image_tag()),
+                        main_test_script,
+                        "python push.py --test {TEST}"],
         "after_failure": after_failure_action
     };
 
@@ -145,6 +145,7 @@ def generate_travis_job(adapter, user, trigger_failure = True):
             "language": "python",
             "services": "docker",
             "python": "3.5",
+            "install": "pip install Jinja2",
             "jobs":  {
               "include":[
                 ]
@@ -159,8 +160,12 @@ def generate_travis_job(adapter, user, trigger_failure = True):
     for tests in adapters_info[adapter].tests:
         job = {}
         for key,systest_template in systest_templates.items():
-            job[key] = systest_template.format(TESTNAME=tests, USER=user, TEST=tests,
-                ADAPTER=adapter, BASE=base)
+            if key is not 'script':
+                job[key] = systest_template.format(TESTNAME=tests, USER=user, TEST=tests,
+                    ADAPTER=adapter, BASE=base)
+            else:
+                job[key] = [element.format(TESTNAME=tests, USER=user, TEST=tests,
+                    ADAPTER=adapter, BASE=base) for element in systest_template]
         jobs.append(job)
 
     job_body["request"]["message"] = "{} systemtest. Triggered by: {}".format(adapter, triggered_by)
