@@ -6,13 +6,13 @@ FROM ubuntu:16.04
 # Installing necessary dependacies for preCICE
 RUN apt-get -qq update && apt-get -qq install \
     build-essential \
-    libeigen3-dev \
     libxml2-dev \
     petsc-dev \
     git \
     python-numpy \
     python-dev \
     wget \
+    pkg-config \
     bzip2 && \
     rm -rf /var/lib/apt/lists/*
 
@@ -21,9 +21,14 @@ WORKDIR /cmake
 RUN wget -q -O- 'https://github.com/Kitware/CMake/releases/download/v3.13.4/cmake-3.13.4-Linux-x86_64.tar.gz' | tar xz
 ENV PATH="/cmake/cmake-3.13.4-Linux-x86_64/bin:$PATH"
 
+# Installing eigen from source
+WORKDIR /eigen
+RUN wget -nv 'https://gitlab.com/libeigen/eigen/-/archive/3.3.7/eigen-3.3.7.tar.bz2' -O - | tar xj
+ENV Eigen3_ROOT="/eigen/eigen-3.3.7"
+
 # Installing boost from source
 WORKDIR /boost-build
-RUN wget -nv 'https://dl.bintray.com/boostorg/release/1.65.1/source/boost_1_65_1.tar.bz2' -O - | tar xj && \
+RUN wget -nv 'https://downloads.sourceforge.net/project/boost/boost/1.65.1/boost_1_65_1.tar.bz2' -O - | tar xj && \
     cd boost_1_65_1 && \
     ./bootstrap.sh --with-libraries=log,thread,system,filesystem,program_options,test --prefix=/usr/local && \
     ./b2 -j$(nproc) install && \
@@ -36,7 +41,7 @@ ARG gid=1000
 ARG CACHEBUST
 
 # create user precice
-RUN groupadd -g ${gid} precice \ 
+RUN groupadd -g ${gid} precice \
     && useradd -u ${uid} -g ${gid} -m -s /bin/bash precice
 USER precice
 WORKDIR /home/precice
@@ -54,7 +59,7 @@ WORKDIR /home/precice/precice
 # Some parameters for the build, you can set them in the build command e.g.
 # sudo docker build Dockerfile.precice --build-arg petsc_para=yes --build-arg mpi_para=yes .
 # this will result in
-# cmake -DPETSC=yes -DMPI=yes -DPYTHON=no -DCMAKE_CXX_COMPILER=mpicxx -j2 /precice
+# cmake -DPRECICE_PETScMapping=yes -DPRECICE_MPICommunication=yes -DPRECICE_PythonActions=no -DCMAKE_CXX_COMPILER=mpicxx -j2 /precice
 ARG petsc_para=no
 ARG mpi_para=yes
 ARG python_para=no
@@ -63,11 +68,11 @@ RUN mkdir /home/precice/precice-build && \
     cd /home/precice/precice-build && \
     mkdir /home/precice/precice-install && \
     cmake -DBUILD_SHARED_LIBS=ON \
-          -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+          -DCMAKE_BUILD_TYPE=Debug \
           -DCMAKE_INSTALL_PREFIX=/home/precice/precice-install \
-          -DPETSC=$petsc_para \
-          -DMPI=$mpi_para \
-          -DPYTHON=$python_para \
+          -DPRECICE_PETScMapping=$petsc_para \
+          -DPRECICE_MPICommunication=$mpi_para \
+          -DPRECICE_PythonActions=$python_para \
           /home/precice/precice && \
     make -j$(nproc) && \
     make test_base && \

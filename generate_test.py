@@ -8,7 +8,7 @@ import os
 def generate_test_structure(test_name = None, base_image = None,
         participants = None, tutorial_path = None):
 
-    tmp_files = os.listdir('templates')
+    tmp_files = os.listdir(os.path.join('templates','test_template'))
 
     # adjust variables for easier reading in template files
     adapters      = [ p.split(':')[0] for p in participants ]
@@ -21,9 +21,12 @@ def generate_test_structure(test_name = None, base_image = None,
 
     renders = {t.replace('.jinja', ''): '' for t in tmp_files}
     for tmp_file in tmp_files:
-        with open(os.path.join('templates', tmp_file)) as f:
+        with open(os.path.join('templates','test_template', tmp_file)) as f:
             tmp = Template(f.read())
-            renders[tmp_file.replace('.jinja', '')] = tmp.render(locals())
+            renders[tmp_file.replace('.jinja', '')] = tmp.render(
+                    tutorial_path=tutorial_path,
+                    input_volumes=input_volumes,
+                    zipped_input=zipped_input)
 
     otp_dir = os.path.join('tests', "TestCompose_{test}.{base}".format(test =
         test_name, base = base_image))
@@ -82,7 +85,7 @@ def ask_user_input():
                           test_name_validator),
           'base_image':  InputHandler("Enter new base image for a test. Syntax: BaseImage.feature1.feature2 (e.g 'Ubuntu1604.home')\n",\
                           base_image_validator),
-        'participants':  InputHandler("Enter participants for a test. Syntax: participant1, particticipant2 (e.g 'su2-adapter, calculix-adapter')\n",\
+        'participants':  InputHandler("Enter participants for a test. Syntax: participant1, participant2 (e.g 'su2-adapter, calculix-adapter')\n",\
                           participants_validator),
         'tutorial_path': InputHandler("Enter tutorials directory which is represented by this test. Syntax: (e.g 'FSI/flap_perp/OpenFOAM-deal.II/')\n",\
                           tutorial_dir_validator)

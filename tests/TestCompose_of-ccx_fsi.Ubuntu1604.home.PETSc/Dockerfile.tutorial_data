@@ -2,7 +2,8 @@ from alpine
 
 ENV tutorial_path /tutorials/FSI/flap_perp/OpenFOAM-CalculiX
 RUN apk add git bash
-RUN git clone https://github.com/precice/tutorials
+ARG branch=develop
+RUN git clone --branch $branch https://github.com/precice/tutorials
 
 WORKDIR /
 
@@ -12,9 +13,9 @@ RUN sed -i '/application     pimpleFoam/d; s/\/\/ application     pimpleDyMFoam/
     $tutorial_path/Fluid/system/controlDict
 
 RUN mkdir configs &&  \
-    sed 's|distribution-type="gather-scatter"|distribution-type="gather-scatter" exchange-directory="/home/precice/Data/Exchange/" network="eth0"|g' \
-    $tutorial_path/precice-config_serial.xml > configs/precice-config.xml && cp $tutorial_path/config.yml configs/
-RUN rm $tutorial_path/precice-config_serial.xml $tutorial_path/precice-config.xml
+    sed -e 's|<m2n:sockets from=\"Fluid\" to=\"Calculix\"|<m2n:sockets from=\"Fluid\" to=\"Calculix\" exchange-directory=\"/home/precice/Data/Exchange/\" network=\"eth0\"/>|g' \
+    $tutorial_path/precice-config.xml > configs/precice-config.xml && cp $tutorial_path/config.yml configs/
+RUN rm $tutorial_path/precice-config.xml
 
 RUN addgroup -g 1000 precice && adduser -u 1000 -G precice -D precice && chown -R precice:precice tutorials configs
 USER precice

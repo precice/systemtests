@@ -1,7 +1,7 @@
-"""Script for pushing output and logfile to a repository.
+"""
+Script for pushing travis internal files to a github repository.
 
-This script pushes output files of a system test, if they exists, and a logfile
-to the repository: https://github.com/precice/precice_st_output.
+This script pushes to: https://github.com/precice/precice_st_output.
 
     Example:
         Example use to push output files and logfile of system test of-of:
@@ -9,115 +9,25 @@ to the repository: https://github.com/precice/precice_st_output.
             $ python push.py -s -t of-of
 """
 
-from trigger_systemtests import get_json_response
-from urllib.parse import urlencode
+from jinja2 import Template
 from urllib.request import Request, urlopen
+from urllib.error import HTTPError
 import argparse, os, sys, time
-from common import ccall, capture_output, get_test_participants, chdir
+from common import call, ccall, capture_output, get_test_participants, chdir
 
-def get_job_commit(job_id):
-    """ Checks commit that triggered travis job"""
-    url = "https://api.{TRAVIS_URL}/job/{JOB_ID}".format(TRAVIS_URL="travis-ci.org", JOB_ID=job_id)
-    resp =  get_json_response(url)
-    return resp['commit']
 
-def get_builds(user, repo, offset=0):
-    """ Get list of Travis builds of the repo """
-    url = "https://api.{TRAVIS_URL}/repo/{USER}%2F{REPO}/builds?offset={OFFSET}".format(TRAVIS_URL="travis-ci.org",
-            USER=user, REPO=repo, OFFSET = offset)
-    return get_json_response(url)
+def get_response(url, **kwargs):
 
-def get_last_successfull_commit(user, repo):
-    """ Identify last commit the passed on Travis """
+    headers = {
+      "Travis-API-Version": "3",
+      "Authorization": "token {}".format(os.environ['TRAVIS_ACCESS_TOKEN'])
+    }
 
-    commit = {}
-    offset = 0
-    while not commit:
-        builds = get_builds(user, repo, offset = offset)
-        for build in builds["builds"]:
-            if build["state"] == "passed":
-                commit = build["commit"]
-                break
-        offset += 25
-
-    return commit
-
-def get_travis_job_log(job_id, tail = 100):
-
-    txt_url = "https://api.travis-ci.org/v3/job/{}/log.txt".format(job_id)
-    req = Request(txt_url)
+    req = Request(url, headers = headers, **kwargs )
     response = urlopen( req ).read().decode()
-    job_log = "\n".join( response.split("\n")[-tail:] )
-    return job_log
 
-def create_job_log(test, log, exit_status):
+    return response
 
-    make_md_link = lambda name, link: "[{name}]({link})".format(name=
-            name, link=link)
-
-    build_url = os.environ["TRAVIS_BUILD_WEB_URL"]
-    build_number = os.environ["TRAVIS_BUILD_NUMBER"]
-    event_type = os.environ["TRAVIS_EVENT_TYPE"]
-    triggered_commit = os.environ["TRAVIS_COMMIT"]
-    job_id = os.environ["TRAVIS_JOB_ID"]
-    job_number = os.environ["TRAVIS_JOB_NUMBER"]
-    job_url = os.environ["TRAVIS_JOB_WEB_URL"]
-    commit_message = os.environ["TRAVIS_COMMIT_MESSAGE"]
-
-    # Decipher commit from the job message
-    if (event_type == "api"):
-        job_that_triggered = commit_message.split("Triggered by:")[-1]
-        if job_that_triggered == "manual script call":
-           event_type = "manual trigger"
-        else:
-           *_, adapter_name, _, adapter_job_id = job_that_triggered.split('/')
-           triggered_commit = get_job_commit(adapter_job_id)
-           event_type = "commit to the {}".format(adapter_name)
-    else:
-        triggered_commit = get_job_commit(job_id)
-
-    log.write("## Status: " + ("Passing" if not exit_status else "Failure") + " \n")
-    log.write("Build: {link} \n\n".format(link = make_md_link(build_number, build_url)))
-    log.write("Job: {link} \n\n".format(link = make_md_link(job_number, job_url)))
-    log.write("Triggered by: {link} \n".format(link =
-        make_md_link(event_type, triggered_commit['compare_url'])))
-
-    if exit_status:
-
-        adapters =  get_test_participants(test)
-        last_good_commits = {}
-        if adapters:
-            for adapter in adapters:
-                last_good_commits[adapter] = get_last_successfull_commit('precice', adapter).get('compare_url')
-        last_good_commits['systemtests'] = get_last_successfull_commit('precice', 'systemtests').get('compare_url')
-        failed_info = "Last successful commits \n* {commits} \n".format(commits =
-                "\n* ".join([make_md_link(name, commit) for name, commit in last_good_commits.items()]))
-        log.write(failed_info)
-
-    log.write("\n---\nLast 100 lines of the job log at the moment of push:\n")
-    log.write('```\n{job_log}\n```\n'.format(job_log =
-        get_travis_job_log(job_id)))
-    log.write(make_md_link("\nFull job log", "https://api.travis-ci.org/v3/job/{}/log.txt".format(job_id)))
-
-
-def add_output_files(output_dir, output_log_dir, success):
-
-    if success:
-        # Everything passes, no need to commit anything, remove previous output
-        ccall("git rm -r --ignore-unmatch {}".format(output_log_dir))
-    elif os.path.isdir(output_dir):
-        if os.path.isdir(output_log_dir):
-            # overwrite previous output to get rid of artifacts
-            ccall("git rm -rf {}".format(output_log_dir))
-        ccall("mv {} {}".format(output_dir, output_log_dir))
-        ccall("git add .")
-
-def add_job_log(systest, failed, log_dir):
-    with chdir(log_dir):
-        log_name = "log_{test}.md".format(test = systest)
-        with open(log_name, "w") as log:
-            create_job_log(systest, log, failed)
-        ccall("git add {log_name}".format(log_name = log_name))
 
 
 def generate_commit_message(output_dir, success, test, base):
@@ -144,37 +54,202 @@ def generate_commit_message(output_dir, success, test, base):
 
     return commit_msg_lines
 
+def get_travis_job_log(job_id, tail = 0):
+
+    txt_url = "https://api.travis-ci.org/v3/job/{}/log.txt".format(job_id)
+    response = get_response(txt_url)
+
+    # if log cutoff is enabled
+    if tail > 0:
+        job_log = "\n".join( response.split("\n")[-tail:] )
+    else:
+        job_log = response
+
+    return job_log
+
+
+def add_readme(
+        job_path,
+        type='test',
+        output_enabled=False,
+        output_missing=False,
+        logs_missing=False,
+        message=None
+        ):
+    """
+    Create a README.md at the location specified by readme_path.
+    """
+    job_link = os.environ["TRAVIS_JOB_WEB_URL"]
+    job_name = os.environ["TRAVIS_JOB_NAME"]
+    job_success = True if (os.environ["TRAVIS_TEST_RESULT"] == '0') else False
+
+    branch = os.environ["TRAVIS_BRANCH"]
+    pr_branch = os.environ["TRAVIS_PULL_REQUEST_BRANCH"]
+    is_pr = False if (pr_branch == "") else True
+
+    if (output_missing or logs_missing or message):
+        additional_info = True
+    else:
+        additional_info = False
+
+    with open(os.path.join('templates','readme_template', 'README.md')) as f:
+        tmp = Template(f.read())
+        readme_rendered = tmp.render(
+            type=type,
+            job_name=job_name,
+            job_success=job_success,
+            branch=branch,
+            pr_branch=pr_branch,
+            is_pr=is_pr,
+            job_link=job_link,
+            output_enabled=output_enabled,
+            output_missing=output_missing,
+            additional_info=additional_info,
+            logs_missing=logs_missing,
+            message=message)
+
+    with chdir(job_path):
+        with open("README.md", "w") as f:
+            f.write(readme_rendered)
+        ccall("git add README.md")
+
+
+
 if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser(description='Push information about the test to the output repository')
-    parser.add_argument('-t', '--test', help="Choose systemtest, results of which to push")
-    parser.add_argument('-s', '--success', action='store_true' ,help="Whether test was successfull")
-    parser.add_argument('-b', '--base', type=str, help="Base image of the test", default="Ubuntu1604.home")
+    repo_folder = "precice_st_output"
+    default_base = "Ubuntu1604.home"
+    default_st_branch = "master"
+
+    parser = argparse.ArgumentParser(description='Push build/test logs to output repository. Optionally includes result data (for tests only).')
+    parser.add_argument('--test', type=str, help="Which test to upload logs for.")
+    parser.add_argument('--adapter', type=str, help="Which adapter build to upload logs for.")
+    parser.add_argument('--precice', type=str, help="Which preCICE build to upload logs for.")
+    parser.add_argument('-b', '--base', type=str, help="Base image used", default=default_base)
+    parser.add_argument('-o', '--output', action='store_true', help="Enable result storage (only for tests, disabled by default)", )
+    parser.add_argument('--st-branch', type=str, help="Branch of precice_st_output to push to", default=default_st_branch)
+    parser.add_argument('--petsc', action='store_true', help="Use preCICE with PETSc as base image")
     args = parser.parse_args()
 
-    ccall("git clone https://github.com/precice/precice_st_output")
+    # Check that only one of test/adapter/precice is supplied
+    if sum(x is not None for x in [args.test, args.adapter, args.precice]) is not 1:
+        raise ValueError("You may only choose one of ['--test', '--adapter', '--precice'].")
 
-    test_type = "Test" if args.test == "bindings" else "TestCompose"
-    test_name = "{Type}_{test}.{base}".format(Type = test_type, test =
-            args.test, base = args.base)
-    if not os.path.isdir(test_name):
-        test_name = test_name.split(".")[0]
+    if args.test:
+        type = 'test'
+    elif args.adapter:
+        type = 'adapter'
+    elif args.precice:
+        type = 'precice'
 
-    log_dir = os.path.join(os.getcwd(), "precice_st_output", args.base)
-    output_log_dir = os.path.join(log_dir, "Output_{}_{}".format(test_type, args.test))
-    output_dir = os.path.join(os.getcwd(), "tests", test_name, "Output")
-    ccall("mkdir -p {}".format(log_dir))
+    job_id = os.environ["TRAVIS_JOB_ID"]
+    job_result = os.environ["TRAVIS_TEST_RESULT"]
+    job_success = True if (job_result == '0') else False
+    job_name = os.environ["TRAVIS_JOB_NAME"]
 
-    os.chdir(log_dir)
+    build_folder = os.environ["TRAVIS_BUILD_NUMBER"] # example: "1832"
+    job_folder_unpadded = os.environ["TRAVIS_JOB_NUMBER"] # example: "1832.8"
+    job_folder = "{}.{:02d}".format(build_folder, int(job_folder_unpadded.split('.')[1]))
 
-    add_job_log(args.test, not args.success, log_dir)
-    add_output_files(output_dir, output_log_dir, args.success)
+
+    ccall("git clone -b {st_branch} https://github.com/precice/precice_st_output".\
+        format(st_branch=args.st_branch))
+
+    # Path to repository folder
+    repo_path = os.path.join(os.getcwd(), repo_folder)
+    # Path to job folder
+    job_path = os.path.join(os.getcwd(), repo_folder, build_folder, job_folder)
+
+    output_missing = False
+
+    # Path to Logs folder inside a job folder
+    log_path = os.path.join(job_path, "Logs")
+    ccall("mkdir -p {}".format(log_path))
+    # Path to Output folder inside a job folder
+    output_path = os.path.join(job_path, "Output")
+
+    if args.adapter:
+        docker_tag = ""
+        with open("./.docker_tag","r") as f:
+            docker_tag = f.read()
+        ccall("docker create --name adapter -it {} bash ".format(docker_tag))
+        ccall("docker container ls -a")
+        ccall("docker cp adapter:/home/precice/Logs {}".format(job_path))
+        # remove file after reading
+        ccall("rm ./.docker_tag")
+
+    if args.test:
+        ccall("mkdir -p {}".format(output_path))
+        # extract files from container, IF ENABLED
+        if args.output:
+            ccall("docker cp tutorial-data:/Output {}".format(job_path))
+
+        # move container logs into correct folder, only compose tests have containers
+        compose_tests = ["dealii-of", "of-of", "su2-ccx", "of-ccx", "of-of_np",
+        "fe-fe","nutils-of", "of-ccx_fsi"]
+
+        if args.test in compose_tests:
+            test_dirname = "TestCompose_{systest}".format(systest=args.test)
+            test_dirname += "." + args.base
+            if args.petsc:
+                test_dirname += ".PETSc"
+            test_path = os.path.join(os.getcwd(), 'tests', test_dirname)
+            ccall("cp -r {test_path}/Logs {job_path}".\
+                   format(test_path=test_path, job_path=job_path))
+
+        # Check if Output is missing, given it is enabled
+        if args.output:
+           if not os.listdir(output_path):
+               ccall("echo '# Output was enabled, but no output files found!' > {path}".format(path=
+               os.path.join(output_path, "README.md")))
+               output_missing = True
+
+    # create travis log
+    with chdir(log_path):
+        with open("travis.log", "w") as log:
+            travis_log = get_travis_job_log(job_id)
+            log.write(travis_log)
+    # Check if Logs directory is empty. If yes, include a small README
+    logs_missing = False
+    if not os.listdir(log_path):
+        ccall("echo '# No log files found!' > {path}".format(path=
+        os.path.join(log_path, "README.md")))
+        logs_missing= True
+
+    # create README
+    add_readme(
+        job_path,
+        type=type,
+        output_enabled=args.output,
+        output_missing=output_missing,
+        logs_missing=logs_missing)
+
+
+    os.chdir(repo_path)
+    with chdir(repo_path):
+        ccall("git add {}".format(job_path))
 
     # finally commit
-    commit_msg_lines = generate_commit_message(output_dir, args.success, args.test, args.base)
-    commit_msg = " ".join(map( lambda x: "-m \"" + x + "\"", commit_msg_lines))
-    ccall("git commit " + commit_msg)
+    commit_msg = job_name
+    commit_msg += " - Success" if job_success else " - FAILURE"
+    if args.test and args.output:
+        if output_missing:
+            commit_msg += ", MISSING OUTPUT"
+    if logs_missing:
+        commit_msg += ", MISSING LOGS"
+    ccall("git commit -m '{}'".format(commit_msg))
     ccall("git config user.name 'Precice Bot'")
     ccall("git config user.email ${PRECICE_BOT_EMAIL}")
     ccall("git remote set-url origin https://${GH_TOKEN}@github.com/precice/precice_st_output.git > /dev/null 2>&1")
-    ccall("git pull --rebase && git push")
+
+
+    failed_push_count = 0
+    failed_push_limit = 50
+    # push, retry if failed
+    while call("git push"):
+        ccall("git pull --rebase")
+        failed_push_count += 1
+        if failed_push_count >= failed_push_limit:
+            break
+
+    print("Finished pushing to {}-{}!".format(repo_folder,args.st_branch))
