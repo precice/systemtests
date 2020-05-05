@@ -116,8 +116,8 @@ def generate_travis_job(adapter, user, trigger_failure = True):
         "script": adjust_travis_script(main_build_script, user, adapter),
         "after_success":
             [  'echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin',
-                'python push_adapter.py --dockerfile adapters/Dockerfile.{adapter} --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH'.format(adapter =
-                    adapters_info[adapter].repo, user = user,tag = determine_image_tag()) ]
+                'docker push {user}/{adapter}-{base}-develop:{tag}'.format(adapter =
+                    adapters_info[adapter].repo, user = user,tag = determine_image_tag(), base=base.lower()) ]
         }
 
     # template for actually runnig an adapter in combination with other
