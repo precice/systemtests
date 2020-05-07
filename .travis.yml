@@ -17,7 +17,8 @@ jobs:
     - name: "openFOAM adapter [PETSc] [Job failure permitted]"
     - name: "CalculiX adapter [PETSc] [Job failure permitted]"
     - name: "[16.04 PETSc] OpenFOAM <-> CalculiX [FSI] [Job failure permitted]"
-    - name: "[18.04] nutils <-> OpenFOAM"
+      name: "[16.04] SU2 <-> Calculix [unstable][Job failure permitted]"
+    - name: "[18.04] nutils <-> OpenFOAM [Job failure permitted]"
 
   include:
     - stage: Nutils
