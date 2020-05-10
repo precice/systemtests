@@ -44,8 +44,7 @@ RUN ./solverdummy ../precice-config.xml SolverOne MeshOne & ./solverdummy ../pre
 
 # Builds the Fortran solverdummy
 WORKDIR $PRECICE_ROOT/examples/solverdummies/fortran
-RUN make
-RUN cd ..
+RUN cmake . && make
 RUN ./solverdummy ../precice-config.xml SolverOne MeshOne & ./solverdummy ../precice-config.xml SolverTwo MeshTwo
 
 # Clones the fortran-module

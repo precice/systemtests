@@ -14,7 +14,7 @@ ENV FORTRAN=gfortran
 RUN apt-get -qq update && apt-get -qq install \
     python3 python3-dev python3-pip && \
     rm -rf /var/lib/apt/lists/*
-    
+
 USER precice
 
 RUN pip3 install --user --upgrade pip  # Use latest pip version. See https://github.com/precice/python-bindings#installing-the-package
@@ -44,8 +44,7 @@ RUN ./solverdummy ../precice-config.xml SolverOne MeshOne & ./solverdummy ../pre
 
 # Builds the Fortran solverdummy
 WORKDIR $PRECICE_ROOT/examples/solverdummies/fortran
-RUN make
-RUN cd ..
+RUN cmake . && make
 RUN ./solverdummy ../precice-config.xml SolverOne MeshOne & ./solverdummy ../precice-config.xml SolverTwo MeshTwo
 
 # Clones the fortran-module
