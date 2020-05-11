@@ -9,7 +9,6 @@ services:
     networks:
       - precicecomm
     volumes:
-      - exchange:/home/precice/Data/Exchange/
       - output:/home/precice/Data/Output/
     command: >
       /bin/bash -c "./Allrun &&
@@ -24,7 +23,6 @@ services:
       args:
         branch: "develop"
     volumes:
-      - exchange:/Exchange/
       - output:/Output/
     container_name: tutorial-data
 
