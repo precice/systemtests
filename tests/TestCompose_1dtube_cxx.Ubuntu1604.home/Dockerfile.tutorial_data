@@ -5,4 +5,5 @@ ARG branch=develop
 
 WORKDIR /
 # adjust configuration and paths
+RUN addgroup -g 1000 precice && adduser -u 1000 -G precice -D precice
 USER precice
