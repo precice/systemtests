@@ -30,8 +30,4 @@ services:
 networks:
   precicecomm:
 volumes:
-  exchange:
-  nutils_input:
-  openfoam_input:
   output:
-  configs:
