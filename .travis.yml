@@ -25,10 +25,10 @@ jobs:
     - stage: Tests
       name: "[16.04] Elastictube1D - Python"
       script:
-        - python system_testing.py -s 1dtube_py
+        - python system_testing.py -s 1dtube_py -v
         - python push.py --test 1dtube_py
 
     - name: "[16.04] Elastictube1D - C++"
       script:
-        - python system_testing.py -s 1dtube_cxx
+        - python system_testing.py -s 1dtube_cxx -v
         - python push.py --test 1dtube_cxx
