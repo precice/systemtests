@@ -1,0 +1,33 @@
+version: '3'
+services:
+  1dtube-ccx:
+    build:
+      context: .
+      dockerfile: Dockerfile.1dtubecxx
+      args:
+        from: "${SYSTEST_REMOTE}precice${PRECICE_BASE}"
+    networks:
+      - precicecomm
+    volumes:
+      - output:/home/precice/Data/Output/
+    command: >
+      /bin/bash -c "./Allrun &&
+        cp *.json *.log /home/precice/Data/Output/ &&
+        cp -r Postproc /home/precice/Data/Output/"
+    container_name: 1dtube-ccx
+
+  tutorial-data:
+    build:
+      context: .
+      dockerfile: Dockerfile.tutorial_data
+      args:
+        branch: "develop"
+    volumes:
+      - output:/Output/
+    container_name: tutorial-data
+
+
+networks:
+  precicecomm:
+volumes:
+  output:
