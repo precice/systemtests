@@ -1,4 +1,4 @@
-Timestep  Iteration  resNorm(0)  resNorm(1)  
+TimeWindow  Iteration  ResNorm(Pressure)  ResNorm(CrossSectionLength)  
 1  1  1.0000000000000000  0.0000001507649162  
 1  2  0.0092426077637776  0.0000001478801267  
 1  3  0.8894974714023499  0.0000000003583278  
