@@ -12,8 +12,9 @@ services:
       - output:/home/precice/Data/Output/
     command: >
       /bin/bash -c "./Allrun &&
-        cp *.json *.log /home/precice/Data/Output/ &&
-        cp -r Postproc /home/precice/Data/Output/"
+        cp *.log /home/precice/Data/Output/ &&
+        cp -r Postproc /home/precice/Data/Output/ &&
+        rm /home/precice/Data/Output/*summary.log"
     container_name: 1dtube-ccx
 
   tutorial-data:

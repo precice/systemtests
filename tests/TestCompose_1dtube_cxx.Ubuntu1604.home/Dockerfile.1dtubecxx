@@ -17,17 +17,4 @@ RUN git clone https://github.com/precice/elastictube1d.git
 
 RUN mkdir -p Data/Output/Postproc
 WORKDIR /home/precice/elastictube1d/cxx
-<<<<<<< HEAD
-<<<<<<< HEAD:tests/Test_1dtube_cxx.Ubuntu1604.home/Dockerfile
-RUN cmake . && make all && ./Allrun
-
-USER root
-# transfer results
-RUN cp *.log /Output/ && \
-    cp Postproc/*.vtk /Output/Postproc/
-=======
 RUN cmake . && make all
->>>>>>> EderK-add_elastictube1d_test:tests/TestCompose_1dtube_cxx.Ubuntu1604.home/Dockerfile.1dtubecxx
-=======
-RUN cmake . && make all
->>>>>>> 1b514faf29e9a0e22aa653dba796be068d227ce0
