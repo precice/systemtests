@@ -81,6 +81,8 @@ if [ -n "$diff_files" ]; then
 
     # Pairwise compares files fields, that are produces from diffs and computes average and maximum
     # relative differences
+  filename=$(basename $file1)
+    echo "Comparing values in $filename..."
     if [ -n "$num_diff" ]; then
       rel_max_difference=$( export max_diff_limit; export avg_diff_limit; echo "$num_diff" | awk 'function abs(v) {return v < 0 ? -v : v} { radius=NF/2;
               max_diff=0;
