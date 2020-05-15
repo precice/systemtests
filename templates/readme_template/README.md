@@ -1,5 +1,8 @@
 # {{job_name}}
 
+Job type: {{ type }}
+
+
 {% if job_success %}
 **Job succeeded!**
 {% else %}

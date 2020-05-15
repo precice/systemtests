@@ -70,10 +70,10 @@ def run_compose(systest, branch, local, tag, force_rebuild, rm_all=False, verbos
     # should run with and docker images location
     export_cmd = "export PRECICE_BASE=-{}; ".format(adapter_base_name)
     extra_cmd = "export SYSTEST_REMOTE={}; ".format(docker.get_namespace()) if local else ""
-    compose_config_cmd = "docker-compose config && "
+    compose_config_cmd = "mkdir Logs; docker-compose config && "
     compose_exec_cmd = "bash ../../silent_compose.sh {}".format('debug' if verbose else "")
     copy_cmd = "docker cp tutorial-data:/Output ."
-    log_cmd = "mkdir Logs && docker-compose logs > Logs/container.log"
+    log_cmd = "docker-compose logs > Logs/container.log"
 
     commands_main = [export_cmd +
                      extra_cmd +
@@ -225,7 +225,11 @@ if __name__ == "__main__":
     parser.add_argument('-l', '--local', action='store_true', help="Use local preCICE image (default: use remote image)")
     parser.add_argument('-s', '--systemtest', type=str, help="Choose system tests you want to use",
                         choices = common.get_tests(), required = True)
-    parser.add_argument('-b', '--branch', help="preCICE branch to use", default=os.environ["TRAVIS_BRANCH"] if os.environ["TRAVIS_PULL_REQUEST"] == "false" else os.environ["TRAVIS_PULL_REQUEST_BRANCH"])  # make sure that branch corresponding to system tests branch is used, if no branch is explicitly specified. If we are testing a pull request, make sure to test agains branch from which PR originated.
+    parser.add_argument('-b', '--branch', help="preCICE branch to use", default=os.environ["TRAVIS_BRANCH"] if os.environ["TRAVIS_PULL_REQUEST"] == "false" else "develop")  # make sure that branch corresponding to system tests branch is used, if no branch is explicitly specified. If we are testing a pull request, will test against develop by default.
+# Usage of the branch argument:
+#   When on a PR, this will by default use the develop versions of preCICE and adapter images.
+#   This makes it easier to experiment with tests, which are most commonly addressed by PRs
+#   (otherwise you would need to also create preCICE and adapter images for your branch which are only different in name)
     parser.add_argument('-f', '--force_rebuild', nargs='+', help="Force rebuild of variable parts of docker image",
                         default = [], choices  = ["precice", "tests"])
     parser.add_argument('--base', type=str,help="Base preCICE image to use",

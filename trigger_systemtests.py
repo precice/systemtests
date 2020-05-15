@@ -24,6 +24,12 @@ adapters_info = {"openfoam": adapter_info('openfoam-adapter', ['of-of', 'of-ccx'
                 "dealii":    adapter_info('dealii-adapter',   ['dealii-of'],        'Ubuntu1604.home'),
                 "fenics":    adapter_info('fenics-adapter',   ['fe-fe'],            'Ubuntu1804.home')}
 
+class msg_color:
+    green = "\033[92m"
+    bold = "\033[1m"
+    end = "\033[0m"
+
+
 def get_json_response(url, **kwargs):
 
     headers = {
@@ -90,14 +96,14 @@ def generate_travis_job(adapter, user, trigger_failure = True):
 
     base = adapters_info[adapter].base
 
-    after_failure_action = "python push.py -t {TEST} --base {BASE} ;"
-    main_test_script = "python system_testing.py -s {TEST} --base {BASE}"
+    after_failure_action = ""
+    main_test_script = "python system_testing.py -s {TEST} --base {BASE} -v"
 
     base_remote = "precice/precice-{base}-develop".format(base = base.lower())
     main_build_script = "docker build -f adapters/Dockerfile.{adapter} -t \
-        {user}/{adapter}:{tag} --build-arg from={base_remote} .".format(adapter =
+        {user}/{adapter}-{base}-develop:{tag} --build-arg from={base_remote} .".format(adapter =
                 adapters_info[adapter].repo, user = user, base_remote =
-                base_remote, tag = determine_image_tag())
+                base_remote, tag = determine_image_tag(), base=base.lower())
 
     if trigger_failure:
         after_failure_action += " python trigger_systemtests.py --failure --owner {USER} --adapter {ADAPTER}"
@@ -110,8 +116,8 @@ def generate_travis_job(adapter, user, trigger_failure = True):
         "script": adjust_travis_script(main_build_script, user, adapter),
         "after_success":
             [  'echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin',
-                "docker push {user}/{adapter}:{tag}".format(adapter =
-                    adapters_info[adapter].repo, user = user,tag = determine_image_tag()) ]
+                'docker push {user}/{adapter}-{base}-develop:{tag}'.format(adapter =
+                    adapters_info[adapter].repo, user = user,tag = determine_image_tag(), base=base.lower()) ]
         }
 
     # template for actually runnig an adapter in combination with other
@@ -120,16 +126,16 @@ def generate_travis_job(adapter, user, trigger_failure = True):
         "stage": "Running tests",
         "name":          "[{BASE}] {TESTNAME} <-> {TESTNAME}",
         # force docker-compose to consider an image with a particular tag
-        "script":        "export ${adapter_tag}={tag}; ".format(adapter_tag = adapter.upper() + "_TAG", tag = determine_image_tag()) \
-                        + main_test_script,
-        "after_success": "python push.py -s -t {TEST}",
+        "script":      ["export {adapter_tag}={tag}; ".format(adapter_tag = adapter.upper() + "_TAG", tag = determine_image_tag()),
+                        main_test_script,
+                        "python push.py --test {TEST}"],
         "after_failure": after_failure_action
     };
 
     job_body={
         "request": {
-          "message": "{} systemtests".format(adapter),
-          "branch": "master",
+          "message": "{} systemtest".format(adapter),
+          "branch": "develop",
           "config": {
             # we need to use 'replace' to replace .travis.yml,
             # that is originally present in the repo
@@ -139,6 +145,7 @@ def generate_travis_job(adapter, user, trigger_failure = True):
             "language": "python",
             "services": "docker",
             "python": "3.5",
+            "install": "pip install Jinja2",
             "jobs":  {
               "include":[
                 ]
@@ -153,11 +160,15 @@ def generate_travis_job(adapter, user, trigger_failure = True):
     for tests in adapters_info[adapter].tests:
         job = {}
         for key,systest_template in systest_templates.items():
-            job[key] = systest_template.format(TESTNAME=tests, USER=user, TEST=tests,
-                ADAPTER=adapter, BASE=base)
+            if key is not 'script':
+                job[key] = systest_template.format(TESTNAME=tests, USER=user, TEST=tests,
+                    ADAPTER=adapter, BASE=base)
+            else:
+                job[key] = [element.format(TESTNAME=tests, USER=user, TEST=tests,
+                    ADAPTER=adapter, BASE=base) for element in systest_template]
         jobs.append(job)
 
-    job_body["request"]["message"] = "{} systemtest. Triggered by:{}".format(adapter, triggered_by)
+    job_body["request"]["message"] = "{} systemtest. Triggered by: {}".format(adapter, triggered_by)
     job_body["request"]["config"]["jobs"]["include"] = jobs;
 
     return job_body
@@ -203,33 +214,42 @@ def trigger_travis_and_wait_and_respond(job_body, user, repo):
     # it case request is being processes slow for whatever reasons
     # (e.g) multiple requests were triggered, we don't yet have
     # info about job_id, so we'll wait until we have it
-    print ("Request pending..")
+    print("Request pending...", flush=True)
     while request_info.get('state') == 'pending':
         # for ther reference in case of failures
-        print ("Current request status is {}".format(request_info['state']))
+        print("Current request status is '{}'.".format(request_info['state']), flush=True)
         request_info = query_request_info(user, repo, request_id)
-        time.sleep(60)
+        time.sleep(20)
 
     if request_info["result"] != "approved":
-        raise Exception("Systemtest build request did not get approved")
+        raise Exception("Systemtest build request did not get approved.")
 
     build_id = request_info['builds'][0]['id']
     build_number = request_info['builds'][0]['number']
-    print("\nRequest approved!\n" +
-          "Assigned build on 'systemtests': {}\n\n".format(build_number))
+    print(msg_color.green +
+          "###############################\n" +
+          "Request approved!\n" +
+          "Assigned build number on 'systemtests': {}\n\n".format(build_number) +
+          "Link to build page:\n" +
+          "https://travis-ci.org/github/precice/systemtests/builds/{}\n".format(build_id) +
+          "###############################\n" +
+          msg_color.end)
     job_status = ''
     success_status = ["passed", "canceled"]
     failed_status = ["errored", "failed"]
 
-    print ("Job started..")
+    print("Job started!", flush=True)
     while not job_status in (success_status + failed_status):
+        time.sleep(20)
         job_status = check_job_status(build_id)
-        print ("Current job status is {}. Be patient...".format(job_status))
-        time.sleep(60)
+        print("Current job status is '{}'. Please wait...".format(job_status), flush=True)
 
     if job_status in success_status:
+        print("Systemtest succeeded!")
         exit(0)
     else:
+        print("Systemtest failed!\n" +
+              "For more information, view the associated systemtest build.\n")
         exit(1)
 
 
@@ -242,8 +262,8 @@ def generate_failure_callback():
 
     callback_body={
     "request": {
-     "message": "Systemtests failed. Build url:{}".format(triggered_by),
-      "branch": "master",
+     "message": "Systemtests failed! Build url: {}".format(triggered_by),
+      "branch": "develop",
         "config": {
           "merge_mode": "replace",
           "sudo": "true",
