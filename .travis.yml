@@ -17,8 +17,7 @@ jobs:
     - name: "openFOAM adapter [PETSc] [Job failure permitted]"
     - name: "CalculiX adapter [PETSc] [Job failure permitted]"
     - name: "[16.04 PETSc] OpenFOAM <-> CalculiX [FSI] [Job failure permitted]"
-      name: "[16.04] SU2 <-> Calculix [unstable][Job failure permitted]"
-    - name: "[18.04] nutils <-> OpenFOAM [Job failure permitted]"
+    - name: "[16.04] SU2 <-> Calculix [unstable][Job failure permitted]"
 
   include:
     - stage: Building preCICE
@@ -302,7 +301,7 @@ jobs:
         - python system_testing.py -s dealii-of
         - python push.py --test dealii-of
 
-    - name: "[18.04] nutils <-> OpenFOAM [Job failure permitted]"
+    - name: "[18.04] nutils <-> OpenFOAM"
       script:
         - python system_testing.py -s nutils-of --base Ubuntu1804.home
         - python push.py --test nutils-of --base Ubuntu1804.home
