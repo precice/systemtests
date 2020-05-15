@@ -51,23 +51,8 @@ jobs:
           python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.home --docker-username $DOCKER_USERNAME
 
     - stage: Building preCICE
-      name: "Ubuntu 16.04 home PETSc [Job failure permitted]"
-      if: fork = false
-      script:
-        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.home --petsc yes --docker-username $DOCKER_USERNAME
-        - python push.py --precice precice/Dockerfile.Ubuntu1604.home
-      deploy:
-        skip_cleanup: true
-        provider: script
-        on:
-          all_branches: true
-        script: >-
-          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.home --petsc yes --docker-username $DOCKER_USERNAME
-
-    - stage: Building preCICE
       name: "Ubuntu 16.04.sudo"
-      if: type = cron
+      if: fork = false
       script:
         - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.sudo --docker-username $DOCKER_USERNAME
         - python push.py --precice precice/Dockerfile.Ubuntu1604.sudo
@@ -79,6 +64,36 @@ jobs:
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
           python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.sudo --docker-username $DOCKER_USERNAME
+
+    - stage: Building preCICE
+      name: "Ubuntu 16.04.package"
+      if: fork = false
+      script:
+        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.package --docker-username $DOCKER_USERNAME
+        - python push.py --precice precice/Dockerfile.Ubuntu1604.package
+      deploy:
+        skip_cleanup: true
+        provider: script
+        on:
+          all_branches: true
+        script: >-
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
+          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.package --docker-username $DOCKER_USERNAME
+
+      - stage: Building preCICE
+      name: "Ubuntu 16.04 home PETSc [Job failure permitted]"
+      if: fork = false
+      script:
+        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.home --petsc yes --docker-username $DOCKER_USERNAME
+        - python push.py --precice precice/Dockerfile.Ubuntu1604.home
+        deploy:
+          skip_cleanup: true
+          provider: script
+          on:
+            all_branches: true
+            script: >-
+              echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
+              python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.home --petsc yes --docker-username $DOCKER_USERNAME
 
     - stage: Building preCICE
       name: "Ubuntu 18.04.home"
@@ -97,7 +112,7 @@ jobs:
 
     - stage: Building preCICE
       name: "Ubuntu 18.04.sudo"
-      if: type = cron
+      if: fork = false
       script:
         - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo --docker-username $DOCKER_USERNAME
         - python push.py --precice precice/Dockerfile.Ubuntu1804.sudo
@@ -109,21 +124,6 @@ jobs:
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
           python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo --docker-username $DOCKER_USERNAME
-
-    - stage: Building preCICE
-      name: "Ubuntu 18.04.sudo.mpich [Job failure permitted]"
-      if: type = cron
-      script:
-        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo.mpich --docker-username $DOCKER_USERNAME
-        - python push.py --precice precice/Dockerfile.Ubuntu1804.sudo.mpich
-      deploy:
-        skip_cleanup: true
-        provider: script
-        on:
-          all_branches: true
-        script: >-
-          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo.mpich --docker-username $DOCKER_USERNAME
 
     - stage: Building preCICE
       name: "Ubuntu 18.04.package"
@@ -140,11 +140,71 @@ jobs:
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
           python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.package --docker-username $DOCKER_USERNAME
 
+    - stage: Building preCICE
+      name: "Ubuntu 18.04.sudo.mpich [Job failure permitted]"
+      if: fork = false
+      script:
+        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo.mpich --docker-username $DOCKER_USERNAME
+        - python push.py --precice precice/Dockerfile.Ubuntu1804.sudo.mpich
+      deploy:
+        skip_cleanup: true
+        provider: script
+        on:
+          all_branches: true
+        script: >-
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
+          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo.mpich --docker-username $DOCKER_USERNAME
+
+    - stage: Building preCICE
+      name: "Ubuntu 20.04.home"
+      if: fork = false
+      script:
+        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu2004.home --docker-username $DOCKER_USERNAME
+        - python push.py --precice precice/Dockerfile.Ubuntu2004.home
+      deploy:
+        skip_cleanup: true
+        provider: script
+        on:
+          all_branches: true
+        script: >-
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
+          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu2004.home --docker-username $DOCKER_USERNAME
+
+    - stage: Building preCICE
+      name: "Ubuntu 20.04.sudo"
+      if: fork = false
+      script:
+        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu2004.sudo --docker-username $DOCKER_USERNAME
+        - python push.py --precice precice/Dockerfile.Ubuntu2004.sudo
+      deploy:
+        skip_cleanup: true
+        provider: script
+        on:
+          all_branches: true
+        script: >-
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
+          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu2004.sudo --docker-username $DOCKER_USERNAME
+
+    - stage: Building preCICE
+      name: "Ubuntu 20.04.package"
+      if: fork = false
+      script:
+        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu2004.package --docker-username $DOCKER_USERNAME
+        - python push.py --precice precice/Dockerfile.Ubuntu2004.package
+      deploy:
+        skip_cleanup: true
+        provider: script
+        on:
+          all_branches: true
+        script: >-
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
+          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu2004.package --docker-username $DOCKER_USERNAME
+
     - name: "[Build preCICE on fork] Using cached version"
       if: fork = true
       script: true
 
-
+###############################################################################
 
     - stage: Building adapters
       name: "[16.04] SU2 adapter"
@@ -263,7 +323,7 @@ jobs:
       if: fork = true
       script: true
 
-
+###############################################################################
 
     - stage: Tests
       name: "[16.04] SU2 <-> Calculix [unstable][Job failure permitted]"
