@@ -21,28 +21,28 @@ interfaces
     locations         faceCenters;
     connectivity      false;
     patches           (interface);
-
+    
     readData
     (
       Temperature
     );
-
+    
     writeData
     (
     );
   };
-
+  
   Interfaces2
   {
     mesh              Solid-Mesh-Nodes;
     locations         faceNodes;
     connectivity      true;
     patches           (interface);
-
+    
     readData
     (
     );
-
+    
     writeData
     (
       Heat-Flux

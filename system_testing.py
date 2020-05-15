@@ -162,7 +162,7 @@ def comparison(pathToRef, pathToOutput):
 def build_run_compare(test, tag, branch, local_precice, force_rebuild, rm_all=False, verbose=False):
     """ Runs and compares test, using precice branch. """
     compose_tests = ["dealii-of", "of-of", "su2-ccx", "of-ccx", "of-of_np",
-            "fe-fe","nutils-of", "of-ccx_fsi", "of-ca"]
+            "fe-fe","nutils-of", "of-ccx_fsi", "1dtube_cxx", "1dtube_py", "of-ca"]
     test_basename = test.split(".")[0]
     if local_precice:
         build_adapters(test_basename, tag, branch, local_precice, force_rebuild)
@@ -225,7 +225,7 @@ if __name__ == "__main__":
     parser.add_argument('-l', '--local', action='store_true', help="Use local preCICE image (default: use remote image)")
     parser.add_argument('-s', '--systemtest', type=str, help="Choose system tests you want to use",
                         choices = common.get_tests(), required = True)
-    parser.add_argument('-b', '--branch', help="preCICE branch to use", default=os.environ["TRAVIS_BRANCH"] if os.environ["TRAVIS_PULL_REQUEST"] == "false" else "develop")  # make sure that branch corresponding to system tests branch is used, if no branch is explicitly specified. If we are testing a pull request, will test against develop by default.
+    parser.add_argument('-b', '--branch', help="preCICE branch to use", default="develop")  # make sure that branch corresponding to system tests branch is used, if no branch is explicitly specified. If we are testing a pull request, will test against develop by default.
 # Usage of the branch argument:
 #   When on a PR, this will by default use the develop versions of preCICE and adapter images.
 #   This makes it easier to experiment with tests, which are most commonly addressed by PRs
