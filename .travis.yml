@@ -52,7 +52,7 @@ jobs:
 
     - stage: Building preCICE
       name: "Ubuntu 16.04.sudo"
-      if: fork = false
+      if: type = cron
       script:
         - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.sudo --docker-username $DOCKER_USERNAME
         - python push.py --precice precice/Dockerfile.Ubuntu1604.sudo
@@ -67,7 +67,7 @@ jobs:
 
     - stage: Building preCICE
       name: "Ubuntu 16.04.package"
-      if: fork = false
+      if: type = cron
       script:
         - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.package --docker-username $DOCKER_USERNAME
         - python push.py --precice precice/Dockerfile.Ubuntu1604.package
@@ -112,7 +112,7 @@ jobs:
 
     - stage: Building preCICE
       name: "Ubuntu 18.04.sudo"
-      if: fork = false
+      if: type = cron
       script:
         - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo --docker-username $DOCKER_USERNAME
         - python push.py --precice precice/Dockerfile.Ubuntu1804.sudo
@@ -127,7 +127,7 @@ jobs:
 
     - stage: Building preCICE
       name: "Ubuntu 18.04.package"
-      if: fork = false
+      if: type = cron
       script:
         - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.package --docker-username $DOCKER_USERNAME
         - python push.py --precice precice/Dockerfile.Ubuntu1804.package
@@ -142,7 +142,7 @@ jobs:
 
     - stage: Building preCICE
       name: "Ubuntu 18.04.sudo.mpich [Job failure permitted]"
-      if: fork = false
+      if: type = cron
       script:
         - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo.mpich --docker-username $DOCKER_USERNAME
         - python push.py --precice precice/Dockerfile.Ubuntu1804.sudo.mpich
