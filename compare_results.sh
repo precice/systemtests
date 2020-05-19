@@ -67,7 +67,7 @@ if [ -n "$diff_files" ]; then
     num_filter='s/(\|)\||\|>\|<//g; /[a-df-zA-Z]\|[vV]ersion/d'
     # Filter for text lines. Compare these seperately from numerical lines
     # Ignore any timestamps
-    txt_filter='s/(\|)\||\|>\|<//g; /[a-df-zA-Z]\|[vV]ersion/!d; s/[0-9][0-9]:[0-9][0-9]:[0-9][0-9]//g; /Timestamp\|[rR]untime\|Unexpected end of/d; /Run finished/q'
+    txt_filter='s/(\|)\||\|>\|<//g; /[a-df-zA-Z]/!d; s/[0-9][0-9]:[0-9][0-9]:[0-9][0-9]//g; /Timestamp\|[rR]untime\|[vV]ersion\|[rR]evision\|Unexpected end of/d; /Run finished/q'
     file1_num=$( cat "$file1" | sed "$num_filter")
     file2_num=$( cat "$file2" | sed "$num_filter")
 
@@ -100,13 +100,13 @@ if [ -n "$diff_files" ]; then
     if [ -n "$rel_max_difference" ]; then
       # Split by space and transform into the array
       difference=( $rel_max_difference )
-      echo -e "> Numerical difference in $file1 and $file2"
+      echo -e "> Numerical difference in $filename"
       echo -e "$num_diff"
       echo -e "Average: ${difference[0]} ; Maximum: ${difference[1]} ${NC}"
       ret=1
     fi
     if [ -n "$txt_diff" ]; then
-      echo -e "> Text difference in $file1 and $file2"
+      echo -e "> Text difference in $filename"
       echo -e "$txt_diff"
       ret=1
     fi
