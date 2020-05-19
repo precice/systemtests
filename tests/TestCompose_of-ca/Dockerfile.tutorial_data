@@ -5,7 +5,7 @@ ENV workdir_path /home/precice/Data/Input
 ENV ca_adapter_path /home/precice/code_aster-adapter/cht
 RUN apk add git bash
 
-    # Change this branch to 'develop'
+# TODO: Change this branch to 'develop'
 ARG branch=CA_OpenFOAM
 RUN git clone --branch $branch https://github.com/precice/tutorials
 
@@ -25,7 +25,7 @@ RUN \
 
 RUN \
     cd /tutorials/CHT/flow-over-plate/buoyantSimpleFoam-aster && \
-    sed -i 's|path\/to\/tutorials\/CHT\/flow-over-plate\/buoyantSimpleFoam-aster"|home\/precice\/Data\/Exchange" network="eth0"|g' precice-config.xml && \
+    sed -i 's|/home/tester/tutorials/CHT/flow-over-plate/buoyantSimpleFoam-aster"|/home/precice/Data/Exchange" network="eth0"|g' precice-config.xml && \
     sed -i 's|10|1|g' config.comm && \
     sed -i 's|100|10|g' config.comm && \
     sed -i 's|value="100"|value="10"|g' precice-config.xml && \
