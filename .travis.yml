@@ -231,6 +231,19 @@ jobs:
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
           python push_adapter.py --dockerfile adapters/Dockerfile.fenics-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
 
+    - name: "[18.04] Code_Aster adapter"
+      if: fork = false
+      script:
+        - python build_adapter.py --dockerfile adapters/Dockerfile.codeaster-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
+      deploy:
+        skip_cleanup: true
+        provider: script
+        on:
+          all_branches: true
+          script: >-
+            echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
+            python push_adapter.py --dockerfile adapters/Dockerfile.codeaster-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
+
     - name: "[16.04] OpenFOAM adapter [PETSc] [Job failure permitted]"
       if: fork = false
       script:
@@ -258,6 +271,7 @@ jobs:
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
           python push_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1604 --precice-installation home --petsc yes --docker-username $DOCKER_USERNAME
+
 
     - name: "[Build adapters on fork] Using cached version"
       if: fork = true
@@ -310,6 +324,11 @@ jobs:
       script:
         - python system_testing.py -s of-of_np -v
         - python push.py --test of-of_np
+
+    - name: "[18.04] OpenFOAM <-> Code_Aster"
+      script:
+        - python system_testing.py -s of-ca --base Ubuntu1804.home -v
+        - python push.py --test of-ca
 
     - name: "[16.04] Elastictube1D - Python"
       script:
