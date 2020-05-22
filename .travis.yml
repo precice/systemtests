@@ -328,7 +328,7 @@ jobs:
     - name: "[18.04] OpenFOAM <-> Code_Aster"
       script:
         - python system_testing.py -s of-ca --base Ubuntu1804.home -v
-        - python push.py --test of-ca -o
+        - python push.py --test of-ca
 
     - name: "[16.04] Elastictube1D - Python"
       script:
