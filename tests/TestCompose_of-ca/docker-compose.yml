@@ -32,7 +32,8 @@ services:
       /bin/bash -c "source /home/precice/Code_Aster/etc/codeaster/profile.sh &&
       cd /home/precice/Data/Input &&
       ./runSolid &&
-      cp -r Solid/ /home/precice/Data/Output/"
+      mkdir /home/precice/Data/Output/Solid &&
+      cp -r Solid/REPE_OUT /home/precice/Data/Output/Solid"
     container_name: codeaster-adapter-solid
     depends_on:
       - tutorial-data
