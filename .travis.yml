@@ -234,7 +234,7 @@ jobs:
     - name: "[18.04] Code_Aster adapter"
       if: fork = false
       script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.codeaster-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
+        - python build_adapter.py --dockerfile adapters/Dockerfile.codeaster-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
       deploy:
         skip_cleanup: true
         provider: script
@@ -242,7 +242,7 @@ jobs:
           all_branches: true
           script: >-
             echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-            python push_adapter.py --dockerfile adapters/Dockerfile.codeaster-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME --branch $TRAVIS_BRANCH
+            python push_adapter.py --dockerfile adapters/Dockerfile.codeaster-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
 
     - name: "[16.04] OpenFOAM adapter [PETSc] [Job failure permitted]"
       if: fork = false
