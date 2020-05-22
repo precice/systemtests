@@ -31,5 +31,4 @@ F mmed /home/precice/Data/Input/Solid/solid.mmed D  20
 R repe /home/precice/Data/Input/Solid/REPE_OUT D  0
 R repe /home/precice/Data/Input/Solid/REPE_OUT R  0
 F mess /home/precice/Data/Input/Solid/solid.mess R  6
-F rmed /home/precice/Data/Input/Solid/solid.rmed R  80
 F resu /home/precice/Data/Input/Solid/solid.resu R  8

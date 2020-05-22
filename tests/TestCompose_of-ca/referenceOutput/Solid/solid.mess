@@ -138,9 +138,9 @@ while adapter.isCouplingOngoing():
         # Output if necessary
         k += 1
         if k % settings["simulation"]["output-frequency"] == 0:
-               filename = "REPE_OUT/output-" + str(k) + ".rmed"
-               DEFI_FICHIER(FICHIER=filename, UNITE=80+k, TYPE='BINARY')
-               IMPR_RESU(FORMAT='MED', UNITE=80+k, RESU=_F(RESULTAT=TEMP))
+               filename = "REPE_OUT/output-" + str(k) + ".resu"
+               DEFI_FICHIER(FICHIER=filename, UNITE=80+k, TYPE='ASCII')
+               IMPR_RESU(FORMAT='RESULTAT', UNITE=80+k, RESU=(_F(RESULTAT=TEMP, NOM_CHAM='TEMP', FORM_TABL='EXCEL', TOUT_PARA='OUI', FORMAT_R='E14.5')))
                DEFI_FICHIER(ACTION='LIBERER', UNITE=80+k)
 
         # Use current solution as initial condition for the next time step
@@ -177,11 +177,11 @@ FIN()
                    révision 9aa55c3f2e9e - branche 'default'                    
                          Copyright EDF R&D 1991 - 2020                          
                                                                                 
-                    Exécution du : Thu Apr  9 15:41:35 2020                     
-                        Nom de la machine : 3a5fb3133c27                        
+                    Exécution du : Fri May 22 13:02:13 2020                     
+                        Nom de la machine : 171d41a3c6a5                        
                               Architecture : 64bit                              
                           Type de processeur : x86_64                           
-Système d'exploitation : Linux-5.3.0-45-generic-x86_64-with-Ubuntu-18.04-bionic 
+Système d'exploitation : Linux-4.4.0-101-generic-x86_64-with-Ubuntu-18.04-bionic
                         Langue des messages : en (UTF-8)                        
                                                                                 
                            Version de Python : 3.6.9                            
@@ -197,9 +197,9 @@ Système d'exploitation : Linux-5.3.0-45-generic-x86_64-with-Ubuntu-18.04-bionic
                      Version de la librairie SCOTCH : 6.0.4                     
 
                   Mémoire limite pour l'exécution : 512.00 Mo                   
-                   consommée par l'initialisation : 167.29 Mo                   
+                   consommée par l'initialisation : 166.79 Mo                   
                   par les objets du jeu de commandes : 0.00 Mo                  
-                 reste pour l'allocation dynamique : 343.82 Mo                  
+                 reste pour l'allocation dynamique : 344.18 Mo                  
                 Taille limite des fichiers d'échange : 48.00 Go                 
                                                                                 
 
@@ -277,9 +277,9 @@ Système d'exploitation : Linux-5.3.0-45-generic-x86_64-with-Ubuntu-18.04-bionic
 
   Relecture des catalogues des éléments faite.
 
-  Fin de lecture (durée  0.041088  s.) 
-  # Mémoire (Mo) :   212.79 /   205.07 /    44.30 /    22.92 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0001   user+syst:        0.06s (syst:        0.03s, elaps:        0.07s)
+  Fin de lecture (durée  0.077986  s.) 
+  # Mémoire (Mo) :   212.43 /   204.68 /    44.30 /    22.92 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0001   user+syst:        0.06s (syst:        0.04s, elaps:        0.17s)
   # ------------------------------------------------------------------------------------------
    
    !--------------------------------------------------------------------------------!
@@ -355,7 +355,7 @@ Vérification du maillage.
 
 ------------ MAILLAGE MESH     - IMPRESSIONS NIVEAU  1 ------------
 
-JE-09-AVRI-2020 15:41:35                                                        
+VE-22-MAI -2020 13:02:13                                                        
 
 NOMBRE DE NOEUDS                        6730
 
@@ -374,8 +374,8 @@ NOMBRE DE GROUPES DE MAILLES               6
 
 --------------------------------------------------------------------------------
 
-  # Mémoire (Mo) :   563.42 /   552.93 /    44.30 /    22.92 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0002   user+syst:        0.11s (syst:        0.01s, elaps:        0.11s)
+  # Mémoire (Mo) :   561.74 /   550.97 /    44.30 /    22.92 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0002   user+syst:        0.12s (syst:        0.02s, elaps:        0.23s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt9
@@ -404,8 +404,8 @@ NOMBRE  DE GROUPES DE NOEUDS CREES :      6
                !  front                        !      3108          !
                ------------------------------------------------------
 
-  # Mémoire (Mo) :   563.42 /   552.93 /    44.30 /    22.92 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0004   user+syst:        0.03s (syst:        0.00s, elaps:        0.03s)
+  # Mémoire (Mo) :   561.74 /   550.97 /    44.30 /    22.92 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0004   user+syst:        0.03s (syst:        0.00s, elaps:        0.06s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt17
@@ -427,8 +427,8 @@ Sur les 33865 mailles du maillage MESH, on a demandé l'affectation de 33865, on
  3D               TRIA3        THER_FACE3       12538
  3D               TETRA4       THER_TETRA4      20819
 #2      Calculs elementaires et assemblages               CPU (USER+SYST/SYST/ELAPS):      0.02      0.00      0.02
-  # Mémoire (Mo) :   563.42 /   554.79 /    44.30 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0005   user+syst:        0.05s (syst:        0.00s, elaps:        0.04s)
+  # Mémoire (Mo) :   561.74 /   552.79 /    44.30 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0005   user+syst:        0.04s (syst:        0.00s, elaps:        0.13s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt24
@@ -438,7 +438,7 @@ Sur les 33865 mailles du maillage MESH, on a demandé l'affectation de 33865, on
   COND = DEFI_CONSTANTE(VALE=100,
                         NOM_RESU='TOUTRESU',)
 
-  # Mémoire (Mo) :   563.42 /   554.79 /    44.30 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   561.74 /   552.79 /    44.30 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0006   user+syst:        0.00s (syst:        0.00s, elaps:        0.01s)
   # ------------------------------------------------------------------------------------------
 
@@ -449,8 +449,8 @@ Sur les 33865 mailles du maillage MESH, on a demandé l'affectation de 33865, on
   RHO_CP = DEFI_CONSTANTE(VALE=100,
                           NOM_RESU='TOUTRESU',)
 
-  # Mémoire (Mo) :   563.42 /   554.79 /    44.30 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0007   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
+  # Mémoire (Mo) :   561.74 /   552.79 /    44.30 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0007   user+syst:        0.01s (syst:        0.01s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt27
@@ -462,8 +462,8 @@ Sur les 33865 mailles du maillage MESH, on a demandé l'affectation de 33865, on
                         INFO=1,)
 
 Propriétés définies dans le matériau: THER.
-  # Mémoire (Mo) :   563.42 /   554.79 /    44.30 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0008   user+syst:        0.00s (syst:        0.00s, elaps:        0.01s)
+  # Mémoire (Mo) :   561.74 /   552.79 /    44.30 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0008   user+syst:        0.01s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt33
@@ -475,8 +475,8 @@ Propriétés définies dans le matériau: THER.
                                MATER=(MAT_0, ),),
                        INFO=1,)
 
-  # Mémoire (Mo) :   563.42 /   554.79 /    44.30 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0009   user+syst:        0.01s (syst:        0.01s, elaps:        0.00s)
+  # Mémoire (Mo) :   561.74 /   552.79 /    44.30 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0009   user+syst:        0.00s (syst:        0.00s, elaps:        0.01s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt45
@@ -489,8 +489,8 @@ Propriétés définies dans le matériau: THER.
                         DOUBLE_LAGRANGE='OUI',
                         INFO=1,)
 
-  # Mémoire (Mo) :   563.42 /   554.84 /    44.30 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0010   user+syst:        0.06s (syst:        0.00s, elaps:        0.05s)
+  # Mémoire (Mo) :   561.74 /   553.03 /    44.30 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0010   user+syst:        0.04s (syst:        0.00s, elaps:        0.10s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt55
@@ -510,8 +510,8 @@ Propriétés définies dans le matériau: THER.
                         DOUBLE_LAGRANGE='OUI',
                         INFO=1,)
 
-  # Mémoire (Mo) :   563.42 /   555.10 /    44.30 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0011   user+syst:        0.03s (syst:        0.00s, elaps:        0.03s)
+  # Mémoire (Mo) :   561.74 /   553.29 /    44.30 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0011   user+syst:        0.04s (syst:        0.01s, elaps:        0.04s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt69
@@ -526,13 +526,13 @@ Propriétés définies dans le matériau: THER.
                               VALE=(310.0, ),),
                       INFO=1,)
 
-  # Mémoire (Mo) :   563.42 /   555.47 /    44.30 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0012   user+syst:        0.01s (syst:        0.00s, elaps:        0.00s)
+  # Mémoire (Mo) :   561.74 /   553.61 /    44.30 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0012   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
   # Fin commande : INCLUDE
   # ------------------------------------------------------------------------------------------
 ---[precice] [0m This is preCICE version 2.0.2
----[precice] [0m Revision info: v2.0.2-29-g3204f47a
+---[precice] [0m Revision info: v2.0.2-71-ga68f36f1
 ---[precice] [0m Configuring preCICE with configuration "/home/precice/Data/Input/precice-config.xml"
 ---[precice] [0m I am participant "Solid"
 
@@ -551,7 +551,7 @@ Vérification du maillage.
 
 ------------ MAILLAGE SM_0     - IMPRESSIONS NIVEAU  1 ------------
 
-ASTER 14.04.00 CONCEPT SM_0 CALCULE LE 09/04/2020 A 15:41:36 DE TYPE            
+ASTER 14.04.00 CONCEPT SM_0 CALCULE LE 22/05/2020 A 13:02:14 DE TYPE            
 MAILLAGE_SDASTER                                                                
 
 NOMBRE DE NOEUDS                         303
@@ -567,8 +567,8 @@ NOMBRE DE GROUPES DE MAILLES               1
 
 --------------------------------------------------------------------------------
 
-  # Mémoire (Mo) :   563.42 /   556.24 /    44.30 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0013   user+syst:        0.00s (syst:        0.00s, elaps:        0.01s)
+  # Mémoire (Mo) :   561.74 /   554.00 /    44.30 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0013   user+syst:        0.00s (syst:        0.00s, elaps:        0.04s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt174
@@ -716,8 +716,8 @@ Sur les 400 mailles du maillage SM_0, on a demandé l'affectation de 400, on a p
  Modélisation     Type maille  Élément fini     Nombre
  3D               TRIA3        THER_FACE3       400
 #2      Calculs elementaires et assemblages               CPU (USER+SYST/SYST/ELAPS):      0.00      0.00      0.00
-  # Mémoire (Mo) :   569.83 /   564.72 /    44.30 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0014   user+syst:        0.01s (syst:        0.00s, elaps:        0.02s)
+  # Mémoire (Mo) :   567.86 /   562.77 /    44.30 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0014   user+syst:        0.01s (syst:        0.00s, elaps:        0.01s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt181
@@ -730,8 +730,8 @@ Sur les 400 mailles du maillage SM_0, on a demandé l'affectation de 400, on a p
                  GROUP_MA=('interface', ),
                  INFO=1,)
 
-  # Mémoire (Mo) :   569.83 /   564.72 /    44.30 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0015   user+syst:        0.02s (syst:        0.00s, elaps:        0.01s)
+  # Mémoire (Mo) :   567.86 /   562.77 /    44.30 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0015   user+syst:        0.01s (syst:        0.00s, elaps:        0.01s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt185
@@ -743,8 +743,8 @@ Sur les 400 mailles du maillage SM_0, on a demandé l'affectation de 400, on a p
                     ),
            INFO=1,)
 
-  # Mémoire (Mo) :   569.83 /   564.72 /    44.30 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0016   user+syst:        0.00s (syst:        0.00s, elaps:        0.01s)
+  # Mémoire (Mo) :   567.86 /   562.77 /    44.30 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0016   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt37
@@ -1956,8 +1956,8 @@ Sur les 400 mailles du maillage SM_0, on a demandé l'affectation de 400, on a p
                        DOUBLE_LAGRANGE='OUI',
                        INFO=1,)
 
-  # Mémoire (Mo) :   573.72 /   570.61 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0017   user+syst:        0.45s (syst:        0.01s, elaps:        0.45s)
+  # Mémoire (Mo) :   571.77 /   568.66 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0017   user+syst:        0.52s (syst:        0.03s, elaps:        1.11s)
   # ------------------------------------------------------------------------------------------
 ---[precice] [0m Setting up master communication to coupling partner/s
 ---[precice] [0m Masters are connected
@@ -2033,11 +2033,11 @@ Sur les 400 mailles du maillage SM_0, on a demandé l'affectation de 400, on a p
 
   Archivage des champs
     Champ stocké <TEMP> à l'instant  0.000000000000e+00 pour le numéro d'ordre 0
-NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.759E-01
-#1      Resolution des systemes lineaires                 CPU (USER+SYST/SYST/ELAPS):      0.21      0.05      0.21
-#2      Calculs elementaires et assemblages               CPU (USER+SYST/SYST/ELAPS):      0.09      0.00      0.09
-  # Mémoire (Mo) :   927.24 /   861.03 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0018   user+syst:        0.32s (syst:        0.05s, elaps:        0.31s)
+NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.398E-01
+#1      Resolution des systemes lineaires                 CPU (USER+SYST/SYST/ELAPS):      0.11      0.03      0.13
+#2      Calculs elementaires et assemblages               CPU (USER+SYST/SYST/ELAPS):      0.10      0.00      0.13
+  # Mémoire (Mo) :   925.55 /   859.29 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0018   user+syst:        0.23s (syst:        0.03s, elaps:        0.29s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt92
@@ -2053,7 +2053,7 @@ NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.759E-01
                  CRITERE='RELATIF',
                  INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   861.03 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   859.29 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0019   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
@@ -2070,8 +2070,8 @@ NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.759E-01
                      PROJECTION='OUI',
                      INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   861.03 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0020   user+syst:        0.02s (syst:        0.00s, elaps:        0.02s)
+  # Mémoire (Mo) :   925.55 /   859.29 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0020   user+syst:        0.01s (syst:        0.00s, elaps:        0.01s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt268
@@ -2081,8 +2081,8 @@ NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.759E-01
   DETRUIRE(CONCEPT=_F(NOM=(TPROJ, ),),
            INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   861.03 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0021   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
+  # Mémoire (Mo) :   925.55 /   859.29 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0021   user+syst:        0.00s (syst:        0.00s, elaps:        0.01s)
   # ------------------------------------------------------------------------------------------
 ---[precice] [0m it 1 of 1 | dt# 2 of 10 | t 1 | dt 1 | max dt 1 | ongoing yes | dt complete yes | 
 
@@ -2091,36 +2091,32 @@ NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.759E-01
   # Commande No :  0022            Concept de type : -
   # ------------------------------------------------------------------------------------------
   DEFI_FICHIER(UNITE=81,
-               FICHIER='REPE_OUT/output-1.rmed',
-               TYPE='BINARY',
+               FICHIER='REPE_OUT/output-1.resu',
+               TYPE='ASCII',
                ACCES='NEW',
                ACTION='ASSOCIER',)
 
-
-
-Lancement de la commande : rm -f REPE_OUT/output-1.rmed
-
-  # Mémoire (Mo) :   927.24 /   861.03 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0022   user+syst:        0.00s (syst:        0.00s, elaps:        0.01s)
+  # Mémoire (Mo) :   925.55 /   859.29 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0022   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt140
   # ------------------------------------------------------------------------------------------
   # Commande No :  0023            Concept de type : -
   # ------------------------------------------------------------------------------------------
-  IMPR_RESU(FORMAT='MED',
+  IMPR_RESU(FORMAT='RESULTAT',
             UNITE=81,
-            VERSION_MED='3.3.1',
             RESU=_F(RESULTAT=TEMP,
-                    INFO_MAILLAGE='NON',
-                    IMPR_NOM_VARI='OUI',),
+                    TOUT_PARA='OUI',
+                    FORM_TABL='EXCEL',
+                    FORMAT_R='E14.5',
+                    NOM_CHAM=('TEMP', ),
+                    IMPR_COOR='NON',),
             PROC0='OUI',
             INFO=1,)
 
-
-Création du fichier au format MED 3.3.1.
-  # Mémoire (Mo) :   927.24 /   861.03 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0023   user+syst:        0.04s (syst:        0.00s, elaps:        0.04s)
+  # Mémoire (Mo) :   925.55 /   859.29 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0023   user+syst:        0.01s (syst:        0.00s, elaps:        0.03s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt141
@@ -2130,7 +2126,7 @@ Création du fichier au format MED 3.3.1.
   DEFI_FICHIER(ACTION='LIBERER',
                UNITE=81,)
 
-  # Mémoire (Mo) :   927.24 /   861.03 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   859.29 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0024   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
@@ -2141,7 +2137,7 @@ Création du fichier au format MED 3.3.1.
   TEMP_CPY = COPIER(CONCEPT=TEMP,
                     INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   861.03 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   859.29 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0025   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
@@ -2152,7 +2148,7 @@ Création du fichier au format MED 3.3.1.
   DETRUIRE(CONCEPT=_F(NOM=(TEMP, ),),
            INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   861.03 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   859.29 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0026   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
@@ -2163,7 +2159,7 @@ Création du fichier au format MED 3.3.1.
   DETRUIRE(CONCEPT=_F(NOM=(T, ),),
            INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   861.03 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   859.29 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0027   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
@@ -2227,11 +2223,11 @@ Création du fichier au format MED 3.3.1.
 
   Archivage des champs
     Champ stocké <TEMP> à l'instant  0.000000000000e+00 pour le numéro d'ordre 0
-NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.831E-01
-#1      Resolution des systemes lineaires                 CPU (USER+SYST/SYST/ELAPS):      0.22      0.04      0.22
-#2      Calculs elementaires et assemblages               CPU (USER+SYST/SYST/ELAPS):      0.09      0.00      0.09
-  # Mémoire (Mo) :   927.24 /   862.11 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0028   user+syst:        0.33s (syst:        0.04s, elaps:        0.32s)
+NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.035E-01
+#1      Resolution des systemes lineaires                 CPU (USER+SYST/SYST/ELAPS):      0.12      0.03      0.17
+#2      Calculs elementaires et assemblages               CPU (USER+SYST/SYST/ELAPS):      0.06      0.00      0.09
+  # Mémoire (Mo) :   925.55 /   860.25 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0028   user+syst:        0.20s (syst:        0.03s, elaps:        0.28s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt92
@@ -2247,8 +2243,8 @@ NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.831E-01
                  CRITERE='RELATIF',
                  INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.11 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0029   user+syst:        0.01s (syst:        0.00s, elaps:        0.01s)
+  # Mémoire (Mo) :   925.55 /   860.25 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0029   user+syst:        0.01s (syst:        0.00s, elaps:        0.02s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt266
@@ -2264,8 +2260,8 @@ NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.831E-01
                      PROJECTION='OUI',
                      INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.11 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0030   user+syst:        0.02s (syst:        0.00s, elaps:        0.02s)
+  # Mémoire (Mo) :   925.55 /   860.25 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0030   user+syst:        0.02s (syst:        0.00s, elaps:        0.04s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt268
@@ -2275,7 +2271,7 @@ NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.831E-01
   DETRUIRE(CONCEPT=_F(NOM=(TPROJ, ),),
            INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.11 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   860.25 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0031   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 ---[precice] [0m it 1 of 1 | dt# 3 of 10 | t 2 | dt 1 | max dt 1 | ongoing yes | dt complete yes | 
@@ -2285,36 +2281,32 @@ NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.831E-01
   # Commande No :  0032            Concept de type : -
   # ------------------------------------------------------------------------------------------
   DEFI_FICHIER(UNITE=82,
-               FICHIER='REPE_OUT/output-2.rmed',
-               TYPE='BINARY',
+               FICHIER='REPE_OUT/output-2.resu',
+               TYPE='ASCII',
                ACCES='NEW',
                ACTION='ASSOCIER',)
 
-
-
-Lancement de la commande : rm -f REPE_OUT/output-2.rmed
-
-  # Mémoire (Mo) :   927.24 /   862.11 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0032   user+syst:        0.01s (syst:        0.01s, elaps:        0.01s)
+  # Mémoire (Mo) :   925.55 /   860.25 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0032   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt140
   # ------------------------------------------------------------------------------------------
   # Commande No :  0033            Concept de type : -
   # ------------------------------------------------------------------------------------------
-  IMPR_RESU(FORMAT='MED',
+  IMPR_RESU(FORMAT='RESULTAT',
             UNITE=82,
-            VERSION_MED='3.3.1',
             RESU=_F(RESULTAT=TEMP,
-                    INFO_MAILLAGE='NON',
-                    IMPR_NOM_VARI='OUI',),
+                    TOUT_PARA='OUI',
+                    FORM_TABL='EXCEL',
+                    FORMAT_R='E14.5',
+                    NOM_CHAM=('TEMP', ),
+                    IMPR_COOR='NON',),
             PROC0='OUI',
             INFO=1,)
 
-
-Création du fichier au format MED 3.3.1.
-  # Mémoire (Mo) :   927.24 /   862.11 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0033   user+syst:        0.04s (syst:        0.01s, elaps:        0.04s)
+  # Mémoire (Mo) :   925.55 /   860.25 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0033   user+syst:        0.02s (syst:        0.00s, elaps:        0.04s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt141
@@ -2324,7 +2316,7 @@ Création du fichier au format MED 3.3.1.
   DEFI_FICHIER(ACTION='LIBERER',
                UNITE=82,)
 
-  # Mémoire (Mo) :   927.24 /   862.11 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   860.25 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0034   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
@@ -2335,8 +2327,8 @@ Création du fichier au format MED 3.3.1.
   DETRUIRE(CONCEPT=_F(NOM=(TEMP_CPY, ),),
            INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.11 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0035   user+syst:        0.01s (syst:        0.00s, elaps:        0.00s)
+  # Mémoire (Mo) :   925.55 /   860.25 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0035   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt146
@@ -2346,8 +2338,8 @@ Création du fichier au format MED 3.3.1.
   TEMP_CPY = COPIER(CONCEPT=TEMP,
                     INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.11 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0036   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
+  # Mémoire (Mo) :   925.55 /   860.25 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0036   user+syst:        0.01s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt154
@@ -2357,7 +2349,7 @@ Création du fichier au format MED 3.3.1.
   DETRUIRE(CONCEPT=_F(NOM=(TEMP, ),),
            INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.11 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   860.25 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0037   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
@@ -2368,7 +2360,7 @@ Création du fichier au format MED 3.3.1.
   DETRUIRE(CONCEPT=_F(NOM=(T, ),),
            INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.11 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   858.41 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0038   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
@@ -2432,11 +2424,11 @@ Création du fichier au format MED 3.3.1.
 
   Archivage des champs
     Champ stocké <TEMP> à l'instant  0.000000000000e+00 pour le numéro d'ordre 0
-NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.728E-01
-#1      Resolution des systemes lineaires                 CPU (USER+SYST/SYST/ELAPS):      0.21      0.05      0.21
-#2      Calculs elementaires et assemblages               CPU (USER+SYST/SYST/ELAPS):      0.08      0.00      0.08
-  # Mémoire (Mo) :   927.24 /   862.98 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0039   user+syst:        0.31s (syst:        0.05s, elaps:        0.31s)
+NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.131E-01
+#1      Resolution des systemes lineaires                 CPU (USER+SYST/SYST/ELAPS):      0.12      0.03      0.16
+#2      Calculs elementaires et assemblages               CPU (USER+SYST/SYST/ELAPS):      0.06      0.01      0.10
+  # Mémoire (Mo) :   925.55 /   859.52 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0039   user+syst:        0.20s (syst:        0.04s, elaps:        0.30s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt92
@@ -2452,7 +2444,7 @@ NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.728E-01
                  CRITERE='RELATIF',
                  INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.98 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   859.52 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0040   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
@@ -2469,8 +2461,8 @@ NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.728E-01
                      PROJECTION='OUI',
                      INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.98 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0041   user+syst:        0.02s (syst:        0.00s, elaps:        0.02s)
+  # Mémoire (Mo) :   925.55 /   859.52 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0041   user+syst:        0.02s (syst:        0.00s, elaps:        0.04s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt268
@@ -2480,7 +2472,7 @@ NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.728E-01
   DETRUIRE(CONCEPT=_F(NOM=(TPROJ, ),),
            INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.98 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   859.52 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0042   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 ---[precice] [0m it 1 of 1 | dt# 4 of 10 | t 3 | dt 1 | max dt 1 | ongoing yes | dt complete yes | 
@@ -2490,36 +2482,32 @@ NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.728E-01
   # Commande No :  0043            Concept de type : -
   # ------------------------------------------------------------------------------------------
   DEFI_FICHIER(UNITE=83,
-               FICHIER='REPE_OUT/output-3.rmed',
-               TYPE='BINARY',
+               FICHIER='REPE_OUT/output-3.resu',
+               TYPE='ASCII',
                ACCES='NEW',
                ACTION='ASSOCIER',)
 
-
-
-Lancement de la commande : rm -f REPE_OUT/output-3.rmed
-
-  # Mémoire (Mo) :   927.24 /   862.98 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0043   user+syst:        0.00s (syst:        0.00s, elaps:        0.01s)
+  # Mémoire (Mo) :   925.55 /   859.52 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0043   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt140
   # ------------------------------------------------------------------------------------------
   # Commande No :  0044            Concept de type : -
   # ------------------------------------------------------------------------------------------
-  IMPR_RESU(FORMAT='MED',
+  IMPR_RESU(FORMAT='RESULTAT',
             UNITE=83,
-            VERSION_MED='3.3.1',
             RESU=_F(RESULTAT=TEMP,
-                    INFO_MAILLAGE='NON',
-                    IMPR_NOM_VARI='OUI',),
+                    TOUT_PARA='OUI',
+                    FORM_TABL='EXCEL',
+                    FORMAT_R='E14.5',
+                    NOM_CHAM=('TEMP', ),
+                    IMPR_COOR='NON',),
             PROC0='OUI',
             INFO=1,)
 
-
-Création du fichier au format MED 3.3.1.
-  # Mémoire (Mo) :   927.24 /   862.98 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0044   user+syst:        0.03s (syst:        0.00s, elaps:        0.04s)
+  # Mémoire (Mo) :   925.55 /   859.52 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0044   user+syst:        0.01s (syst:        0.00s, elaps:        0.03s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt141
@@ -2529,7 +2517,7 @@ Création du fichier au format MED 3.3.1.
   DEFI_FICHIER(ACTION='LIBERER',
                UNITE=83,)
 
-  # Mémoire (Mo) :   927.24 /   862.98 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   859.52 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0045   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
@@ -2540,8 +2528,8 @@ Création du fichier au format MED 3.3.1.
   DETRUIRE(CONCEPT=_F(NOM=(TEMP_CPY, ),),
            INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.98 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0046   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
+  # Mémoire (Mo) :   925.55 /   859.52 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0046   user+syst:        0.01s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt146
@@ -2551,8 +2539,8 @@ Création du fichier au format MED 3.3.1.
   TEMP_CPY = COPIER(CONCEPT=TEMP,
                     INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.98 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0047   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
+  # Mémoire (Mo) :   925.55 /   859.52 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0047   user+syst:        0.00s (syst:        0.00s, elaps:        0.01s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt154
@@ -2562,7 +2550,7 @@ Création du fichier au format MED 3.3.1.
   DETRUIRE(CONCEPT=_F(NOM=(TEMP, ),),
            INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   861.33 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   859.52 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0048   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
@@ -2573,7 +2561,7 @@ Création du fichier au format MED 3.3.1.
   DETRUIRE(CONCEPT=_F(NOM=(T, ),),
            INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   861.33 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   858.46 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0049   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
@@ -2637,11 +2625,11 @@ Création du fichier au format MED 3.3.1.
 
   Archivage des champs
     Champ stocké <TEMP> à l'instant  0.000000000000e+00 pour le numéro d'ordre 0
-NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.754E-01
-#1      Resolution des systemes lineaires                 CPU (USER+SYST/SYST/ELAPS):      0.20      0.05      0.21
-#2      Calculs elementaires et assemblages               CPU (USER+SYST/SYST/ELAPS):      0.10      0.01      0.09
-  # Mémoire (Mo) :   927.24 /   862.23 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0050   user+syst:        0.33s (syst:        0.07s, elaps:        0.32s)
+NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.999E-01
+#1      Resolution des systemes lineaires                 CPU (USER+SYST/SYST/ELAPS):      0.14      0.02      0.18
+#2      Calculs elementaires et assemblages               CPU (USER+SYST/SYST/ELAPS):      0.11      0.00      0.16
+  # Mémoire (Mo) :   925.55 /   859.45 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0050   user+syst:        0.26s (syst:        0.02s, elaps:        0.35s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt92
@@ -2657,7 +2645,7 @@ NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.754E-01
                  CRITERE='RELATIF',
                  INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.23 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   859.45 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0051   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
@@ -2674,7 +2662,7 @@ NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.754E-01
                      PROJECTION='OUI',
                      INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.23 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   859.45 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0052   user+syst:        0.02s (syst:        0.00s, elaps:        0.02s)
   # ------------------------------------------------------------------------------------------
 
@@ -2685,7 +2673,7 @@ NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.754E-01
   DETRUIRE(CONCEPT=_F(NOM=(TPROJ, ),),
            INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.23 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   859.45 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0053   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 ---[precice] [0m it 1 of 1 | dt# 5 of 10 | t 4 | dt 1 | max dt 1 | ongoing yes | dt complete yes | 
@@ -2695,36 +2683,32 @@ NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.754E-01
   # Commande No :  0054            Concept de type : -
   # ------------------------------------------------------------------------------------------
   DEFI_FICHIER(UNITE=84,
-               FICHIER='REPE_OUT/output-4.rmed',
-               TYPE='BINARY',
+               FICHIER='REPE_OUT/output-4.resu',
+               TYPE='ASCII',
                ACCES='NEW',
                ACTION='ASSOCIER',)
 
-
-
-Lancement de la commande : rm -f REPE_OUT/output-4.rmed
-
-  # Mémoire (Mo) :   927.24 /   862.23 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0054   user+syst:        0.00s (syst:        0.00s, elaps:        0.01s)
+  # Mémoire (Mo) :   925.55 /   859.45 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0054   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt140
   # ------------------------------------------------------------------------------------------
   # Commande No :  0055            Concept de type : -
   # ------------------------------------------------------------------------------------------
-  IMPR_RESU(FORMAT='MED',
+  IMPR_RESU(FORMAT='RESULTAT',
             UNITE=84,
-            VERSION_MED='3.3.1',
             RESU=_F(RESULTAT=TEMP,
-                    INFO_MAILLAGE='NON',
-                    IMPR_NOM_VARI='OUI',),
+                    TOUT_PARA='OUI',
+                    FORM_TABL='EXCEL',
+                    FORMAT_R='E14.5',
+                    NOM_CHAM=('TEMP', ),
+                    IMPR_COOR='NON',),
             PROC0='OUI',
             INFO=1,)
 
-
-Création du fichier au format MED 3.3.1.
-  # Mémoire (Mo) :   927.24 /   862.23 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0055   user+syst:        0.03s (syst:        0.01s, elaps:        0.04s)
+  # Mémoire (Mo) :   925.55 /   859.45 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0055   user+syst:        0.02s (syst:        0.01s, elaps:        0.02s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt141
@@ -2734,7 +2718,7 @@ Création du fichier au format MED 3.3.1.
   DEFI_FICHIER(ACTION='LIBERER',
                UNITE=84,)
 
-  # Mémoire (Mo) :   927.24 /   862.23 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   859.45 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0056   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
@@ -2745,7 +2729,7 @@ Création du fichier au format MED 3.3.1.
   DETRUIRE(CONCEPT=_F(NOM=(TEMP_CPY, ),),
            INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.23 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   859.45 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0057   user+syst:        0.01s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
@@ -2756,7 +2740,7 @@ Création du fichier au format MED 3.3.1.
   TEMP_CPY = COPIER(CONCEPT=TEMP,
                     INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.23 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   859.45 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0058   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
@@ -2767,8 +2751,8 @@ Création du fichier au format MED 3.3.1.
   DETRUIRE(CONCEPT=_F(NOM=(TEMP, ),),
            INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.23 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0059   user+syst:        0.00s (syst:        0.00s, elaps:        0.01s)
+  # Mémoire (Mo) :   925.55 /   859.45 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0059   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt155
@@ -2778,7 +2762,7 @@ Création du fichier au format MED 3.3.1.
   DETRUIRE(CONCEPT=_F(NOM=(T, ),),
            INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.23 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   859.45 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0060   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
@@ -2842,11 +2826,11 @@ Création du fichier au format MED 3.3.1.
 
   Archivage des champs
     Champ stocké <TEMP> à l'instant  0.000000000000e+00 pour le numéro d'ordre 0
-NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.753E-01
-#1      Resolution des systemes lineaires                 CPU (USER+SYST/SYST/ELAPS):      0.21      0.06      0.21
-#2      Calculs elementaires et assemblages               CPU (USER+SYST/SYST/ELAPS):      0.09      0.00      0.08
-  # Mémoire (Mo) :   927.24 /   862.88 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0061   user+syst:        0.31s (syst:        0.06s, elaps:        0.31s)
+NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.797E-01
+#1      Resolution des systemes lineaires                 CPU (USER+SYST/SYST/ELAPS):      0.16      0.05      0.18
+#2      Calculs elementaires et assemblages               CPU (USER+SYST/SYST/ELAPS):      0.10      0.01      0.12
+  # Mémoire (Mo) :   925.55 /   860.37 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0061   user+syst:        0.28s (syst:        0.06s, elaps:        0.34s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt92
@@ -2862,8 +2846,8 @@ NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.753E-01
                  CRITERE='RELATIF',
                  INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.88 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0062   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
+  # Mémoire (Mo) :   925.55 /   860.37 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0062   user+syst:        0.01s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt266
@@ -2879,8 +2863,8 @@ NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.753E-01
                      PROJECTION='OUI',
                      INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.88 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0063   user+syst:        0.02s (syst:        0.00s, elaps:        0.02s)
+  # Mémoire (Mo) :   925.55 /   860.37 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0063   user+syst:        0.02s (syst:        0.00s, elaps:        0.05s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt268
@@ -2890,7 +2874,7 @@ NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.753E-01
   DETRUIRE(CONCEPT=_F(NOM=(TPROJ, ),),
            INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.88 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   860.37 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0064   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 ---[precice] [0m it 1 of 1 | dt# 6 of 10 | t 5 | dt 1 | max dt 1 | ongoing yes | dt complete yes | 
@@ -2900,36 +2884,32 @@ NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.753E-01
   # Commande No :  0065            Concept de type : -
   # ------------------------------------------------------------------------------------------
   DEFI_FICHIER(UNITE=85,
-               FICHIER='REPE_OUT/output-5.rmed',
-               TYPE='BINARY',
+               FICHIER='REPE_OUT/output-5.resu',
+               TYPE='ASCII',
                ACCES='NEW',
                ACTION='ASSOCIER',)
 
-
-
-Lancement de la commande : rm -f REPE_OUT/output-5.rmed
-
-  # Mémoire (Mo) :   927.24 /   862.88 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0065   user+syst:        0.01s (syst:        0.01s, elaps:        0.01s)
+  # Mémoire (Mo) :   925.55 /   860.37 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0065   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt140
   # ------------------------------------------------------------------------------------------
   # Commande No :  0066            Concept de type : -
   # ------------------------------------------------------------------------------------------
-  IMPR_RESU(FORMAT='MED',
+  IMPR_RESU(FORMAT='RESULTAT',
             UNITE=85,
-            VERSION_MED='3.3.1',
             RESU=_F(RESULTAT=TEMP,
-                    INFO_MAILLAGE='NON',
-                    IMPR_NOM_VARI='OUI',),
+                    TOUT_PARA='OUI',
+                    FORM_TABL='EXCEL',
+                    FORMAT_R='E14.5',
+                    NOM_CHAM=('TEMP', ),
+                    IMPR_COOR='NON',),
             PROC0='OUI',
             INFO=1,)
 
-
-Création du fichier au format MED 3.3.1.
-  # Mémoire (Mo) :   927.24 /   862.88 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0066   user+syst:        0.04s (syst:        0.01s, elaps:        0.03s)
+  # Mémoire (Mo) :   925.55 /   860.37 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0066   user+syst:        0.02s (syst:        0.01s, elaps:        0.03s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt141
@@ -2939,8 +2919,8 @@ Création du fichier au format MED 3.3.1.
   DEFI_FICHIER(ACTION='LIBERER',
                UNITE=85,)
 
-  # Mémoire (Mo) :   927.24 /   862.88 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0067   user+syst:        0.00s (syst:        0.00s, elaps:        0.01s)
+  # Mémoire (Mo) :   925.55 /   860.37 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0067   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt145
@@ -2950,7 +2930,7 @@ Création du fichier au format MED 3.3.1.
   DETRUIRE(CONCEPT=_F(NOM=(TEMP_CPY, ),),
            INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.88 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   860.37 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0068   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
@@ -2961,7 +2941,7 @@ Création du fichier au format MED 3.3.1.
   TEMP_CPY = COPIER(CONCEPT=TEMP,
                     INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.88 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   860.37 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0069   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
@@ -2972,7 +2952,7 @@ Création du fichier au format MED 3.3.1.
   DETRUIRE(CONCEPT=_F(NOM=(TEMP, ),),
            INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   861.46 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   858.41 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0070   user+syst:        0.00s (syst:        0.00s, elaps:        0.01s)
   # ------------------------------------------------------------------------------------------
 
@@ -2983,7 +2963,7 @@ Création du fichier au format MED 3.3.1.
   DETRUIRE(CONCEPT=_F(NOM=(T, ),),
            INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   861.46 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   858.41 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0071   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
@@ -3047,11 +3027,11 @@ Création du fichier au format MED 3.3.1.
 
   Archivage des champs
     Champ stocké <TEMP> à l'instant  0.000000000000e+00 pour le numéro d'ordre 0
-NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.746E-01
-#1      Resolution des systemes lineaires                 CPU (USER+SYST/SYST/ELAPS):      0.21      0.04      0.21
-#2      Calculs elementaires et assemblages               CPU (USER+SYST/SYST/ELAPS):      0.09      0.00      0.09
-  # Mémoire (Mo) :   927.24 /   862.25 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0072   user+syst:        0.33s (syst:        0.05s, elaps:        0.32s)
+NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   3.038E-01
+#1      Resolution des systemes lineaires                 CPU (USER+SYST/SYST/ELAPS):      0.13      0.02      0.19
+#2      Calculs elementaires et assemblages               CPU (USER+SYST/SYST/ELAPS):      0.11      0.03      0.14
+  # Mémoire (Mo) :   925.55 /   859.66 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0072   user+syst:        0.26s (syst:        0.07s, elaps:        0.36s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt92
@@ -3067,8 +3047,8 @@ NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.746E-01
                  CRITERE='RELATIF',
                  INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.25 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0073   user+syst:        0.01s (syst:        0.00s, elaps:        0.00s)
+  # Mémoire (Mo) :   925.55 /   859.66 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0073   user+syst:        0.01s (syst:        0.00s, elaps:        0.01s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt266
@@ -3084,8 +3064,8 @@ NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.746E-01
                      PROJECTION='OUI',
                      INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.25 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0074   user+syst:        0.02s (syst:        0.00s, elaps:        0.02s)
+  # Mémoire (Mo) :   925.55 /   859.66 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0074   user+syst:        0.02s (syst:        0.00s, elaps:        0.04s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt268
@@ -3095,7 +3075,7 @@ NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.746E-01
   DETRUIRE(CONCEPT=_F(NOM=(TPROJ, ),),
            INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.25 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   859.66 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0075   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 ---[precice] [0m it 1 of 1 | dt# 7 of 10 | t 6 | dt 1 | max dt 1 | ongoing yes | dt complete yes | 
@@ -3105,36 +3085,32 @@ NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.746E-01
   # Commande No :  0076            Concept de type : -
   # ------------------------------------------------------------------------------------------
   DEFI_FICHIER(UNITE=86,
-               FICHIER='REPE_OUT/output-6.rmed',
-               TYPE='BINARY',
+               FICHIER='REPE_OUT/output-6.resu',
+               TYPE='ASCII',
                ACCES='NEW',
                ACTION='ASSOCIER',)
 
-
-
-Lancement de la commande : rm -f REPE_OUT/output-6.rmed
-
-  # Mémoire (Mo) :   927.24 /   862.25 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0076   user+syst:        0.01s (syst:        0.00s, elaps:        0.01s)
+  # Mémoire (Mo) :   925.55 /   859.66 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0076   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt140
   # ------------------------------------------------------------------------------------------
   # Commande No :  0077            Concept de type : -
   # ------------------------------------------------------------------------------------------
-  IMPR_RESU(FORMAT='MED',
+  IMPR_RESU(FORMAT='RESULTAT',
             UNITE=86,
-            VERSION_MED='3.3.1',
             RESU=_F(RESULTAT=TEMP,
-                    INFO_MAILLAGE='NON',
-                    IMPR_NOM_VARI='OUI',),
+                    TOUT_PARA='OUI',
+                    FORM_TABL='EXCEL',
+                    FORMAT_R='E14.5',
+                    NOM_CHAM=('TEMP', ),
+                    IMPR_COOR='NON',),
             PROC0='OUI',
             INFO=1,)
 
-
-Création du fichier au format MED 3.3.1.
-  # Mémoire (Mo) :   927.24 /   862.25 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0077   user+syst:        0.03s (syst:        0.00s, elaps:        0.04s)
+  # Mémoire (Mo) :   925.55 /   859.66 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0077   user+syst:        0.01s (syst:        0.00s, elaps:        0.01s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt141
@@ -3144,7 +3120,7 @@ Création du fichier au format MED 3.3.1.
   DEFI_FICHIER(ACTION='LIBERER',
                UNITE=86,)
 
-  # Mémoire (Mo) :   927.24 /   862.25 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   859.66 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0078   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
@@ -3155,7 +3131,7 @@ Création du fichier au format MED 3.3.1.
   DETRUIRE(CONCEPT=_F(NOM=(TEMP_CPY, ),),
            INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.25 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   859.66 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0079   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
@@ -3166,7 +3142,7 @@ Création du fichier au format MED 3.3.1.
   TEMP_CPY = COPIER(CONCEPT=TEMP,
                     INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.25 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   859.66 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0080   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
@@ -3177,8 +3153,8 @@ Création du fichier au format MED 3.3.1.
   DETRUIRE(CONCEPT=_F(NOM=(TEMP, ),),
            INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.25 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0081   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
+  # Mémoire (Mo) :   925.55 /   859.66 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0081   user+syst:        0.01s (syst:        0.00s, elaps:        0.01s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt155
@@ -3188,8 +3164,8 @@ Création du fichier au format MED 3.3.1.
   DETRUIRE(CONCEPT=_F(NOM=(T, ),),
            INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.25 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0082   user+syst:        0.01s (syst:        0.00s, elaps:        0.01s)
+  # Mémoire (Mo) :   925.55 /   858.41 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0082   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt85
@@ -3252,11 +3228,11 @@ Création du fichier au format MED 3.3.1.
 
   Archivage des champs
     Champ stocké <TEMP> à l'instant  0.000000000000e+00 pour le numéro d'ordre 0
-NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.802E-01
-#1      Resolution des systemes lineaires                 CPU (USER+SYST/SYST/ELAPS):      0.21      0.07      0.21
-#2      Calculs elementaires et assemblages               CPU (USER+SYST/SYST/ELAPS):      0.10      0.00      0.09
-  # Mémoire (Mo) :   927.24 /   862.89 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0083   user+syst:        0.32s (syst:        0.07s, elaps:        0.32s)
+NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   3.162E-01
+#1      Resolution des systemes lineaires                 CPU (USER+SYST/SYST/ELAPS):      0.15      0.05      0.22
+#2      Calculs elementaires et assemblages               CPU (USER+SYST/SYST/ELAPS):      0.11      0.03      0.12
+  # Mémoire (Mo) :   925.55 /   859.68 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0083   user+syst:        0.27s (syst:        0.08s, elaps:        0.36s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt92
@@ -3272,8 +3248,8 @@ NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.802E-01
                  CRITERE='RELATIF',
                  INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.89 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0084   user+syst:        0.01s (syst:        0.00s, elaps:        0.01s)
+  # Mémoire (Mo) :   925.55 /   859.68 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0084   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt266
@@ -3289,7 +3265,7 @@ NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.802E-01
                      PROJECTION='OUI',
                      INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.89 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   859.68 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0085   user+syst:        0.02s (syst:        0.00s, elaps:        0.02s)
   # ------------------------------------------------------------------------------------------
 
@@ -3300,7 +3276,7 @@ NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.802E-01
   DETRUIRE(CONCEPT=_F(NOM=(TPROJ, ),),
            INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.89 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   859.68 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0086   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 ---[precice] [0m it 1 of 1 | dt# 8 of 10 | t 7 | dt 1 | max dt 1 | ongoing yes | dt complete yes | 
@@ -3310,36 +3286,32 @@ NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.802E-01
   # Commande No :  0087            Concept de type : -
   # ------------------------------------------------------------------------------------------
   DEFI_FICHIER(UNITE=87,
-               FICHIER='REPE_OUT/output-7.rmed',
-               TYPE='BINARY',
+               FICHIER='REPE_OUT/output-7.resu',
+               TYPE='ASCII',
                ACCES='NEW',
                ACTION='ASSOCIER',)
 
-
-
-Lancement de la commande : rm -f REPE_OUT/output-7.rmed
-
-  # Mémoire (Mo) :   927.24 /   862.89 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0087   user+syst:        0.01s (syst:        0.01s, elaps:        0.01s)
+  # Mémoire (Mo) :   925.55 /   859.68 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0087   user+syst:        0.01s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt140
   # ------------------------------------------------------------------------------------------
   # Commande No :  0088            Concept de type : -
   # ------------------------------------------------------------------------------------------
-  IMPR_RESU(FORMAT='MED',
+  IMPR_RESU(FORMAT='RESULTAT',
             UNITE=87,
-            VERSION_MED='3.3.1',
             RESU=_F(RESULTAT=TEMP,
-                    INFO_MAILLAGE='NON',
-                    IMPR_NOM_VARI='OUI',),
+                    TOUT_PARA='OUI',
+                    FORM_TABL='EXCEL',
+                    FORMAT_R='E14.5',
+                    NOM_CHAM=('TEMP', ),
+                    IMPR_COOR='NON',),
             PROC0='OUI',
             INFO=1,)
 
-
-Création du fichier au format MED 3.3.1.
-  # Mémoire (Mo) :   927.24 /   862.89 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0088   user+syst:        0.03s (syst:        0.00s, elaps:        0.04s)
+  # Mémoire (Mo) :   925.55 /   859.68 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0088   user+syst:        0.01s (syst:        0.00s, elaps:        0.03s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt141
@@ -3349,8 +3321,8 @@ Création du fichier au format MED 3.3.1.
   DEFI_FICHIER(ACTION='LIBERER',
                UNITE=87,)
 
-  # Mémoire (Mo) :   927.24 /   862.89 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0089   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
+  # Mémoire (Mo) :   925.55 /   859.68 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0089   user+syst:        0.01s (syst:        0.01s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt145
@@ -3360,8 +3332,8 @@ Création du fichier au format MED 3.3.1.
   DETRUIRE(CONCEPT=_F(NOM=(TEMP_CPY, ),),
            INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.89 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0090   user+syst:        0.01s (syst:        0.00s, elaps:        0.00s)
+  # Mémoire (Mo) :   925.55 /   859.68 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0090   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt146
@@ -3371,7 +3343,7 @@ Création du fichier au format MED 3.3.1.
   TEMP_CPY = COPIER(CONCEPT=TEMP,
                     INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.89 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   859.68 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0091   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
@@ -3382,7 +3354,7 @@ Création du fichier au format MED 3.3.1.
   DETRUIRE(CONCEPT=_F(NOM=(TEMP, ),),
            INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   861.45 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   859.68 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0092   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
@@ -3393,7 +3365,7 @@ Création du fichier au format MED 3.3.1.
   DETRUIRE(CONCEPT=_F(NOM=(T, ),),
            INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   861.45 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   858.46 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0093   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
@@ -3457,11 +3429,11 @@ Création du fichier au format MED 3.3.1.
 
   Archivage des champs
     Champ stocké <TEMP> à l'instant  0.000000000000e+00 pour le numéro d'ordre 0
-NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.763E-01
-#1      Resolution des systemes lineaires                 CPU (USER+SYST/SYST/ELAPS):      0.21      0.06      0.21
-#2      Calculs elementaires et assemblages               CPU (USER+SYST/SYST/ELAPS):      0.09      0.00      0.09
-  # Mémoire (Mo) :   927.24 /   862.12 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0094   user+syst:        0.32s (syst:        0.06s, elaps:        0.31s)
+NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.612E-01
+#1      Resolution des systemes lineaires                 CPU (USER+SYST/SYST/ELAPS):      0.13      0.02      0.14
+#2      Calculs elementaires et assemblages               CPU (USER+SYST/SYST/ELAPS):      0.11      0.00      0.13
+  # Mémoire (Mo) :   925.55 /   859.29 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0094   user+syst:        0.24s (syst:        0.02s, elaps:        0.29s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt92
@@ -3477,8 +3449,8 @@ NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.763E-01
                  CRITERE='RELATIF',
                  INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.12 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0095   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
+  # Mémoire (Mo) :   925.55 /   859.29 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0095   user+syst:        0.01s (syst:        0.00s, elaps:        0.01s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt266
@@ -3494,8 +3466,8 @@ NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.763E-01
                      PROJECTION='OUI',
                      INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.12 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0096   user+syst:        0.01s (syst:        0.00s, elaps:        0.02s)
+  # Mémoire (Mo) :   925.55 /   859.29 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0096   user+syst:        0.02s (syst:        0.01s, elaps:        0.02s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt268
@@ -3505,7 +3477,7 @@ NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.763E-01
   DETRUIRE(CONCEPT=_F(NOM=(TPROJ, ),),
            INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.12 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   859.29 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0097   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 ---[precice] [0m it 1 of 1 | dt# 9 of 10 | t 8 | dt 1 | max dt 1 | ongoing yes | dt complete yes | 
@@ -3515,36 +3487,32 @@ NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.763E-01
   # Commande No :  0098            Concept de type : -
   # ------------------------------------------------------------------------------------------
   DEFI_FICHIER(UNITE=88,
-               FICHIER='REPE_OUT/output-8.rmed',
-               TYPE='BINARY',
+               FICHIER='REPE_OUT/output-8.resu',
+               TYPE='ASCII',
                ACCES='NEW',
                ACTION='ASSOCIER',)
 
-
-
-Lancement de la commande : rm -f REPE_OUT/output-8.rmed
-
-  # Mémoire (Mo) :   927.24 /   862.12 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0098   user+syst:        0.00s (syst:        0.00s, elaps:        0.01s)
+  # Mémoire (Mo) :   925.55 /   859.29 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0098   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt140
   # ------------------------------------------------------------------------------------------
   # Commande No :  0099            Concept de type : -
   # ------------------------------------------------------------------------------------------
-  IMPR_RESU(FORMAT='MED',
+  IMPR_RESU(FORMAT='RESULTAT',
             UNITE=88,
-            VERSION_MED='3.3.1',
             RESU=_F(RESULTAT=TEMP,
-                    INFO_MAILLAGE='NON',
-                    IMPR_NOM_VARI='OUI',),
+                    TOUT_PARA='OUI',
+                    FORM_TABL='EXCEL',
+                    FORMAT_R='E14.5',
+                    NOM_CHAM=('TEMP', ),
+                    IMPR_COOR='NON',),
             PROC0='OUI',
             INFO=1,)
 
-
-Création du fichier au format MED 3.3.1.
-  # Mémoire (Mo) :   927.24 /   862.12 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0099   user+syst:        0.04s (syst:        0.00s, elaps:        0.03s)
+  # Mémoire (Mo) :   925.55 /   859.29 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0099   user+syst:        0.01s (syst:        0.00s, elaps:        0.03s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt141
@@ -3554,7 +3522,7 @@ Création du fichier au format MED 3.3.1.
   DEFI_FICHIER(ACTION='LIBERER',
                UNITE=88,)
 
-  # Mémoire (Mo) :   927.24 /   862.12 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   859.29 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0100   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
@@ -3565,7 +3533,7 @@ Création du fichier au format MED 3.3.1.
   DETRUIRE(CONCEPT=_F(NOM=(TEMP_CPY, ),),
            INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.12 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   859.29 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0101   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
@@ -3576,8 +3544,8 @@ Création du fichier au format MED 3.3.1.
   TEMP_CPY = COPIER(CONCEPT=TEMP,
                     INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.12 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0102   user+syst:        0.01s (syst:        0.00s, elaps:        0.00s)
+  # Mémoire (Mo) :   925.55 /   859.29 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0102   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt154
@@ -3587,8 +3555,8 @@ Création du fichier au format MED 3.3.1.
   DETRUIRE(CONCEPT=_F(NOM=(TEMP, ),),
            INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.12 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0103   user+syst:        0.00s (syst:        0.00s, elaps:        0.01s)
+  # Mémoire (Mo) :   925.55 /   859.29 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0103   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt155
@@ -3598,8 +3566,8 @@ Création du fichier au format MED 3.3.1.
   DETRUIRE(CONCEPT=_F(NOM=(T, ),),
            INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.12 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0104   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
+  # Mémoire (Mo) :   925.55 /   859.29 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0104   user+syst:        0.01s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt85
@@ -3662,11 +3630,11 @@ Création du fichier au format MED 3.3.1.
 
   Archivage des champs
     Champ stocké <TEMP> à l'instant  0.000000000000e+00 pour le numéro d'ordre 0
-NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.875E-01
-#1      Resolution des systemes lineaires                 CPU (USER+SYST/SYST/ELAPS):      0.23      0.09      0.22
-#2      Calculs elementaires et assemblages               CPU (USER+SYST/SYST/ELAPS):      0.06      0.00      0.08
-  # Mémoire (Mo) :   927.24 /   862.80 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0105   user+syst:        0.34s (syst:        0.10s, elaps:        0.32s)
+NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.324E-01
+#1      Resolution des systemes lineaires                 CPU (USER+SYST/SYST/ELAPS):      0.15      0.01      0.15
+#2      Calculs elementaires et assemblages               CPU (USER+SYST/SYST/ELAPS):      0.10      0.00      0.10
+  # Mémoire (Mo) :   925.55 /   860.28 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0105   user+syst:        0.26s (syst:        0.01s, elaps:        0.28s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt92
@@ -3682,8 +3650,8 @@ NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.875E-01
                  CRITERE='RELATIF',
                  INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.80 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0106   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
+  # Mémoire (Mo) :   925.55 /   860.28 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0106   user+syst:        0.01s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt266
@@ -3699,7 +3667,7 @@ NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.875E-01
                      PROJECTION='OUI',
                      INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.80 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   860.28 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0107   user+syst:        0.02s (syst:        0.00s, elaps:        0.02s)
   # ------------------------------------------------------------------------------------------
 
@@ -3710,7 +3678,7 @@ NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.875E-01
   DETRUIRE(CONCEPT=_F(NOM=(TPROJ, ),),
            INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.80 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   860.28 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0108   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 ---[precice] [0m it 1 of 1 | dt# 10 of 10 | t 9 | dt 1 | max dt 1 | ongoing yes | dt complete yes | 
@@ -3720,36 +3688,32 @@ NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.875E-01
   # Commande No :  0109            Concept de type : -
   # ------------------------------------------------------------------------------------------
   DEFI_FICHIER(UNITE=89,
-               FICHIER='REPE_OUT/output-9.rmed',
-               TYPE='BINARY',
+               FICHIER='REPE_OUT/output-9.resu',
+               TYPE='ASCII',
                ACCES='NEW',
                ACTION='ASSOCIER',)
 
-
-
-Lancement de la commande : rm -f REPE_OUT/output-9.rmed
-
-  # Mémoire (Mo) :   927.24 /   862.80 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0109   user+syst:        0.02s (syst:        0.01s, elaps:        0.01s)
+  # Mémoire (Mo) :   925.55 /   860.28 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0109   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt140
   # ------------------------------------------------------------------------------------------
   # Commande No :  0110            Concept de type : -
   # ------------------------------------------------------------------------------------------
-  IMPR_RESU(FORMAT='MED',
+  IMPR_RESU(FORMAT='RESULTAT',
             UNITE=89,
-            VERSION_MED='3.3.1',
             RESU=_F(RESULTAT=TEMP,
-                    INFO_MAILLAGE='NON',
-                    IMPR_NOM_VARI='OUI',),
+                    TOUT_PARA='OUI',
+                    FORM_TABL='EXCEL',
+                    FORMAT_R='E14.5',
+                    NOM_CHAM=('TEMP', ),
+                    IMPR_COOR='NON',),
             PROC0='OUI',
             INFO=1,)
 
-
-Création du fichier au format MED 3.3.1.
-  # Mémoire (Mo) :   927.24 /   862.80 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0110   user+syst:        0.03s (syst:        0.00s, elaps:        0.04s)
+  # Mémoire (Mo) :   925.55 /   860.28 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0110   user+syst:        0.02s (syst:        0.01s, elaps:        0.05s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt141
@@ -3759,7 +3723,7 @@ Création du fichier au format MED 3.3.1.
   DEFI_FICHIER(ACTION='LIBERER',
                UNITE=89,)
 
-  # Mémoire (Mo) :   927.24 /   862.80 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   860.28 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0111   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
@@ -3770,8 +3734,8 @@ Création du fichier au format MED 3.3.1.
   DETRUIRE(CONCEPT=_F(NOM=(TEMP_CPY, ),),
            INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.80 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0112   user+syst:        0.01s (syst:        0.01s, elaps:        0.00s)
+  # Mémoire (Mo) :   925.55 /   860.28 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0112   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt146
@@ -3781,8 +3745,8 @@ Création du fichier au format MED 3.3.1.
   TEMP_CPY = COPIER(CONCEPT=TEMP,
                     INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.80 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0113   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
+  # Mémoire (Mo) :   925.55 /   860.28 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0113   user+syst:        0.01s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt154
@@ -3792,7 +3756,7 @@ Création du fichier au format MED 3.3.1.
   DETRUIRE(CONCEPT=_F(NOM=(TEMP, ),),
            INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   861.45 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   860.28 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0114   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
@@ -3803,8 +3767,8 @@ Création du fichier au format MED 3.3.1.
   DETRUIRE(CONCEPT=_F(NOM=(T, ),),
            INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   861.45 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0115   user+syst:        0.01s (syst:        0.00s, elaps:        0.00s)
+  # Mémoire (Mo) :   925.55 /   858.46 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0115   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt85
@@ -3867,11 +3831,11 @@ Création du fichier au format MED 3.3.1.
 
   Archivage des champs
     Champ stocké <TEMP> à l'instant  0.000000000000e+00 pour le numéro d'ordre 0
-NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.938E-01
-#1      Resolution des systemes lineaires                 CPU (USER+SYST/SYST/ELAPS):      0.22      0.09      0.22
-#2      Calculs elementaires et assemblages               CPU (USER+SYST/SYST/ELAPS):      0.09      0.00      0.09
-  # Mémoire (Mo) :   927.24 /   862.16 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0116   user+syst:        0.33s (syst:        0.10s, elaps:        0.33s)
+NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   1.691E-01
+#1      Resolution des systemes lineaires                 CPU (USER+SYST/SYST/ELAPS):      0.12      0.04      0.18
+#2      Calculs elementaires et assemblages               CPU (USER+SYST/SYST/ELAPS):      0.06      0.00      0.06
+  # Mémoire (Mo) :   925.55 /   859.62 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0116   user+syst:        0.20s (syst:        0.05s, elaps:        0.27s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt92
@@ -3887,7 +3851,7 @@ NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.938E-01
                  CRITERE='RELATIF',
                  INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.16 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   859.62 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0117   user+syst:        0.00s (syst:        0.00s, elaps:        0.01s)
   # ------------------------------------------------------------------------------------------
 
@@ -3904,7 +3868,7 @@ NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.938E-01
                      PROJECTION='OUI',
                      INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.16 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   859.62 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0118   user+syst:        0.02s (syst:        0.00s, elaps:        0.02s)
   # ------------------------------------------------------------------------------------------
 
@@ -3915,8 +3879,8 @@ NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.938E-01
   DETRUIRE(CONCEPT=_F(NOM=(TPROJ, ),),
            INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.16 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0119   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
+  # Mémoire (Mo) :   925.55 /   859.62 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0119   user+syst:        0.00s (syst:        0.00s, elaps:        0.01s)
   # ------------------------------------------------------------------------------------------
 ---[precice] [0m it 1 of 1 | dt# 11 of 10 | t 10 | dt 1 | max dt 1 | ongoing no | dt complete yes | 
 
@@ -3925,16 +3889,12 @@ NUMERO D'ORDRE:      0 INSTANT:   0.000E+00 DUREE MOYENNE:   2.938E-01
   # Commande No :  0120            Concept de type : -
   # ------------------------------------------------------------------------------------------
   DEFI_FICHIER(UNITE=90,
-               FICHIER='REPE_OUT/output-10.rmed',
-               TYPE='BINARY',
+               FICHIER='REPE_OUT/output-10.resu',
+               TYPE='ASCII',
                ACCES='NEW',
                ACTION='ASSOCIER',)
 
-
-
-Lancement de la commande : rm -f REPE_OUT/output-10.rmed
-
-  # Mémoire (Mo) :   927.24 /   862.16 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   859.62 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0120   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
@@ -3942,19 +3902,19 @@ Lancement de la commande : rm -f REPE_OUT/output-10.rmed
   # ------------------------------------------------------------------------------------------
   # Commande No :  0121            Concept de type : -
   # ------------------------------------------------------------------------------------------
-  IMPR_RESU(FORMAT='MED',
+  IMPR_RESU(FORMAT='RESULTAT',
             UNITE=90,
-            VERSION_MED='3.3.1',
             RESU=_F(RESULTAT=TEMP,
-                    INFO_MAILLAGE='NON',
-                    IMPR_NOM_VARI='OUI',),
+                    TOUT_PARA='OUI',
+                    FORM_TABL='EXCEL',
+                    FORMAT_R='E14.5',
+                    NOM_CHAM=('TEMP', ),
+                    IMPR_COOR='NON',),
             PROC0='OUI',
             INFO=1,)
 
-
-Création du fichier au format MED 3.3.1.
-  # Mémoire (Mo) :   927.24 /   862.16 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0121   user+syst:        0.04s (syst:        0.00s, elaps:        0.03s)
+  # Mémoire (Mo) :   925.55 /   859.62 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0121   user+syst:        0.01s (syst:        0.00s, elaps:        0.02s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt141
@@ -3964,8 +3924,8 @@ Création du fichier au format MED 3.3.1.
   DEFI_FICHIER(ACTION='LIBERER',
                UNITE=90,)
 
-  # Mémoire (Mo) :   927.24 /   862.16 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0122   user+syst:        0.00s (syst:        0.00s, elaps:        0.01s)
+  # Mémoire (Mo) :   925.55 /   859.62 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0122   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt145
@@ -3975,8 +3935,8 @@ Création du fichier au format MED 3.3.1.
   DETRUIRE(CONCEPT=_F(NOM=(TEMP_CPY, ),),
            INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.16 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0123   user+syst:        0.01s (syst:        0.01s, elaps:        0.00s)
+  # Mémoire (Mo) :   925.55 /   859.62 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0123   user+syst:        0.01s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt146
@@ -3986,7 +3946,7 @@ Création du fichier au format MED 3.3.1.
   TEMP_CPY = COPIER(CONCEPT=TEMP,
                     INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.16 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   859.62 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0124   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
@@ -3997,8 +3957,8 @@ Création du fichier au format MED 3.3.1.
   DETRUIRE(CONCEPT=_F(NOM=(TEMP, ),),
            INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.16 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
-  # Fin commande No : 0125   user+syst:        0.00s (syst:        0.00s, elaps:        0.01s)
+  # Mémoire (Mo) :   925.55 /   859.62 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Fin commande No : 0125   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
 
 .. __stg1_txt155
@@ -4008,45 +3968,9 @@ Création du fichier au format MED 3.3.1.
   DETRUIRE(CONCEPT=_F(NOM=(T, ),),
            INFO=1,)
 
-  # Mémoire (Mo) :   927.24 /   862.16 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
+  # Mémoire (Mo) :   925.55 /   859.62 /    46.80 /    37.56 (VmPeak / VmSize / Optimum / Minimum)
   # Fin commande No : 0126   user+syst:        0.00s (syst:        0.00s, elaps:        0.00s)
   # ------------------------------------------------------------------------------------------
-Run finished at Thu Jan  1 00:00:00 1970
-Global runtime       = 10908ms / 10.908s
-Number of processors = 1
-# Rank: 0
-
-                                                                                              Event |      Count |  Total[ms] |    Max[ms] |    Min[ms] |    Avg[ms] | Time Ratio |
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-                                                                                            advance |         10 |       5546 |       1015 |        480 |        554 |      0.508 |
-                                                                            advance/m2n.receiveData |         20 |       5524 |       1012 |          0 |        276 |      0.506 |
-                                                                               advance/m2n.sendData |         20 |          4 |          0 |          0 |          0 |   0.000367 |
-                                  advance/map.nn.mapData.FromFluid-InterfaceToSolid-Interface-Faces |         20 |          1 |          0 |          0 |          0 |   9.17e-05 |
-                                                                                          configure |          1 |          0 |          0 |          0 |          0 |          0 |
-                                                                                           finalize |          1 |          1 |          1 |          1 |          1 |   9.17e-05 |
-                                                                                         initialize |          1 |         30 |         30 |         30 |         30 |    0.00275 |
-                                                        initialize/m2n.broadcastVertexDistributions |          2 |          0 |          0 |          0 |          0 |          0 |
-                                                               initialize/m2n.buildCommunicationMap |          2 |          1 |          0 |          0 |          0 |   9.17e-05 |
-                                                                initialize/m2n.createCommunications |          2 |          5 |          3 |          2 |          2 |   0.000458 |
-                                                          initialize/m2n.exchangeVertexDistribution |          2 |          8 |          4 |          4 |          4 |   0.000733 |
-                                                             initialize/m2n.requestMasterConnection |          1 |          2 |          2 |          2 |          2 |   0.000183 |
-                                                             initialize/m2n.requestSlavesConnection |          1 |         16 |         16 |         16 |         16 |    0.00147 |
-                                              initialize/partition.gatherMesh.Solid-Interface-Nodes |          1 |          0 |          0 |          0 |          0 |          0 |
-                                             initialize/partition.prepareMesh.Solid-Interface-Faces |          1 |          0 |          0 |          0 |          0 |          0 |
-                                             initialize/partition.prepareMesh.Solid-Interface-Nodes |          1 |          0 |          0 |          0 |          0 |          0 |
-                                             initialize/partition.receiveGlobalMesh.Fluid-Interface |          1 |          5 |          5 |          5 |          5 |   0.000458 |
-                                          initialize/partition.sendGlobalMesh.Solid-Interface-Nodes |          1 |          0 |          0 |          0 |          0 |          0 |
-                                                                                     initializeData |          1 |         28 |         28 |         28 |         28 |    0.00257 |
-                                                                     initializeData/m2n.receiveData |          2 |          2 |          2 |          0 |          1 |   0.000183 |
-                    initializeData/map.nn.computeMapping.FromFluid-InterfaceToSolid-Interface-Faces |          1 |         24 |         24 |         24 |         24 |     0.0022 |
- initializeData/map.nn.computeMapping.FromFluid-InterfaceToSolid-Interface-Faces.getIndexOnVertices |          1 |          3 |          3 |          3 |          3 |   0.000275 |
-                           initializeData/map.nn.mapData.FromFluid-InterfaceToSolid-Interface-Faces |          2 |          0 |          0 |          0 |          0 |          0 |
-                                                                                     solver.advance |         10 |       3782 |        427 |         62 |        378 |      0.347 |
-                                                                                  solver.initialize |          1 |       1517 |       1517 |       1517 |       1517 |      0.139 |
-
-
-                                                                                               Name |        Max |  MaxOnRank |        Min |  MinOnRank |    Min/Max |
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 .. __stg1_txt162
   # ------------------------------------------------------------------------------------------
@@ -4148,7 +4072,7 @@ Number of processors = 1
      Volume des accès en lecture             :          8.59 Mo.
      Nombre total d'accès en écriture        :  27
      Volume des accès en écriture            :         21.09 Mo.
-     Nombre d'identificateurs utilisés       :  598
+     Nombre d'identificateurs utilisés       :  582
      Taille maximum du répertoire            :  2000
      Pourcentage d'utilisation du répertoire :  29 %
 
@@ -4156,7 +4080,7 @@ Number of processors = 1
  <I> <FIN> ARRET NORMAL DANS "FIN" PAR APPEL A "JEFINI".
 
  La mémoire demandée au lancement est sous estimée, elle est de 512.00 Mo.
- Le pic mémoire utilisée est de 927.24 Mo.
+ Le pic mémoire utilisée est de 925.55 Mo.
 
 
 
@@ -4174,15 +4098,15 @@ Number of processors = 1
   
  <I> <FIN> MEMOIRE JEVEUX MINIMALE REQUISE POUR L'EXECUTION :                      37.56 Mo
  <I> <FIN> MEMOIRE JEVEUX OPTIMALE REQUISE POUR L'EXECUTION :                      46.80 Mo
- <I> <FIN> MAXIMUM DE MEMOIRE UTILISEE PAR LE PROCESSUS LORS DE L'EXECUTION :     927.24 Mo
+ <I> <FIN> MAXIMUM DE MEMOIRE UTILISEE PAR LE PROCESSUS LORS DE L'EXECUTION :     925.55 Mo
   
  <I>       FERMETURE DES BASES EFFECTUEE
   
    STATISTIQUES CONCERNANT L'ALLOCATION DYNAMIQUE :
      TAILLE CUMULEE MAXIMUM            :                   47  Mo.
-     TAILLE CUMULEE LIBEREE            :                   86  Mo.
-     NOMBRE TOTAL D'ALLOCATIONS        :               459395
-     NOMBRE TOTAL DE LIBERATIONS       :               459375
+     TAILLE CUMULEE LIBEREE            :                   82  Mo.
+     NOMBRE TOTAL D'ALLOCATIONS        :               457975
+     NOMBRE TOTAL DE LIBERATIONS       :               457955
      APPELS AU MECANISME DE LIBERATION :                    0
      TAILLE MEMOIRE CUMULEE RECUPEREE  :                    0  Mo.
      VOLUME DES LECTURES               :                    0  Mo.
@@ -4194,163 +4118,163 @@ Number of processors = 1
    MEMOIRE JEVEUX OPTIMALE REQUISE POUR L'EXECUTION :      46.80 Mo
      - LIMITE LES ACCES DISQUE
      - AMELIORE LA VITESSE D'EXECUTION
-   MAXIMUM DE MEMOIRE UTILISEE PAR LE PROCESSUS     :     927.24 Mo
+   MAXIMUM DE MEMOIRE UTILISEE PAR LE PROCESSUS     :     925.55 Mo
      - COMPREND LA MEMOIRE CONSOMMEE PAR  JEVEUX, 
        LE SUPERVISEUR PYTHON, LES LIBRAIRIES EXTERNES
   
- <I>       FIN D'EXECUTION LE : JE-09-AVRI-2020 15:41:47
+ <I>       FIN D'EXECUTION LE : VE-22-MAI -2020 13:02:24
 
 
   <I> Informations sur les temps d'exécution
-      Temps cpu user total                    5.81 s
-      Temps cpu systeme total                 0.96 s
-      Temps elapsed total                    12.79 s
-      Temps restant                         527.21 s
+      Temps cpu user total                    4.61 s
+      Temps cpu systeme total                 0.67 s
+      Temps elapsed total                    12.14 s
+      Temps restant                         527.86 s
 
 
   La signature de la base sauvegardée est (à l'adresse 0) :
-    ea3f492d00f7ecfa20caeefef82e54d9635f47f3
+    5f218e1449df7409602543303ed40cb7be25bd6c
 
  ********************************************************************************
  * COMMAND                  :       USER :     SYSTEM :   USER+SYS :    ELAPSED *
  ********************************************************************************
- * init (jdc)               :       5.83 :       0.96 :       6.79 :      12.81 *
- *  . compile               :       0.00 :       0.00 :       0.00 :       0.00 *
- *  . exec_compile          :       5.33 :       0.91 :       6.24 :      12.24 *
- * DEBUT                    :       0.03 :       0.03 :       0.06 :       0.07 *
+ * init (jdc)               :       4.63 :       0.67 :       5.30 :      12.16 *
+ *  . compile               :       0.01 :       0.00 :       0.01 :       0.00 *
+ *  . exec_compile          :       4.29 :       0.67 :       4.96 :      11.82 *
+ * DEBUT                    :       0.02 :       0.04 :       0.06 :       0.17 *
  * INCLUDE                  :       0.00 :       0.00 :       0.00 :       0.00 *
- * INCLUDE                  :       0.30 :       0.02 :       0.32 :       0.31 *
- *  . LIRE_MAILLAGE         :       0.10 :       0.01 :       0.11 :       0.11 *
- *  . DEFI_GROUP            :       0.03 :       0.00 :       0.03 :       0.03 *
- *  . AFFE_MODELE           :       0.05 :       0.00 :       0.05 :       0.04 *
+ * INCLUDE                  :       0.26 :       0.04 :       0.30 :       0.66 *
+ *  . LIRE_MAILLAGE         :       0.10 :       0.02 :       0.12 :       0.23 *
+ *  . DEFI_GROUP            :       0.03 :       0.00 :       0.03 :       0.06 *
+ *  . AFFE_MODELE           :       0.04 :       0.00 :       0.04 :       0.13 *
  *  . DEFI_CONSTANTE        :       0.00 :       0.00 :       0.00 :       0.01 *
- *  . DEFI_CONSTANTE        :       0.00 :       0.00 :       0.00 :       0.00 *
- *  . DEFI_MATERIAU         :       0.00 :       0.00 :       0.00 :       0.01 *
- *  . AFFE_MATERIAU         :       0.00 :       0.01 :       0.01 :       0.00 *
- *  . AFFE_CHAR_THER        :       0.06 :       0.00 :       0.06 :       0.05 *
- *  . AFFE_CHAR_THER        :       0.03 :       0.00 :       0.03 :       0.03 *
- *  . CREA_CHAMP            :       0.01 :       0.00 :       0.01 :       0.00 *
- * CREA_MAILLAGE            :       0.00 :       0.00 :       0.00 :       0.01 *
- * AFFE_MODELE              :       0.01 :       0.00 :       0.01 :       0.02 *
- * CREA_CHAMP               :       0.02 :       0.00 :       0.02 :       0.01 *
- * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.01 *
- * AFFE_CHAR_THER           :       0.44 :       0.01 :       0.45 :       0.45 *
- * THER_LINEAIRE            :       0.27 :       0.05 :       0.32 :       0.31 *
- * CREA_CHAMP               :       0.00 :       0.00 :       0.00 :       0.00 *
- * PROJ_CHAMP               :       0.02 :       0.00 :       0.02 :       0.02 *
- * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
- * DEFI_FICHIER             :       0.00 :       0.00 :       0.00 :       0.01 *
- * IMPR_RESU                :       0.04 :       0.00 :       0.04 :       0.04 *
- * DEFI_FICHIER             :       0.00 :       0.00 :       0.00 :       0.00 *
- * COPIER                   :       0.00 :       0.00 :       0.00 :       0.00 *
- * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
- * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
- * THER_LINEAIRE            :       0.29 :       0.04 :       0.33 :       0.32 *
+ *  . DEFI_CONSTANTE        :       0.00 :       0.01 :       0.01 :       0.00 *
+ *  . DEFI_MATERIAU         :       0.01 :       0.00 :       0.01 :       0.00 *
+ *  . AFFE_MATERIAU         :       0.00 :       0.00 :       0.00 :       0.01 *
+ *  . AFFE_CHAR_THER        :       0.04 :       0.00 :       0.04 :       0.10 *
+ *  . AFFE_CHAR_THER        :       0.03 :       0.01 :       0.04 :       0.04 *
+ *  . CREA_CHAMP            :       0.00 :       0.00 :       0.00 :       0.00 *
+ * CREA_MAILLAGE            :       0.00 :       0.00 :       0.00 :       0.04 *
+ * AFFE_MODELE              :       0.01 :       0.00 :       0.01 :       0.01 *
  * CREA_CHAMP               :       0.01 :       0.00 :       0.01 :       0.01 *
- * PROJ_CHAMP               :       0.02 :       0.00 :       0.02 :       0.02 *
  * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
- * DEFI_FICHIER             :       0.00 :       0.01 :       0.01 :       0.01 *
- * IMPR_RESU                :       0.03 :       0.01 :       0.04 :       0.04 *
- * DEFI_FICHIER             :       0.00 :       0.00 :       0.00 :       0.00 *
- * DETRUIRE                 :       0.01 :       0.00 :       0.01 :       0.00 *
- * COPIER                   :       0.00 :       0.00 :       0.00 :       0.00 *
- * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
- * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
- * THER_LINEAIRE            :       0.26 :       0.05 :       0.31 :       0.31 *
+ * AFFE_CHAR_THER           :       0.49 :       0.03 :       0.52 :       1.11 *
+ * THER_LINEAIRE            :       0.20 :       0.03 :       0.23 :       0.29 *
  * CREA_CHAMP               :       0.00 :       0.00 :       0.00 :       0.00 *
- * PROJ_CHAMP               :       0.02 :       0.00 :       0.02 :       0.02 *
- * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
- * DEFI_FICHIER             :       0.00 :       0.00 :       0.00 :       0.01 *
- * IMPR_RESU                :       0.03 :       0.00 :       0.03 :       0.04 *
- * DEFI_FICHIER             :       0.00 :       0.00 :       0.00 :       0.00 *
- * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
- * COPIER                   :       0.00 :       0.00 :       0.00 :       0.00 *
- * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
- * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
- * THER_LINEAIRE            :       0.26 :       0.07 :       0.33 :       0.32 *
- * CREA_CHAMP               :       0.00 :       0.00 :       0.00 :       0.00 *
- * PROJ_CHAMP               :       0.02 :       0.00 :       0.02 :       0.02 *
- * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
- * DEFI_FICHIER             :       0.00 :       0.00 :       0.00 :       0.01 *
- * IMPR_RESU                :       0.02 :       0.01 :       0.03 :       0.04 *
- * DEFI_FICHIER             :       0.00 :       0.00 :       0.00 :       0.00 *
- * DETRUIRE                 :       0.01 :       0.00 :       0.01 :       0.00 *
- * COPIER                   :       0.00 :       0.00 :       0.00 :       0.00 *
+ * PROJ_CHAMP               :       0.01 :       0.00 :       0.01 :       0.01 *
  * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.01 *
- * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
- * THER_LINEAIRE            :       0.25 :       0.06 :       0.31 :       0.31 *
- * CREA_CHAMP               :       0.00 :       0.00 :       0.00 :       0.00 *
- * PROJ_CHAMP               :       0.02 :       0.00 :       0.02 :       0.02 *
- * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
- * DEFI_FICHIER             :       0.00 :       0.01 :       0.01 :       0.01 *
- * IMPR_RESU                :       0.03 :       0.01 :       0.04 :       0.03 *
- * DEFI_FICHIER             :       0.00 :       0.00 :       0.00 :       0.01 *
- * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
- * COPIER                   :       0.00 :       0.00 :       0.00 :       0.00 *
- * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.01 *
- * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
- * THER_LINEAIRE            :       0.28 :       0.05 :       0.33 :       0.32 *
- * CREA_CHAMP               :       0.01 :       0.00 :       0.01 :       0.00 *
- * PROJ_CHAMP               :       0.02 :       0.00 :       0.02 :       0.02 *
- * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
- * DEFI_FICHIER             :       0.01 :       0.00 :       0.01 :       0.01 *
- * IMPR_RESU                :       0.03 :       0.00 :       0.03 :       0.04 *
  * DEFI_FICHIER             :       0.00 :       0.00 :       0.00 :       0.00 *
- * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
- * COPIER                   :       0.00 :       0.00 :       0.00 :       0.00 *
- * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
- * DETRUIRE                 :       0.01 :       0.00 :       0.01 :       0.01 *
- * THER_LINEAIRE            :       0.25 :       0.07 :       0.32 :       0.32 *
- * CREA_CHAMP               :       0.01 :       0.00 :       0.01 :       0.01 *
- * PROJ_CHAMP               :       0.02 :       0.00 :       0.02 :       0.02 *
- * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
- * DEFI_FICHIER             :       0.00 :       0.01 :       0.01 :       0.01 *
- * IMPR_RESU                :       0.03 :       0.00 :       0.03 :       0.04 *
+ * IMPR_RESU                :       0.01 :       0.00 :       0.01 :       0.03 *
  * DEFI_FICHIER             :       0.00 :       0.00 :       0.00 :       0.00 *
- * DETRUIRE                 :       0.01 :       0.00 :       0.01 :       0.00 *
  * COPIER                   :       0.00 :       0.00 :       0.00 :       0.00 *
  * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
  * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
- * THER_LINEAIRE            :       0.26 :       0.06 :       0.32 :       0.31 *
- * CREA_CHAMP               :       0.00 :       0.00 :       0.00 :       0.00 *
- * PROJ_CHAMP               :       0.01 :       0.00 :       0.01 :       0.02 *
+ * THER_LINEAIRE            :       0.17 :       0.03 :       0.20 :       0.28 *
+ * CREA_CHAMP               :       0.01 :       0.00 :       0.01 :       0.02 *
+ * PROJ_CHAMP               :       0.02 :       0.00 :       0.02 :       0.04 *
  * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
- * DEFI_FICHIER             :       0.00 :       0.00 :       0.00 :       0.01 *
- * IMPR_RESU                :       0.04 :       0.00 :       0.04 :       0.03 *
+ * DEFI_FICHIER             :       0.00 :       0.00 :       0.00 :       0.00 *
+ * IMPR_RESU                :       0.02 :       0.00 :       0.02 :       0.04 *
  * DEFI_FICHIER             :       0.00 :       0.00 :       0.00 :       0.00 *
  * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
  * COPIER                   :       0.01 :       0.00 :       0.01 :       0.00 *
- * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.01 *
  * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
- * THER_LINEAIRE            :       0.24 :       0.10 :       0.34 :       0.32 *
+ * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
+ * THER_LINEAIRE            :       0.16 :       0.04 :       0.20 :       0.30 *
+ * CREA_CHAMP               :       0.00 :       0.00 :       0.00 :       0.00 *
+ * PROJ_CHAMP               :       0.02 :       0.00 :       0.02 :       0.04 *
+ * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
+ * DEFI_FICHIER             :       0.00 :       0.00 :       0.00 :       0.00 *
+ * IMPR_RESU                :       0.01 :       0.00 :       0.01 :       0.03 *
+ * DEFI_FICHIER             :       0.00 :       0.00 :       0.00 :       0.00 *
+ * DETRUIRE                 :       0.01 :       0.00 :       0.01 :       0.00 *
+ * COPIER                   :       0.00 :       0.00 :       0.00 :       0.01 *
+ * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
+ * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
+ * THER_LINEAIRE            :       0.24 :       0.02 :       0.26 :       0.35 *
  * CREA_CHAMP               :       0.00 :       0.00 :       0.00 :       0.00 *
  * PROJ_CHAMP               :       0.02 :       0.00 :       0.02 :       0.02 *
  * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
- * DEFI_FICHIER             :       0.01 :       0.01 :       0.02 :       0.01 *
- * IMPR_RESU                :       0.03 :       0.00 :       0.03 :       0.04 *
  * DEFI_FICHIER             :       0.00 :       0.00 :       0.00 :       0.00 *
- * DETRUIRE                 :       0.00 :       0.01 :       0.01 :       0.00 *
+ * IMPR_RESU                :       0.01 :       0.01 :       0.02 :       0.02 *
+ * DEFI_FICHIER             :       0.00 :       0.00 :       0.00 :       0.00 *
+ * DETRUIRE                 :       0.01 :       0.00 :       0.01 :       0.00 *
  * COPIER                   :       0.00 :       0.00 :       0.00 :       0.00 *
  * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
- * DETRUIRE                 :       0.01 :       0.00 :       0.01 :       0.00 *
- * THER_LINEAIRE            :       0.23 :       0.10 :       0.33 :       0.33 *
- * CREA_CHAMP               :       0.00 :       0.00 :       0.00 :       0.01 *
- * PROJ_CHAMP               :       0.02 :       0.00 :       0.02 :       0.02 *
+ * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
+ * THER_LINEAIRE            :       0.22 :       0.06 :       0.28 :       0.34 *
+ * CREA_CHAMP               :       0.01 :       0.00 :       0.01 :       0.00 *
+ * PROJ_CHAMP               :       0.02 :       0.00 :       0.02 :       0.05 *
  * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
  * DEFI_FICHIER             :       0.00 :       0.00 :       0.00 :       0.00 *
- * IMPR_RESU                :       0.04 :       0.00 :       0.04 :       0.03 *
- * DEFI_FICHIER             :       0.00 :       0.00 :       0.00 :       0.01 *
- * DETRUIRE                 :       0.00 :       0.01 :       0.01 :       0.00 *
+ * IMPR_RESU                :       0.01 :       0.01 :       0.02 :       0.03 *
+ * DEFI_FICHIER             :       0.00 :       0.00 :       0.00 :       0.00 *
+ * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
  * COPIER                   :       0.00 :       0.00 :       0.00 :       0.00 *
  * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.01 *
  * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
- * FIN                      :       0.04 :       0.05 :       0.09 :       0.10 *
- *  . part Superviseur      :       2.04 :       0.21 :       2.25 :       8.28 *
- *  . part Fortran          :       3.79 :       0.75 :       4.54 :       4.53 *
+ * THER_LINEAIRE            :       0.19 :       0.07 :       0.26 :       0.36 *
+ * CREA_CHAMP               :       0.01 :       0.00 :       0.01 :       0.01 *
+ * PROJ_CHAMP               :       0.02 :       0.00 :       0.02 :       0.04 *
+ * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
+ * DEFI_FICHIER             :       0.00 :       0.00 :       0.00 :       0.00 *
+ * IMPR_RESU                :       0.01 :       0.00 :       0.01 :       0.01 *
+ * DEFI_FICHIER             :       0.00 :       0.00 :       0.00 :       0.00 *
+ * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
+ * COPIER                   :       0.00 :       0.00 :       0.00 :       0.00 *
+ * DETRUIRE                 :       0.01 :       0.00 :       0.01 :       0.01 *
+ * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
+ * THER_LINEAIRE            :       0.19 :       0.08 :       0.27 :       0.36 *
+ * CREA_CHAMP               :       0.00 :       0.00 :       0.00 :       0.00 *
+ * PROJ_CHAMP               :       0.02 :       0.00 :       0.02 :       0.02 *
+ * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
+ * DEFI_FICHIER             :       0.01 :       0.00 :       0.01 :       0.00 *
+ * IMPR_RESU                :       0.01 :       0.00 :       0.01 :       0.03 *
+ * DEFI_FICHIER             :       0.00 :       0.01 :       0.01 :       0.00 *
+ * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
+ * COPIER                   :       0.00 :       0.00 :       0.00 :       0.00 *
+ * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
+ * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
+ * THER_LINEAIRE            :       0.22 :       0.02 :       0.24 :       0.29 *
+ * CREA_CHAMP               :       0.01 :       0.00 :       0.01 :       0.01 *
+ * PROJ_CHAMP               :       0.01 :       0.01 :       0.02 :       0.02 *
+ * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
+ * DEFI_FICHIER             :       0.00 :       0.00 :       0.00 :       0.00 *
+ * IMPR_RESU                :       0.01 :       0.00 :       0.01 :       0.03 *
+ * DEFI_FICHIER             :       0.00 :       0.00 :       0.00 :       0.00 *
+ * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
+ * COPIER                   :       0.00 :       0.00 :       0.00 :       0.00 *
+ * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
+ * DETRUIRE                 :       0.01 :       0.00 :       0.01 :       0.00 *
+ * THER_LINEAIRE            :       0.25 :       0.01 :       0.26 :       0.28 *
+ * CREA_CHAMP               :       0.01 :       0.00 :       0.01 :       0.00 *
+ * PROJ_CHAMP               :       0.02 :       0.00 :       0.02 :       0.02 *
+ * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
+ * DEFI_FICHIER             :       0.00 :       0.00 :       0.00 :       0.00 *
+ * IMPR_RESU                :       0.01 :       0.01 :       0.02 :       0.05 *
+ * DEFI_FICHIER             :       0.00 :       0.00 :       0.00 :       0.00 *
+ * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
+ * COPIER                   :       0.01 :       0.00 :       0.01 :       0.00 *
+ * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
+ * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
+ * THER_LINEAIRE            :       0.15 :       0.05 :       0.20 :       0.27 *
+ * CREA_CHAMP               :       0.00 :       0.00 :       0.00 :       0.01 *
+ * PROJ_CHAMP               :       0.02 :       0.00 :       0.02 :       0.02 *
+ * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.01 *
+ * DEFI_FICHIER             :       0.00 :       0.00 :       0.00 :       0.00 *
+ * IMPR_RESU                :       0.01 :       0.00 :       0.01 :       0.02 *
+ * DEFI_FICHIER             :       0.00 :       0.00 :       0.00 :       0.00 *
+ * DETRUIRE                 :       0.01 :       0.00 :       0.01 :       0.00 *
+ * COPIER                   :       0.00 :       0.00 :       0.00 :       0.00 *
+ * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
+ * DETRUIRE                 :       0.00 :       0.00 :       0.00 :       0.00 *
+ * FIN                      :       0.03 :       0.04 :       0.07 :       0.11 *
+ *  . part Superviseur      :       1.55 :       0.11 :       1.66 :       6.71 *
+ *  . part Fortran          :       3.07 :       0.56 :       3.63 :       5.45 *
  ********************************************************************************
- * TOTAL_JOB                :       5.81 :       0.96 :       6.77 :      12.79 *
+ * TOTAL_JOB                :       4.61 :       0.67 :       5.28 :      12.14 *
  ********************************************************************************
 
 WARNING: can not pickle object: adapter <class 'adapter.Adapter'>
 --- Fin de l'exécution
-EXECUTION_CODE_ASTER_EXIT_19=0
+EXECUTION_CODE_ASTER_EXIT_22=0

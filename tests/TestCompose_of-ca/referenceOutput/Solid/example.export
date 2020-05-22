@@ -1,0 +1,35 @@
+P actions make_etude
+P aster_root /home/tester/Code_Aster-root
+P consbtc oui
+P debug nodebug
+P display docker:0
+P follow_output yes
+P mclient docker
+P memjob 524288
+P memory_limit 512.0
+P mode interactif
+P ncpus 1
+P nomjob linear-thermic
+P origine salomemeca_asrun 1.10.0
+P protocol_copyfrom asrun.plugins.server.SCPServer
+P protocol_copyto asrun.plugins.server.SCPServer
+P protocol_exec asrun.plugins.server.SSHServer
+P rep_trav /tmp/root-23129e00f0db-interactif_4800
+P serveur localhost
+P soumbtc oui
+P time_limit 600.0
+P tpsjob 11
+P uclient tester
+P username tester
+P version stable
+A memjeveux 64.0
+A tpmax 600.0
+F comm /home/tester/code_aster-adapter/cht/adapter.comm D 1
+F libr /home/tester/tutorials/CHT/flow-over-plate/buoyantSimpleFoam-aster/config.comm D 90
+F libr /home/tester/tutorials/CHT/flow-over-plate/buoyantSimpleFoam-aster/Solid/def.comm D 91
+F mmed /home/tester/tutorials/CHT/flow-over-plate/buoyantSimpleFoam-aster/Solid/solid.mmed D 20
+R repe /home/tester/tutorials/CHT/flow-over-plate/buoyantSimpleFoam-aster/Solid/REPE_OUT D 0
+R repe /home/tester/tutorials/CHT/flow-over-plate/buoyantSimpleFoam-aster/Solid/REPE_OUT R 0
+F mess /home/tester/tutorials/CHT/flow-over-plate/buoyantSimpleFoam-aster/Solid/solid.mess R 6
+F rmed /home/tester/tutorials/CHT/flow-over-plate/buoyantSimpleFoam-aster/Solid/solid.rmed R 80
+F resu /home/tester/tutorials/CHT/flow-over-plate/buoyantSimpleFoam-aster/Solid/solid.resu R 8
