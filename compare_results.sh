@@ -67,7 +67,7 @@ if [ -n "$diff_files" ]; then
     num_filter='s/(\|)\||\|>\|<//g; /[a-df-zA-Z]\|[vV]ersion/d'
     # Filter for text lines. Compare these seperately from numerical lines
     # Ignore any timestamps
-    txt_filter='s/(\|)\||\|>\|<//g; /[a-df-zA-Z]/!d; s/[0-9][0-9]:[0-9][0-9]:[0-9][0-9]//g; /Timestamp\|[rR]untime\|[vV]ersion\|[rR]evision\|Unexpected end of/d; /Run finished/q'
+    txt_filter='s/(\|)\||\|>\|<//g; /[a-df-zA-Z]/!d; s/[0-9][0-9]:[0-9][0-9]:[0-9][0-9]//g; s/[0-9][0-9]\/[0-9][0-9]\/[0-9][0-9][0-9][0-9]//g; /Timestamp\|[rR]untime\|[vV]ersion\|[rR]evision\|Unexpected end of/d; /Run finished/q'
     file1_num=$( cat "$file1" | sed "$num_filter")
     file2_num=$( cat "$file2" | sed "$num_filter")
 
