@@ -240,9 +240,9 @@ jobs:
         provider: script
         on:
           all_branches: true
-          script: >-
-            echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-            python push_adapter.py --dockerfile adapters/Dockerfile.codeaster-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
+        script: >-
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
+          python push_adapter.py --dockerfile adapters/Dockerfile.codeaster-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
 
     - name: "[16.04] OpenFOAM adapter [PETSc] [Job failure permitted]"
       if: fork = false
