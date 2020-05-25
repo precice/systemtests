@@ -12,9 +12,6 @@ services:
       - output:/home/precice/Data/Output/
     command: >
       /bin/bash -c "./Allrun &&
-        ls -la &&
-        echo "yee" &&
-        ls -la /home/precice/Data &&
         cp -r *.log VTK /home/precice/Data/Output/ &&
         rm /home/precice/Data/Output/*summary.log"
     container_name: 1dtube-py
