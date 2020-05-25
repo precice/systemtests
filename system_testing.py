@@ -115,7 +115,6 @@ def run_compose(systest, branch, local, tag, force_rebuild, rm_all=False, verbos
             if local:
                 raise e
             print ("TESTS FAILED WITH: {}".format(e))
-            sys.exit(1)
 
 
 class IncorrectOutput(Exception):
@@ -153,10 +152,8 @@ def comparison(pathToRef, pathToOutput):
             raise ValueError('compare_results.sh exited with unknown code {}'.format(num_diff))
         else:
             print('TEST SUCCEEDED - Differences to referenceOutput within tolerance.')
-            sys.exit(0)
     else:
         print('TEST SUCCEEDED - No difference to referenceOutput found.')
-        sys.exit(0)
 
 
 def build_run_compare(test, tag, branch, local_precice, force_rebuild, rm_all=False, verbose=False):
