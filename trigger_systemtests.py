@@ -89,7 +89,7 @@ def determine_image_tag():
     else:
         return branch
 
-def generate_travis_job(adapter, user, trigger_failure = True):
+def generate_travis_job(adapter, user, trigger_failure = True, st_branch='develop'):
 
     triggered_by = os.environ["TRAVIS_JOB_WEB_URL"] if "TRAVIS_JOB_WEB_URL" in\
          os.environ else "manual script call"
@@ -135,7 +135,7 @@ def generate_travis_job(adapter, user, trigger_failure = True):
     job_body={
         "request": {
           "message": "{} systemtest".format(adapter),
-          "branch": "develop",
+          "branch": "{}".format(st_branch),
           "config": {
             # we need to use 'replace' to replace .travis.yml,
             # that is originally present in the repo
@@ -284,6 +284,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Generate and trigger job for systemtests")
     parser.add_argument('--owner',  type=str, help="Owner of repository", default='precice' )
+    parser.add_argument('--st-branch',  type=str, help="Used branch of systemtests", default='develop' )
     parser.add_argument('--adapter', type=str, help="Adapter for which you want to trigger systemtests",
               required=True, choices = adapters_info.keys() )
     parser.add_argument('--failure', help="Whether to trigger normal or failure build",
@@ -300,12 +301,12 @@ if __name__ == "__main__":
     else:
         if args.test:
             job = generate_travis_job(args.adapter, args.owner, trigger_failure
-                    = False)
+                    = False, st_branch=args.st_branch)
             pprint.pprint(job)
         else:
             if args.wait:
                 trigger_travis_and_wait_and_respond(generate_travis_job(args.adapter, args.owner, trigger_failure
-                    = False), args.owner, 'systemtests' )
+                    = False, st_branch=args.st_branch), args.owner, 'systemtests' )
             else:
-                trigger_travis_build( generate_travis_job(args.adapter, args.owner),
+                trigger_travis_build( generate_travis_job(args.adapter, args.owner, st_branch=args.st_branch),
                         args.owner, 'systemtests' )
