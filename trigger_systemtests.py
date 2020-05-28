@@ -89,7 +89,7 @@ def determine_image_tag():
     else:
         return branch
 
-def generate_travis_job(adapter, user, trigger_failure = True, st_branch='develop'):
+def generate_travis_job(adapter, user, enable_output = False, trigger_failure = True, st_branch='develop'):
 
     triggered_by = os.environ["TRAVIS_JOB_WEB_URL"] if "TRAVIS_JOB_WEB_URL" in\
          os.environ else "manual script call"
@@ -124,11 +124,11 @@ def generate_travis_job(adapter, user, trigger_failure = True, st_branch='develo
     # adapters
     systest_templates = {
         "stage": "Running tests",
-        "name":          "[{BASE}] {TESTNAME} <-> {TESTNAME}",
+        "name":          "[{BASE}] {TESTNAME}",
         # force docker-compose to consider an image with a particular tag
         "script":      ["export {adapter_tag}={tag}; ".format(adapter_tag = adapter.upper() + "_TAG", tag = determine_image_tag()),
                         main_test_script,
-                        "python push.py --test {TEST}"],
+                        "python push.py --test {TEST}" + (" -o" if enable_output else "")],
         "after_failure": after_failure_action
     };
 
@@ -287,6 +287,7 @@ if __name__ == "__main__":
     parser.add_argument('--st-branch',  type=str, help="Used branch of systemtests", default='develop' )
     parser.add_argument('--adapter', type=str, help="Adapter for which you want to trigger systemtests",
               required=True, choices = adapters_info.keys() )
+    parser.add_argument('--output', help="Enable output for the triggered tests", action='store_true')
     parser.add_argument('--failure', help="Whether to trigger normal or failure build",
               action="store_true")
     parser.add_argument('--wait', help='Whether exit only when the triggered build succeeds',
@@ -300,13 +301,13 @@ if __name__ == "__main__":
         trigger_travis_build( generate_failure_callback(), args.owner,repo)
     else:
         if args.test:
-            job = generate_travis_job(args.adapter, args.owner, trigger_failure
-                    = False, st_branch=args.st_branch)
+            job = generate_travis_job(args.adapter, args.owner, enable_output=args.output,
+                trigger_failure=False, st_branch=args.st_branch)
             pprint.pprint(job)
         else:
             if args.wait:
-                trigger_travis_and_wait_and_respond(generate_travis_job(args.adapter, args.owner, trigger_failure
-                    = False, st_branch=args.st_branch), args.owner, 'systemtests' )
+                trigger_travis_and_wait_and_respond(generate_travis_job(args.adapter, args.owner,
+                    enable_output=args.output, trigger_failure=False, st_branch=args.st_branch), args.owner, 'systemtests' )
             else:
-                trigger_travis_build( generate_travis_job(args.adapter, args.owner, st_branch=args.st_branch),
-                        args.owner, 'systemtests' )
+                trigger_travis_build( generate_travis_job(args.adapter, args.owner,
+                    enable_output=args.output, trigger_failure=False, st_branch=args.st_branch), args.owner, 'systemtests' )
