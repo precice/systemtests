@@ -287,7 +287,7 @@ if __name__ == "__main__":
     parser.add_argument('--st-branch',  type=str, help="Used branch of systemtests", default='develop' )
     parser.add_argument('--adapter', type=str, help="Adapter for which you want to trigger systemtests",
               required=True, choices = adapters_info.keys() )
-    parser.add_argument('--output', help="Enable output for the triggered tests", action='store_true')
+    parser.add_argument('-o', '--output', help="Enable output for the triggered tests", action='store_true')
     parser.add_argument('--failure', help="Whether to trigger normal or failure build",
               action="store_true")
     parser.add_argument('--wait', help='Whether exit only when the triggered build succeeds',
