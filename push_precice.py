@@ -1,7 +1,7 @@
 import argparse, docker
 import system_testing
 import os
-                           
+
 if __name__ == "__main__":
     # Parsing flags
     parser = argparse.ArgumentParser(description='Build local preCICE image to Docker Hub.')
@@ -34,6 +34,16 @@ if __name__ == "__main__":
         features["petsc"] = "yes"
 
     tag = system_testing.compose_tag(args.docker_username, "precice", features, args.branch)
+
+    # TravisCI dependent behaviour:
+    #   - If $TRAVIS_TEST_RESULT exists (i.e. we are running in a TravisCI job),
+    #       then check if errors occured while building the image. This is indicated
+    #       by TRAVIS_TEST_RESULT being equal to 1. We then abort the push.
+    #   - If it doesn't, ignore this check and push image normally.
+    if "TRAVIS_TEST_RESULT" in os.environ:
+        if os.environ["TRAVIS_TEST_RESULT"] == '1':
+            print("The TravisCI script failed at a previous command! No image will be pushed.")
+            exit(1)
+
     docker.push_image(tag=tag,
                       namespace="")
-                       
