@@ -12,7 +12,7 @@ WORKDIR /home/precice
 RUN mkdir -p Logs Data/Input Data/Output Data/Exchange
 ARG branch=develop
 RUN git clone --branch $branch https://github.com/precice/dealii-adapter.git
-RUN cd dealii-adapter/coupled_elasto_dynamics/ && \
+RUN cd dealii-adapter/linear_elasticity/ && \
     cmake -DDEAL_II_DIR=$HOME/dealii -DDIM=3 -DCMAKE_BUILD_TYPE=Release . && \
     make -j $(nproc)
 
