@@ -19,7 +19,7 @@ from collections import namedtuple
 adapter_info = namedtuple('adapter_info', 'repo tests base')
 
 adapters_info = {"openfoam": adapter_info('openfoam-adapter', ['of-of', 'of-ccx'],  'Ubuntu1604.home'),
-                "calculix":  adapter_info('calculix-adapter', ['of-ccx','su2-ccx'], 'Ubuntu1604.home'),
+                "calculix":  adapter_info('calculix-adapter', ['of-ccx','su2-ccx','of-ccx_fsi'], 'Ubuntu1604.home'),
                 "su2":       adapter_info('su2-adapter',      ['su2-ccx'],          'Ubuntu1604.home'),
                 "dealii":    adapter_info('dealii-adapter',   ['dealii-of'],        'Ubuntu1604.home'),
                 "fenics":    adapter_info('fenics-adapter',   ['fe-fe'],            'Ubuntu1804.home')}
