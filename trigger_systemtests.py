@@ -128,7 +128,7 @@ def generate_travis_job(adapter, user, enable_output = False, trigger_failure = 
         # force docker-compose to consider an image with a particular tag
         "script":      ["export {adapter_tag}={tag}; ".format(adapter_tag = adapter.upper() + "_TAG", tag = determine_image_tag()),
                         main_test_script,
-                        "python push.py --test {TEST}" + (" -o" if enable_output else "")],
+                        "python push.py --test {TEST} --base {BASE}" + (" -o" if enable_output else "")],
         "after_failure": after_failure_action
     };
 
