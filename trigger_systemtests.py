@@ -69,7 +69,7 @@ def adjust_travis_script(script, user, adapter):
     preprocess_cmd = None
     if branch or not pull_req in [None, "false"]:
         preprocess_cmd = "grep -rl --include=\*Dockerfile\* github.com/{user}/{adapter} |\
-        xargs sed -i 's|\(github.com/{user}/{adapter}\)|\\1 \&\& cd \
+        xargs sed -i 's|\(github.com/{user}/{adapter}.*\)|\\1 \&\& cd \
         {adapter} \&\& {post_clone_cmd} \&\& cd .. |g'".format(user = user, adapter =
                 adapters_info[adapter].repo, post_clone_cmd = post_clone_cmd)
 
