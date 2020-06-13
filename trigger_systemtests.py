@@ -73,6 +73,14 @@ def adjust_travis_script(script, user, adapter):
         {adapter} \&\& {post_clone_cmd} \&\& cd .. |g'".format(user = user, adapter =
                 adapters_info[adapter].repo,
                 post_clone_cmd = post_clone_cmd)
+    elif (branch or pull_req not in [None, "false"]) and adapters_info[adapter].install_mode == 'pip':
+        adapter_branch = os.environ.get("TRAVIS_PULL_REQUEST_BRANCH")
+        if adapter_branch == "":
+            adapter_branch = branch
+        preprocess_cmd = "grep -rl --include=\*Dockerfile\* github.com/{user}/{adapter} |\
+        xargs sed -i 's|\(ARG adapter_branch=.+\)|ARG adapter_branch={adapter_branch}|g'".format(user = user, adapter =
+                adapters_info[adapter].repo, adapter_branch = adapter_branch, post_clone_cmd = post_clone_cmd)
+
 
     main_script = " && ".join(filter(None, ([ preprocess_cmd, script ])))
 
