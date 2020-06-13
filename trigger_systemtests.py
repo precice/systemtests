@@ -16,13 +16,13 @@ from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 from collections import namedtuple
 
-adapter_info = namedtuple('adapter_info', 'repo tests base')
+adapter_info = namedtuple('adapter_info', 'repo folder tests base')
 
-adapters_info = {"openfoam": adapter_info('openfoam-adapter', ['of-of', 'of-ccx'],  'Ubuntu1604.home'),
-                "calculix":  adapter_info('calculix-adapter', ['of-ccx','su2-ccx'], 'Ubuntu1604.home'),
-                "su2":       adapter_info('su2-adapter',      ['su2-ccx'],          'Ubuntu1604.home'),
-                "dealii":    adapter_info('dealii-adapter',   ['dealii-of'],        'Ubuntu1604.home'),
-                "fenics":    adapter_info('fenics-adapter',   ['fe-fe'],            'Ubuntu1804.home')}
+adapters_info = {"openfoam": adapter_info('openfoam-adapter', 'openfoam-adapter', ['of-of', 'of-ccx'],  'Ubuntu1604.home'),
+                "calculix":  adapter_info('calculix-adapter', 'calculix-adapter', ['of-ccx','su2-ccx'], 'Ubuntu1604.home'),
+                "su2":       adapter_info('su2-adapter',      'su2-adapter',      ['su2-ccx'],          'Ubuntu1604.home'),
+                "dealii":    adapter_info('dealii-adapter',   'dealii-adapter',   ['dealii-of'],        'Ubuntu1604.home'),
+                "fenics":    adapter_info('fenics-adapter',   'fenicsadapter',    ['fe-fe'],            'Ubuntu1804.home')}
 
 class msg_color:
     green = "\033[92m"
@@ -70,8 +70,9 @@ def adjust_travis_script(script, user, adapter):
     if branch or not pull_req in [None, "false"]:
         preprocess_cmd = "grep -rl --include=\*Dockerfile\* github.com/{user}/{adapter} |\
         xargs sed -i 's|\(github.com/{user}/{adapter}.*\)|\\1 \&\& cd \
-        {adapter} \&\& {post_clone_cmd} \&\& cd .. |g'".format(user = user, adapter =
-                adapters_info[adapter].repo, post_clone_cmd = post_clone_cmd)
+        {folder} \&\& {post_clone_cmd} \&\& cd .. |g'".format(user = user, adapter =
+                adapters_info[adapter].repo, folder = adapters_info[adapter].folder,
+                post_clone_cmd = post_clone_cmd)
 
     main_script = " && ".join(filter(None, ([ preprocess_cmd, script ])))
 
