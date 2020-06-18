@@ -33,13 +33,14 @@ USER precice
 # Rebuild image if force_rebuild after that command
 ARG CACHEBUST
 
-ARG branch=develop
+ARG bindings_branch=develop
+ARG adapter_branch=develop
 
 # Builds the precice python bindings for python3
-RUN pip3 install --user https://github.com/precice/python-bindings/archive/$branch.zip
+RUN pip3 install --user https://github.com/precice/python-bindings/archive/$bindings_branch.zip
 
 # Building fenics-adapter
-RUN pip3 install --user https://github.com/precice/fenics-adapter/archive/$branch.zip
+RUN pip3 install --user https://github.com/precice/fenics-adapter/archive/$adapter_branch.zip
 
 WORKDIR /home/precice
 RUN mkdir -p Logs Data/Input Data/Output Data/Exchange

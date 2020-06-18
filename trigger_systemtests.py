@@ -16,13 +16,13 @@ from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 from collections import namedtuple
 
-adapter_info = namedtuple('adapter_info', 'repo tests base')
+adapter_info = namedtuple('adapter_info', 'repo tests base install_mode')
 
-adapters_info = {"openfoam": adapter_info('openfoam-adapter', ['of-of', 'of-ccx'],  'Ubuntu1604.home'),
-                "calculix":  adapter_info('calculix-adapter', ['of-ccx','su2-ccx'], 'Ubuntu1604.home'),
-                "su2":       adapter_info('su2-adapter',      ['su2-ccx'],          'Ubuntu1604.home'),
-                "dealii":    adapter_info('dealii-adapter',   ['dealii-of'],        'Ubuntu1604.home'),
-                "fenics":    adapter_info('fenics-adapter',   ['fe-fe'],            'Ubuntu1804.home')}
+adapters_info = {"openfoam": adapter_info('openfoam-adapter', ['of-of', 'of-ccx'],  'Ubuntu1604.home', 'clone'),
+                "calculix":  adapter_info('calculix-adapter', ['of-ccx','su2-ccx'], 'Ubuntu1604.home', 'clone'),
+                "su2":       adapter_info('su2-adapter',      ['su2-ccx'],          'Ubuntu1604.home', 'clone'),
+                "dealii":    adapter_info('dealii-adapter',   ['dealii-of'],        'Ubuntu1604.home', 'clone'),
+                "fenics":    adapter_info('fenics-adapter',   ['fe-fe'],            'Ubuntu1804.home', 'pip')}
 
 class msg_color:
     green = "\033[92m"
@@ -67,11 +67,20 @@ def adjust_travis_script(script, user, adapter):
     # inserts switching to a branch / merging a pull request
     # after cloning the adapter in all systemtests dockerfiles that use it
     preprocess_cmd = None
-    if branch or not pull_req in [None, "false"]:
-        preprocess_cmd = "grep -rl --include=\*Dockerfile* github.com/{user}/{adapter}.git |\
-        xargs sed -i 's|\(github.com/{user}/{adapter}.git\)|\\1 \&\& cd \
+    if (branch or pull_req not in [None, "false"]) and adapters_info[adapter].install_mode == 'clone':
+        preprocess_cmd = "grep -rl --include=\*Dockerfile\* github.com/{user}/{adapter} |\
+        xargs sed -i 's|\(github.com/{user}/{adapter}.*\)|\\1 \&\& cd \
         {adapter} \&\& {post_clone_cmd} \&\& cd .. |g'".format(user = user, adapter =
-                adapters_info[adapter].repo, post_clone_cmd = post_clone_cmd)
+                adapters_info[adapter].repo,
+                post_clone_cmd = post_clone_cmd)
+    elif (branch or pull_req not in [None, "false"]) and adapters_info[adapter].install_mode == 'pip':
+        adapter_branch = os.environ.get("TRAVIS_PULL_REQUEST_BRANCH")
+        if adapter_branch == "":
+            adapter_branch = branch
+        preprocess_cmd = "grep -rl --include=\*Dockerfile\* github.com/{user}/{adapter} |\
+        xargs sed -i 's|\(ARG adapter_branch=.+\)|ARG adapter_branch={adapter_branch}|g'".format(user = user, adapter =
+                adapters_info[adapter].repo, adapter_branch = adapter_branch, post_clone_cmd = post_clone_cmd)
+
 
     main_script = " && ".join(filter(None, ([ preprocess_cmd, script ])))
 
@@ -101,7 +110,7 @@ def generate_travis_job(adapter, user, enable_output = False, trigger_failure = 
 
     base_remote = "precice/precice-{base}-develop".format(base = base.lower())
     main_build_script = "docker build -f adapters/Dockerfile.{adapter} -t \
-        {user}/{adapter}-{base}-develop:{tag} --build-arg from={base_remote} .".format(adapter =
+        {user}/{adapter}-{base}-develop:{tag} --build-arg from={base_remote}  .".format(adapter =
                 adapters_info[adapter].repo, user = user, base_remote =
                 base_remote, tag = determine_image_tag(), base=base.lower())
 
@@ -128,7 +137,7 @@ def generate_travis_job(adapter, user, enable_output = False, trigger_failure = 
         # force docker-compose to consider an image with a particular tag
         "script":      ["export {adapter_tag}={tag}; ".format(adapter_tag = adapter.upper() + "_TAG", tag = determine_image_tag()),
                         main_test_script,
-                        "python push.py --test {TEST}" + (" -o" if enable_output else "")],
+                        "python push.py --test {TEST} --base {BASE}" + (" -o" if enable_output else "")],
         "after_failure": after_failure_action
     };
 
@@ -287,7 +296,7 @@ if __name__ == "__main__":
     parser.add_argument('--st-branch',  type=str, help="Used branch of systemtests", default='develop' )
     parser.add_argument('--adapter', type=str, help="Adapter for which you want to trigger systemtests",
               required=True, choices = adapters_info.keys() )
-    parser.add_argument('--output', help="Enable output for the triggered tests", action='store_true')
+    parser.add_argument('-o', '--output', help="Enable output for the triggered tests", action='store_true')
     parser.add_argument('--failure', help="Whether to trigger normal or failure build",
               action="store_true")
     parser.add_argument('--wait', help='Whether exit only when the triggered build succeeds',
