@@ -316,6 +316,12 @@ jobs:
         - python system_testing.py -s dealii-of -v
         - python push.py --test dealii-of
 
+    - name: "[16.04] deal.ii <-> OpenFOAM [2D]"
+      script:
+        - python system_testing.py -s dealii-of_2D -v
+        - python push.py --test dealii-of_2D
+
+
     - name: "[18.04] nutils <-> OpenFOAM"
       script:
         - python system_testing.py -s nutils-of --base Ubuntu1804.home -v
