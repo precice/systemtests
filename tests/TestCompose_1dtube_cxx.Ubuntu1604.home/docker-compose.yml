@@ -15,7 +15,7 @@ services:
         cp *.log /home/precice/Data/Output/ &&
         cp -r Postproc /home/precice/Data/Output/ &&
         rm /home/precice/Data/Output/*summary.log"
-    container_name: 1dtube-ccx
+    container_name: 1dtube-cxx
 
   tutorial-data:
     build:
