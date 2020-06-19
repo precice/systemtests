@@ -23,19 +23,29 @@ def build(systest, tag, branch, local, force_rebuild):
     baseimage_name = "precice-{tag}-{branch}:latest".format(tag = tag, branch=branch)
     test_tag = "-".join([systest, tag, branch])
 
-    docker.build_image(tag = test_tag,
-            build_args = {"from" : docker.get_namespace() +
-                baseimage_name if local
-                else 'precice/' + baseimage_name},
-            force_rebuild = force_rebuild)
+    try:
+        docker.build_image(tag = test_tag,
+                build_args = {"from" : docker.get_namespace() +
+                    baseimage_name if local
+                    else 'precice/' + baseimage_name},
+                force_rebuild = force_rebuild)
+    except CalledProcessError as e:
+        print ("BUILD FAILED WITH: {}".format(e))
+        raise STBuildException()
+
 
 def run(systest, tag, branch):
     """ Runs (create a container from an image) the specified systest. """
     test_tag = docker.get_namespace() + systest + "-" + tag + "-" + branch
-    ccall("docker run -it -d --name " + test_tag + " " + test_tag)
-    shutil.rmtree("Output", ignore_errors=True)
-    shutil.rmtree("Logs", ignore_errors=True)
-    ccall("docker cp " + test_tag + ":Output . ")
+
+    try:
+        ccall("docker run -it -d --name " + test_tag + " " + test_tag)
+        shutil.rmtree("Output", ignore_errors=True)
+        shutil.rmtree("Logs", ignore_errors=True)
+        ccall("docker cp " + test_tag + ":Output . ")
+    except CalledProcessError as e:
+        print ("TEST FAILED WITH: {}".format(e))
+        raise STRunException()
 
 def build_adapters(systest, tag, branch, local, force_rebuild):
     """ Builds a docker images for a preCICE adapter, participating in tests """
@@ -56,7 +66,11 @@ def build_adapters(systest, tag, branch, local, force_rebuild):
 
             # skip "light-adapters" (e.g. nutils )
             if os.path.exists("Dockerfile.{}".format(participant)):
-                docker.build_image(**docker_args)
+                try:
+                    docker.build_image(**docker_args)
+                except CalledProcessError as e:
+                    print ("BUILD FAILED WITH: {}".format(e))
+                    raise STBuildException()
 
 def run_compose(systest, branch, local, tag, force_rebuild, rm_all=False, verbose=False):
     """ Runs necessary systemtest with docker compose """
@@ -106,15 +120,46 @@ def run_compose(systest, branch, local, tag, force_rebuild, rm_all=False, verbos
                 for command in commands_cleanup:
                     ccall(command)
 
-        except (CalledProcessError, IncorrectOutput)  as e:
+        except CalledProcessError as e:
+            print ("TEST FAILED WITH: {}".format(e))
+            raise STRunException()
+
+        except IncorrectOutput as e:
+            print ("TEST FAILED WITH: {}".format(e))
+            raise STValidateException()
+
+        finally:
             # cleanup in either case
             if rm_all:
                 for command in commands_cleanup:
                     ccall(command)
-            # generate a report of failurs for local tests
-            if local:
-                raise e
-            print ("TESTS FAILED WITH: {}".format(e))
+
+
+class SystemTestException(Exception):
+    def __init__(self, *args):
+        if args:
+            self.msg = args[0]
+        else:
+            self.msg = None
+
+    def __str__(self):
+        if self.msg:
+            return self.msg
+        else:
+            return "SYSTEST FAILED - An error occured during the systemtest!"
+
+class STBuildException(SystemTestException):
+    def __str__(self):
+        return "BUILD FAILED - An error occured while building the docker image!"
+
+class STRunException(SystemTestException):
+    def __str__(self):
+        return "TEST FAILED - An error occured while running the test!"
+
+class STValidateException(SystemTestException):
+    def __str__(self):
+        return "COMPARISON FAILED - An error occured while comparing test results with reference files!"
+
 
 
 class IncorrectOutput(Exception):
@@ -149,11 +194,11 @@ def comparison(pathToRef, pathToOutput):
         if num_diff == 1:
             raise IncorrectOutput(*ret)
         elif num_diff != 0:
-            raise ValueError('compare_results.sh exited with unknown code {}'.format(num_diff))
+            raise ValueError("compare_results.sh exited with unknown code '{}'".format(num_diff))
         else:
-            print('TEST SUCCEEDED - Differences to referenceOutput within tolerance.')
+            print('SYSTEST SUCCEEDED - Differences to referenceOutput within tolerance.')
     else:
-        print('TEST SUCCEEDED - No difference to referenceOutput found.')
+        print('SYSTEST SUCCEEDED - No difference to referenceOutput found.')
 
 
 def build_run_compare(test, tag, branch, local_precice, force_rebuild, rm_all=False, verbose=False):
