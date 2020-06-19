@@ -333,12 +333,12 @@ jobs:
     - name: "[16.04] Elastictube1D - Python"
       script:
         - python system_testing.py -s 1dtube_py -v
-        - python push.py --test 1dtube_py -o
+        - python push.py --test 1dtube_py
 
     - name: "[16.04] Elastictube1D - C++"
       script:
         - python system_testing.py -s 1dtube_cxx -v
-        - python push.py --test 1dtube_cxx -o
+        - python push.py --test 1dtube_cxx
 
     - name: "[16.04 PETSc] OpenFOAM <-> CalculiX [FSI] [Job failure permitted]"
       script:
