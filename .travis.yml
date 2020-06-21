@@ -16,6 +16,7 @@ jobs:
     - name: "Ubuntu 16.04 home PETSc [Job failure permitted]"
     - name: "openFOAM adapter [PETSc] [Job failure permitted]"
     - name: "CalculiX adapter [PETSc] [Job failure permitted]"
+    - name: "[16.04] deal.ii <-> OpenFOAM [Job failure permitted]"
     - name: "[16.04 PETSc] OpenFOAM <-> CalculiX [FSI] [Job failure permitted]"
     - name: "[16.04] SU2 <-> Calculix [unstable][Job failure permitted]"
 
@@ -310,7 +311,7 @@ jobs:
         - python system_testing.py -s bindings --base Ubuntu1804.home -v
         - python push.py --test bindings --base Ubuntu1804.home
 
-    - name: "[16.04] deal.ii <-> OpenFOAM"
+    - name: "[16.04] deal.ii <-> OpenFOAM [Job failure permitted]"
       script:
         - python system_testing.py -s dealii-of -v
         - python push.py --test dealii-of
