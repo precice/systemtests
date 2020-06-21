@@ -284,7 +284,7 @@ jobs:
       name: "[16.04] SU2 <-> Calculix [unstable][Job failure permitted]"
       script:
         - python system_testing.py -s su2-ccx -v
-        - python push.py --test su2-ccx
+        - python push.py --test su2-ccx -o
 
     - name: "[16.04] OpenFOAM <-> OpenFOAM"
       script:
@@ -294,7 +294,7 @@ jobs:
     - name: "[16.04] Calculix <-> OpenFOAM"
       script:
         - python system_testing.py -s of-ccx -v
-        - python push.py --test of-ccx
+        - python push.py --test of-ccx -o
 
     - name: "[18.04] FEniCS <-> FEniCS"
       script:
@@ -344,4 +344,4 @@ jobs:
     - name: "[16.04 PETSc] OpenFOAM <-> CalculiX [FSI] [Job failure permitted]"
       script:
         - python system_testing.py -s of-ccx_fsi --base Ubuntu1604.home.PETSc -v
-        - python push.py --test of-ccx_fsi --petsc
+        - python push.py --test of-ccx_fsi --petsc -o
