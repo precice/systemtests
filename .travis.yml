@@ -16,8 +16,8 @@ jobs:
     - name: "Ubuntu 16.04 home PETSc [Job failure permitted]"
     - name: "openFOAM adapter [PETSc] [Job failure permitted]"
     - name: "CalculiX adapter [PETSc] [Job failure permitted]"
+    - name: "[16.04] deal.ii <-> OpenFOAM [Job failure permitted]"
     - name: "[16.04 PETSc] OpenFOAM <-> CalculiX [FSI] [Job failure permitted]"
-    - name: "[16.04] deal.ii adapter [Job failure permitted]"
     - name: "[16.04] SU2 <-> Calculix [unstable][Job failure permitted]"
 
   include:
@@ -176,7 +176,7 @@ jobs:
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
           python push_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME
 
-    - name: "[16.04] deal.ii adapter [Job failure permitted]"
+    - name: "[16.04] deal.ii adapter"
       if: fork = false
       script:
         - python build_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME
@@ -294,7 +294,7 @@ jobs:
     - name: "[16.04] Calculix <-> OpenFOAM"
       script:
         - python system_testing.py -s of-ccx -v
-        - python push.py --test of-ccx
+        - python push.py --test of-ccx -o
 
     - name: "[18.04] FEniCS <-> FEniCS"
       script:
@@ -311,7 +311,7 @@ jobs:
         - python system_testing.py -s bindings --base Ubuntu1804.home -v
         - python push.py --test bindings --base Ubuntu1804.home
 
-    - name: "[16.04] deal.ii <-> OpenFOAM"
+    - name: "[16.04] deal.ii <-> OpenFOAM [Job failure permitted]"
       script:
         - python system_testing.py -s dealii-of -v
         - python push.py --test dealii-of
@@ -340,12 +340,12 @@ jobs:
     - name: "[16.04] Elastictube1D - Python"
       script:
         - python system_testing.py -s 1dtube_py -v
-        - python push.py --test 1dtube_py -o
+        - python push.py --test 1dtube_py
 
     - name: "[16.04] Elastictube1D - C++"
       script:
         - python system_testing.py -s 1dtube_cxx -v
-        - python push.py --test 1dtube_cxx -o
+        - python push.py --test 1dtube_cxx
 
     - name: "[16.04 PETSc] OpenFOAM <-> CalculiX [FSI] [Job failure permitted]"
       script:
