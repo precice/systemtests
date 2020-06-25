@@ -26,7 +26,7 @@ RUN add-apt-repository -y ppa:fenics-packages/fenics && \
     apt-get -qq install --no-install-recommends fenics && \
     rm -rf /var/lib/apt/lists/*
 
-RUN pip3 install --user cython numpy # TODO: can we put this dependency into requirements.txt of python?
+RUN pip3 install --user cython numpy==1.14.5 # TODO: can we put this dependency into requirements.txt of python?
 
 USER precice
 
