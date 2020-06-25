@@ -40,7 +40,7 @@ ARG adapter_branch=develop
 RUN pip3 install --user https://github.com/precice/python-bindings/archive/$bindings_branch.zip
 
 # Building fenics-adapter
-RUN pip3 install --user https://github.com/precice/fenics-adapter/archive/$adapter_branch .zip
+RUN pip3 install --user https://github.com/precice/fenics-adapter/archive/$adapter_branch.zip
 
 WORKDIR /home/precice
 RUN mkdir -p Logs Data/Input Data/Output Data/Exchange
