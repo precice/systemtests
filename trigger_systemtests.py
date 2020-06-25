@@ -153,7 +153,7 @@ def generate_travis_job(adapter, user, enable_output = False, trigger_failure = 
             "dist": "trusty",
             "language": "python",
             "services": "docker",
-            "python": "3.5",
+            "python": "3.8",
             "install": "pip install Jinja2",
             "jobs":  {
               "include":[

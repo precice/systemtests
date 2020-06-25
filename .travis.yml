@@ -2,7 +2,7 @@ sudo: true
 dist: trusty
 language: python
 python:
-  - "3.5"
+  - "3.8"
 services:
   - docker
 install:
