@@ -1,7 +1,7 @@
 # System testing preCICE with fenics-adapter
 
 # Building on top of the latest preCICE-build
-ARG from=precice/precice:latest
+ARG from=precice/precice-ubuntu1804.home-develop
 FROM $from
 
 USER root
