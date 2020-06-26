@@ -49,7 +49,7 @@ RUN mkdir /home/precice/precice-build && \
           -DPRECICE_Packages=ON \
           -DPRECICE_InstallTest=ON \
           -DCMAKE_INSTALL_PREFIX=/usr \
-          -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+          -DCMAKE_BUILD_TYPE=Debug \
           -DPRECICE_PETScMapping=$petsc_para \
           -DPRECICE_MPICommunication=$mpi_para \
           -DPRECICE_PythonActions=$python_para \

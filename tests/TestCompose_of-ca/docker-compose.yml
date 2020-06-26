@@ -1,0 +1,57 @@
+version : '3'
+services:
+
+# OpenFOAM Adapter
+  openfoam-adapter-fluid:
+    image: "${SYSTEST_REMOTE}openfoam-adapter-ubuntu1804.home-develop"
+    networks:
+      - precicecomm
+    volumes:
+      - output:/home/precice/Data/Output
+      - input:/home/precice/Data/Input
+      - exchange:/home/precice/Data/Exchange
+    command: >
+      /bin/bash -c "source /opt/openfoam5/etc/bashrc &&
+      cd /home/precice/Data/Input &&
+      ./runFluid &&
+      cp -r Fluid/ /home/precice/Data/Output"
+    container_name: openfoam-adapter-fluid
+    depends_on:
+      - tutorial-data
+
+# Code_Aster Adapter
+  codeaster-adapter-solid:
+    image: "${SYSTEST_REMOTE}codeaster-adapter-ubuntu1804.home-develop"
+    networks:
+      - precicecomm
+    volumes:
+      - output:/home/precice/Data/Output
+      - input:/home/precice/Data/Input
+      - exchange:/home/precice/Data/Exchange
+    command: >
+      /bin/bash -c "source /home/precice/Code_Aster/etc/codeaster/profile.sh &&
+      cd /home/precice/Data/Input &&
+      ./runSolid &&
+      mkdir /home/precice/Data/Output/Solid &&
+      cp -r Solid/REPE_OUT /home/precice/Data/Output/Solid"
+    container_name: codeaster-adapter-solid
+    depends_on:
+      - tutorial-data
+
+# Tutorial
+  tutorial-data:
+    # image: tutorial_ca_of
+    build:
+      context: .
+      dockerfile: Dockerfile.tutorial_data
+    volumes:
+      - output:/Output/
+      - input:/tutorials/CHT/flow-over-plate/buoyantSimpleFoam-aster
+    container_name: tutorial-data
+
+networks:
+  precicecomm:
+volumes:
+  output:
+  input:
+  exchange:

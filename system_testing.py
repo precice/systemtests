@@ -23,18 +23,29 @@ def build(systest, tag, branch, local, force_rebuild):
     baseimage_name = "precice-{tag}-{branch}:latest".format(tag = tag, branch=branch)
     test_tag = "-".join([systest, tag, branch])
 
-    docker.build_image(tag = test_tag,
-            build_args = {"from" : docker.get_namespace() +
-                baseimage_name if local
-                else 'precice/' + baseimage_name},
-            force_rebuild = force_rebuild)
+    try:
+        docker.build_image(tag = test_tag,
+                build_args = {"from" : docker.get_namespace() +
+                    baseimage_name if local
+                    else 'precice/' + baseimage_name},
+                force_rebuild = force_rebuild)
+    except CalledProcessError as e:
+        print ("BUILD FAILED WITH: {}".format(e))
+        raise STBuildException()
+
 
 def run(systest, tag, branch):
     """ Runs (create a container from an image) the specified systest. """
     test_tag = docker.get_namespace() + systest + "-" + tag + "-" + branch
-    ccall("docker run -it -d --name " + test_tag + " " + test_tag)
-    shutil.rmtree("Output", ignore_errors=True)
-    ccall("docker cp " + test_tag + ":Output . ")
+
+    try:
+        ccall("docker run -it -d --name " + test_tag + " " + test_tag)
+        shutil.rmtree("Output", ignore_errors=True)
+        shutil.rmtree("Logs", ignore_errors=True)
+        ccall("docker cp " + test_tag + ":Output . ")
+    except CalledProcessError as e:
+        print ("TEST FAILED WITH: {}".format(e))
+        raise STRunException()
 
 def build_adapters(systest, tag, branch, local, force_rebuild):
     """ Builds a docker images for a preCICE adapter, participating in tests """
@@ -55,7 +66,11 @@ def build_adapters(systest, tag, branch, local, force_rebuild):
 
             # skip "light-adapters" (e.g. nutils )
             if os.path.exists("Dockerfile.{}".format(participant)):
-                docker.build_image(**docker_args)
+                try:
+                    docker.build_image(**docker_args)
+                except CalledProcessError as e:
+                    print ("BUILD FAILED WITH: {}".format(e))
+                    raise STBuildException()
 
 def run_compose(systest, branch, local, tag, force_rebuild, rm_all=False, verbose=False):
     """ Runs necessary systemtest with docker compose """
@@ -69,10 +84,10 @@ def run_compose(systest, branch, local, tag, force_rebuild, rm_all=False, verbos
     # should run with and docker images location
     export_cmd = "export PRECICE_BASE=-{}; ".format(adapter_base_name)
     extra_cmd = "export SYSTEST_REMOTE={}; ".format(docker.get_namespace()) if local else ""
-    compose_config_cmd = "docker-compose config && "
+    compose_config_cmd = "mkdir Logs; docker-compose config && "
     compose_exec_cmd = "bash ../../silent_compose.sh {}".format('debug' if verbose else "")
     copy_cmd = "docker cp tutorial-data:/Output ."
-    log_cmd = "mkdir Logs && docker-compose logs > Logs/container.log"
+    log_cmd = "docker-compose logs > Logs/container.log"
 
     commands_main = [export_cmd +
                      extra_cmd +
@@ -90,6 +105,7 @@ def run_compose(systest, branch, local, tag, force_rebuild, rm_all=False, verbos
 
         # cleanup previous results
         shutil.rmtree("Output", ignore_errors=True)
+        shutil.rmtree("Logs", ignore_errors=True)
 
         try:
             for command in commands_main:
@@ -104,16 +120,46 @@ def run_compose(systest, branch, local, tag, force_rebuild, rm_all=False, verbos
                 for command in commands_cleanup:
                     ccall(command)
 
-        except (CalledProcessError, IncorrectOutput)  as e:
+        except CalledProcessError as e:
+            print ("TEST FAILED WITH: {}".format(e))
+            raise STRunException()
+
+        except IncorrectOutput as e:
+            print ("TEST FAILED WITH: {}".format(e))
+            raise STValidateException()
+
+        finally:
             # cleanup in either case
             if rm_all:
                 for command in commands_cleanup:
                     ccall(command)
-            # generate a report of failurs for local tests
-            if local:
-                raise e
-            print ("TESTS FAILED WITH: {}".format(e))
-            sys.exit(1)
+
+
+class SystemTestException(Exception):
+    def __init__(self, *args):
+        if args:
+            self.msg = args[0]
+        else:
+            self.msg = None
+
+    def __str__(self):
+        if self.msg:
+            return self.msg
+        else:
+            return "SYSTEST FAILED - An error occured during the systemtest!"
+
+class STBuildException(SystemTestException):
+    def __str__(self):
+        return "BUILD FAILED - An error occured while building the docker image!"
+
+class STRunException(SystemTestException):
+    def __str__(self):
+        return "TEST FAILED - An error occured while running the test!"
+
+class STValidateException(SystemTestException):
+    def __str__(self):
+        return "COMPARISON FAILED - An error occured while comparing test results with reference files!"
+
 
 
 class IncorrectOutput(Exception):
@@ -148,19 +194,17 @@ def comparison(pathToRef, pathToOutput):
         if num_diff == 1:
             raise IncorrectOutput(*ret)
         elif num_diff != 0:
-            raise ValueError('compare_results.sh exited with unknown code {}'.format(num_diff))
+            raise ValueError("compare_results.sh exited with unknown code '{}'".format(num_diff))
         else:
-            print('TEST SUCCEEDED - Differences to referenceOutput within tolerance.')
-            sys.exit(0)
+            print('SYSTEST SUCCEEDED - Differences to referenceOutput within tolerance.')
     else:
-        print('TEST SUCCEEDED - No difference to referenceOutput found.')
-        sys.exit(0)
+        print('SYSTEST SUCCEEDED - No difference to referenceOutput found.')
 
 
 def build_run_compare(test, tag, branch, local_precice, force_rebuild, rm_all=False, verbose=False):
     """ Runs and compares test, using precice branch. """
     compose_tests = ["dealii-of", "of-of", "su2-ccx", "of-ccx", "of-of_np",
-            "fe-fe","nutils-of", "of-ccx_fsi"]
+            "fe-fe","nutils-of", "of-ccx_fsi", "1dtube_cxx", "1dtube_py", "of-ca"]
     test_basename = test.split(".")[0]
     if local_precice:
         build_adapters(test_basename, tag, branch, local_precice, force_rebuild)
@@ -223,7 +267,11 @@ if __name__ == "__main__":
     parser.add_argument('-l', '--local', action='store_true', help="Use local preCICE image (default: use remote image)")
     parser.add_argument('-s', '--systemtest', type=str, help="Choose system tests you want to use",
                         choices = common.get_tests(), required = True)
-    parser.add_argument('-b', '--branch', help="preCICE branch to use", default = "develop")
+    parser.add_argument('-b', '--branch', help="preCICE branch to use", default="develop")  # make sure that branch corresponding to system tests branch is used, if no branch is explicitly specified. If we are testing a pull request, will test against develop by default.
+# Usage of the branch argument:
+#   When on a PR, this will by default use the develop versions of preCICE and adapter images.
+#   This makes it easier to experiment with tests, which are most commonly addressed by PRs
+#   (otherwise you would need to also create preCICE and adapter images for your branch which are only different in name)
     parser.add_argument('-f', '--force_rebuild', nargs='+', help="Force rebuild of variable parts of docker image",
                         default = [], choices  = ["precice", "tests"])
     parser.add_argument('--base', type=str,help="Base preCICE image to use",

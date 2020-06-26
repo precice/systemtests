@@ -1,0 +1,40 @@
+from alpine
+
+ENV tutorial_path /tutorials/CHT/flow-over-plate/buoyantSimpleFoam-aster
+ENV workdir_path /home/precice/Data/Input
+ENV ca_adapter_path /home/precice/code_aster-adapter/cht
+RUN apk add git bash
+
+# TODO: Change this branch to 'develop'
+ARG branch=CA_OpenFOAM
+RUN git clone --branch $branch https://github.com/precice/tutorials
+
+COPY \
+    docker.export $tutorial_path/Solid/solid.export
+
+RUN \
+    cd $tutorial_path/Solid \
+    && echo "F comm $ca_adapter_path/adapter.comm D 1" >> solid.export \
+    && echo "F libr $workdir_path/config.comm D 90" >> solid.export \
+    && echo "F libr $workdir_path/Solid/def.comm D 91" >> solid.export \
+    && echo "F mmed $workdir_path/Solid/solid.mmed D 20" >> solid.export \
+    && echo "R repe $workdir_path/Solid/REPE_OUT D 0" >> solid.export \
+    && echo "R repe $workdir_path/Solid/REPE_OUT R 0" >> solid.export \
+    && echo "F mess $workdir_path/Solid/solid.mess R 6" >> solid.export \
+    && echo "F resu $workdir_path/Solid/solid.resu R 8" >> solid.export
+
+RUN \
+    cd /tutorials/CHT/flow-over-plate/buoyantSimpleFoam-aster && \
+    sed -i 's|/home/tester/tutorials/CHT/flow-over-plate/buoyantSimpleFoam-aster"|/home/precice/Data/Exchange" network="eth0"|g' precice-config.xml && \
+    sed -i 's|10|1|g' config.comm && \
+    sed -i 's|100|10|g' config.comm && \
+    sed -i 's|value="100"|value="10"|g' precice-config.xml && \
+    chmod 777 -R /tutorials/CHT/flow-over-plate/
+
+RUN adduser -D precice && chown -R precice:precice $tutorial_path/Solid
+USER precice
+
+RUN \
+    cd $tutorial_path/Solid && mkdir REPE_OUT && chmod 777 -R REPE_OUT
+
+WORKDIR /home/precice
