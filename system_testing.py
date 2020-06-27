@@ -82,6 +82,7 @@ def run_compose(systest, branch, local, tag, force_rebuild, rm_all=False, verbos
 
     # set up environment variables, to detect precice base image, that we
     # should run with and docker images location
+    cleanup_cmd = "docker container prune -f"
     export_cmd = "export PRECICE_BASE=-{}; ".format(adapter_base_name)
     extra_cmd = "export SYSTEST_REMOTE={}; ".format(docker.get_namespace()) if local else ""
     compose_config_cmd = "mkdir Logs; docker-compose config && "
@@ -89,7 +90,8 @@ def run_compose(systest, branch, local, tag, force_rebuild, rm_all=False, verbos
     copy_cmd = "docker cp tutorial-data:/Output ."
     log_cmd = "docker-compose logs > Logs/container.log"
 
-    commands_main = [export_cmd +
+    commands_main = [cleanup_cmd +
+                     export_cmd +
                      extra_cmd +
                      compose_config_cmd +
                      compose_exec_cmd,
