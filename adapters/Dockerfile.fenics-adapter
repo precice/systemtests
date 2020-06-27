@@ -1,7 +1,7 @@
 # System testing preCICE with fenics-adapter
 
 # Building on top of the latest preCICE-build
-ARG from=precice/precice:latest
+ARG from=precice/precice-ubuntu1804.home-develop
 FROM $from
 
 USER root
@@ -26,7 +26,7 @@ RUN add-apt-repository -y ppa:fenics-packages/fenics && \
     apt-get -qq install --no-install-recommends fenics && \
     rm -rf /var/lib/apt/lists/*
 
-RUN pip3 install --user cython  # TODO: can we put this dependency into requirements.txt of python?
+RUN pip3 install --user cython # TODO: can we put this dependency into requirements.txt of python?
 
 USER precice
 
@@ -40,7 +40,7 @@ ARG adapter_branch=develop
 RUN pip3 install --user https://github.com/precice/python-bindings/archive/$bindings_branch.zip
 
 # Building fenics-adapter
-RUN pip3 install --user https://github.com/precice/fenics-adapter/archive/$adapter_branch.zip
+RUN pip3 install --user numpy==1.14.5 https://github.com/precice/fenics-adapter/archive/$adapter_branch.zip
 
 WORKDIR /home/precice
 RUN mkdir -p Logs Data/Input Data/Output Data/Exchange
