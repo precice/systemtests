@@ -64,10 +64,10 @@ if [ -n "$diff_files" ]; then
     # Filter output files, ignore lines with words (probably not the results)
     # Do not delete "e", since it can be used as exponent
     # removes |<>() characters
-    num_filter='s/(\|)\||\|>\|<//g; /[a-df-zA-Z]\|[vV]ersion/d'
+    num_filter='s/[-><*=|\\\/{}();]//g; /[a-df-zA-Z]\|[vV]ersion\|^\s*$/d'
     # Filter for text lines. Compare these seperately from numerical lines
     # Ignore any timestamps
-    txt_filter='s/(\|)\||\|>\|<//g; /[a-df-zA-Z]/!d; s/[0-9][0-9]:[0-9][0-9]:[0-9][0-9]//g;
+    txt_filter='s/ $//g; s/[-><*=|\\\/{}();]//g;  /[a-df-zA-Z]/!d; s/[0-9][0-9]:[0-9][0-9]:[0-9][0-9]//g;
                 s/\[.\+\]:[0-9]\+//g; s/[0-9][0-9]\/[0-9][0-9]\/[0-9][0-9][0-9][0-9]//g;
                 /Timestamp\|[rR]untime\|[vV]ersion\|[rR]evision\|Unexpected end of/d; /Run finished/q'
 
@@ -78,8 +78,14 @@ if [ -n "$diff_files" ]; then
     file2_txt=$( cat "$file2" | sed "$txt_filter")
 
 
-    num_diff=$( diff -y --speed-large-files --suppress-common-lines <(echo "$file1_num") <(echo "$file2_num") )
+    # num_diff=$( diff -y --speed-large-files --suppress-common-lines <(echo "$file1_num") <(echo "$file2_num") )
     txt_diff=$( diff -y --speed-large-files --suppress-common-lines <(echo "$file1_txt") <(echo "$file2_txt") )
+    num_diff=$( paste <(echo "$file1_num") <(echo "$file2_num") )
+    # txt_diff=$( paste -d '|' <(echo "$file1_txt") <(echo "$file2_txt") )
+    # diff -y --speed-large-files --suppress-common-lines <(echo "$file1_txt") <(echo "$file2_txt") > DEBUG_TXT_DIFF
+    # paste <(echo "$file1_num") <(echo "$file2_num") > DEBUG_NUM_DIFF
+    # cat "$file1" | sed "$txt_filter" > DEBUG_F1
+    # cat "$file2" | sed "$txt_filter" > DEBUG_F2
 
 
     # Pairwise compares files fields, that are produces from diffs and computes average and maximum
@@ -88,29 +94,29 @@ if [ -n "$diff_files" ]; then
     filename=$(basename $file1) # total file paths are long, this keeps info concise
     echo "Comparing values in '$filename'..."
     if [ -n "$num_diff" ]; then
-      rel_max_difference=$( export max_diff_limit; export avg_diff_limit; echo "$num_diff" | awk 'function abs(v) {return v < 0 ? -v : v} {
-        radius=NF/2;
-        max_diff=0;
+      max_diff=0.0
+      rel_max_difference=$( export max_diff_limit; export avg_diff_limit; echo "$num_diff" | awk 'function abs(v) {return v < 0 ? -v : v}
+      BEGIN {
+        max_diff=0.0;
         sum=0;
-        if ( NR*NF <= 0 ) {
-          printf("%s:%d: invalid value: NR*NF <= 0, compared files are invalid!",FILENAME,FNR) > "/dev/stderr";
-          _invalid_value_ = 1
-        }
+      }
+      {
+        radius=NF/2;
         for(i = 1; i <= radius; i++) {
           if ($i != 0) {
-            ind_diff= abs((($(i + radius)-$i)/$i ));
+            ind_diff = abs((($(i + radius)-$i)/$i ));
             sum += ind_diff;
-            if  (ind_diff > max_diff )  { max_diff = ind_diff }
+            if  (ind_diff > max_diff ) {
+              max_diff = ind_diff;
+              # printf("NR %d with max %f ind %f: %f vs %f; sum = %f\n", NR, max_diff, ind_diff, $(i + radius), $i, sum) > "/dev/stderr";
+            }
           }
         }
       }
       END {
-        if (_invalid_value_) {
-          exit 1;
-        }
         diff=2*sum/( NR*NF );
         if (diff > ENVIRON["avg_diff_limit"] || max_diff > ENVIRON["max_diff_limit"]) {
-          print diff, max_diff
+          print diff, max_diff;
         }
       }' )
     fi
@@ -119,7 +125,7 @@ if [ -n "$diff_files" ]; then
       # Split by space and transform into the array
       difference=( $rel_max_difference )
       echo -e "> Numerical difference in $filename"
-      echo -e "$num_diff"
+      # echo -e "$num_diff"
       echo -e "Average: ${difference[0]} ; Maximum: ${difference[1]} ${NC}"
       ret=1
     fi
