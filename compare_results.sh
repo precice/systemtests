@@ -116,7 +116,7 @@ if [ -n "$diff_files" ]; then
         }
       }
       END {
-        if (total_entries == 0) { print "NO ENTRIES" "NO ENTRIES" }
+        if (total_entries == 0) { print "NO ENTRIES", "NO ENTRIES" }
         diff=sum/total_entries;
         if (diff > ENVIRON["avg_diff_limit"] || max_diff > ENVIRON["max_diff_limit"]) {
           print diff, max_diff;
