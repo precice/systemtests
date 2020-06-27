@@ -64,18 +64,23 @@ if [ -n "$diff_files" ]; then
     # Filter output files, ignore lines with words (probably not the results)
     # Do not delete "e", since it can be used as exponent
     # removes |<>() characters
-    num_filter='s/[-><*=|\\\/{}();]//g; /[a-df-zA-Z]\|[vV]ersion\|^\s*$/d'
+    # num_filter='s/[><*=|\\\/{}();]//g; s/-//g; s/[a-df-zA-DF-Z]\|[vV]ersion\|^\s*$//g'
     # Filter for text lines. Compare these seperately from numerical lines
     # Ignore any timestamps
-    txt_filter='s/ $//g; /[a-df-zA-Z]/!d; s/[0-9][0-9]:[0-9][0-9]:[0-9][0-9]//g;
-                s/\[.\+\]:[0-9]\+//g; s/[0-9][0-9]\/[0-9][0-9]\/[0-9][0-9][0-9][0-9]//g;
+
+    pre_filter='s/[0-9][0-9][:\.][0-9][0-9][:\.][0-9][0-9]//g; s/\[.\+\]:[0-9]\+//g;
+                s/[0-9][0-9]\/[0-9][0-9]\/[0-9][0-9][0-9][0-9]//g;
                 /Timestamp\|[rR]untime\|[vV]ersion\|[rR]evision\|Unexpected end of/d; /Run finished/q'
 
-    file1_num=$( cat "$file1" | sed "$num_filter")
-    file2_num=$( cat "$file2" | sed "$num_filter")
+    num_filter='[-]\?\([0-9]*[\.]\)\?[0-9]\+\([eE][+-][0-9]\+\)\?'
+    exp_filter='s/[eE][+-][0-9]\+//g'
+    txt_filter='s/\s*$//g; /[a-df-zA-Z]/!d'
 
-    file1_txt=$( cat "$file1" | sed "$txt_filter")
-    file2_txt=$( cat "$file2" | sed "$txt_filter")
+    file1_num=$( cat "$file1" | sed "$pre_filter" | grep -o "$num_filter" | sed "$exp_filter")
+    file2_num=$( cat "$file2" | sed "$pre_filter" | grep -o "$num_filter" | sed "$exp_filter")
+
+    file1_txt=$( cat "$file1" | sed "$pre_filter" | sed "$txt_filter")
+    file2_txt=$( cat "$file2" | sed "$pre_filter" | sed "$txt_filter")
 
 
     # num_diff=$( diff -y --speed-large-files --suppress-common-lines <(echo "$file1_num") <(echo "$file2_num") )
@@ -116,10 +121,12 @@ if [ -n "$diff_files" ]; then
         }
       }
       END {
-        if (total_entries == 0) { print "NO ENTRIES", "NO ENTRIES" }
-        diff=sum/total_entries;
-        if (diff > ENVIRON["avg_diff_limit"] || max_diff > ENVIRON["max_diff_limit"]) {
-          print diff, max_diff;
+        if (total_entries == 0) { print "NO_ENTRIES" }
+        else {
+          diff=sum/total_entries;
+          if (diff > ENVIRON["avg_diff_limit"] || max_diff > ENVIRON["max_diff_limit"]) {
+            print diff, max_diff;
+          }
         }
       }' )
     fi
