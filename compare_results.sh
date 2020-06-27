@@ -67,7 +67,7 @@ if [ -n "$diff_files" ]; then
     num_filter='s/[-><*=|\\\/{}();]//g; /[a-df-zA-Z]\|[vV]ersion\|^\s*$/d'
     # Filter for text lines. Compare these seperately from numerical lines
     # Ignore any timestamps
-    txt_filter='s/ $//g; s/[-><*=|\\\/{}();]//g;  /[a-df-zA-Z]/!d; s/[0-9][0-9]:[0-9][0-9]:[0-9][0-9]//g;
+    txt_filter='s/ $//g; /[a-df-zA-Z]/!d; s/[0-9][0-9]:[0-9][0-9]:[0-9][0-9]//g;
                 s/\[.\+\]:[0-9]\+//g; s/[0-9][0-9]\/[0-9][0-9]\/[0-9][0-9][0-9][0-9]//g;
                 /Timestamp\|[rR]untime\|[vV]ersion\|[rR]evision\|Unexpected end of/d; /Run finished/q'
 
@@ -99,10 +99,12 @@ if [ -n "$diff_files" ]; then
       BEGIN {
         max_diff=0.0;
         sum=0;
+        total_entries=0;
       }
       {
         radius=NF/2;
         for(i = 1; i <= radius; i++) {
+          total_entries += 1;
           if ($i != 0) {
             ind_diff = abs((($(i + radius)-$i)/$i ));
             sum += ind_diff;
@@ -114,7 +116,8 @@ if [ -n "$diff_files" ]; then
         }
       }
       END {
-        diff=2*sum/( NR*NF );
+        if (total_entries == 0) { print "NO ENTRIES" "NO ENTRIES" }
+        diff=sum/total_entries;
         if (diff > ENVIRON["avg_diff_limit"] || max_diff > ENVIRON["max_diff_limit"]) {
           print diff, max_diff;
         }
