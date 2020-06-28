@@ -82,7 +82,7 @@ def run_compose(systest, branch, local, tag, force_rebuild, rm_all=False, verbos
 
     # set up environment variables, to detect precice base image, that we
     # should run with and docker images location
-    cleanup_cmd = "docker container prune -f"
+    cleanup_cmd = "docker container prune -f; "
     export_cmd = "export PRECICE_BASE=-{}; ".format(adapter_base_name)
     extra_cmd = "export SYSTEST_REMOTE={}; ".format(docker.get_namespace()) if local else ""
     compose_config_cmd = "mkdir Logs; docker-compose config && "
