@@ -200,7 +200,7 @@ def comparison(pathToRef, pathToOutput):
         else:
             print('SYSTEST SUCCEEDED - Differences to referenceOutput within tolerance.')
     else:
-        print('SYSTEST SUCCEEDED - No difference to referenceOutput found.')
+        print('SYSTEST SUCCEEDED - Result files and reference are identical.')
 
 
 def build_run_compare(test, tag, branch, local_precice, force_rebuild, rm_all=False, verbose=False):
