@@ -2,7 +2,7 @@ version : '3'
 services:
 
   dealii-adapter:
-    image: "${SYSTEST_REMOTE}dealii-adapter_2d${PRECICE_BASE}:${DEALII_TAG}"
+    image: "${SYSTEST_REMOTE}dealii-adapter${PRECICE_BASE}:${DEALII_TAG}"
     networks:
       - precicecomm
     volumes:

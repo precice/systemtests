@@ -193,8 +193,8 @@ jobs:
     - name: "[16.04] deal.ii adapter [2D]"
       if: fork = false
       script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter_2D --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME
-        - python push.py --adapter adapters/Dockerfile.dealii-adapter_2D
+        - python build_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME
+        - python push.py --adapter adapters/Dockerfile.dealii-adapter
       deploy:
         skip_cleanup: true
         provider: script
@@ -202,7 +202,7 @@ jobs:
           all_branches: true
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter_2D --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME
+          python push_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME
 
 
     - name: "[16.04] OpenFOAM adapter"
