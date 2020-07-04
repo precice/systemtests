@@ -2,7 +2,7 @@ version : '3'
 services:
 
   dealii-adapter:
-    image: "${SYSTEST_REMOTE}dealii-adapter${PRECICE_BASE}:${DEALII_TAG}"
+    image: "${SYSTEST_REMOTE}dealii-adapter_3d${PRECICE_BASE}:${DEALII_TAG}"
     networks:
       - precicecomm
     volumes:
@@ -13,7 +13,7 @@ services:
     command: >
       /bin/bash -c "
       ln -sf configs/* . &&
-      sed -i 's/\(set Solver type *\)= Direct/\1 = CG/gp' /home/precice/Data/Input/linear_elasticity.prm &&
+      sed -i 's/\(set Solver type *\)= Direct/\1 = Direct/gp' /home/precice/Data/Input/linear_elasticity.prm &&
       ./linear_elasticity/linear_elasticity /home/precice/Data/Input/linear_elasticity.prm"
     container_name: dealii-adapter
     depends_on:
