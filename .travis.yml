@@ -176,11 +176,11 @@ jobs:
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
           python push_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME
 
-    - name: "[16.04] deal.ii adapter"
+    - name: "[16.04] deal.ii adapter [3D]"
       if: fork = false
       script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME
-        - python push.py --adapter adapters/Dockerfile.dealii-adapter
+        - python build_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter_3D --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME
+        - python push.py --adapter adapters/Dockerfile.dealii-adapter_3D
       deploy:
         skip_cleanup: true
         provider: script
@@ -188,7 +188,22 @@ jobs:
           all_branches: true
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME
+          python push_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter_3D --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME
+
+    - name: "[16.04] deal.ii adapter [2D]"
+      if: fork = false
+      script:
+        - python build_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter_2D --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME
+        - python push.py --adapter adapters/Dockerfile.dealii-adapter_2D
+      deploy:
+        skip_cleanup: true
+        provider: script
+        on:
+          all_branches: true
+        script: >-
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
+          python push_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter_2D --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME
+
 
     - name: "[16.04] OpenFOAM adapter"
       if: fork = false
@@ -311,10 +326,10 @@ jobs:
         - python system_testing.py -s bindings --base Ubuntu1804.home -v
         - python push.py --test bindings --base Ubuntu1804.home
 
-    - name: "[16.04] deal.ii <-> OpenFOAM [Job failure permitted]"
+    - name: "[16.04] deal.ii <-> OpenFOAM [3D]"
       script:
-        - python system_testing.py -s dealii-of -v
-        - python push.py --test dealii-of
+        - python system_testing.py -s dealii-of_3D -v
+        - python push.py --test dealii-of_3D
 
     - name: "[16.04] deal.ii <-> OpenFOAM [2D]"
       script:
