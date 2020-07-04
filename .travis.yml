@@ -284,7 +284,7 @@ jobs:
       name: "[16.04] SU2 <-> Calculix [unstable][Job failure permitted]"
       script:
         - python system_testing.py -s su2-ccx -v
-        - python push.py --test su2-ccx -o
+        - python push.py --test su2-ccx
 
     - name: "[16.04] OpenFOAM <-> OpenFOAM"
       script:
