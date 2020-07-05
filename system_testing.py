@@ -257,9 +257,9 @@ def compose_tag(docker_username, base, features, branch):
     features_list = list(filter(None, features_list))  # filter "None" features that might have been added by dict.get(key), if key did not exist.
 
     if features_list:  # list of features is not empty
-        tag = docker_username.lower() + "/" + base + "-" + ".".join(features_list).lower() + '-' + branch.lower()
+        tag = docker_username.lower() + "/" + base.lower() + "-" + ".".join(features_list).lower() + '-' + branch.lower()
     else:  # list of features is empty
-        tag = docker_username.lower() + "/" + base + '-' + branch.lower()
+        tag = docker_username.lower() + "/" + base.lower() + '-' + branch.lower()
     return tag
 
 
