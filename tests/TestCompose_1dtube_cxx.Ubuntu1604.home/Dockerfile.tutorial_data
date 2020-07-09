@@ -1,7 +1,6 @@
 from alpine
 
 RUN apk add git
-ARG branch=develop
 
 WORKDIR /
 # adjust configuration and paths
