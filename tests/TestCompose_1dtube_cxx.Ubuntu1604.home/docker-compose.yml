@@ -11,7 +11,7 @@ services:
     volumes:
       - output:/home/precice/Data/Output/
     command: >
-      /bin/bash -c "./Allrun &&
+      /bin/bash -c "./Allrun;
         cp *.log /home/precice/Data/Output/ &&
         cp -r Postproc /home/precice/Data/Output/ &&
         rm /home/precice/Data/Output/*summary.log"
