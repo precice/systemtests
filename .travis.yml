@@ -13,6 +13,7 @@ jobs:
     # Currently unstable tests that do not affect the build status
     # To add a test here, list its exact name
     - name: "Ubuntu 18.04.sudo.mpich [Job failure permitted]"
+    - name: "Ubuntu 16.04 home PETSc [Job failure permitted]"
     - name: "[16.04] deal.ii <-> OpenFOAM [Job failure permitted]"
     - name: "[16.04 PETSc] OpenFOAM <-> CalculiX [FSI] [Job failure permitted]"
     - name: "[16.04] SU2 <-> Calculix [unstable][Job failure permitted]"
@@ -49,7 +50,7 @@ jobs:
           python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.home --docker-username $DOCKER_USERNAME
 
     - stage: Building preCICE
-      name: "Ubuntu 16.04 home PETSc"
+      name: "Ubuntu 16.04 home PETSc [Job failure permitted]"
       if: fork = false
       script:
         - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.home --petsc yes --docker-username $DOCKER_USERNAME
