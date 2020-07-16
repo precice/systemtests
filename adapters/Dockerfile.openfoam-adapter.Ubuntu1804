@@ -33,5 +33,4 @@ RUN mkdir -p Logs Data/Input Data/Output Data/Exchange
 ARG branch=develop
 RUN git clone  --branch $branch https://github.com/precice/openfoam-adapter.git
 WORKDIR /home/precice/openfoam-adapter
-RUN . /opt/openfoam5/etc/bashrc && ./Allwmake
-RUN cp wmake.log Allwmake.log ldd.log $HOME/Logs
+RUN . /opt/openfoam5/etc/bashrc && ./Allwmake && cp wmake.log Allwmake.log ldd.log $HOME/Logs
