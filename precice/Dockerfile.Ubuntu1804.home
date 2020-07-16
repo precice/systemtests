@@ -45,44 +45,44 @@ ENV CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/usr/include/eigen3" \
     CPATH="/usr/include/eigen3:${CPATH}" \
     PETSC_DIR="/petsc/petsc-3.12.5" \
     PETSC_ARCH="arch-linux2-c-debug" \
-    LD_LIBRARY_PATH="/petsc/petsc-3.12.5:${LD_LIBRARY_PATH}"
+    LD_LIBRARY_PATH="/petsc/petsc-3.12.5/arch-linux2-c-debug/lib/:${LD_LIBRARY_PATH}"
 
-RUN ls /petsc/petsc-3.12.5/lib
 
-# Building preCICE
-ARG branch=develop
-RUN git clone --branch $branch https://github.com/precice/precice.git /home/precice/precice
-WORKDIR /home/precice/precice
-
-# Some parameters for the build, you can set them in the build command e.g.
-# sudo docker build Dockerfile.precice --build-arg petsc_para=yes --build-arg mpi_para=yes .
-# this will result in
-# cmake -DPRECICE_PETScMapping=yes -DPRECICE_MPICommunication=yes -DPRECICE_PythonActions=no -DCMAKE_CXX_COMPILER=mpicxx -j2 /precice
-ARG petsc_para=no
-ARG mpi_para=yes
-ARG python_para=no
-
-# Build preCICE and clean-up generated object files
-RUN mkdir /home/precice/precice-build && \
-    cd /home/precice/precice-build && \
-    mkdir /home/precice/precice-install && \
-    sed -n 791p /petsc/petsc-3.12.5/lib/petsc/conf/rules && \
-    cmake -DBUILD_SHARED_LIBS=ON \
-          -DCMAKE_BUILD_TYPE=Debug \
-          -DCMAKE_INSTALL_PREFIX=/home/precice/precice-install \
-          -DPRECICE_PETScMapping=$petsc_para \
-          -DPRECICE_MPICommunication=$mpi_para \
-          -DPRECICE_PythonActions=$python_para \
-          /home/precice/precice && \
-    make -j$(nproc) && \
-    make test_base && \
-    make install && \
-    rm -r /home/precice/precice-build
-
-# Setting preCICE environment variables
-ENV PRECICE_ROOT="/home/precice/precice" \
-    PKG_CONFIG_PATH="/home/precice/precice-install/lib/pkgconfig" \
-    LD_LIBRARY_PATH="/home/precice/precice-install/lib:${LD_LIBRARY_PATH}" \
-    LIBRARY_PATH="/home/precice/precice-install/lib:${LIBRARY_PATH}" \
-    CPATH="/home/precice/precice-install/include:${CPATH}" \
-    CMAKE_PREFIX_PATH="/home/precice/precice-install/lib/cmake/precice:${CMAKE_PREFIX_PATH}"
+# # Building preCICE
+# ARG branch=develop
+# RUN git clone --branch $branch https://github.com/precice/precice.git /home/precice/precice
+# WORKDIR /home/precice/precice
+#
+# # Some parameters for the build, you can set them in the build command e.g.
+# # sudo docker build Dockerfile.precice --build-arg petsc_para=yes --build-arg mpi_para=yes .
+# # this will result in
+# # cmake -DPRECICE_PETScMapping=yes -DPRECICE_MPICommunication=yes -DPRECICE_PythonActions=no -DCMAKE_CXX_COMPILER=mpicxx -j2 /precice
+# ARG petsc_para=no
+# ARG mpi_para=yes
+# ARG python_para=no
+#
+# # Build preCICE and clean-up generated object files
+# RUN mkdir /home/precice/precice-build && \
+#     cd /home/precice/precice-build && \
+#     mkdir /home/precice/precice-install && \
+#     sed -n 791p /petsc/petsc-3.12.5/lib/petsc/conf/rules && \
+#     cmake -DBUILD_SHARED_LIBS=ON \
+#           -DCMAKE_BUILD_TYPE=Debug \
+#           -DCMAKE_INSTALL_PREFIX=/home/precice/precice-install \
+#           -DPRECICE_PETScMapping=$petsc_para \
+#           -DPRECICE_MPICommunication=$mpi_para \
+#           -DPRECICE_PythonActions=$python_para \
+#           /home/precice/precice && \
+#     make -j$(nproc) && \
+#     make test_base && \
+#     make install && \
+#     rm -r /home/precice/precice-build
+#
+# # Setting preCICE environment variables
+# ENV PRECICE_ROOT="/home/precice/precice" \
+#     PKG_CONFIG_PATH="/home/precice/precice-install/lib/pkgconfig" \
+#     LD_LIBRARY_PATH="/home/precice/precice-install/lib:${LD_LIBRARY_PATH}" \
+#     LIBRARY_PATH="/home/precice/precice-install/lib:${LIBRARY_PATH}" \
+#     CPATH="/home/precice/precice-install/include:${CPATH}" \
+#     CMAKE_PREFIX_PATH="/home/precice/precice-install/lib/cmake/precice:${CMAKE_PREFIX_PATH}"
+#
