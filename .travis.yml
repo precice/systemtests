@@ -99,14 +99,14 @@ jobs:
       script:
         - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.home --petsc yes --docker-username $DOCKER_USERNAME
         - python push.py --precice precice/Dockerfile.Ubuntu1804.home
-        deploy:
-          skip_cleanup: true
-          provider: script
-          on:
-            all_branches: true
-            script: >-
-              echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-              python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.home --petsc yes --docker-username $DOCKER_USERNAME
+      deploy:
+        skip_cleanup: true
+        provider: script
+        on:
+          all_branches: true
+        script: >-
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
+          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.home --petsc yes --docker-username $DOCKER_USERNAME
 
     - stage: Building preCICE
       name: "Ubuntu 18.04.package"
@@ -114,14 +114,14 @@ jobs:
       script:
         - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.package --docker-username $DOCKER_USERNAME
         - python push.py --precice precice/Dockerfile.Ubuntu1804.package
-        deploy:
-          skip_cleanup: true
-          provider: script
-          on:
-            all_branches: true
-            script: >-
-              echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-              python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.package --docker-username $DOCKER_USERNAME
+      deploy:
+        skip_cleanup: true
+        provider: script
+        on:
+          all_branches: true
+        script: >-
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
+          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.package --docker-username $DOCKER_USERNAME
 
     - stage: Building preCICE
       name: "Ubuntu 18.04.sudo.mpich [Job failure permitted]"
