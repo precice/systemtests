@@ -26,15 +26,13 @@ USER precice
 # get calculix source
 WORKDIR /home/precice
 RUN curl -s http://www.dhondt.de/ccx_2.16.src.tar.bz2 | tar -xj
-ARG branch=develop
+ARG branch=makefile-dep-apt
 RUN git clone --branch $branch https://github.com/precice/calculix-adapter.git
 WORKDIR calculix-adapter/
 # specify proper locations of libraries
 RUN sed -i  -e 's|CCX\s\+=.*|CCX	= /home/precice/CalculiX/ccx_2.16/src|g'\
-            -e 's|SPOOLES\s\+=.*|SPOOLES	 = /spooles.2.2|g'\
-            -e 's|ARPACK\s\+=.*|ARPACK  = /usr/local/ARPACK|g'\
-            -e 's|-L$(YAML)/build||g' \
-            -e 's|-I$(YAML)/include||g' \
+            -e 's|SPOOLES_INCLUDE\s\+=.*|SPOOLES_INCLUDE   = -I/spooles.2.2|g'\
+            -e 's|ARPACK_INCLUDE\s\+=.*|ARPACK_INCLUDE  = /usr/local/ARPACK|g'\
             -e 's|CC\s\+=.*|CC=cc|g' Makefile
 
 # build and clean-up
