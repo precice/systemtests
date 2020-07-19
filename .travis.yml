@@ -30,9 +30,9 @@ jobs:
     - name: "[18.04] CalculiX adapter [PETSc]"
       if: fork = false
       script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1804 --precice-installation home --petsc yes --docker-username $DOCKER_USERNAME
+        - python build_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1804 --precice-installation home --petsc yes --docker-username $DOCKER_USERNAME -ab makefile-dep-apt
         - python push.py --adapter adapters/Dockerfile.calculix-adapter
-        - echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin && python push_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1804 --precice-installation home --petsc yes --docker-username $DOCKER_USERNAME -ab makefile-dep-apt
+        - echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin && python push_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1804 --precice-installation home --petsc yes --docker-username $DOCKER_USERNAME
 
     - stage: Tests
       name: "[16.04] SU2 <-> Calculix [unstable][Job failure permitted]"
