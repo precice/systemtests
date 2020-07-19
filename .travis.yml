@@ -23,9 +23,9 @@ jobs:
       name: "[18.04] OpenFOAM adapter [PETSc]"
       if: fork = false
       script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1804 --precice-installation home --petsc yes --docker-username $DOCKER_USERNAME
-        - python push.py --adapter adapters/Dockerfile.openfoam-adapter
-        - echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin && python push_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1804 --precice-installation home --petsc yes --docker-username $DOCKER_USERNAME
+        - python build_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter.Ubuntu1804 --operating-system ubuntu1804 --precice-installation home --petsc yes --docker-username $DOCKER_USERNAME
+        - python push.py --adapter adapters/Dockerfile.openfoam-adapter.Ubuntu1804
+        - echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin && python push_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter.Ubuntu1804 --operating-system ubuntu1804 --precice-installation home --petsc yes --docker-username $DOCKER_USERNAME
 
     - name: "[18.04] CalculiX adapter [PETSc]"
       if: fork = false
