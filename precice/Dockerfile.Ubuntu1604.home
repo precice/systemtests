@@ -6,6 +6,7 @@ FROM ubuntu:16.04
 # Installing necessary dependacies for preCICE
 RUN apt-get -qq update && apt-get -qq install \
     build-essential \
+    locales \
     libxml2-dev \
     petsc-dev \
     git \

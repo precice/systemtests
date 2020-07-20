@@ -6,6 +6,7 @@ FROM ubuntu:18.04
 # Installing necessary dependacies for preCICE, boost 1.65 from apt-get
 RUN apt-get -qq update && apt-get -qq install \
     build-essential \
+    locales \
     libboost-all-dev \
     libeigen3-dev \
     libxml2-dev \
