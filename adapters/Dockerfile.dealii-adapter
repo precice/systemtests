@@ -1,4 +1,5 @@
-ARG from=precice/precice-ubuntu1604.home-develop
+ARG branch=develop
+ARG from=precice/precice-ubuntu1604.home-${branch}
 ARG base_solver=precice/deal.ii
 FROM ${base_solver} as deal.ii
 FROM $from
@@ -10,8 +11,10 @@ COPY --from=deal.ii /root/dealii/ /home/precice/dealii/
 USER precice
 WORKDIR /home/precice
 RUN mkdir -p Logs Data/Input Data/Output Data/Exchange
-ARG branch=develop
-RUN git clone --branch $branch https://github.com/precice/dealii-adapter.git
+
+ARG adapter_branch=develop
+RUN git clone --branch $adapter_branch https://github.com/precice/dealii-adapter.git
+
 RUN cd dealii-adapter/linear_elasticity/ && \
     cmake -DDEAL_II_DIR=$HOME/dealii -DDIM=3 -DCMAKE_BUILD_TYPE=Release . && \
     make -j $(nproc)
