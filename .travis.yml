@@ -12,6 +12,7 @@ jobs:
   allow_failures:
     # Currently unstable tests that do not affect the build status
     # To add a test here, list its exact name
+    - name: "[18.04] FEniCS adapter [Job failure permitted]"
     - name: "Ubuntu 18.04.sudo.mpich [Job failure permitted]"
     - name: "Ubuntu 16.04 home PETSc [Job failure permitted]"
     - name: "[16.04] deal.ii <-> OpenFOAM [Job failure permitted]"
@@ -216,7 +217,7 @@ jobs:
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
           python push_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter.Ubuntu1804 --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
 
-    - name: "[18.04] FEniCS adapter"
+    - name: "[18.04] FEniCS adapter [Job failure permitted]"
       if: fork = false
       script:
         - python build_adapter.py --dockerfile adapters/Dockerfile.fenics-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
