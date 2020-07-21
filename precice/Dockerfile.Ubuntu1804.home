@@ -32,18 +32,11 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
-# Install PETSc from source
-WORKDIR /petsc
-RUN wget -nv 'http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-3.12.5.tar.gz' -O - | tar xz && \
-  cd petsc-3.12.5 && \
-  ./configure && \
-  make all test
 
 RUN chown -R precice:precice /petsc
 
 # Rebuild image if force_rebuild after that command
 ARG CACHEBUST
-
 
 USER precice
 WORKDIR /home/precice
