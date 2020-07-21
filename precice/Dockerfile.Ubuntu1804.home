@@ -35,9 +35,6 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
-RUN chown -R precice:precice /petsc
-USER precice
-
 USER precice
 WORKDIR /home/precice
 
