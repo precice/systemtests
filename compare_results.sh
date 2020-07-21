@@ -66,7 +66,7 @@ if [ -n "$diff_files" ]; then
     # prefiltering dates, timestamps and other words that signal a line with
     # constantly changing values (that do not actually affect the results), like revision
     pre_filter='s/[0-9][0-9][:\.][0-9][0-9][:\.][0-9][0-9]//g; s/\[.\+\]:[0-9]\+//g;
-                s/[0-9][0-9]\/[0-9][0-9]\/[0-9][0-9][0-9][0-9]//g;
+                s/[0-9][0-9]\/[0-9][0-9]\/[0-9][0-9][0-9][0-9]//g; s/\s*$//g;
                 /Timestamp\|[rR]untime\|[vV]ersion\|[rR]evision\|Unexpected end of/d; /Run finished/q'
 
     # numerical filter, looks to find numbers of any format
@@ -74,7 +74,7 @@ if [ -n "$diff_files" ]; then
     # exponential filter, DELETES exponent! TODO: have awk command below handle exponents
     exp_filter='s/[eE][+-][0-9]\+//g'
     # text filter, checks for any text lines after the prefilter was applied
-    txt_filter='s/\s*$//g; /[a-df-zA-Z]/!d'
+    txt_filter='/[a-df-zA-Z]/!d'
 
     # Apply filters
     file1_num=$( cat "$file1" | sed "$pre_filter" | grep -o "$num_filter" | sed "$exp_filter")

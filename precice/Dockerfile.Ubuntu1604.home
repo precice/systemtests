@@ -6,6 +6,7 @@ FROM ubuntu:16.04
 # Installing necessary dependacies for preCICE
 RUN apt-get -qq update && apt-get -qq install \
     build-essential \
+    locales \
     libxml2-dev \
     petsc-dev \
     git \
@@ -34,15 +35,23 @@ RUN wget -nv 'https://downloads.sourceforge.net/project/boost/boost/1.65.1/boost
     ./b2 -j$(nproc) install && \
     rm -r /boost-build && \
     ldconfig
-
-ARG uid=1000
-ARG gid=1000
 # Rebuild image if force_rebuild after that command
 ARG CACHEBUST
 
 # create user precice
+ARG uid=1000
+ARG gid=1000
 RUN groupadd -g ${gid} precice \
     && useradd -u ${uid} -g ${gid} -m -s /bin/bash precice
+
+# set locale
+RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
+    locale-gen
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
+
+
 USER precice
 WORKDIR /home/precice
 
