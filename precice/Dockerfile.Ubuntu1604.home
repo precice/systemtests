@@ -27,6 +27,13 @@ WORKDIR /eigen
 RUN wget -nv 'https://gitlab.com/libeigen/eigen/-/archive/3.3.7/eigen-3.3.7.tar.bz2' -O - | tar xj
 ENV Eigen3_ROOT="/eigen/eigen-3.3.7"
 
+# Install PETSc from source
+WORKDIR /petsc
+RUN wget -nv 'http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-3.12.5.tar.gz' -O - | tar xz && \
+  cd petsc-3.12.5 && \
+  ./configure && \
+  make all test
+
 # Installing boost from source
 WORKDIR /boost-build
 RUN wget -nv 'https://downloads.sourceforge.net/project/boost/boost/1.65.1/boost_1_65_1.tar.bz2' -O - | tar xj && \
@@ -58,8 +65,10 @@ WORKDIR /home/precice
 # Setting some environment variables for installing preCICE
 ENV CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/usr/include/eigen3" \
     CPATH="/usr/include/eigen3:${CPATH}" \
-    PETSC_DIR="/usr/lib/petscdir/3.6.2/" \
-    PETSC_ARCH="x86_64-linux-gnu-real"
+    PETSC_DIR="/petsc/petsc-3.12.5" \
+    PETSC_ARCH="arch-linux2-c-debug" \
+    LD_LIBRARY_PATH="/petsc/petsc-3.12.5/arch-linux2-c-debug/lib:${LD_LIBRARY_PATH}"
+
 
 # Building preCICE
 ARG branch=develop

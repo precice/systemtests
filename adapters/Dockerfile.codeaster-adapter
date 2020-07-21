@@ -1,4 +1,5 @@
-ARG from=precice/precice-ubuntu1804.home-develop
+ARG branch=develop
+ARG from=precice/precice-ubuntu1804.home-${branch}
 ARG base_solver=precice/codeaster
 FROM ${base_solver}
 FROM $from
@@ -25,7 +26,8 @@ WORKDIR /home/precice
 
 COPY --from=precice/codeaster /home/precice/Code_Aster /home/precice/Code_Aster
 
-RUN git clone https://github.com/precice/code_aster-adapter.git
+ARG adapter_branch=develop
+RUN git clone --branch $adapter_branch https://github.com/precice/code_aster-adapter.git
 
 RUN \
     sed -i "s|.rmed|.resu|g" code_aster-adapter/cht/adapter.comm && \

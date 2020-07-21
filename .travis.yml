@@ -13,9 +13,7 @@ jobs:
     # Currently unstable tests that do not affect the build status
     # To add a test here, list its exact name
     - name: "Ubuntu 18.04.sudo.mpich [Job failure permitted]"
-    - name: "Ubuntu 16.04 home PETSc [Job failure permitted]"
     - name: "[16.04] deal.ii <-> OpenFOAM [Job failure permitted]"
-    - name: "[16.04 PETSc] OpenFOAM <-> CalculiX [FSI] [Job failure permitted]"
     - name: "[16.04] SU2 <-> Calculix [unstable][Job failure permitted]"
 
   include:
@@ -163,7 +161,7 @@ jobs:
     - name: "[16.04] CalculiX adapter"
       if: fork = false
       script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME
+        - python build_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME -ab makefile-dep-apt
         - python push.py --adapter adapters/Dockerfile.calculix-adapter
       deploy:
         skip_cleanup: true
@@ -220,8 +218,8 @@ jobs:
     - name: "[18.04] OpenFOAM adapter"
       if: fork = false
       script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter.Ubuntu1804 --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
-        - python push.py --adapter adapters/Dockerfile.openfoam-adapter.Ubuntu1804
+        - python build_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
+        - python push.py --adapter adapters/Dockerfile.openfoam-adapter
       deploy:
         skip_cleanup: true
         provider: script
@@ -229,7 +227,7 @@ jobs:
           all_branches: true
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter.Ubuntu1804 --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
+          python push_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
 
     - name: "[18.04] FEniCS adapter"
       if: fork = false
@@ -258,10 +256,10 @@ jobs:
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
           python push_adapter.py --dockerfile adapters/Dockerfile.codeaster-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
 
-    - name: "[16.04] OpenFOAM adapter [PETSc]"
+    - name: "[18.04] OpenFOAM adapter [PETSc]"
       if: fork = false
       script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1604 --precice-installation home --petsc yes --docker-username $DOCKER_USERNAME
+        - python build_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1804 --precice-installation home --petsc yes --docker-username $DOCKER_USERNAME
         - python push.py --adapter adapters/Dockerfile.openfoam-adapter
       deploy:
         skip_cleanup: true
@@ -270,12 +268,12 @@ jobs:
           all_branches: true
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1604 --precice-installation home --petsc yes --docker-username $DOCKER_USERNAME
+          python push_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1804 --precice-installation home --petsc yes --docker-username $DOCKER_USERNAME
 
-    - name: "[16.04] CalculiX adapter [PETSc]"
+    - name: "[18.04] CalculiX adapter [PETSc]"
       if: fork = false
       script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1604 --precice-installation home --petsc yes --docker-username $DOCKER_USERNAME
+        - python build_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1804 --precice-installation home --petsc yes --docker-username $DOCKER_USERNAME -ab makefile-dep-apt
         - python push.py --adapter adapters/Dockerfile.calculix-adapter
       deploy:
         skip_cleanup: true
@@ -284,7 +282,7 @@ jobs:
           all_branches: true
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1604 --precice-installation home --petsc yes --docker-username $DOCKER_USERNAME
+          python push_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1804 --precice-installation home --petsc yes --docker-username $DOCKER_USERNAME
 
 
     - name: "[Build adapters on fork] Using cached version"
@@ -360,7 +358,7 @@ jobs:
         - python system_testing.py -s 1dtube_cxx -v
         - python push.py --test 1dtube_cxx
 
-    - name: "[16.04 PETSc] OpenFOAM <-> CalculiX [FSI] [Job failure permitted]"
+    - name: "[18.04 PETSc] OpenFOAM <-> CalculiX [FSI]"
       script:
-        - python system_testing.py -s of-ccx_fsi --base Ubuntu1604.home.PETSc -v
-        - python push.py --test of-ccx_fsi --petsc
+        - python system_testing.py -s of-ccx_fsi --base Ubuntu1804.home.PETSc -v
+        - python push.py --test of-ccx_fsi --petsc --base Ubuntu1804.home.PETSc
