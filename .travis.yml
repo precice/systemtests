@@ -278,20 +278,20 @@ jobs:
 
 
     - stage: Tests
-      name: "[16.04] SU2 <-> Calculix [unstable][Job failure permitted]"
+      name: "[18.04] SU2 <-> Calculix [unstable][Job failure permitted]"
       script:
-        - python system_testing.py -s su2-ccx -v
-        - python push.py --test su2-ccx
+        - python system_testing.py -s su2-ccx --base Ubuntu1804.home -v
+        - python push.py --test su2-ccx --base Ubuntu1804.home
 
-    - name: "[16.04] OpenFOAM <-> OpenFOAM"
+    - name: "[18.04] OpenFOAM <-> OpenFOAM"
       script:
-        - python system_testing.py -s of-of -v
-        - python push.py --test of-of
+        - python system_testing.py -s of-of --base Ubuntu1804.home -v
+        - python push.py --test of-of --base Ubuntu1804.home
 
-    - name: "[16.04] Calculix <-> OpenFOAM"
+    - name: "[18.04] Calculix <-> OpenFOAM"
       script:
-        - python system_testing.py -s of-ccx -v
-        - python push.py --test of-ccx -o
+        - python system_testing.py -s of-ccx --base Ubuntu1804.home -v
+        - python push.py --test of-ccx --base Ubuntu1804.home
 
     - name: "[18.04] FEniCS <-> FEniCS"
       script:
@@ -308,20 +308,20 @@ jobs:
         - python system_testing.py -s bindings --base Ubuntu1804.home -v
         - python push.py --test bindings --base Ubuntu1804.home
 
-    - name: "[16.04] deal.ii <-> OpenFOAM [Job failure permitted]"
+    - name: "[18.04] deal.ii <-> OpenFOAM [Job failure permitted]"
       script:
-        - python system_testing.py -s dealii-of -v
-        - python push.py --test dealii-of
+        - python system_testing.py -s dealii-of --base Ubuntu1804.home  -v
+        - python push.py --test dealii-of --base Ubuntu1804.home
 
     - name: "[18.04] nutils <-> OpenFOAM"
       script:
         - python system_testing.py -s nutils-of --base Ubuntu1804.home -v
         - python push.py --test nutils-of --base Ubuntu1804.home
 
-    - name: "[16.04] OpenFOAM <-> OpenFOAM [nearest projection]"
+    - name: "[18.04] OpenFOAM <-> OpenFOAM [nearest projection]"
       script:
-        - python system_testing.py -s of-of_np -v
-        - python push.py --test of-of_np
+        - python system_testing.py -s of-of_np --base Ubuntu1804.home  -v
+        - python push.py --test of-of_np --base Ubuntu1804.home 
 
     - name: "[18.04] OpenFOAM <-> Code_Aster"
       script:
