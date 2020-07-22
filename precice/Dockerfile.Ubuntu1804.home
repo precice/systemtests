@@ -38,7 +38,6 @@ RUN wget -nv 'http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-3.12.5.ta
   cd petsc-3.12.5 && \
   ./configure && \
   make all test
-
 RUN chown -R precice:precice /petsc
 
 # Rebuild image if force_rebuild after that command
