@@ -190,7 +190,8 @@ if __name__ == "__main__":
 
         if args.test in compose_tests:
             test_dirname = "TestCompose_{systest}".format(systest=args.test)
-            test_dirname += "." + args.base
+            if args.base is not default_base:
+                test_dirname += "." + args.base
             if args.petsc:
                 test_dirname += ".PETSc"
             test_path = os.path.join(os.getcwd(), 'tests', test_dirname)
