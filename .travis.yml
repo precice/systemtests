@@ -12,6 +12,7 @@ jobs:
   allow_failures:
     # Currently unstable tests that do not affect the build status
     # To add a test here, list its exact name
+    - name: "[18.04] deal.ii adapter [Job failure permitted]"
     - name: "[18.04] FEniCS adapter [Job failure permitted]"
     - name: "Ubuntu 18.04.sudo.mpich [Job failure permitted]"
     - name: "[16.04] deal.ii <-> OpenFOAM [Job failure permitted]"
@@ -217,7 +218,7 @@ jobs:
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
           python push_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME
 
-    - name: "[18.04] deal.ii adapter"
+    - name: "[18.04] deal.ii adapter [Job failure permitted]"
       if: fork = false
       script:
         - python build_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
@@ -336,7 +337,7 @@ jobs:
     - name: "[18.04] Calculix <-> OpenFOAM"
       script:
         - python system_testing.py -s of-ccx -v
-        - python push.py --test of-ccx
+        - python push.py --test of-ccx -o
 
     - name: "[18.04] FEniCS <-> FEniCS"
       script:
@@ -345,8 +346,8 @@ jobs:
 
     - name: "[16.04] Bindings/Solverdummies"
       script:
-        - python system_testing.py -s bindings --base Ubuntu1606.home -v
-        - python push.py --test bindings  --base Ubuntu1606.home
+        - python system_testing.py -s bindings --base Ubuntu1604.home -v
+        - python push.py --test bindings  --base Ubuntu1604.home
 
     - name: "[18.04] Bindings/Solverdummies"
       script:
