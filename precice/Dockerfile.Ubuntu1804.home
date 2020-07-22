@@ -43,7 +43,6 @@ RUN chown -R precice:precice /petsc
 # Rebuild image if force_rebuild after that command
 ARG CACHEBUST
 
-
 USER precice
 WORKDIR /home/precice
 # Setting some environment variables for installing preCICE
