@@ -118,7 +118,7 @@ def add_readme(
 if __name__ == "__main__":
 
     repo_folder = "precice_st_output"
-    default_base = "Ubuntu1604.home"
+    default_base = "Ubuntu1804.home"
     default_st_branch = "master"
 
     parser = argparse.ArgumentParser(description='Push build/test logs to output repository. Optionally includes result data (for tests only).')
