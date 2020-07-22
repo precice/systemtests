@@ -280,60 +280,60 @@ jobs:
     - stage: Tests
       name: "[18.04] SU2 <-> Calculix [unstable][Job failure permitted]"
       script:
-        - python system_testing.py -s su2-ccx --base Ubuntu1804.home -v
-        - python push.py --test su2-ccx --base Ubuntu1804.home
+        - python system_testing.py -s su2-ccx -v
+        - python push.py --test su2-ccx
 
     - name: "[18.04] OpenFOAM <-> OpenFOAM"
       script:
-        - python system_testing.py -s of-of --base Ubuntu1804.home -v
-        - python push.py --test of-of --base Ubuntu1804.home
+        - python system_testing.py -s of-of -v
+        - python push.py --test of-of
 
     - name: "[18.04] Calculix <-> OpenFOAM"
       script:
-        - python system_testing.py -s of-ccx --base Ubuntu1804.home -v
-        - python push.py --test of-ccx --base Ubuntu1804.home
+        - python system_testing.py -s of-ccx -v
+        - python push.py --test of-ccx
 
     - name: "[18.04] FEniCS <-> FEniCS"
       script:
-        - python system_testing.py -s fe-fe --base Ubuntu1804.home -v
-        - python push.py --test fe-fe --base Ubuntu1804.home
+        - python system_testing.py -s fe-fe -v
+        - python push.py --test fe-fe
 
     - name: "[16.04] Bindings/Solverdummies"
+      script:
+        - python system_testing.py -s bindings --base Ubuntu1606.home -v
+        - python push.py --test bindings  --base Ubuntu1606.home
+
+    - name: "[18.04] Bindings/Solverdummies"
       script:
         - python system_testing.py -s bindings -v
         - python push.py --test bindings
 
-    - name: "[18.04] Bindings/Solverdummies"
-      script:
-        - python system_testing.py -s bindings --base Ubuntu1804.home -v
-        - python push.py --test bindings --base Ubuntu1804.home
-
     - name: "[18.04] deal.ii <-> OpenFOAM [Job failure permitted]"
       script:
-        - python system_testing.py -s dealii-of --base Ubuntu1804.home  -v
-        - python push.py --test dealii-of --base Ubuntu1804.home
+        - python system_testing.py -s dealii-of -v
+        - python push.py --test dealii-of
 
     - name: "[18.04] nutils <-> OpenFOAM"
       script:
-        - python system_testing.py -s nutils-of --base Ubuntu1804.home -v
-        - python push.py --test nutils-of --base Ubuntu1804.home
+        - python system_testing.py -s nutils-of -v
+        - python push.py --test nutils-of
 
     - name: "[18.04] OpenFOAM <-> OpenFOAM [nearest projection]"
       script:
-        - python system_testing.py -s of-of_np --base Ubuntu1804.home  -v
-        - python push.py --test of-of_np --base Ubuntu1804.home 
+        - python system_testing.py -s of-of_np -v
+        - python push.py --test of-of_np
 
     - name: "[18.04] OpenFOAM <-> Code_Aster"
       script:
-        - python system_testing.py -s of-ca --base Ubuntu1804.home -v
+        - python system_testing.py -s of-ca -v
         - python push.py --test of-ca
 
-    - name: "[16.04] Elastictube1D - Python"
+    - name: "[18.04] Elastictube1D - Python"
       script:
         - python system_testing.py -s 1dtube_py -v
         - python push.py --test 1dtube_py
 
-    - name: "[16.04] Elastictube1D - C++"
+    - name: "[18.04] Elastictube1D - C++"
       script:
         - python system_testing.py -s 1dtube_cxx -v
         - python push.py --test 1dtube_cxx

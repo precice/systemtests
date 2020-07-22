@@ -275,7 +275,7 @@ if __name__ == "__main__":
     parser.add_argument('-f', '--force_rebuild', nargs='+', help="Force rebuild of variable parts of docker image",
                         default = [], choices  = ["precice", "tests"])
     parser.add_argument('--base', type=str,help="Base preCICE image to use",
-            default= "Ubuntu1604.home")
+            default= "Ubuntu1804.home")
     parser.add_argument('-v', '--verbose', action='store_true', help="Verbose output of participant containers")
     args = parser.parse_args()
     # check if there is specialized dir for this version
