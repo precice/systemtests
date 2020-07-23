@@ -16,6 +16,7 @@ jobs:
     - name: "[18.04] FEniCS adapter [Job failure permitted]"
     - name: "Ubuntu 18.04.sudo.mpich [Job failure permitted]"
     - name: "[16.04] deal.ii <-> OpenFOAM [Job failure permitted]"
+    - name: "[18.04 PETSc] OpenFOAM <-> CalculiX [FSI][Job failure permitted]"
     - name: "[16.04] SU2 <-> Calculix [unstable][Job failure permitted]"
 
   include:
@@ -377,14 +378,14 @@ jobs:
     - name: "[18.04] Elastictube1D - Python"
       script:
         - python system_testing.py -s 1dtube_py -v
-        - python push.py --test 1dtube_py
+        - python push.py --test 1dtube_py -o
 
     - name: "[18.04] Elastictube1D - C++"
       script:
         - python system_testing.py -s 1dtube_cxx -v
         - python push.py --test 1dtube_cxx
 
-    - name: "[18.04 PETSc] OpenFOAM <-> CalculiX [FSI]"
+    - name: "[18.04 PETSc] OpenFOAM <-> CalculiX [FSI][Job failure permitted]"
       script:
         - python system_testing.py -s of-ccx_fsi --base Ubuntu1804.home.PETSc -v
         - python push.py --test of-ccx_fsi --base Ubuntu1804.home.PETSc
