@@ -1,0 +1,51 @@
+Sending build context to Docker daemon  3.584kB
+Step 1/17 : ARG branch=develop
+Step 2/17 : ARG from=precice/precice-ubuntu1804.home-${branch}
+Step 3/17 : FROM $from
+ ---> 14de4c7396e3
+Step 4/17 : USER root
+ ---> Using cache
+ ---> 0df526d93d25
+Step 5/17 : RUN apt-get -qq update && apt-get -qq install     build-essential     gfortran     curl     automake     make     autoconf     autotools-dev     bzip2     libarpack2-dev     libspooles2.2     libyaml-cpp-dev &&     rm -rf /var/lib/apt/lists/*
+ ---> Using cache
+ ---> 393ab0e65553
+Step 6/17 : ARG CACHEBUST
+ ---> Using cache
+ ---> 3258f37287a4
+Step 7/17 : USER precice
+ ---> Using cache
+ ---> 2e994f22e5ea
+Step 8/17 : WORKDIR /home/precice
+ ---> Using cache
+ ---> 5656d76dae77
+Step 9/17 : RUN curl -s http://www.dhondt.de/ccx_2.16.src.tar.bz2 | tar -xj
+ ---> Using cache
+ ---> b04fc13d8f20
+Step 10/17 : ARG adapter_branch=develop
+ ---> Using cache
+ ---> f34cacf35080
+Step 11/17 : RUN git clone --branch $adapter_branch https://github.com/precice/calculix-adapter.git
+ ---> Using cache
+ ---> a8a8e7d13be1
+Step 12/17 : WORKDIR calculix-adapter/
+ ---> Using cache
+ ---> 4437641fa7e3
+Step 13/17 : RUN make -j $(nproc)
+ ---> Using cache
+ ---> 7b015c0557e0
+Step 14/17 : WORKDIR /home/precice
+ ---> Using cache
+ ---> 6e80e1c37d06
+Step 15/17 : RUN mkdir -p Logs Data/Input Data/Output Data/Exchange
+ ---> Using cache
+ ---> 3d3fef496a81
+Step 16/17 : ENV PATH="/home/precice/calculix-adapter/bin:${PATH}"
+ ---> Using cache
+ ---> 9544f139bea8
+Step 17/17 : WORKDIR /home/precice/calculix-adapter
+ ---> Using cache
+ ---> 9f0122799e2d
+Successfully built 9f0122799e2d
+Successfully tagged precice/calculix-adapter-ubuntu1804.home.petsc-develop:latest
+Building calculix-adapter image with the following features: {'os': 'ubuntu1804', 'installation': 'home', 'petsc': 'yes'}
+EXECUTING: docker build --network=host --file adapters/Dockerfile.calculix-adapter --tag precice/calculix-adapter-ubuntu1804.home.petsc-develop --build-arg branch=develop --build-arg adapter_branch=makefile-dep-apt --build-arg from=precice/precice-ubuntu1804.home.petsc-develop .
