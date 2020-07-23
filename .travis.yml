@@ -12,10 +12,12 @@ jobs:
   allow_failures:
     # Currently unstable tests that do not affect the build status
     # To add a test here, list its exact name
+    - name: "[18.04] deal.ii adapter [Job failure permitted]"
     - name: "[18.04] FEniCS adapter [Job failure permitted]"
     - name: "Ubuntu 18.04.sudo.mpich [Job failure permitted]"
-    - name: "[16.04] deal.ii <-> OpenFOAM [Job failure permitted]"
-    - name: "[16.04] SU2 <-> Calculix [unstable][Job failure permitted]"
+    - name: "[18.04] deal.ii <-> OpenFOAM [Job failure permitted]"
+    - name: "[18.04] SU2 <-> Calculix [unstable][Job failure permitted]"
+    - name: "[18.04 PETSc] OpenFOAM <-> CalculiX [FSI][Job failure permitted]"
 
   include:
     - stage: Building preCICE
@@ -149,7 +151,7 @@ jobs:
       if: fork = false
       script:
         - python build_adapter.py --dockerfile adapters/Dockerfile.su2-adapter --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME
-        - python push.py --adapter adapters/Dockerfile.su2-adapter
+        - python push.py --adapter adapters/Dockerfile.su2-adapter --base Ubuntu1604.home
       deploy:
         skip_cleanup: true
         provider: script
@@ -159,11 +161,26 @@ jobs:
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
           python push_adapter.py --dockerfile adapters/Dockerfile.su2-adapter --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME
 
+    - name: "[18.04] SU2 adapter"
+      if: fork = false
+      script:
+        - python build_adapter.py --dockerfile adapters/Dockerfile.su2-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
+        - python push.py --adapter adapters/Dockerfile.su2-adapter
+      deploy:
+        skip_cleanup: true
+        provider: script
+        on:
+          all_branches: true
+        script: >-
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
+          python push_adapter.py --dockerfile adapters/Dockerfile.su2-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
+
+
     - name: "[16.04] CalculiX adapter"
       if: fork = false
       script:
         - python build_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME -ab makefile-dep-apt
-        - python push.py --adapter adapters/Dockerfile.calculix-adapter
+        - python push.py --adapter adapters/Dockerfile.calculix-adapter --base Ubuntu1604.home
       deploy:
         skip_cleanup: true
         provider: script
@@ -177,7 +194,7 @@ jobs:
       if: fork = false
       script:
         - python build_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter_3D --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME
-        - python push.py --adapter adapters/Dockerfile.dealii-adapter_3D
+        - python push.py --adapter adapters/Dockerfile.dealii-adapter_3D --base Ubuntu1604.home
       deploy:
         skip_cleanup: true
         provider: script
@@ -187,11 +204,25 @@ jobs:
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
           python push_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter_3D --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME
 
+    - name: "[18.04] CalculiX adapter"
+      if: fork = false
+      script:
+        - python build_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME -ab makefile-dep-apt
+        - python push.py --adapter adapters/Dockerfile.calculix-adapter
+      deploy:
+        skip_cleanup: true
+        provider: script
+        on:
+          all_branches: true
+        script: >-
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
+          python push_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
+
     - name: "[16.04] deal.ii adapter [2D]"
       if: fork = false
       script:
         - python build_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME
-        - python push.py --adapter adapters/Dockerfile.dealii-adapter
+        - python push.py --adapter adapters/Dockerfile.dealii-adapter --base Ubuntu1604.home
       deploy:
         skip_cleanup: true
         provider: script
@@ -200,7 +231,6 @@ jobs:
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
           python push_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME
-
 
     - name: "[16.04] OpenFOAM adapter"
       if: fork = false
@@ -293,68 +323,68 @@ jobs:
 
 
     - stage: Tests
-      name: "[16.04] SU2 <-> Calculix [unstable][Job failure permitted]"
+      name: "[18.04] SU2 <-> Calculix [unstable][Job failure permitted]"
       script:
         - python system_testing.py -s su2-ccx -v
         - python push.py --test su2-ccx
 
-    - name: "[16.04] OpenFOAM <-> OpenFOAM"
+    - name: "[18.04] OpenFOAM <-> OpenFOAM"
       script:
         - python system_testing.py -s of-of -v
         - python push.py --test of-of
 
-    - name: "[16.04] Calculix <-> OpenFOAM"
+    - name: "[18.04] Calculix <-> OpenFOAM"
       script:
         - python system_testing.py -s of-ccx -v
-        - python push.py --test of-ccx -o
+        - python push.py --test of-ccx
 
     - name: "[18.04] FEniCS <-> FEniCS"
       script:
-        - python system_testing.py -s fe-fe --base Ubuntu1804.home -v
-        - python push.py --test fe-fe --base Ubuntu1804.home
+        - python system_testing.py -s fe-fe -v
+        - python push.py --test fe-fe
 
     - name: "[16.04] Bindings/Solverdummies"
+      script:
+        - python system_testing.py -s bindings --base Ubuntu1604.home -v
+        - python push.py --test bindings  --base Ubuntu1604.home
+
+    - name: "[18.04] Bindings/Solverdummies"
       script:
         - python system_testing.py -s bindings -v
         - python push.py --test bindings
 
-    - name: "[18.04] Bindings/Solverdummies"
-      script:
-        - python system_testing.py -s bindings --base Ubuntu1804.home -v
-        - python push.py --test bindings --base Ubuntu1804.home
-
     - name: "[16.04] deal.ii <-> OpenFOAM [3D]"
       script:
-        - python system_testing.py -s dealii-of_3D -v
-        - python push.py --test dealii-of_3D
+        - python system_testing.py -s dealii-of_3D -v --base Ubuntu1604.home
+        - python push.py --test dealii-of_3D --base Ubuntu1604.home
 
     - name: "[16.04] deal.ii <-> OpenFOAM [2D]"
       script:
-        - python system_testing.py -s dealii-of_2D -v
-        - python push.py --test dealii-of_2D
+        - python system_testing.py -s dealii-of_2D -v --base Ubuntu1604.home
+        - python push.py --test dealii-of_2D --base Ubuntu1604.home
 
 
     - name: "[18.04] nutils <-> OpenFOAM"
       script:
-        - python system_testing.py -s nutils-of --base Ubuntu1804.home -v
-        - python push.py --test nutils-of --base Ubuntu1804.home
+        - python system_testing.py -s nutils-of -v
+        - python push.py --test nutils-of
 
-    - name: "[16.04] OpenFOAM <-> OpenFOAM [nearest projection]"
+    - name: "[18.04] OpenFOAM <-> OpenFOAM [nearest projection]"
       script:
         - python system_testing.py -s of-of_np -v
         - python push.py --test of-of_np
 
     - name: "[18.04] OpenFOAM <-> Code_Aster"
       script:
-        - python system_testing.py -s of-ca --base Ubuntu1804.home -v
+        - python system_testing.py -s of-ca -v
         - python push.py --test of-ca
 
-    - name: "[16.04] Elastictube1D - Python"
+    - name: "[18.04] Elastictube1D - Python"
       script:
         - python system_testing.py -s 1dtube_py -v
         - python push.py --test 1dtube_py
 
-    - name: "[16.04] Elastictube1D - C++"
+    - name: "[18.04] Elastictube1D - C++"
       script:
         - python system_testing.py -s 1dtube_cxx -v
         - python push.py --test 1dtube_cxx
