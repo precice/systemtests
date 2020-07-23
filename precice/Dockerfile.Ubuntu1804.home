@@ -19,14 +19,11 @@ RUN apt-get -qq update && apt-get -qq install \
     cmake && \
     rm -rf /var/lib/apt/lists/*
 
-# Rebuild image if force_rebuild after that command
-ARG CACHEBUST
-
 # create user precice
 ARG uid=1000
 ARG gid=1000
 RUN groupadd -g ${gid} precice \
-    && useradd -u ${uid} -g ${gid} -m -s /bin/bash precice
+  && useradd -u ${uid} -g ${gid} -m -s /bin/bash precice
 
 # set locale
 RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
@@ -35,19 +32,32 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
+# Install PETSc from source
+WORKDIR /petsc
+RUN wget -nv 'http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-3.12.5.tar.gz' -O - | tar xz && \
+  cd petsc-3.12.5 && \
+  ./configure && \
+  make all test
+RUN chown -R precice:precice /petsc
+
+# Rebuild image if force_rebuild after that command
+ARG CACHEBUST
+
 USER precice
 WORKDIR /home/precice
-
 # Setting some environment variables for installing preCICE
 ENV CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/usr/include/eigen3" \
     CPATH="/usr/include/eigen3:${CPATH}" \
-    PETSC_DIR="/usr/lib/petscdir/3.6.2/" \
-    PETSC_ARCH="x86_64-linux-gnu-real"
+    PETSC_DIR="/petsc/petsc-3.12.5" \
+    PETSC_ARCH="arch-linux2-c-debug" \
+    LD_LIBRARY_PATH="/petsc/petsc-3.12.5/arch-linux2-c-debug/lib:${LD_LIBRARY_PATH}"
+
 
 # Building preCICE
 ARG branch=develop
 RUN git clone --branch $branch https://github.com/precice/precice.git /home/precice/precice
 WORKDIR /home/precice/precice
+
 # Some parameters for the build, you can set them in the build command e.g.
 # sudo docker build Dockerfile.precice --build-arg petsc_para=yes --build-arg mpi_para=yes .
 # this will result in

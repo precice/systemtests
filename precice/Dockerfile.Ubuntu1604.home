@@ -22,10 +22,25 @@ WORKDIR /cmake
 RUN wget -q -O- 'https://github.com/Kitware/CMake/releases/download/v3.13.4/cmake-3.13.4-Linux-x86_64.tar.gz' | tar xz
 ENV PATH="/cmake/cmake-3.13.4-Linux-x86_64/bin:$PATH"
 
+# create user precice
+ARG uid=1000
+ARG gid=1000
+RUN groupadd -g ${gid} precice \
+&& useradd -u ${uid} -g ${gid} -m -s /bin/bash precice
+
 # Installing eigen from source
 WORKDIR /eigen
 RUN wget -nv 'https://gitlab.com/libeigen/eigen/-/archive/3.3.7/eigen-3.3.7.tar.bz2' -O - | tar xj
 ENV Eigen3_ROOT="/eigen/eigen-3.3.7"
+
+# Install PETSc from source
+WORKDIR /petsc
+RUN wget -nv 'http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-3.12.5.tar.gz' -O - | tar xz && \
+  cd petsc-3.12.5 && \
+  ./configure && \
+  make all test
+RUN chown -R precice:precice /petsc
+
 
 # Installing boost from source
 WORKDIR /boost-build
@@ -38,11 +53,6 @@ RUN wget -nv 'https://downloads.sourceforge.net/project/boost/boost/1.65.1/boost
 # Rebuild image if force_rebuild after that command
 ARG CACHEBUST
 
-# create user precice
-ARG uid=1000
-ARG gid=1000
-RUN groupadd -g ${gid} precice \
-    && useradd -u ${uid} -g ${gid} -m -s /bin/bash precice
 
 # set locale
 RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
@@ -58,8 +68,10 @@ WORKDIR /home/precice
 # Setting some environment variables for installing preCICE
 ENV CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/usr/include/eigen3" \
     CPATH="/usr/include/eigen3:${CPATH}" \
-    PETSC_DIR="/usr/lib/petscdir/3.6.2/" \
-    PETSC_ARCH="x86_64-linux-gnu-real"
+    PETSC_DIR="/petsc/petsc-3.12.5" \
+    PETSC_ARCH="arch-linux2-c-debug" \
+    LD_LIBRARY_PATH="/petsc/petsc-3.12.5/arch-linux2-c-debug/lib:${LD_LIBRARY_PATH}"
+
 
 # Building preCICE
 ARG branch=develop
