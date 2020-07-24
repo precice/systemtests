@@ -357,8 +357,8 @@ jobs:
 
     - name: "[18.04] deal.ii <-> OpenFOAM [Job failure permitted]"
       script:
-        - python system_testing.py -s dealiif -v
-        - python push.py --test dealiif
+        - python system_testing.py -s dealii-of -v
+        - python push.py --test dealii-of
 
     - name: "[18.04] nutils <-> OpenFOAM"
       script:
