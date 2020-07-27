@@ -36,6 +36,18 @@ RUN wget -nv 'https://downloads.sourceforge.net/project/boost/boost/1.65.1/boost
     rm -r /boost-build && \
     ldconfig
 
+# create user precice
+RUN useradd -ms /bin/bash precice
+USER precice
+
+# Install PETSc from source
+WORKDIR /petsc
+RUN wget -nv 'https://www.mcs.anl.gov/petsc/mirror/release-snapshots/petsc-3.12.5.tar.gz' -O - | tar xz && \
+  cd petsc-3.12.5 && \
+  ./configure && \
+  make all test
+RUN chown -R precice:precice /petsc
+
 # Rebuild image if force_rebuild after that command
 ARG CACHEBUST
 
@@ -46,10 +58,6 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
-# create user precice
-RUN useradd -ms /bin/bash precice
-USER precice
-WORKDIR /home/precice
 
 # Setting some environment variables for installing preCICE
 ENV CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/usr/include/eigen3" \
@@ -58,6 +66,7 @@ ENV CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/usr/include/eigen3" \
     PETSC_ARCH="x86_64-linux-gnu-real"
 
 # Building preCICE
+WORKDIR /home/precice
 ARG branch=develop
 RUN git clone --branch $branch https://github.com/precice/precice.git /home/precice/precice
 # Some parameters for the build, you can set them in the build command e.g.
