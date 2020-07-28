@@ -31,7 +31,6 @@ ENV LC_ALL en_US.UTF-8
 
 # create user precice
 RUN useradd -ms /bin/bash precice
-USER precice
 
 # Install PETSc from source
 WORKDIR /petsc
@@ -41,6 +40,7 @@ RUN wget -nv 'https://www.mcs.anl.gov/petsc/mirror/release-snapshots/petsc-3.12.
   make all test
 RUN chown -R precice:precice /petsc
 
+USER precice
 # Setting some environment variables for installing preCICE
 ENV CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/usr/include/eigen3" \
     CPATH="/usr/include/eigen3:${CPATH}" \
