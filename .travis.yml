@@ -17,7 +17,6 @@ jobs:
     - name: "Ubuntu 18.04.sudo.mpich [Job failure permitted]"
     - name: "[18.04] deal.ii <-> OpenFOAM [Job failure permitted]"
     - name: "[18.04] SU2 <-> Calculix [unstable][Job failure permitted]"
-    - name: "[18.04 PETSc] OpenFOAM <-> CalculiX [FSI][Job failure permitted]"
 
   include:
     - stage: Building preCICE
@@ -388,4 +387,4 @@ jobs:
     - name: "[18.04 PETSc] OpenFOAM <-> CalculiX [FSI]"
       script:
         - python system_testing.py -s of-ccx_fsi --base Ubuntu1804.home.PETSc -v
-        - python push.py --test of-ccx_fsi --petsc -o
+        - python push.py --test of-ccx_fsi --petsc
