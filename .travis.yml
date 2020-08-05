@@ -12,11 +12,12 @@ jobs:
   allow_failures:
     # Currently unstable tests that do not affect the build status
     # To add a test here, list its exact name
-    - name: "[18.04] deal.ii adapter [Job failure permitted]"
-    - name: "[18.04] FEniCS adapter [Job failure permitted]"
-    - name: "Ubuntu 18.04.sudo.mpich [Job failure permitted]"
-    - name: "[18.04] deal.ii <-> OpenFOAM [Job failure permitted]"
-    - name: "[18.04] SU2 <-> Calculix [unstable][Job failure permitted]"
+    - name: "[18.04] deal.ii adapter [failure allowed]"
+    - name: "Ubuntu 18.04.sudo.mpich [failure allowed]"
+    - name: "[18.04] deal.ii <-> OpenFOAM [failure allowed]"
+    - name: "[18.04] SU2 <-> Calculix [unstable][failure allowed]"
+    - name: "[18.04 PETSc] OpenFOAM <-> CalculiX [FSI][failure allowed]"
+
 
   include:
     - stage: Building preCICE
@@ -50,7 +51,7 @@ jobs:
           python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.home --docker-username $DOCKER_USERNAME
 
     - stage: Building preCICE
-      name: "Ubuntu 16.04 home PETSc [Job failure permitted]"
+      name: "Ubuntu 16.04 home PETSc"
       if: fork = false
       script:
         - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.home --petsc yes --docker-username $DOCKER_USERNAME
@@ -110,7 +111,7 @@ jobs:
           python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo --docker-username $DOCKER_USERNAME
 
     - stage: Building preCICE
-      name: "Ubuntu 18.04.sudo.mpich [Job failure permitted]"
+      name: "Ubuntu 18.04.sudo.mpich [failure allowed]"
       if: type = cron
       script:
         - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo.mpich --docker-username $DOCKER_USERNAME
@@ -218,7 +219,7 @@ jobs:
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
           python push_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter --operating-system ubuntu1604 --precice-installation home --docker-username $DOCKER_USERNAME
 
-    - name: "[18.04] deal.ii adapter [Job failure permitted]"
+    - name: "[18.04] deal.ii adapter [failure allowed]"
       if: fork = false
       script:
         - python build_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
@@ -261,7 +262,7 @@ jobs:
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
           python push_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
 
-    - name: "[18.04] FEniCS adapter [Job failure permitted]"
+    - name: "[18.04] FEniCS adapter"
       if: fork = false
       script:
         - python build_adapter.py --dockerfile adapters/Dockerfile.fenics-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
@@ -324,7 +325,7 @@ jobs:
 
 
     - stage: Tests
-      name: "[18.04] SU2 <-> Calculix [unstable][Job failure permitted]"
+      name: "[18.04] SU2 <-> Calculix [unstable][failure allowed]"
       script:
         - python system_testing.py -s su2-ccx -v
         - python push.py --test su2-ccx
@@ -354,7 +355,7 @@ jobs:
         - python system_testing.py -s bindings -v
         - python push.py --test bindings
 
-    - name: "[18.04] deal.ii <-> OpenFOAM [Job failure permitted]"
+    - name: "[18.04] deal.ii <-> OpenFOAM [failure allowed]"
       script:
         - python system_testing.py -s dealii-of -v
         - python push.py --test dealii-of
@@ -384,7 +385,7 @@ jobs:
         - python system_testing.py -s 1dtube_cxx -v
         - python push.py --test 1dtube_cxx
 
-    - name: "[18.04 PETSc] OpenFOAM <-> CalculiX [FSI]"
+    - name: "[18.04 PETSc] OpenFOAM <-> CalculiX [FSI][failure allowed]"
       script:
         - python system_testing.py -s of-ccx_fsi --base Ubuntu1804.home.PETSc -v
         - python push.py --test of-ccx_fsi --petsc
