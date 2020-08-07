@@ -51,7 +51,7 @@ jobs:
           python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.home --docker-username $DOCKER_USERNAME
 
     - stage: Building preCICE
-      name: "Ubuntu 16.04 home PETSc"
+      name: "Ubuntu 16.04 home [PETSc]"
       if: fork = false
       script:
         - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.home --petsc yes --docker-username $DOCKER_USERNAME
@@ -64,21 +64,6 @@ jobs:
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
           python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.home --petsc yes --docker-username $DOCKER_USERNAME
-
-    - stage: Building preCICE
-      name: "Ubuntu 16.04.sudo"
-      if: type = cron
-      script:
-        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.sudo --docker-username $DOCKER_USERNAME
-        - python push.py --precice precice/Dockerfile.Ubuntu1604.sudo
-      deploy:
-        skip_cleanup: true
-        provider: script
-        on:
-          all_branches: true
-        script: >-
-          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1604.sudo --docker-username $DOCKER_USERNAME
 
     - stage: Building preCICE
       name: "Ubuntu 18.04.home"
@@ -111,11 +96,11 @@ jobs:
           python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo --docker-username $DOCKER_USERNAME
 
     - stage: Building preCICE
-      name: "Ubuntu 18.04.sudo.mpich [failure allowed]"
-      if: type = cron
+      name: "Ubuntu 18.04 home [PETSc]"
+      if: fork = false
       script:
-        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo.mpich --docker-username $DOCKER_USERNAME
-        - python push.py --precice precice/Dockerfile.Ubuntu1804.sudo.mpich
+        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.home --petsc yes --docker-username $DOCKER_USERNAME
+        - python push.py --precice precice/Dockerfile.Ubuntu1804.home
       deploy:
         skip_cleanup: true
         provider: script
@@ -123,7 +108,7 @@ jobs:
           all_branches: true
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo.mpich --docker-username $DOCKER_USERNAME
+          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.home --petsc yes --docker-username $DOCKER_USERNAME
 
     - stage: Building preCICE
       name: "Ubuntu 18.04.package"
@@ -139,6 +124,22 @@ jobs:
         script: >-
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
           python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.package --docker-username $DOCKER_USERNAME
+
+    - stage: Building preCICE
+      name: "Ubuntu 18.04.sudo.mpich [failure allowed]"
+      if: type = cron
+      script:
+        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo.mpich --docker-username $DOCKER_USERNAME
+        - python push.py --precice precice/Dockerfile.Ubuntu1804.sudo.mpich
+      deploy:
+        skip_cleanup: true
+        provider: script
+        on:
+          all_branches: true
+        script: >-
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
+          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo.mpich --docker-username $DOCKER_USERNAME
+
 
     - name: "[Build preCICE on fork] Using cached version"
       if: fork = true
