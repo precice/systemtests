@@ -1,4 +1,5 @@
-ARG from=precice/precice-ubuntu1604.home-develop
+ARG branch=develop
+ARG from=precice/precice-ubuntu1804.home-${branch}
 ARG base_solver=precice/deal.ii
 FROM ${base_solver} as deal.ii
 FROM $from
