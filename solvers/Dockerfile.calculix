@@ -16,9 +16,9 @@ RUN apt-get -qq update && apt-get -qq install \
     sudo && \
     rm -rf /var/lib/apt/lists/*
 
-# Downloading CalculiX 2.15
+# Downloading CalculiX 2.16
 WORKDIR /
-RUN curl -s http://www.dhondt.de/ccx_2.15.src.tar.bz2 | tar -xj
+RUN curl -s http://www.dhondt.de/ccx_2.16.src.tar.bz2 | tar -xj
 
 # Installing spooles
 WORKDIR /
@@ -43,11 +43,11 @@ RUN curl -s https://www.caam.rice.edu//software/ARPACK/SRC/arpack96.tar.gz | tar
     && sed -i 's/      EXTERNAL           ETIME/*     EXTERNAL           ETIME/g' UTIL/second.f \
     && make all
 
-WORKDIR /CalculiX/ccx_2.15/src
+WORKDIR /CalculiX/ccx_2.16/src
 
 # replace hardcoded paths in CalculiX
 RUN  sed -i -e 's|\.\./\.\./\.\./SPOOLES.2.2|/spooles.2.2|g' \
             -e 's|\.\./\.\./\.\./ARPACK|/usr/local/ARPACK|g' \
             Makefile
 
-RUN make -j $(nproc) $ && rm *.o
+RUN make -j $(nproc) && rm *.o

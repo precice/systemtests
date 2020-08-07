@@ -18,10 +18,10 @@ from collections import namedtuple
 
 adapter_info = namedtuple('adapter_info', 'repo tests base install_mode')
 
-adapters_info = {"openfoam": adapter_info('openfoam-adapter', ['of-of', 'of-ccx'],  'Ubuntu1604.home', 'clone'),
-                "calculix":  adapter_info('calculix-adapter', ['of-ccx','su2-ccx'], 'Ubuntu1604.home', 'clone'),
-                "su2":       adapter_info('su2-adapter',      ['su2-ccx'],          'Ubuntu1604.home', 'clone'),
-                "dealii":    adapter_info('dealii-adapter',   ['dealii-of'],        'Ubuntu1604.home', 'clone'),
+adapters_info = {"openfoam": adapter_info('openfoam-adapter', ['of-of', 'of-ccx'],  'Ubuntu1804.home', 'clone'),
+                "calculix":  adapter_info('calculix-adapter', ['of-ccx','su2-ccx'], 'Ubuntu1804.home', 'clone'),
+                "su2":       adapter_info('su2-adapter',      ['su2-ccx'],          'Ubuntu1804.home', 'clone'),
+                "dealii":    adapter_info('dealii-adapter',   ['dealii-of'],        'Ubuntu1804.home', 'clone'),
                 "fenics":    adapter_info('fenics-adapter',   ['fe-fe'],            'Ubuntu1804.home', 'pip')}
 
 class msg_color:
@@ -153,7 +153,7 @@ def generate_travis_job(adapter, user, enable_output = False, trigger_failure = 
             "dist": "trusty",
             "language": "python",
             "services": "docker",
-            "python": "3.5",
+            "python": "3.6",
             "install": "pip install Jinja2",
             "jobs":  {
               "include":[
