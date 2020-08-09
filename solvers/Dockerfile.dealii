@@ -1,21 +1,17 @@
-# Simple docker file for the deal.ii installation
-ARG from=ubuntu:18.04
+ARG branch=develop
+ARG from=precice/precice-ubuntu1804.home-${branch}
 FROM $from
-USER root
-ENV USER=root
 
-RUN apt-get -qq update && apt-get -qq install \
-    build-essential \
+ARG CACHEBUST
+
+USER precice
+WORKDIR /home/precice
+RUN git clone https://github.com/dealii/dealii.git && \
+    mkdir dealii_build && \
+    cd dealii_build && \
     cmake \
-    git \
-    wget && \
-    rm -rf /var/lib/apt/lists/*
-
-RUN wget https://github.com/dealii/dealii/releases/download/v9.2.0/dealii-9.2.0.tar.gz && \
-    tar xf dealii-9.2.0.tar.gz && \
-    cd dealii-9.2.0/ && \
-    mkdir build && \
-    cd build && \
-    cmake -DDEAL_II_COMPONENT_EXAMPLES=OFF -DCMAKE_INSTALL_PREFIX=$HOME/dealii -DCMAKE_BUILD_TYPE=Release .. && \
-    make install && \
-    rm -r /dealii-9.2.0
+    -D DEAL_II_WITH_UMFPACK="ON" \
+    -D DEAL_II_WITH_THREADS="ON" \
+    -D DEAL_II_COMPONENT_EXAMPLES="OFF" \
+    ../dealii && \
+    make -j $(nproc)

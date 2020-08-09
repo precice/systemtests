@@ -6,7 +6,8 @@ FROM $from
 
 ARG CACHEBUST
 
-COPY --from=deal.ii /root/dealii/ /home/precice/dealii/
+COPY --from=deal.ii /home/precice/dealii/ /home/precice/dealii/
+COPY --from=deal.ii /home/precice/dealii_build/ /home/precice/dealii_build/
 
 USER precice
 WORKDIR /home/precice
@@ -16,7 +17,7 @@ ARG adapter_branch=develop
 RUN git clone --branch $adapter_branch https://github.com/precice/dealii-adapter.git
 
 RUN cd dealii-adapter/linear_elasticity/ && \
-    cmake -DDEAL_II_DIR=$HOME/dealii -DDIM=2 -DCMAKE_BUILD_TYPE=Release . && \
+    cmake -DDEAL_II_DIR=$HOME/dealii_build -DDIM=2 -DCMAKE_BUILD_TYPE=Release . && \
     make -j $(nproc)
 
 WORKDIR /home/precice/dealii-adapter
