@@ -205,7 +205,7 @@ def comparison(pathToRef, pathToOutput):
 
 def build_run_compare(test, tag, branch, local_precice, force_rebuild, rm_all=False, verbose=False):
     """ Runs and compares test, using precice branch. """
-    compose_tests = ["dealii-of_3D", "dealii-of_2D", "of-of", "su2-ccx", "of-ccx", "of-of_np",
+    compose_tests = ["dealii-of_3D", "dealii-of", "of-of", "su2-ccx", "of-ccx", "of-of_np",
             "fe-fe","nutils-of", "of-ccx_fsi", "1dtube_cxx", "1dtube_py", "of-ca"]
     test_basename = test.split(".")[0]
     if local_precice:

@@ -185,7 +185,7 @@ if __name__ == "__main__":
             ccall("docker cp tutorial-data:/Output {}".format(job_path))
 
         # move container logs into correct folder, only compose tests have containers
-        compose_tests = ["dealii-of", "dealii-of_2D", "of-of", "su2-ccx", "of-ccx", "of-of_np",
+        compose_tests = ["dealii-of", "dealii-of_3D", "of-of", "su2-ccx", "of-ccx", "of-of_np",
         "fe-fe","nutils-of", "of-ccx_fsi"]
 
         if args.test in compose_tests:
