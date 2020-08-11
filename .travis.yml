@@ -125,22 +125,6 @@ jobs:
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
           python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.package --docker-username $DOCKER_USERNAME
 
-    - stage: Building preCICE
-      name: "Ubuntu 18.04.sudo.mpich [failure allowed]"
-      if: type = cron
-      script:
-        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo.mpich --docker-username $DOCKER_USERNAME
-        - python push.py --precice precice/Dockerfile.Ubuntu1804.sudo.mpich
-      deploy:
-        skip_cleanup: true
-        provider: script
-        on:
-          all_branches: true
-        script: >-
-          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.sudo.mpich --docker-username $DOCKER_USERNAME
-
-
     - name: "[Build preCICE on fork] Using cached version"
       if: fork = true
       script: true
