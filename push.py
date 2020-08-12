@@ -132,7 +132,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Check that only one of test/adapter/precice is supplied
-    if sum(x is not None for x in [args.test, args.adapter, args.precice]) is not 1:
+    if sum(x != None for x in [args.test, args.adapter, args.precice]) != 1:
         raise ValueError("You may only choose one of ['--test', '--adapter', '--precice'].")
 
     if args.test:
@@ -190,7 +190,7 @@ if __name__ == "__main__":
 
         if args.test in compose_tests:
             test_dirname = "TestCompose_{systest}".format(systest=args.test)
-            if args.base is not default_base:
+            if args.base != default_base:
                 test_dirname += "." + args.base
             if args.petsc:
                 test_dirname += ".PETSc"
