@@ -191,16 +191,9 @@ jobs:
     - name: "[18.04] OpenFOAM adapter"
       if: fork = false
       script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
+        - python build_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME -ab fix_i133
         - python push.py --adapter adapters/Dockerfile.openfoam-adapter
-      deploy:
-        skip_cleanup: truefalse
-        provider: script
-        on:
-          all_branches: true
-        script: >-
-          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
+        - echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin && python push_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
 
     - name: "[18.04] FEniCS adapter"
       if: fork = false
