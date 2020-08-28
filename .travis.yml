@@ -292,12 +292,12 @@ jobs:
     - name: "[18.04] deal.ii <-> OpenFOAM [3D]"
       script:
         - python system_testing.py -s dealii-of_3D -v
-        - python push.py --test dealii-of_3D -o
+        - python push.py --test dealii-of_3D
 
     - name: "[18.04] deal.ii <-> OpenFOAM [2D]"
       script:
         - python system_testing.py -s dealii-of -v
-        - python push.py --test dealii-of -o
+        - python push.py --test dealii-of
 
 
     - name: "[18.04] nutils <-> OpenFOAM"
