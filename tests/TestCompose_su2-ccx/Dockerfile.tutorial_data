@@ -5,7 +5,7 @@ ARG branch=develop
 RUN git clone --branch $branch https://github.com/precice/tutorials
 
 RUN mkdir configs && \
-    sed -e 's|exchange-directory="\.\./"|exchange-directory="/home/precice/Data/Exchange/" network="eth0"|g; s|max-time-windows value="400"|max-time-windows value="50"|g; s|max-iterations value="50"|max-iterations value="20"|g'\
+    sed -e 's|m2n:sockets from="SU2_CFD" to="Calculix" |m2n:sockets from="SU2_CFD" to="Calculix" exchange-directory="/home/precice/Data/Exchange/" network="eth0"|g; s|max-time-windows value="400"|max-time-windows value="50"|g; s|max-iterations value="50"|max-iterations value="20"|g'\
     $tutorial_path/precice-config.xml  > configs/precice-config.xml
 RUN rm $tutorial_path/precice-config.xml
 RUN cp $tutorial_path/config.yml configs/
