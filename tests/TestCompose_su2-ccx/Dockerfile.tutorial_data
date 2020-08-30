@@ -9,5 +9,6 @@ RUN mkdir configs && \
     $tutorial_path/precice-config.xml  > configs/precice-config.xml
 RUN rm $tutorial_path/precice-config.xml
 RUN cp $tutorial_path/config.yml configs/
+RUN cp $tutorial_path/runFluid configs/ && cp $tutorial_path/runSolid configs/
 RUN addgroup -g 1000 precice && adduser -u 1000 -G precice -D precice && chown -R precice:precice tutorials configs
 USER precice
