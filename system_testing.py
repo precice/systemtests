@@ -82,6 +82,7 @@ def run_compose(systest, branch, local, tag, force_rebuild, rm_all=False, verbos
 
     # set up environment variables, to detect precice base image, that we
     # should run with and docker images location
+    cleanup_cmd = "docker container prune -f; " # remove any prior containers that could interfere with run
     export_cmd = "export PRECICE_BASE=-{}; ".format(adapter_base_name)
     extra_cmd = "export SYSTEST_REMOTE={}; ".format(docker.get_namespace()) if local else ""
     compose_config_cmd = "mkdir Logs; docker-compose config && "
@@ -89,7 +90,8 @@ def run_compose(systest, branch, local, tag, force_rebuild, rm_all=False, verbos
     copy_cmd = "docker cp tutorial-data:/Output ."
     log_cmd = "docker-compose logs > Logs/container.log"
 
-    commands_main = [export_cmd +
+    commands_main = [cleanup_cmd +
+                     export_cmd +
                      extra_cmd +
                      compose_config_cmd +
                      compose_exec_cmd,
@@ -203,7 +205,7 @@ def comparison(pathToRef, pathToOutput):
 
 def build_run_compare(test, tag, branch, local_precice, force_rebuild, rm_all=False, verbose=False):
     """ Runs and compares test, using precice branch. """
-    compose_tests = ["dealii-of", "of-of", "su2-ccx", "of-ccx", "of-of_np",
+    compose_tests = ["dealii-of_3D", "dealii-of", "of-of", "su2-ccx", "of-ccx", "of-of_np",
             "fe-fe","nutils-of", "of-ccx_fsi", "1dtube_cxx", "1dtube_py", "of-ca"]
     test_basename = test.split(".")[0]
     if local_precice:
@@ -255,9 +257,9 @@ def compose_tag(docker_username, base, features, branch):
     features_list = list(filter(None, features_list))  # filter "None" features that might have been added by dict.get(key), if key did not exist.
 
     if features_list:  # list of features is not empty
-        tag = docker_username.lower() + "/" + base + "-" + ".".join(features_list).lower() + '-' + branch.lower()
+        tag = docker_username.lower() + "/" + base.lower() + "-" + ".".join(features_list).lower() + '-' + branch.lower()
     else:  # list of features is empty
-        tag = docker_username.lower() + "/" + base + '-' + branch.lower()
+        tag = docker_username.lower() + "/" + base.lower() + '-' + branch.lower()
     return tag
 
 

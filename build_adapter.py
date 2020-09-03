@@ -45,6 +45,9 @@ if __name__ == "__main__":
 
     precice_base_tag = system_testing.compose_tag(args.docker_username, "precice", precice_base_features, args.branch)
 
+    with open(".docker_tag","w") as f:
+        f.write(tag)
+        
     print("Building {} image with the following features: {}".format(adapter_name, features))
 
     docker.build_image(tag=tag,
@@ -54,6 +57,3 @@ if __name__ == "__main__":
                                    "from" : precice_base_tag},
                        force_rebuild=args.force_rebuild,
                        namespace="")
-
-    with open(".docker_tag","w") as f:
-        f.write(tag)
