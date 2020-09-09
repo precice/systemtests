@@ -1,4 +1,5 @@
-ARG from=precice/precice-ubuntu1604.home-develop
+ARG branch=develop
+ARG from=precice/precice-ubuntu1604.home-${branch}
 FROM $from
 
 USER root
@@ -25,9 +26,9 @@ ENV SU2_HOME="/home/precice/su2-source" \
     PATH="/home/precice/su2-bin/bin:${PATH}" \
     PYTHONPATH="/home/precice/su2-bin/bin:${PYTHONPATH}"
 
-ARG branch=develop
+ARG adapter_branch=develop
 RUN cd /home/precice && \
-    git clone --branch $branch https://github.com/precice/su2-adapter.git && cd su2-adapter &&  \
+    git clone --branch $adapter_branch https://github.com/precice/su2-adapter.git && cd su2-adapter &&  \
     ./su2AdapterInstall
 
 WORKDIR /home/precice/su2-source

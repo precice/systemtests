@@ -118,7 +118,7 @@ def add_readme(
 if __name__ == "__main__":
 
     repo_folder = "precice_st_output"
-    default_base = "Ubuntu1604.home"
+    default_base = "Ubuntu1804.home"
     default_st_branch = "master"
 
     parser = argparse.ArgumentParser(description='Push build/test logs to output repository. Optionally includes result data (for tests only).')
@@ -132,7 +132,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Check that only one of test/adapter/precice is supplied
-    if sum(x is not None for x in [args.test, args.adapter, args.precice]) is not 1:
+    if sum(x != None for x in [args.test, args.adapter, args.precice]) != 1:
         raise ValueError("You may only choose one of ['--test', '--adapter', '--precice'].")
 
     if args.test:
@@ -185,12 +185,13 @@ if __name__ == "__main__":
             ccall("docker cp tutorial-data:/Output {}".format(job_path))
 
         # move container logs into correct folder, only compose tests have containers
-        compose_tests = ["dealii-of", "of-of", "su2-ccx", "of-ccx", "of-of_np",
+        compose_tests = ["dealii-of", "dealii-of_3D", "of-of", "su2-ccx", "of-ccx", "of-of_np",
         "fe-fe","nutils-of", "of-ccx_fsi"]
 
         if args.test in compose_tests:
             test_dirname = "TestCompose_{systest}".format(systest=args.test)
-            test_dirname += "." + args.base
+            if args.base != default_base:
+                test_dirname += "." + args.base
             if args.petsc:
                 test_dirname += ".PETSc"
             test_path = os.path.join(os.getcwd(), 'tests', test_dirname)
