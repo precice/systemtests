@@ -1,7 +1,7 @@
 from alpine
 ENV tutorial_path tutorials/FSI/flap_perp/SU2-CalculiX
 RUN apk add git bash
-ARG branch=su2-runscripts
+ARG branch=develop
 RUN git clone --branch $branch https://github.com/precice/tutorials
 
 RUN mkdir configs && \
