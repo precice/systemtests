@@ -12,11 +12,8 @@ jobs:
   allow_failures:
     # Currently unstable tests that do not affect the build status
     # To add a test here, list its exact name
-    - name: "[18.04] deal.ii adapter [failure allowed]"
     - name: "Ubuntu 18.04.sudo.mpich [failure allowed]"
-    - name: "[18.04] deal.ii <-> OpenFOAM [failure allowed]"
     - name: "[18.04] SU2 <-> Calculix [unstable][failure allowed]"
-    - name: "[18.04 PETSc] OpenFOAM <-> CalculiX [FSI][failure allowed]"
 
 
   include:
@@ -325,7 +322,7 @@ jobs:
         - python system_testing.py -s 1dtube_cxx -v
         - python push.py --test 1dtube_cxx
 
-    - name: "[18.04 PETSc] OpenFOAM <-> CalculiX [FSI][failure allowed]"
+    - name: "[18.04 PETSc] OpenFOAM <-> CalculiX [FSI]"
       script:
         - python system_testing.py -s of-ccx_fsi --base Ubuntu1804.home.PETSc -v
         - python push.py --test of-ccx_fsi --petsc
