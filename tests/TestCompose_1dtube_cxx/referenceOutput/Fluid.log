@@ -1,828 +1,839 @@
 Starting Fluid Solver...
 N: 100 tau: 0.01 kappa: 100
 Configure preCICE...
-Unexpected end of /proc/mounts line `overlay / overlay rw,relatime,lowerdir=/var/lib/docker/overlay2/l/WQXOHKN2GBMNF5FYH6NQENIQKR:/var/lib/docker/overlay2/l/32A6OZ75KEKODL7BH457DUTCG3:/var/lib/docker/overlay2/l/WTNG225NY7LAGOLHIO4KWSXMKY:/var/lib/docker/overlay2/l/YHFSCWSAP2GZ4NLNSZ6XKM46AP:/var/lib/docker/overlay2/l/BUWJDNJ7D7S2HBZJA2RU6GZEDG:/var/lib/docker/overlay2/l/X3FEEWOVMLDJ2RNPSBF24RMXQZ:/var/lib/docker/overlay2/l/JVLA3IQG5ITZ4XXDLFP3P6KTIL:/var/lib/docker/overlay2/l/WAF7B3YOSKLRLBE5BDUKF4MY3K:/var/lib/docker/overlay2/l/LST4WE46POM56'
-Unexpected end of /proc/mounts line `IEMWVKFYEP2YY:/var/lib/docker/overlay2/l/R5YFRWKZKBU74WFV2Q7G5I5X6P:/var/lib/docker/overlay2/l/B4PUE5DC5TRJM5EKLE2CUR3TSY:/var/lib/docker/overlay2/l/R2ZHDVLLDMIUBGTVRMKCXL657P:/var/lib/docker/overlay2/l/33MW2M4ETIGNDJZX6J5L26GJWM:/var/lib/docker/overlay2/l/TJTK57YLUE2UXYUT6TW5Z64WKZ:/var/lib/docker/overlay2/l/2S4XN6YYHV754OV3DZH6HF6DUA:/var/lib/docker/overlay2/l/KV5XAHGBSAAJCCKANCPSVKOH6G:/var/lib/docker/overlay2/l/KCU24XKLCZC7X4E3I66YTMUAAF:/var/lib/docker/overlay2/l/S5EKJESP3VXM67OQL6VU7BTBWC:/var/lib/do'
-(0) 15:59:20 [impl::SolverInterfaceImpl]:159 in configure: [0mThis is preCICE version 2.0.2
-(0) 15:59:20 [impl::SolverInterfaceImpl]:160 in configure: [0mRevision info: v2.0.2-194-g82cf90a
-(0) 15:59:20 [impl::SolverInterfaceImpl]:161 in configure: [0mConfiguring preCICE with configuration "./precice-config.xml"
-(0) 15:59:20 [impl::SolverInterfaceImpl]:162 in configure: [0mI am participant "FLUID"
+--------------------------------------------------------------------------
+[[27137,1],0]: A high-performance Open MPI point-to-point messaging module
+was unable to find any relevant network interfaces:
+
+Module: OpenFabrics (openib)
+  Host: 6ef65eca3cf4
+
+Another transport will be used instead, although this may result in
+lower performance.
+
+NOTE: You can disable this warning by setting the MCA parameter
+btl_base_warn_component_unused to 0.
+--------------------------------------------------------------------------
+(0) 18:54:02 [impl::SolverInterfaceImpl]:162 in configure: [0mThis is preCICE version 2.1.0
+(0) 18:54:02 [impl::SolverInterfaceImpl]:163 in configure: [0mRevision info: v2.1.0-8-ge3261de4
+(0) 18:54:02 [impl::SolverInterfaceImpl]:164 in configure: [0mConfiguring preCICE with configuration "./precice-config.xml"
+(0) 18:54:02 [impl::SolverInterfaceImpl]:165 in configure: [0mI am participant "FLUID"
 Initialize preCICE...
-(0) 15:59:20 [impl::SolverInterfaceImpl]:248 in initialize: [0mSetting up master communication to coupling partner/s
-(0) 15:59:20 [impl::SolverInterfaceImpl]:257 in initialize: [0mMasters are connected
-(0) 15:59:20 [impl::SolverInterfaceImpl]:261 in initialize: [0mSetting up preliminary slaves communication to coupling partner/s
-(0) 15:59:20 [partition::ProvidedPartition]:117 in prepare: [0mPrepare partition for mesh Fluid_Nodes
-(0) 15:59:20 [partition::ProvidedPartition]:86 in communicate: [0mGather mesh Fluid_Nodes
-(0) 15:59:20 [partition::ProvidedPartition]:103 in communicate: [0mSend global mesh Fluid_Nodes
-(0) 15:59:20 [partition::ReceivedPartition]:66 in communicate: [0mReceive global mesh Structure_Nodes
-(0) 15:59:20 [impl::SolverInterfaceImpl]:269 in initialize: [0mSetting up slaves communication to coupling partner/s
-(0) 15:59:20 [impl::SolverInterfaceImpl]:275 in initialize: [0mSlaves are connected
-(0) 15:59:20 [impl::SolverInterfaceImpl]:308 in initialize: [0mit 1 of 40 | dt# 1 | t 0 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | write-iteration-checkpoint | 
-(0) 15:59:20 [impl::SolverInterfaceImpl]:1408 in mapReadData: [0mCompute read mapping from mesh "Structure_Nodes" to mesh "Fluid_Nodes".
-(0) 15:59:20 [mapping::NearestNeighborMapping]:63 in computeMapping: [0mMapping distance min:0 max:0 avg: 0 var: 0 cnt: 101
+(0) 18:54:02 [impl::SolverInterfaceImpl]:251 in initialize: [0mSetting up master communication to coupling partner/s
+(0) 18:54:02 [impl::SolverInterfaceImpl]:260 in initialize: [0mMasters are connected
+(0) 18:54:02 [impl::SolverInterfaceImpl]:264 in initialize: [0mSetting up preliminary slaves communication to coupling partner/s
+(0) 18:54:02 [partition::ProvidedPartition]:118 in prepare: [0mPrepare partition for mesh Fluid_Nodes
+(0) 18:54:02 [partition::ProvidedPartition]:86 in communicate: [0mGather mesh Fluid_Nodes
+(0) 18:54:02 [partition::ProvidedPartition]:103 in communicate: [0mSend global mesh Fluid_Nodes
+(0) 18:54:02 [partition::ReceivedPartition]:66 in communicate: [0mReceive global mesh Structure_Nodes
+(0) 18:54:02 [impl::SolverInterfaceImpl]:272 in initialize: [0mSetting up slaves communication to coupling partner/s
+(0) 18:54:02 [impl::SolverInterfaceImpl]:278 in initialize: [0mSlaves are connected
+(0) 18:54:02 [impl::SolverInterfaceImpl]:307 in initialize: [0mit 1 of 40 | dt# 1 | t 0 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | write-iteration-checkpoint | 
+(0) 18:54:02 [impl::SolverInterfaceImpl]:1511 in mapReadData: [0mCompute read mapping from mesh "Structure_Nodes" to mesh "Fluid_Nodes".
+(0) 18:54:02 [mapping::NearestNeighborMapping]:63 in computeMapping: [0mMapping distance min:0 max:0 avg: 0 var: 0 cnt: 101
 Nonlinear Solver break, iterations: 3, residual norm: 4.402046e-16
-(0) 15:59:20 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 1 | t 0 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:02 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 1 | t 0 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 9, residual norm: 2.563189e-16
-(0) 15:59:20 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 1 | t 0 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:02 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 1 | t 0 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 11, residual norm: 6.664613e-16
-(0) 15:59:20 [impl::SolverInterfaceImpl]:437 in advance: [0mit 4 of 40 | dt# 1 | t 0 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:02 [impl::SolverInterfaceImpl]:430 in advance: [0mit 4 of 40 | dt# 1 | t 0 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 8, residual norm: 5.658223e-16
-(0) 15:59:20 [impl::SolverInterfaceImpl]:437 in advance: [0mit 5 of 40 | dt# 1 | t 0 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:02 [impl::SolverInterfaceImpl]:430 in advance: [0mit 5 of 40 | dt# 1 | t 0 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 5, residual norm: 6.911183e-16
-(0) 15:59:20 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:20 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 2 | t 0.01 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:02 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:02 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 2 | t 0.01 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.010000 to Postproc/out_fluid_0.vtk
 Nonlinear Solver break, iterations: 11, residual norm: 5.371232e-16
-(0) 15:59:20 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 2 | t 0.01 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:02 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 2 | t 0.01 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 11, residual norm: 6.082325e-16
-(0) 15:59:20 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 2 | t 0.01 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:02 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 2 | t 0.01 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 8, residual norm: 4.522278e-16
-(0) 15:59:20 [impl::SolverInterfaceImpl]:437 in advance: [0mit 4 of 40 | dt# 2 | t 0.01 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:02 [impl::SolverInterfaceImpl]:430 in advance: [0mit 4 of 40 | dt# 2 | t 0.01 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 3, residual norm: 6.494819e-16
-(0) 15:59:20 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:20 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 3 | t 0.02 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:02 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:02 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 3 | t 0.02 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.020000 to Postproc/out_fluid_1.vtk
 Nonlinear Solver break, iterations: 12, residual norm: 8.126967e-16
-(0) 15:59:20 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 3 | t 0.02 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:02 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 3 | t 0.02 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 11, residual norm: 8.621306e-16
-(0) 15:59:20 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 3 | t 0.02 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:02 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 3 | t 0.02 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 8, residual norm: 2.249507e-16
-(0) 15:59:20 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:20 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 4 | t 0.03 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:02 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:02 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 4 | t 0.03 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.030000 to Postproc/out_fluid_2.vtk
 Nonlinear Solver break, iterations: 12, residual norm: 5.190631e-16
-(0) 15:59:20 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 4 | t 0.03 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:02 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 4 | t 0.03 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 11, residual norm: 3.331966e-16
-(0) 15:59:20 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 4 | t 0.03 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:02 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 4 | t 0.03 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 8, residual norm: 8.673974e-16
-(0) 15:59:20 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:20 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 5 | t 0.04 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:02 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:02 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 5 | t 0.04 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.040000 to Postproc/out_fluid_3.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 3.815040e-16
-(0) 15:59:20 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 5 | t 0.04 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:02 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 5 | t 0.04 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 11, residual norm: 8.204532e-16
-(0) 15:59:20 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 5 | t 0.04 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:02 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 5 | t 0.04 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 5, residual norm: 8.292406e-16
-(0) 15:59:20 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:20 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 6 | t 0.05 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:02 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:02 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 6 | t 0.05 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.050000 to Postproc/out_fluid_4.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 2.199010e-16
-(0) 15:59:20 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 6 | t 0.05 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:02 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 6 | t 0.05 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 11, residual norm: 2.313388e-16
-(0) 15:59:20 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 6 | t 0.05 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:02 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 6 | t 0.05 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 6, residual norm: 4.787513e-16
-(0) 15:59:20 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:20 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 7 | t 0.06 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:02 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:02 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 7 | t 0.06 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.060000 to Postproc/out_fluid_5.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 1.348037e-16
-(0) 15:59:20 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 7 | t 0.06 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:02 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 7 | t 0.06 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 11, residual norm: 7.735208e-16
-(0) 15:59:20 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 7 | t 0.06 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:02 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 7 | t 0.06 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 7, residual norm: 1.899324e-16
-(0) 15:59:20 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:20 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 8 | t 0.07 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:02 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:02 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 8 | t 0.07 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.070000 to Postproc/out_fluid_6.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 1.044740e-16
-(0) 15:59:20 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 8 | t 0.07 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:02 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 8 | t 0.07 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 2.049573e-16
-(0) 15:59:20 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 8 | t 0.07 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:02 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 8 | t 0.07 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 6, residual norm: 2.148617e-16
-(0) 15:59:20 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:20 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 9 | t 0.08 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:02 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:02 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 9 | t 0.08 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.080000 to Postproc/out_fluid_7.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 2.266416e-16
-(0) 15:59:20 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 9 | t 0.08 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:02 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 9 | t 0.08 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 1.739466e-16
-(0) 15:59:20 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 9 | t 0.08 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:03 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 9 | t 0.08 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 5, residual norm: 8.918976e-16
-(0) 15:59:20 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:20 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 10 | t 0.09 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:03 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:03 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 10 | t 0.09 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.090000 to Postproc/out_fluid_8.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 2.599461e-16
-(0) 15:59:21 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 10 | t 0.09 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:03 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 10 | t 0.09 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 11, residual norm: 9.213299e-16
-(0) 15:59:21 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 10 | t 0.09 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:03 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 10 | t 0.09 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 6, residual norm: 4.672529e-16
-(0) 15:59:21 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:21 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 11 | t 0.1 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:03 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:03 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 11 | t 0.1 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.100000 to Postproc/out_fluid_9.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 1.892832e-16
-(0) 15:59:21 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 11 | t 0.1 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:03 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 11 | t 0.1 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 1.216543e-16
-(0) 15:59:21 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 11 | t 0.1 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:03 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 11 | t 0.1 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 5, residual norm: 4.110248e-16
-(0) 15:59:21 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:21 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 12 | t 0.11 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:03 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:03 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 12 | t 0.11 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.110000 to Postproc/out_fluid_10.vtk
 Nonlinear Solver break, iterations: 11, residual norm: 2.334559e-16
-(0) 15:59:21 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 12 | t 0.11 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:03 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 12 | t 0.11 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 1.000319e-16
-(0) 15:59:21 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 12 | t 0.11 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:03 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 12 | t 0.11 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 5, residual norm: 4.959414e-16
-(0) 15:59:21 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:21 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 13 | t 0.12 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:03 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:03 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 13 | t 0.12 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.120000 to Postproc/out_fluid_11.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 1.677526e-16
-(0) 15:59:21 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 13 | t 0.12 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:03 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 13 | t 0.12 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 7.933885e-17
-(0) 15:59:21 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 13 | t 0.12 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:03 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 13 | t 0.12 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 5, residual norm: 4.129038e-16
-(0) 15:59:21 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:21 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 14 | t 0.13 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:03 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:03 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 14 | t 0.13 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.130000 to Postproc/out_fluid_12.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 1.256574e-16
-(0) 15:59:21 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 14 | t 0.13 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:03 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 14 | t 0.13 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 1.885140e-16
-(0) 15:59:21 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 14 | t 0.13 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:03 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 14 | t 0.13 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 6, residual norm: 1.429077e-16
-(0) 15:59:21 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:21 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 15 | t 0.14 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:03 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:03 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 15 | t 0.14 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.140000 to Postproc/out_fluid_13.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 1.492377e-16
-(0) 15:59:21 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 15 | t 0.14 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:03 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 15 | t 0.14 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 1.169413e-16
-(0) 15:59:21 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 15 | t 0.14 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:03 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 15 | t 0.14 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 6, residual norm: 2.253117e-16
-(0) 15:59:21 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:21 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 16 | t 0.15 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:03 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:03 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 16 | t 0.15 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.150000 to Postproc/out_fluid_14.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 1.505335e-16
-(0) 15:59:21 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 16 | t 0.15 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:03 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 16 | t 0.15 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 1.712705e-16
-(0) 15:59:21 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 16 | t 0.15 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:03 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 16 | t 0.15 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 4, residual norm: 8.244031e-16
-(0) 15:59:21 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:21 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 17 | t 0.16 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:04 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:04 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 17 | t 0.16 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.160000 to Postproc/out_fluid_15.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 1.629218e-16
-(0) 15:59:21 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 17 | t 0.16 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:04 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 17 | t 0.16 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 11, residual norm: 4.764702e-16
-(0) 15:59:21 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 17 | t 0.16 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:04 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 17 | t 0.16 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 6, residual norm: 3.142286e-16
-(0) 15:59:21 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:21 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 18 | t 0.17 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:04 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:04 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 18 | t 0.17 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.170000 to Postproc/out_fluid_16.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 9.157290e-17
-(0) 15:59:21 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 18 | t 0.17 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:04 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 18 | t 0.17 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 11, residual norm: 3.590374e-16
-(0) 15:59:21 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 18 | t 0.17 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:04 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 18 | t 0.17 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 7, residual norm: 3.580278e-16
-(0) 15:59:21 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:21 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 19 | t 0.18 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:04 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:04 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 19 | t 0.18 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.180000 to Postproc/out_fluid_17.vtk
 Nonlinear Solver break, iterations: 11, residual norm: 4.167657e-16
-(0) 15:59:21 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 19 | t 0.18 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:04 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 19 | t 0.18 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 11, residual norm: 8.013323e-16
-(0) 15:59:21 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 19 | t 0.18 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:04 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 19 | t 0.18 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 3, residual norm: 2.530433e-16
-(0) 15:59:21 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:21 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 20 | t 0.19 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:04 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:04 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 20 | t 0.19 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.190000 to Postproc/out_fluid_18.vtk
 Nonlinear Solver break, iterations: 11, residual norm: 3.188343e-16
-(0) 15:59:21 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 20 | t 0.19 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:04 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 20 | t 0.19 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 10, residual norm: 8.764682e-16
-(0) 15:59:21 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 20 | t 0.19 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:04 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 20 | t 0.19 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 5, residual norm: 7.488897e-16
-(0) 15:59:21 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:21 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 21 | t 0.2 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:04 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:04 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 21 | t 0.2 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.200000 to Postproc/out_fluid_19.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 1.074233e-16
-(0) 15:59:21 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 21 | t 0.2 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:04 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 21 | t 0.2 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 10, residual norm: 6.034810e-16
-(0) 15:59:21 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 21 | t 0.2 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:04 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 21 | t 0.2 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 6, residual norm: 1.943538e-16
-(0) 15:59:21 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:21 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 22 | t 0.21 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:04 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:04 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 22 | t 0.21 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.210000 to Postproc/out_fluid_20.vtk
 Nonlinear Solver break, iterations: 12, residual norm: 4.228783e-16
-(0) 15:59:21 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 22 | t 0.21 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:04 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 22 | t 0.21 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 12, residual norm: 3.531604e-16
-(0) 15:59:21 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 22 | t 0.21 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:04 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 22 | t 0.21 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 3, residual norm: 3.118924e-16
-(0) 15:59:21 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:21 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 23 | t 0.22 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:04 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:04 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 23 | t 0.22 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.220000 to Postproc/out_fluid_21.vtk
 Nonlinear Solver break, iterations: 12, residual norm: 3.390008e-16
-(0) 15:59:21 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 23 | t 0.22 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:04 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 23 | t 0.22 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 10, residual norm: 4.936364e-16
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 23 | t 0.22 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:04 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 23 | t 0.22 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 5, residual norm: 3.941000e-16
-(0) 15:59:22 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 24 | t 0.23 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:04 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:04 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 24 | t 0.23 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.230000 to Postproc/out_fluid_22.vtk
 Nonlinear Solver break, iterations: 12, residual norm: 1.928230e-16
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 24 | t 0.23 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:04 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 24 | t 0.23 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 9, residual norm: 5.914393e-16
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 24 | t 0.23 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:05 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 24 | t 0.23 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 5, residual norm: 4.842653e-16
-(0) 15:59:22 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 25 | t 0.24 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:05 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:05 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 25 | t 0.24 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.240000 to Postproc/out_fluid_23.vtk
 Nonlinear Solver break, iterations: 10, residual norm: 6.769190e-16
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 25 | t 0.24 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:05 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 25 | t 0.24 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 10, residual norm: 3.994010e-16
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 25 | t 0.24 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:05 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 25 | t 0.24 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 4, residual norm: 7.606055e-16
-(0) 15:59:22 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 26 | t 0.25 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:05 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:05 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 26 | t 0.25 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.250000 to Postproc/out_fluid_24.vtk
 Nonlinear Solver break, iterations: 11, residual norm: 1.117588e-16
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 26 | t 0.25 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:05 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 26 | t 0.25 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 10, residual norm: 9.334783e-16
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 26 | t 0.25 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:05 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 26 | t 0.25 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 4, residual norm: 6.086785e-16
-(0) 15:59:22 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 27 | t 0.26 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:05 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:05 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 27 | t 0.26 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.260000 to Postproc/out_fluid_25.vtk
 Nonlinear Solver break, iterations: 11, residual norm: 7.423720e-16
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 27 | t 0.26 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:05 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 27 | t 0.26 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 12, residual norm: 3.882952e-16
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 27 | t 0.26 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:05 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 27 | t 0.26 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 6, residual norm: 2.423846e-16
-(0) 15:59:22 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 28 | t 0.27 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:05 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:05 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 28 | t 0.27 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.270000 to Postproc/out_fluid_26.vtk
 Nonlinear Solver break, iterations: 10, residual norm: 4.104761e-16
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 28 | t 0.27 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:05 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 28 | t 0.27 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 12, residual norm: 5.170012e-16
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 28 | t 0.27 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:05 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 28 | t 0.27 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 6, residual norm: 1.188175e-16
-(0) 15:59:22 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 29 | t 0.28 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:05 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:05 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 29 | t 0.28 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.280000 to Postproc/out_fluid_27.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 1.985072e-16
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 29 | t 0.28 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:05 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 29 | t 0.28 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 12, residual norm: 6.043470e-16
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 29 | t 0.28 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:05 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 29 | t 0.28 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 3, residual norm: 8.416012e-16
-(0) 15:59:22 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 30 | t 0.29 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:05 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:05 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 30 | t 0.29 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.290000 to Postproc/out_fluid_28.vtk
 Nonlinear Solver break, iterations: 10, residual norm: 9.774120e-16
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 30 | t 0.29 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:05 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 30 | t 0.29 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 11, residual norm: 5.241370e-16
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 30 | t 0.29 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:05 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 30 | t 0.29 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 4, residual norm: 5.676042e-16
-(0) 15:59:22 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 31 | t 0.3 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:05 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:05 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 31 | t 0.3 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.300000 to Postproc/out_fluid_29.vtk
 Nonlinear Solver break, iterations: 11, residual norm: 8.440182e-16
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 31 | t 0.3 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:05 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 31 | t 0.3 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 11, residual norm: 2.053303e-16
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 31 | t 0.3 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:05 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 31 | t 0.3 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 4, residual norm: 4.439314e-16
-(0) 15:59:22 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 32 | t 0.31 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:05 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:05 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 32 | t 0.31 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.310000 to Postproc/out_fluid_30.vtk
 Nonlinear Solver break, iterations: 11, residual norm: 1.824168e-16
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 32 | t 0.31 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:06 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 32 | t 0.31 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 11, residual norm: 8.120601e-16
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 32 | t 0.31 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:06 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 32 | t 0.31 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 4, residual norm: 2.342247e-16
-(0) 15:59:22 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 33 | t 0.32 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:06 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:06 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 33 | t 0.32 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.320000 to Postproc/out_fluid_31.vtk
 Nonlinear Solver break, iterations: 11, residual norm: 5.537169e-16
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 33 | t 0.32 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:06 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 33 | t 0.32 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 1.057098e-16
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 33 | t 0.32 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:06 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 33 | t 0.32 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 5, residual norm: 2.389812e-16
-(0) 15:59:22 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 34 | t 0.33 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:06 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:06 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 34 | t 0.33 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.330000 to Postproc/out_fluid_32.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 1.560942e-16
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 34 | t 0.33 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:06 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 34 | t 0.33 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 2.084427e-16
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 34 | t 0.33 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:06 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 34 | t 0.33 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 5, residual norm: 3.307980e-16
-(0) 15:59:22 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 35 | t 0.34 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:06 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:06 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 35 | t 0.34 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.340000 to Postproc/out_fluid_33.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 1.661950e-16
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 35 | t 0.34 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:06 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 35 | t 0.34 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 2.823119e-16
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 35 | t 0.34 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:06 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 35 | t 0.34 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 5, residual norm: 2.526147e-16
-(0) 15:59:22 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 36 | t 0.35 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:06 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:06 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 36 | t 0.35 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.350000 to Postproc/out_fluid_34.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 1.837564e-16
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 36 | t 0.35 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:06 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 36 | t 0.35 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 1.821446e-16
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 36 | t 0.35 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:06 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 36 | t 0.35 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 6, residual norm: 1.517599e-16
-(0) 15:59:22 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 37 | t 0.36 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:06 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:06 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 37 | t 0.36 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.360000 to Postproc/out_fluid_35.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 2.129239e-16
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 37 | t 0.36 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:06 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 37 | t 0.36 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 11, residual norm: 6.272737e-16
-(0) 15:59:22 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 37 | t 0.36 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:06 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 37 | t 0.36 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 5, residual norm: 2.570116e-16
-(0) 15:59:23 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:23 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 38 | t 0.37 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:06 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:06 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 38 | t 0.37 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.370000 to Postproc/out_fluid_36.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 2.115121e-16
-(0) 15:59:23 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 38 | t 0.37 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:06 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 38 | t 0.37 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 11, residual norm: 2.501679e-16
-(0) 15:59:23 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 38 | t 0.37 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:06 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 38 | t 0.37 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 5, residual norm: 2.142790e-16
-(0) 15:59:23 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:23 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 39 | t 0.38 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:06 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:06 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 39 | t 0.38 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.380000 to Postproc/out_fluid_37.vtk
 Nonlinear Solver break, iterations: 11, residual norm: 2.682063e-16
-(0) 15:59:23 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 39 | t 0.38 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:06 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 39 | t 0.38 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 11, residual norm: 5.686452e-16
-(0) 15:59:23 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 39 | t 0.38 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:07 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 39 | t 0.38 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 7, residual norm: 4.848708e-16
-(0) 15:59:23 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:23 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 40 | t 0.39 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:07 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:07 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 40 | t 0.39 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.390000 to Postproc/out_fluid_38.vtk
 Nonlinear Solver break, iterations: 11, residual norm: 5.569233e-16
-(0) 15:59:23 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 40 | t 0.39 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:07 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 40 | t 0.39 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 2.453382e-16
-(0) 15:59:23 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 40 | t 0.39 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:07 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 40 | t 0.39 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 5, residual norm: 7.517226e-16
-(0) 15:59:23 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:23 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 41 | t 0.4 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:07 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:07 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 41 | t 0.4 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.400000 to Postproc/out_fluid_39.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 3.099385e-16
-(0) 15:59:23 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 41 | t 0.4 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:07 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 41 | t 0.4 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 1.716557e-16
-(0) 15:59:23 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 41 | t 0.4 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:07 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 41 | t 0.4 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 7, residual norm: 4.294989e-16
-(0) 15:59:23 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:23 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 42 | t 0.41 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:07 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:07 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 42 | t 0.41 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.410000 to Postproc/out_fluid_40.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 2.109100e-16
-(0) 15:59:23 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 42 | t 0.41 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:07 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 42 | t 0.41 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 2.337738e-16
-(0) 15:59:23 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 42 | t 0.41 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:07 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 42 | t 0.41 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 6, residual norm: 9.192349e-16
-(0) 15:59:23 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:23 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 43 | t 0.42 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:07 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:07 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 43 | t 0.42 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.420000 to Postproc/out_fluid_41.vtk
 Nonlinear Solver break, iterations: 14, residual norm: 1.458794e-16
-(0) 15:59:23 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 43 | t 0.42 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:07 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 43 | t 0.42 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 2.207862e-16
-(0) 15:59:23 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 43 | t 0.42 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:07 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 43 | t 0.42 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 7, residual norm: 3.767327e-16
-(0) 15:59:23 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:23 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 44 | t 0.43 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:07 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:07 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 44 | t 0.43 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.430000 to Postproc/out_fluid_42.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 2.737501e-16
-(0) 15:59:23 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 44 | t 0.43 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:07 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 44 | t 0.43 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 3.253141e-16
-(0) 15:59:23 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 44 | t 0.43 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:07 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 44 | t 0.43 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 8, residual norm: 1.340472e-16
-(0) 15:59:23 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:23 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 45 | t 0.44 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:07 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:07 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 45 | t 0.44 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.440000 to Postproc/out_fluid_43.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 2.800021e-16
-(0) 15:59:23 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 45 | t 0.44 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:07 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 45 | t 0.44 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 2.526485e-16
-(0) 15:59:23 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 45 | t 0.44 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:07 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 45 | t 0.44 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 7, residual norm: 3.900863e-16
-(0) 15:59:23 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:23 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 46 | t 0.45 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:07 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:07 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 46 | t 0.45 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.450000 to Postproc/out_fluid_44.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 2.721518e-16
-(0) 15:59:23 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 46 | t 0.45 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:07 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 46 | t 0.45 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 2.533551e-16
-(0) 15:59:23 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 46 | t 0.45 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:07 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 46 | t 0.45 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 6, residual norm: 5.051352e-16
-(0) 15:59:23 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:23 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 47 | t 0.46 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:07 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:07 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 47 | t 0.46 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.460000 to Postproc/out_fluid_45.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 2.629254e-16
-(0) 15:59:23 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 47 | t 0.46 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:08 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 47 | t 0.46 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 2.183867e-16
-(0) 15:59:23 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 47 | t 0.46 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:08 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 47 | t 0.46 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 8, residual norm: 2.176019e-16
-(0) 15:59:23 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:23 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 48 | t 0.47 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:08 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:08 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 48 | t 0.47 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.470000 to Postproc/out_fluid_46.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 3.255832e-16
-(0) 15:59:23 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 48 | t 0.47 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:08 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 48 | t 0.47 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 2.015942e-16
-(0) 15:59:23 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 48 | t 0.47 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:08 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 48 | t 0.47 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 4, residual norm: 9.873260e-16
-(0) 15:59:23 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:23 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 49 | t 0.48 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:08 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:08 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 49 | t 0.48 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.480000 to Postproc/out_fluid_47.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 2.004968e-16
-(0) 15:59:23 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 49 | t 0.48 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:08 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 49 | t 0.48 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 2.283013e-16
-(0) 15:59:23 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 49 | t 0.48 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:08 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 49 | t 0.48 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 6, residual norm: 3.232214e-16
-(0) 15:59:23 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:23 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 50 | t 0.49 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:08 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:08 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 50 | t 0.49 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.490000 to Postproc/out_fluid_48.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 3.084364e-16
-(0) 15:59:23 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 50 | t 0.49 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:08 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 50 | t 0.49 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 2.670820e-16
-(0) 15:59:23 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 50 | t 0.49 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:08 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 50 | t 0.49 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 5, residual norm: 3.395150e-16
-(0) 15:59:23 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:23 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 51 | t 0.5 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:08 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:08 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 51 | t 0.5 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.500000 to Postproc/out_fluid_49.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 2.336332e-16
-(0) 15:59:23 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 51 | t 0.5 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:08 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 51 | t 0.5 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 2.115654e-16
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 51 | t 0.5 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:08 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 51 | t 0.5 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 6, residual norm: 9.331984e-16
-(0) 15:59:24 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 52 | t 0.51 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:08 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:08 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 52 | t 0.51 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.510000 to Postproc/out_fluid_50.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 2.694161e-16
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 52 | t 0.51 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:08 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 52 | t 0.51 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 2.474691e-16
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 52 | t 0.51 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:08 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 52 | t 0.51 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 7, residual norm: 1.304050e-16
-(0) 15:59:24 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 53 | t 0.52 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:08 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:08 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 53 | t 0.52 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.520000 to Postproc/out_fluid_51.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 3.428160e-16
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 53 | t 0.52 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:08 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 53 | t 0.52 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 2.445459e-16
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 53 | t 0.52 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:08 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 53 | t 0.52 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 5, residual norm: 4.063887e-16
-(0) 15:59:24 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 54 | t 0.53 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:08 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:08 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 54 | t 0.53 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.530000 to Postproc/out_fluid_52.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 3.238267e-16
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 54 | t 0.53 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:08 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 54 | t 0.53 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 2.322353e-16
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 54 | t 0.53 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:08 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 54 | t 0.53 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 4, residual norm: 2.916357e-16
-(0) 15:59:24 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 55 | t 0.54 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:09 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:09 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 55 | t 0.54 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.540000 to Postproc/out_fluid_53.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 3.517958e-16
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 55 | t 0.54 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:09 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 55 | t 0.54 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 3.065923e-16
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 55 | t 0.54 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:09 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 55 | t 0.54 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 4, residual norm: 4.627531e-16
-(0) 15:59:24 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 56 | t 0.55 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:09 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:09 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 56 | t 0.55 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.550000 to Postproc/out_fluid_54.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 2.421625e-16
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 56 | t 0.55 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:09 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 56 | t 0.55 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 3.066266e-16
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 56 | t 0.55 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:09 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 56 | t 0.55 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 6, residual norm: 3.741284e-16
-(0) 15:59:24 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 57 | t 0.56 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:09 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:09 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 57 | t 0.56 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.560000 to Postproc/out_fluid_55.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 2.607263e-16
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 57 | t 0.56 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:09 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 57 | t 0.56 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 1.681113e-16
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 57 | t 0.56 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:09 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 57 | t 0.56 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 4, residual norm: 8.011235e-16
-(0) 15:59:24 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 58 | t 0.57 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:09 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:09 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 58 | t 0.57 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.570000 to Postproc/out_fluid_56.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 2.272677e-16
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 58 | t 0.57 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:09 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 58 | t 0.57 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 1.671943e-16
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 58 | t 0.57 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:09 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 58 | t 0.57 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 5, residual norm: 8.606975e-16
-(0) 15:59:24 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 59 | t 0.58 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:09 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:09 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 59 | t 0.58 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.580000 to Postproc/out_fluid_57.vtk
 Nonlinear Solver break, iterations: 14, residual norm: 1.523055e-16
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 59 | t 0.58 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:09 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 59 | t 0.58 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 11, residual norm: 9.147896e-16
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 59 | t 0.58 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:09 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 59 | t 0.58 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 7, residual norm: 2.231332e-16
-(0) 15:59:24 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 60 | t 0.59 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:09 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:09 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 60 | t 0.59 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.590000 to Postproc/out_fluid_58.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 2.212804e-16
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 60 | t 0.59 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:09 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 60 | t 0.59 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 11, residual norm: 5.139155e-16
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 60 | t 0.59 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:09 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 60 | t 0.59 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 5, residual norm: 2.535430e-16
-(0) 15:59:24 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 61 | t 0.6 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:09 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:09 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 61 | t 0.6 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.600000 to Postproc/out_fluid_59.vtk
 Nonlinear Solver break, iterations: 11, residual norm: 9.686223e-16
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 61 | t 0.6 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:09 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 61 | t 0.6 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 11, residual norm: 2.593514e-16
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 61 | t 0.6 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:09 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 61 | t 0.6 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 5, residual norm: 2.987707e-16
-(0) 15:59:24 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 62 | t 0.61 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:09 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:09 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 62 | t 0.61 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.610000 to Postproc/out_fluid_60.vtk
 Nonlinear Solver break, iterations: 11, residual norm: 5.706328e-16
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 62 | t 0.61 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:10 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 62 | t 0.61 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 2.383498e-16
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 62 | t 0.61 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:10 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 62 | t 0.61 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 3, residual norm: 7.120717e-16
-(0) 15:59:24 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 63 | t 0.62 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:10 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:10 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 63 | t 0.62 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.620000 to Postproc/out_fluid_61.vtk
 Nonlinear Solver break, iterations: 11, residual norm: 2.507549e-16
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 63 | t 0.62 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:10 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 63 | t 0.62 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 1.637211e-16
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 63 | t 0.62 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:10 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 63 | t 0.62 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 7, residual norm: 2.911279e-16
-(0) 15:59:24 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 64 | t 0.63 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:10 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:10 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 64 | t 0.63 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.630000 to Postproc/out_fluid_62.vtk
 Nonlinear Solver break, iterations: 11, residual norm: 5.994783e-16
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 64 | t 0.63 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:10 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 64 | t 0.63 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 1.479899e-16
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 64 | t 0.63 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:10 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 64 | t 0.63 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 7, residual norm: 4.666130e-16
-(0) 15:59:24 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 65 | t 0.64 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:10 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:10 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 65 | t 0.64 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.640000 to Postproc/out_fluid_63.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 1.633439e-16
-(0) 15:59:24 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 65 | t 0.64 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:10 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 65 | t 0.64 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 1.787031e-16
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 65 | t 0.64 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:10 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 65 | t 0.64 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 5, residual norm: 2.446862e-16
-(0) 15:59:25 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 66 | t 0.65 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:10 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:10 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 66 | t 0.65 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.650000 to Postproc/out_fluid_64.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 2.354147e-16
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 66 | t 0.65 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:10 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 66 | t 0.65 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 1.545819e-16
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 66 | t 0.65 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:10 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 66 | t 0.65 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 6, residual norm: 6.543339e-16
-(0) 15:59:25 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 67 | t 0.66 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:10 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:10 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 67 | t 0.66 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.660000 to Postproc/out_fluid_65.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 1.157178e-16
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 67 | t 0.66 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:10 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 67 | t 0.66 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 11, residual norm: 8.701007e-16
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 67 | t 0.66 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:10 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 67 | t 0.66 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 7, residual norm: 8.008883e-16
-(0) 15:59:25 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 68 | t 0.67 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:10 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:10 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 68 | t 0.67 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.670000 to Postproc/out_fluid_66.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 1.671992e-16
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 68 | t 0.67 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:10 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 68 | t 0.67 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 11, residual norm: 2.590561e-16
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 68 | t 0.67 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:10 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 68 | t 0.67 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 5, residual norm: 3.049711e-16
-(0) 15:59:25 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 69 | t 0.68 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:10 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:10 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 69 | t 0.68 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.680000 to Postproc/out_fluid_67.vtk
 Nonlinear Solver break, iterations: 11, residual norm: 7.632976e-16
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 69 | t 0.68 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:10 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 69 | t 0.68 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 11, residual norm: 5.455093e-16
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 69 | t 0.68 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:10 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 69 | t 0.68 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 6, residual norm: 7.575083e-16
-(0) 15:59:25 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 70 | t 0.69 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:11 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:11 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 70 | t 0.69 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.690000 to Postproc/out_fluid_68.vtk
 Nonlinear Solver break, iterations: 11, residual norm: 1.492238e-16
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 70 | t 0.69 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:11 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 70 | t 0.69 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 10, residual norm: 8.430530e-16
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 70 | t 0.69 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:11 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 70 | t 0.69 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 7, residual norm: 4.209711e-16
-(0) 15:59:25 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 71 | t 0.7 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:11 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:11 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 71 | t 0.7 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.700000 to Postproc/out_fluid_69.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 1.218488e-16
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 71 | t 0.7 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:11 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 71 | t 0.7 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 12, residual norm: 4.528376e-16
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 71 | t 0.7 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:11 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 71 | t 0.7 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 5, residual norm: 3.750139e-16
-(0) 15:59:25 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 72 | t 0.71 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:11 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:11 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 72 | t 0.71 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.710000 to Postproc/out_fluid_70.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 1.410535e-16
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 72 | t 0.71 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:11 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 72 | t 0.71 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 12, residual norm: 3.009544e-16
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 72 | t 0.71 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:11 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 72 | t 0.71 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 6, residual norm: 4.039760e-16
-(0) 15:59:25 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 73 | t 0.72 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:11 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:11 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 73 | t 0.72 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.720000 to Postproc/out_fluid_71.vtk
 Nonlinear Solver break, iterations: 10, residual norm: 5.111108e-16
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 73 | t 0.72 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:11 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 73 | t 0.72 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 10, residual norm: 2.645238e-16
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 73 | t 0.72 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:11 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 73 | t 0.72 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 5, residual norm: 6.631446e-16
-(0) 15:59:25 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 74 | t 0.73 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:11 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:11 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 74 | t 0.73 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.730000 to Postproc/out_fluid_72.vtk
 Nonlinear Solver break, iterations: 12, residual norm: 2.828577e-16
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 74 | t 0.73 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:11 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 74 | t 0.73 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 9, residual norm: 4.603044e-16
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 74 | t 0.73 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:11 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 74 | t 0.73 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 3, residual norm: 9.996693e-16
-(0) 15:59:25 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 75 | t 0.74 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:11 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:11 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 75 | t 0.74 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.740000 to Postproc/out_fluid_73.vtk
 Nonlinear Solver break, iterations: 10, residual norm: 8.826207e-16
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 75 | t 0.74 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:11 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 75 | t 0.74 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 10, residual norm: 7.793178e-16
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 75 | t 0.74 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:11 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 75 | t 0.74 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 4, residual norm: 9.038260e-16
-(0) 15:59:25 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 76 | t 0.75 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:11 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:11 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 76 | t 0.75 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.750000 to Postproc/out_fluid_74.vtk
 Nonlinear Solver break, iterations: 9, residual norm: 4.236390e-16
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 76 | t 0.75 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:11 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 76 | t 0.75 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 10, residual norm: 9.516688e-16
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 76 | t 0.75 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:11 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 76 | t 0.75 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 4, residual norm: 8.739496e-16
-(0) 15:59:25 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 77 | t 0.76 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:11 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:11 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 77 | t 0.76 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.760000 to Postproc/out_fluid_75.vtk
 Nonlinear Solver break, iterations: 11, residual norm: 7.241442e-16
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 77 | t 0.76 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:11 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 77 | t 0.76 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 12, residual norm: 2.594421e-16
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 77 | t 0.76 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:12 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 77 | t 0.76 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 5, residual norm: 5.112743e-16
-(0) 15:59:25 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 78 | t 0.77 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:12 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:12 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 78 | t 0.77 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.770000 to Postproc/out_fluid_76.vtk
 Nonlinear Solver break, iterations: 10, residual norm: 4.722825e-16
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 78 | t 0.77 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:12 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 78 | t 0.77 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 10, residual norm: 7.224952e-16
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 78 | t 0.77 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:12 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 78 | t 0.77 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 4, residual norm: 8.906160e-16
-(0) 15:59:25 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 79 | t 0.78 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:12 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:12 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 79 | t 0.78 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.780000 to Postproc/out_fluid_77.vtk
 Nonlinear Solver break, iterations: 12, residual norm: 4.139800e-16
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 79 | t 0.78 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:12 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 79 | t 0.78 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 12, residual norm: 6.344916e-16
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 79 | t 0.78 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:12 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 79 | t 0.78 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 6, residual norm: 2.790545e-16
-(0) 15:59:25 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:25 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 80 | t 0.79 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:12 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:12 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 80 | t 0.79 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.790000 to Postproc/out_fluid_78.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 1.192880e-16
-(0) 15:59:26 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 80 | t 0.79 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:12 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 80 | t 0.79 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 11, residual norm: 6.493632e-16
-(0) 15:59:26 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 80 | t 0.79 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:12 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 80 | t 0.79 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 6, residual norm: 2.700220e-16
-(0) 15:59:26 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:26 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 81 | t 0.8 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:12 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:12 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 81 | t 0.8 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.800000 to Postproc/out_fluid_79.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 1.230078e-16
-(0) 15:59:26 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 81 | t 0.8 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:12 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 81 | t 0.8 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 11, residual norm: 1.737337e-16
-(0) 15:59:26 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 81 | t 0.8 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:12 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 81 | t 0.8 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 5, residual norm: 5.890064e-16
-(0) 15:59:26 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:26 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 82 | t 0.81 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:12 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:12 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 82 | t 0.81 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.810000 to Postproc/out_fluid_80.vtk
 Nonlinear Solver break, iterations: 11, residual norm: 2.691558e-16
-(0) 15:59:26 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 82 | t 0.81 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:12 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 82 | t 0.81 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 12, residual norm: 9.203846e-16
-(0) 15:59:26 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 82 | t 0.81 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:12 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 82 | t 0.81 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 5, residual norm: 3.735401e-16
-(0) 15:59:26 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:26 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 83 | t 0.82 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:12 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:12 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 83 | t 0.82 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.820000 to Postproc/out_fluid_81.vtk
 Nonlinear Solver break, iterations: 11, residual norm: 4.304208e-16
-(0) 15:59:26 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 83 | t 0.82 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:12 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 83 | t 0.82 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 1.346961e-16
-(0) 15:59:26 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 83 | t 0.82 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:12 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 83 | t 0.82 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 5, residual norm: 8.738887e-16
-(0) 15:59:26 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:26 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 84 | t 0.83 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:12 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:12 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 84 | t 0.83 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.830000 to Postproc/out_fluid_82.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 8.819589e-17
-(0) 15:59:26 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 84 | t 0.83 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:12 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 84 | t 0.83 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 1.627388e-16
-(0) 15:59:26 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 84 | t 0.83 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:12 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 84 | t 0.83 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 6, residual norm: 1.868733e-16
-(0) 15:59:26 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:26 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 85 | t 0.84 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:12 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:12 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 85 | t 0.84 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.840000 to Postproc/out_fluid_83.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 1.011504e-16
-(0) 15:59:26 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 85 | t 0.84 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:13 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 85 | t 0.84 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 1.192552e-16
-(0) 15:59:26 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 85 | t 0.84 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:13 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 85 | t 0.84 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 3, residual norm: 5.668943e-16
-(0) 15:59:26 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:26 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 86 | t 0.85 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:13 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:13 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 86 | t 0.85 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.850000 to Postproc/out_fluid_84.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 1.043120e-16
-(0) 15:59:26 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 86 | t 0.85 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:13 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 86 | t 0.85 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 1.571999e-16
-(0) 15:59:26 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 86 | t 0.85 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:13 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 86 | t 0.85 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 7, residual norm: 3.323499e-16
-(0) 15:59:26 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:26 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 87 | t 0.86 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:13 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:13 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 87 | t 0.86 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.860000 to Postproc/out_fluid_85.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 1.868144e-16
-(0) 15:59:26 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 87 | t 0.86 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:13 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 87 | t 0.86 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 1.653504e-16
-(0) 15:59:26 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 87 | t 0.86 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:13 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 87 | t 0.86 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 5, residual norm: 6.679028e-16
-(0) 15:59:26 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:26 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 88 | t 0.87 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:13 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:13 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 88 | t 0.87 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.870000 to Postproc/out_fluid_86.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 1.845973e-16
-(0) 15:59:26 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 88 | t 0.87 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:13 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 88 | t 0.87 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 11, residual norm: 5.954942e-16
-(0) 15:59:26 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 88 | t 0.87 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:13 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 88 | t 0.87 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 5, residual norm: 5.365619e-16
-(0) 15:59:26 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:26 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 89 | t 0.88 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:13 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:13 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 89 | t 0.88 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.880000 to Postproc/out_fluid_87.vtk
 Nonlinear Solver break, iterations: 11, residual norm: 5.699775e-16
-(0) 15:59:26 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 89 | t 0.88 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:13 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 89 | t 0.88 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 11, residual norm: 2.436042e-16
-(0) 15:59:26 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 89 | t 0.88 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:13 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 89 | t 0.88 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 4, residual norm: 9.856050e-16
-(0) 15:59:26 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:26 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 90 | t 0.89 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:13 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:13 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 90 | t 0.89 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.890000 to Postproc/out_fluid_88.vtk
 Nonlinear Solver break, iterations: 11, residual norm: 2.887590e-16
-(0) 15:59:26 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 90 | t 0.89 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:13 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 90 | t 0.89 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 11, residual norm: 3.173631e-16
-(0) 15:59:26 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 90 | t 0.89 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:13 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 90 | t 0.89 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 7, residual norm: 7.926196e-16
-(0) 15:59:26 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:26 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 91 | t 0.9 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:13 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:13 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 91 | t 0.9 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.900000 to Postproc/out_fluid_89.vtk
 Nonlinear Solver break, iterations: 11, residual norm: 3.614479e-16
-(0) 15:59:26 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 91 | t 0.9 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:13 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 91 | t 0.9 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 11, residual norm: 6.518027e-16
-(0) 15:59:26 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 91 | t 0.9 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:13 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 91 | t 0.9 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 7, residual norm: 7.695490e-16
-(0) 15:59:26 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:26 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 92 | t 0.91 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:13 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:13 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 92 | t 0.91 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.910000 to Postproc/out_fluid_90.vtk
 Nonlinear Solver break, iterations: 11, residual norm: 7.505324e-16
-(0) 15:59:26 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 92 | t 0.91 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:13 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 92 | t 0.91 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 1.831185e-16
-(0) 15:59:26 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 92 | t 0.91 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:14 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 92 | t 0.91 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 8, residual norm: 1.363098e-16
-(0) 15:59:26 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:26 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 93 | t 0.92 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:14 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:14 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 93 | t 0.92 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.920000 to Postproc/out_fluid_91.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 2.342884e-16
-(0) 15:59:26 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 93 | t 0.92 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:14 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 93 | t 0.92 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 2.110524e-16
-(0) 15:59:27 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 93 | t 0.92 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:14 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 93 | t 0.92 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 5, residual norm: 9.369103e-16
-(0) 15:59:27 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:27 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 94 | t 0.93 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:14 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:14 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 94 | t 0.93 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.930000 to Postproc/out_fluid_92.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 2.086554e-16
-(0) 15:59:27 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 94 | t 0.93 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:14 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 94 | t 0.93 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 2.049071e-16
-(0) 15:59:27 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 94 | t 0.93 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:14 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 94 | t 0.93 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 7, residual norm: 5.007207e-16
-(0) 15:59:27 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:27 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 95 | t 0.94 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:14 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:14 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 95 | t 0.94 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.940000 to Postproc/out_fluid_93.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 2.137278e-16
-(0) 15:59:27 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 95 | t 0.94 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:14 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 95 | t 0.94 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 1.718015e-16
-(0) 15:59:27 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 95 | t 0.94 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:14 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 95 | t 0.94 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 7, residual norm: 4.912879e-16
-(0) 15:59:27 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:27 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 96 | t 0.95 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:14 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:14 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 96 | t 0.95 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.950000 to Postproc/out_fluid_94.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 1.780354e-16
-(0) 15:59:27 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 96 | t 0.95 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:14 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 96 | t 0.95 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 2.132557e-16
-(0) 15:59:27 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 96 | t 0.95 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:14 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 96 | t 0.95 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 5, residual norm: 9.931774e-16
-(0) 15:59:27 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:27 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 97 | t 0.96 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:14 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:14 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 97 | t 0.96 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.960000 to Postproc/out_fluid_95.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 2.562960e-16
-(0) 15:59:27 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 97 | t 0.96 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:14 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 97 | t 0.96 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 2.390683e-16
-(0) 15:59:27 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 97 | t 0.96 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:14 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 97 | t 0.96 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 5, residual norm: 8.398380e-16
-(0) 15:59:27 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:27 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 98 | t 0.97 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:14 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:14 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 98 | t 0.97 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.970000 to Postproc/out_fluid_96.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 1.967298e-16
-(0) 15:59:27 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 98 | t 0.97 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:14 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 98 | t 0.97 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 1.056001e-16
-(0) 15:59:27 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 98 | t 0.97 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:14 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 98 | t 0.97 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 8, residual norm: 1.317752e-16
-(0) 15:59:27 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:27 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 99 | t 0.98 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:14 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:14 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 99 | t 0.98 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.980000 to Postproc/out_fluid_97.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 3.021018e-16
-(0) 15:59:27 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 99 | t 0.98 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:14 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 99 | t 0.98 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 2.199865e-16
-(0) 15:59:27 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 99 | t 0.98 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:14 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 99 | t 0.98 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 7, residual norm: 1.698108e-16
-(0) 15:59:27 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:27 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 100 | t 0.99 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
+(0) 18:54:14 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:14 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 100 | t 0.99 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete yes | write-iteration-checkpoint | 
 writing timestep at t=0.990000 to Postproc/out_fluid_98.vtk
 Nonlinear Solver break, iterations: 13, residual norm: 1.752616e-16
-(0) 15:59:27 [impl::SolverInterfaceImpl]:437 in advance: [0mit 2 of 40 | dt# 100 | t 0.99 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:15 [impl::SolverInterfaceImpl]:430 in advance: [0mit 2 of 40 | dt# 100 | t 0.99 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 13, residual norm: 2.005538e-16
-(0) 15:59:27 [impl::SolverInterfaceImpl]:437 in advance: [0mit 3 of 40 | dt# 100 | t 0.99 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
+(0) 18:54:15 [impl::SolverInterfaceImpl]:430 in advance: [0mit 3 of 40 | dt# 100 | t 0.99 of 1 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Nonlinear Solver break, iterations: 6, residual norm: 7.969055e-16
-(0) 15:59:27 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
-(0) 15:59:27 [impl::SolverInterfaceImpl]:437 in advance: [0mit 1 of 40 | dt# 101 | t 1 of 1 | dt 0.01 | max dt 0.01 | ongoing no | dt complete yes | 
+(0) 18:54:15 [cplscheme::BaseCouplingScheme]:213 in advance: [0mTime window completed
+(0) 18:54:15 [impl::SolverInterfaceImpl]:430 in advance: [0mit 1 of 40 | dt# 101 | t 1 of 1 | dt 0.01 | max dt 0.01 | ongoing no | dt complete yes | 
 writing timestep at t=1.000000 to Postproc/out_fluid_99.vtk
