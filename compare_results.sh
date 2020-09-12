@@ -67,7 +67,9 @@ if [ -n "$diff_files" ]; then
     # constantly changing values (that do not actually affect the results), like revision
     pre_filter='s/[0-9][0-9][:\.][0-9][0-9][:\.][0-9][0-9]//g; s/\[.\+\]:[0-9]\+//g;
                 s/[0-9][0-9]\/[0-9][0-9]\/[0-9][0-9][0-9][0-9]//g; s/\s*$//g;
-                /Timestamp\|[rR]untime\|[vV]ersion\|[rR]evision\|Unexpected end of/d; /Run finished/q'
+                /Timestamp\|[rR]untime\|[vV]ersion\|[rR]evision\|Unexpected\|Host:/d;
+                s/\[\[[0-9]\+\],0\]://g;
+                /Run finished/q'
 
     # numerical filter, looks to find numbers of any format
     num_filter='[-]\?\([0-9]*[\.]\)\?[0-9]\+\([eE][+-][0-9]\+\)\?'
@@ -92,8 +94,8 @@ if [ -n "$diff_files" ]; then
 
     # diff -y --speed-large-files --suppress-common-lines <(echo "$file1_txt") <(echo "$file2_txt") > DEBUG_TXT_DIFF
     # paste <(echo "$file1_num") <(echo "$file2_num") > DEBUG_NUM_DIFF
-    # cat "$file1" | sed "$txt_filter" > DEBUG_F1
-    # cat "$file2" | sed "$txt_filter" > DEBUG_F2
+    # cat "$file1" | sed "$num_filter" > DEBUG_F1
+    # cat "$file2" | sed "$num_filter" > DEBUG_F2
 
 
     # Pairwise compare file fields and compute average/maximum relative difference
