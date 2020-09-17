@@ -13,6 +13,7 @@
 avg_diff_limit="0.001"
 max_diff_limit="0.001"
 
+
 if [ $# -lt 2 ]; then
   echo 1>&2 "Usage: $0 folder1 folder2"
   exit 1
@@ -46,52 +47,116 @@ diff_result=$( diff -rq $folder1 $folder2 )
 diff_files=$( echo "$diff_result" | sed '/Only/d' )
 only_files=$( echo "$diff_result" | sed '/differ/d')
 
+
+echo "------------- Comparing files -------------"
+
 # Pairwise compare files
 if [ -n "$diff_files" ]; then
   mapfile -t array_files < <( echo "$diff_files"  | sed 's/Files\|and\|differ//g' )
   arr_len="${#array_files[@]}"
 
+  # loop through differing files
   for (( i = 0; i<${arr_len}; i = i + 1));
   do
     file1=$( echo "${array_files[i]}" | awk '{print $1}' )
     file2=$( echo "${array_files[i]}" | awk '{print $2}' )
-    rawdiff=$( diff -y --speed-large-files --suppress-common-lines "$file1" "$file2" )
-    # Filter output files, ignore lines with words (probably not the results)
-    # removes |<>() characters
-    # Do not delete "e", since it can be used as exponent
-    filtered_diff=$( echo "$rawdiff" | sed 's/(\|)\||\|>\|<//g; /[a-df-zA-Z]\|Version/d' )
 
-    # Paiwise compares files fields, that are produces from diffs and computes average and maximum
-    # relative differences
-    if [ -n "$filtered_diff" ]; then
-      rel_max_difference=$( export max_diff_limit; export avg_diff_limit; echo "$filtered_diff" | awk 'function abs(v) {return v < 0 ? -v : v} { radius=NF/2;
-              max_diff=0;
-              sum=0;
-              for(i = 1; i <= radius; i++) {
-              if ($i != 0) {
-                ind_diff= abs((($(i + radius)-$i)/$i ));
-                sum += ind_diff;
-                if  (ind_diff > max_diff )  { max_diff = ind_diff }
-              }
-             }
-             } END { diff=2*sum/( NR*NF ); if (diff > ENVIRON["avg_diff_limit"] || max_diff > ENVIRON["max_diff_limit"])  { print diff, max_diff }}')
+    # Filtering section. We compare numbers and text seperately
+
+    # prefiltering dates, timestamps and other words that signal a line with
+    # constantly changing values (that do not actually affect the results), like revision
+    pre_filter='s/[0-9][0-9][:\.][0-9][0-9][:\.][0-9][0-9]//g; s/\[.\+\]:[0-9]\+//g;
+                s/[0-9][0-9]\/[0-9][0-9]\/[0-9][0-9][0-9][0-9]//g; s/\s*$//g;
+                /Timestamp\|[rR]untime\|[vV]ersion\|[rR]evision\|Unexpected\|Host:/d;
+                s/\[\[[0-9]\+,[0-9]\],[0-9]\]://g;
+                /Run finished/q'
+
+    # numerical filter, looks to find numbers of any format
+    num_filter='[-]\?\([0-9]*[\.]\)\?[0-9]\+\([eE][+-][0-9]\+\)\?'
+    # exponential filter, DELETES exponent! TODO: have awk command below handle exponents
+    exp_filter='s/[eE][+-][0-9]\+//g'
+    # text filter, checks for any text lines after the prefilter was applied
+    txt_filter='/[a-df-zA-Z]/!d'
+
+    # Apply filters
+    file1_num=$( cat "$file1" | sed "$pre_filter" | grep -o "$num_filter" | sed "$exp_filter")
+    file2_num=$( cat "$file2" | sed "$pre_filter" | grep -o "$num_filter" | sed "$exp_filter")
+
+    file1_txt=$( cat "$file1" | sed "$pre_filter" | sed "$txt_filter")
+    file2_txt=$( cat "$file2" | sed "$pre_filter" | sed "$txt_filter")
+
+
+    # Create side-by-side views
+    txt_diff=$( diff -y --speed-large-files --suppress-common-lines <(echo "$file1_txt") <(echo "$file2_txt") )
+    num_diff=$( paste <(echo "$file1_num") <(echo "$file2_num") )
+
+    # Debug commands. Helpful for checking the state of filtered output when adjusting filters.
+
+    # diff -y --speed-large-files --suppress-common-lines <(echo "$file1_txt") <(echo "$file2_txt") > DEBUG_TXT_DIFF
+    # paste <(echo "$file1_num") <(echo "$file2_num") > DEBUG_NUM_DIFF
+    # cat "$file1" | sed "$num_filter" > DEBUG_F1
+    # cat "$file2" | sed "$num_filter" > DEBUG_F2
+
+
+    # Pairwise compare file fields and compute average/maximum relative difference
+    filename=$(basename $file1) # total file paths are long, this keeps info concise
+    echo "Comparing values in '$filename'..."
+
+
+    if [ -n "$num_diff" ]; then
+      max_diff=0.0
+      rel_max_difference=$( export max_diff_limit; export avg_diff_limit; echo "$num_diff" | awk 'function abs(v) {return v < 0 ? -v : v}
+      BEGIN {
+        max_diff=0.0;
+        sum=0;
+        total_entries=0;
+      }
+      {
+        radius=NF/2;
+        for(i = 1; i <= radius; i++) {
+          total_entries += 1;
+          if ($i != 0) {
+            ind_diff = abs((($(i + radius)-$i)/$i ));
+            sum += ind_diff;
+            if  (ind_diff > max_diff ) {
+              max_diff = ind_diff;
+              # printf("DEBUG| NR: %d; max: %f; ind: %f; sum: %f | Out: %f; refOut: %f\n", NR, max_diff, ind_diff, sum, $(i + radius), $i) > "/dev/stderr";
+            }
+          }
+        }
+      }
+      END {
+        if (total_entries == 0) { print "NO_ENTRIES" }
+        else {
+          diff=sum/total_entries;
+          if (diff > ENVIRON["avg_diff_limit"] || max_diff > ENVIRON["max_diff_limit"]) {
+            print diff, max_diff;
+          }
+        }
+      }' )
     fi
 
     if [ -n "$rel_max_difference" ]; then
       # Split by space and transform into the array
       difference=( $rel_max_difference )
-      echo "Difference between numerical fields in $file1 and $file2 -  Average: ${difference[0]}. Maximum: ${difference[1]}"
-      diff -yr --suppress-common-lines $folder1 $folder2
+      echo -e "> Numerical difference in $filename"
+      # echo -e "$num_diff"
+      echo -e "Average: ${difference[0]} ; Maximum: ${difference[1]} ${NC}"
+      ret=1
+    fi
+    if [ -n "$txt_diff" ]; then
+      echo -e "> Text difference in $filename"
+      echo -e "$txt_diff"
       ret=1
     fi
   done
 fi
 
-# Files that are present only in reference or obtained
-# folder
+# Files that are present only in reference or output folder
 if [ -n "$only_files" ]; then
-  echo "$only_files"
+  echo -e "> $only_files"
   ret=1
 fi
+echo "----------- Comparison finished -----------"
 
 exit $ret

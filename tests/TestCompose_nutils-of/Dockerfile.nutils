@@ -1,0 +1,22 @@
+ARG from=precice/precice-ubuntu1804.home-develop
+FROM $from
+USER root
+
+RUN wget -q https://bootstrap.pypa.io/get-pip.py -O get-pip.py && \
+    python3 get-pip.py && \
+    pip3 install Cython mpi4py numpy
+
+USER precice
+ARG branch=develop
+
+# Builds the precice python bindings for python3
+RUN pip3 install --user https://github.com/precice/python-bindings/archive/$branch.zip
+
+ARG version=v6.0
+
+WORKDIR /home/precice/
+RUN git clone --branch $version https://github.com/evalf/nutils.git && \
+    python3 -m pip install --user --editable nutils
+
+RUN mkdir -p Data/Input Data/Output Data/Exchange
+WORKDIR /home/precice/nutils

@@ -1,0 +1,33 @@
+version: '3'
+services:
+  1dtube-ccx:
+    build:
+      context: .
+      dockerfile: Dockerfile.1dtubepy
+      args:
+        from: "${SYSTEST_REMOTE}precice${PRECICE_BASE}"
+    networks:
+      - precicecomm
+    volumes:
+      - output:/home/precice/Data/Output/
+    command: >
+      /bin/bash -c "./Allrun &&
+        cp -r *.log VTK /home/precice/Data/Output/ &&
+        rm /home/precice/Data/Output/*summary.log"
+    container_name: 1dtube-py
+
+  tutorial-data:
+    build:
+      context: .
+      dockerfile: Dockerfile.tutorial_data
+      args:
+        branch: "develop"
+    volumes:
+      - output:/Output/
+    container_name: tutorial-data
+
+
+networks:
+  precicecomm:
+volumes:
+  output:

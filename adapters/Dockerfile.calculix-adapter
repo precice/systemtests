@@ -1,9 +1,9 @@
-ARG from=precice/precice-ubuntu1604.home-develop
-ARG base_solver=precice/calculix
-FROM ${base_solver} as calculix
+ARG branch=develop
+ARG from=precice/precice-ubuntu1804.home-${branch}
 FROM $from
 
 USER root
+
 # ( since we are importing form the precice image )
 RUN apt-get -qq update && apt-get -qq install \
     build-essential \
@@ -14,34 +14,26 @@ RUN apt-get -qq update && apt-get -qq install \
     autoconf \
     autotools-dev \
     bzip2 \
+    libarpack2-dev \
+    libspooles2.2 \
     libyaml-cpp-dev && \
     rm -rf /var/lib/apt/lists/*
 
 ARG CACHEBUST
-# copy arpack and spooles
-COPY --from=calculix  /usr/local/ARPACK /usr/local/ARPACK
-COPY --from=calculix  /spooles.2.2 /spooles.2.2
 
 USER precice
 # get calculix source
 WORKDIR /home/precice
-RUN curl -s http://www.dhondt.de/ccx_2.15.src.tar.bz2 | tar -xj
-ARG branch=develop
-RUN git clone --branch $branch https://github.com/precice/calculix-adapter.git
-WORKDIR calculix-adapter/
-# specify proper locations of libraries
-RUN sed -i  -e 's|CCX\s\+=.*|CCX	= /home/precice/CalculiX/ccx_2.15/src|g'\
-            -e 's|SPOOLES\s\+=.*|SPOOLES	 = /spooles.2.2|g'\
-            -e 's|ARPACK\s\+=.*|ARPACK  = /usr/local/ARPACK|g'\
-            -e 's|-L$(YAML)/build||g' \
-            -e 's|-I$(YAML)/include||g' \
-            -e 's|CC\s\+=.*|CC=cc|g' Makefile
+RUN curl -s http://www.dhondt.de/ccx_2.16.src.tar.bz2 | tar -xj
+ARG adapter_branch=develop
+RUN git clone --branch $adapter_branch https://github.com/precice/calculix-adapter.git
 
-# build and clean-up
+# build adapter
+WORKDIR calculix-adapter/
 RUN make -j $(nproc)
 
 # create directory for input/out/exchange
 WORKDIR /home/precice
-RUN mkdir -p Data/Input Data/Output Data/Exchange
+RUN mkdir -p Logs Data/Input Data/Output Data/Exchange
 ENV PATH="/home/precice/calculix-adapter/bin:${PATH}"
 WORKDIR /home/precice/calculix-adapter

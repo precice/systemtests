@@ -1,4 +1,4 @@
-ARG from=ubuntu:16.04
+ARG from=ubuntu:18.04
 FROM $from
 # Docker image of OpenFOAM and related dependencies to be used by preCICE adapter
 USER root
@@ -11,9 +11,11 @@ RUN apt-get -qq update && apt-get -qq install \
     git && \
     rm -rf /var/lib/apt/lists/*
 
-# Installing OpenFOAM 4.1
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 6C0DAC728B29D817
+
+# Installing OpenFOAM 5
 RUN add-apt-repository "http://dl.openfoam.org/ubuntu dev" &&  \
     sh -c "wget -O - http://dl.openfoam.org/gpg.key | apt-key add -" && \
     add-apt-repository http://dl.openfoam.org/ubuntu && apt update && \
-    apt-get -y install openfoam4 --no-install-recommends && \
+    apt-get -y install openfoam5 --no-install-recommends && \
     rm -rf /var/lib/apt/lists/*

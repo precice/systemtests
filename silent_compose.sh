@@ -7,7 +7,7 @@ taillen=500
 failed=0
 
 if [ "$1" = "debug" ]; then
-	docker-compose up
+	docker-compose up # | tee >(grep "exited with code [1-9]") && exit 1 || exit 0
 else
 	docker-compose up -d || exit 1
 	services=($(docker-compose ps | awk '{print $1}'| tail -n +3))
