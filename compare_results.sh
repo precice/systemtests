@@ -68,7 +68,7 @@ if [ -n "$diff_files" ]; then
     pre_filter='s/[0-9][0-9][:\.][0-9][0-9][:\.][0-9][0-9]//g; s/\[.\+\]:[0-9]\+//g;
                 s/[0-9][0-9]\/[0-9][0-9]\/[0-9][0-9][0-9][0-9]//g; s/\s*$//g;
                 /Timestamp\|[rR]untime\|[vV]ersion\|[rR]evision\|Unexpected\|Host:/d;
-                s/\[\[[0-9]*\],0\]://g;
+                s/\[\[[0-9]\+,[0-9]\],[0-9]\]://g;
                 /Run finished/q'
 
     # numerical filter, looks to find numbers of any format
