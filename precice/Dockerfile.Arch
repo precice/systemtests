@@ -2,7 +2,7 @@
 
 FROM archlinux/base
 
-RUN pacman -Syu --quiet --noconfirm --needed base-devel boost eigen git cmake openmpi python2 python2-numpy
+RUN pacman -Syu --quiet --noconfirm --needed base-devel boost eigen git cmake openmpi python3 python-numpy
 
 # Some parameters for the build, you can set them in the build command e.g.
 # sudo docker build Dockerfile.precice --build-arg petsc_para=yes --build-arg mpi_para=yes .

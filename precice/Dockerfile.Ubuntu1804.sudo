@@ -12,8 +12,8 @@ RUN apt-get -qq update && apt-get -qq install \
     libxml2-dev \
     petsc-dev \
     git \
-    python-numpy \
-    python-dev \
+    python3-numpy \
+    python3-dev \
     wget \
     bzip2 \
     cmake && \
