@@ -1,0 +1,43 @@
+ARG branch=develop
+ARG from=precice/precice-ubuntu1804.home-${branch}
+ARG base_solver=precice/codeaster
+FROM ${base_solver}
+FROM $from
+
+USER root
+ENV USER=root
+
+# Install dependecies
+RUN apt-get -qq update && apt-get -qq install \
+    git \
+    locales \
+    python3-pip \
+    python3-numpy && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN locale-gen en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
+
+# Building Code_Aster-adapter
+USER precice
+WORKDIR /home/precice
+
+COPY --from=precice/codeaster /home/precice/Code_Aster /home/precice/Code_Aster
+
+ARG adapter_branch=develop
+RUN git clone --branch $adapter_branch https://github.com/precice/code_aster-adapter.git
+
+RUN \
+    sed -i "s|.rmed|.resu|g" code_aster-adapter/cht/adapter.comm && \
+    sed -i "s|TYPE='BINARY'|TYPE='ASCII'|g" code_aster-adapter/cht/adapter.comm && \
+    sed -i "s|FORMAT='MED'|FORMAT='RESULTAT'|g" code_aster-adapter/cht/adapter.comm && \
+    sed -i "s|RESU=_F(RESULTAT=TEMP)|RESU=(_F(RESULTAT=TEMP, NOM_CHAM='TEMP', FORM_TABL='EXCEL', TOUT_PARA='OUI', FORMAT_R='E14.5'))|g" code_aster-adapter/cht/adapter.comm
+
+RUN \
+    mkdir Data && cd Data && mkdir Exchange Input Output
+
+# Installing python bindings for preCICE
+RUN \
+    pip3 install --upgrade pip && pip3 install --user pyprecice
