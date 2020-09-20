@@ -1,5 +1,7 @@
 # Dockerfile for building preCICE on Ubuntu 20.04
+# default setup, user set to 'precice', package install
 
+# Use official Ubuntu 20.04 as base
 FROM ubuntu:20.04
 
 ARG DEBIAN_FRONTEND=noninteractive
@@ -8,7 +10,8 @@ ARG DEBIAN_FRONTEND=noninteractive
 # Installing necessary dependencies for preCICE, boost 1.71 from apt-get
 RUN apt-get -qq update && apt-get -qq install \
     build-essential \
-    libboost-dev \
+    locales \
+    libboost-all-dev \
     libeigen3-dev \
     libxml2-dev \
     petsc-dev \

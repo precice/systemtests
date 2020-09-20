@@ -1,6 +1,7 @@
-# Dockerfile for building preCICE on ubuntu 18.04
+# Dockerfile for building preCICE on Ubuntu 18.04
+# default setup, user set to root, manual install, using MPICH
 
-# Using ubuntu 18.04 as basis
+# Use official Ubuntu 18.04 as base
 FROM ubuntu:18.04
 
 # Installing necessary dependacies for preCICE, boost 1.65 from apt-get
