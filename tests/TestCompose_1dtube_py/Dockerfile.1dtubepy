@@ -1,4 +1,4 @@
-ARG from=precice/precice-ubuntu1604.home-develop
+ARG from=precice/precice-ubuntu1804.home-develop
 FROM $from
 USER root
 
@@ -13,7 +13,7 @@ RUN wget -q https://bootstrap.pypa.io/get-pip.py -O get-pip.py && \
 
 
 USER precice
-RUN pip3 install --user cython mpi4py numpy enum34 matplotlib vtk
+RUN pip3 install --user cython mpi4py numpy==1.19.2 enum34 matplotlib vtk
 
 ARG branch=develop
 
