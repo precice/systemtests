@@ -300,7 +300,7 @@ jobs:
     - name: "[18.04] nutils <-> OpenFOAM"
       script:
         - python system_testing.py -s nutils-of -v
-        - python push.py --test nutils-of -o
+        - python push.py --test nutils-of
 
     - name: "[18.04] OpenFOAM <-> OpenFOAM [nearest projection]"
       script:
