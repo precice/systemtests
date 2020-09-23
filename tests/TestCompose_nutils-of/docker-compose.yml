@@ -23,8 +23,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.nutils
-      args:
-        from: "${SYSTEST_REMOTE}precice${PRECICE_BASE}"
     networks:
       - precicecomm
     volumes:
