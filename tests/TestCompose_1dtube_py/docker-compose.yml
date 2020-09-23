@@ -1,6 +1,6 @@
 version: '3'
 services:
-  1dtube-ccx:
+  1dtube-py:
     build:
       context: .
       dockerfile: Dockerfile.1dtubepy
