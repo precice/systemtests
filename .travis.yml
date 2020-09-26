@@ -69,7 +69,7 @@ jobs:
       script:
         - python build_adapter.py --dockerfile adapters/Dockerfile.su2-adapter --operating-system ubuntu2004 --precice-installation package --docker-username $DOCKER_USERNAME
         - python push_adapter.py --dockerfile adapters/Dockerfile.su2-adapter --operating-system ubuntu2004 --precice-installation package --docker-username $DOCKER_USERNAME
-        - python push.py --adapter adapters/Dockerfile.su2-adapter
+        - python push.py --adapter adapters/Dockerfile.su2-adapter --base Ubuntu2004.package
 
     - name: "[18.04] deal.ii adapter [3D]"
       if: fork = false
@@ -90,7 +90,7 @@ jobs:
       script:
         - python build_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter --operating-system ubuntu2004 --precice-installation package --docker-username $DOCKER_USERNAME
         - python push_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter --operating-system ubuntu2004 --precice-installation package --docker-username $DOCKER_USERNAME
-        - python push.py --adapter adapters/Dockerfile.dealii-adapter
+        - python push.py --adapter adapters/Dockerfile.dealii-adapter --base Ubuntu2004.package
 
     - name: "[18.04] OpenFOAM adapter"
       if: fork = false
@@ -125,7 +125,7 @@ jobs:
       script:
         - python build_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu2004 --precice-installation package --petsc yes --docker-username $DOCKER_USERNAME
         - python push_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu2004 --precice-installation package --petsc yes --docker-username $DOCKER_USERNAME
-        - python push.py --adapter adapters/Dockerfile.openfoam-adapter
+        - python push.py --adapter adapters/Dockerfile.openfoam-adapter --base Ubuntu2004.package
 
 
     - name: "[18.04] CalculiX adapter [PETSc]"
@@ -140,7 +140,7 @@ jobs:
       script:
         - python build_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu2004 --precice-installation package --petsc yes --docker-username $DOCKER_USERNAME
         - python push_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu2004 --precice-installation package --petsc yes --docker-username $DOCKER_USERNAME
-        - python push.py --adapter adapters/Dockerfile.calculix-adapter
+        - python push.py --adapter adapters/Dockerfile.calculix-adapter  --base Ubuntu2004.package
 
 
     - name: "[Build adapters on fork] Using cached version"
