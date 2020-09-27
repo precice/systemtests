@@ -211,7 +211,7 @@ if __name__ == "__main__":
     # finally commit
     commit_msg = job_name
     commit_msg += " - Success" if job_success else " - FAILURE"
-    if args.test and args.output:
+    if build_type == 'test' and args.output:
         if output_missing:
             commit_msg += ", MISSING OUTPUT"
     if logs_missing:
