@@ -36,7 +36,7 @@ RUN \
     sed -i "s|RESU=_F(RESULTAT=TEMP)|RESU=(_F(RESULTAT=TEMP, NOM_CHAM='TEMP', FORM_TABL='EXCEL', TOUT_PARA='OUI', FORMAT_R='E14.5'))|g" code_aster-adapter/cht/adapter.comm
 
 RUN \
-    mkdir Data && cd Data && mkdir Exchange Input Output
+    mkdir Data && cd Data && mkdir Logs Exchange Input Output
 
 # Installing python bindings for preCICE
 RUN \
