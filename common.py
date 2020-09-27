@@ -51,7 +51,7 @@ def get_test_participants(test_name):
 def save_build_info(**kwargs):
     with open('build_info.py', 'w') as f:
         for key, value in kwargs.items():
-            f.write("{} = {}\n".format(key,value))
+            f.write("{} = {}\n".format(key,repr(value))
 
 
 
