@@ -181,7 +181,7 @@ if __name__ == "__main__":
                    format(test_path=test_path, job_path=job_path))
 
     # create travis log
-    with chdir(log_path):adapter
+    with chdir(log_path):
         with open("travis.log", "w") as log:
             travis_log = get_travis_job_log(job_id)
             log.write(travis_log)
