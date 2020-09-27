@@ -136,6 +136,8 @@ def run_compose(systest, branch, local, tag, force_rebuild, rm_all=False, verbos
                 for command in commands_cleanup:
                     ccall(command)
 
+    return test_path
+
 
 class SystemTestException(Exception):
     def __init__(self, *args):
@@ -211,7 +213,7 @@ def build_run_compare(test, tag, branch, local_precice, force_rebuild, rm_all=Fa
     if local_precice:
         build_adapters(test_basename, tag, branch, local_precice, force_rebuild)
     if test_basename in compose_tests:
-        run_compose(test, branch, local_precice, tag, force_rebuild, rm_all, verbose)
+        test_path = run_compose(test, branch, local_precice, tag, force_rebuild, rm_all, verbose)
     else:
         # remaining, non-compose tests
         test_dirname = "Test_{systest}".format(systest=test)
@@ -225,6 +227,8 @@ def build_run_compare(test, tag, branch, local_precice, force_rebuild, rm_all=Fa
             pathToOutput = os.path.join(os.getcwd(), "Output")
             # Comparing
             comparison(pathToRef, pathToOutput)
+
+    return test_path
 
 
 def compose_tag(docker_username, base, features, branch):
@@ -270,16 +274,14 @@ if __name__ == "__main__":
     parser.add_argument('-s', '--systemtest', type=str, help="Choose system tests you want to use",
                         choices = common.get_tests(), required = True)
     parser.add_argument('-b', '--branch', help="preCICE branch to use", default="develop")  # make sure that branch corresponding to system tests branch is used, if no branch is explicitly specified. If we are testing a pull request, will test against develop by default.
-# Usage of the branch argument:
-#   When on a PR, this will by default use the develop versions of preCICE and adapter images.
-#   This makes it easier to experiment with tests, which are most commonly addressed by PRs
-#   (otherwise you would need to also create preCICE and adapter images for your branch which are only different in name)
     parser.add_argument('-f', '--force_rebuild', nargs='+', help="Force rebuild of variable parts of docker image",
                         default = [], choices  = ["precice", "tests"])
     parser.add_argument('--base', type=str,help="Base preCICE image to use",
             default= "Ubuntu1804.home")
     parser.add_argument('-v', '--verbose', action='store_true', help="Verbose output of participant containers")
     args = parser.parse_args()
+
+
     # check if there is specialized dir for this version
     test_name = args.systemtest
     all_derived_tests = get_test_variants(test_name)
@@ -289,5 +291,7 @@ if __name__ == "__main__":
     else:
         test = test[0]
     tag = args.base.lower()
-    build_run_compare(test, tag, args.branch.lower(), args.local,
+    test_path = build_run_compare(test, tag, args.branch.lower(), args.local,
             args.force_rebuild, rm_all=False, verbose=args.verbose)
+
+    common.save_build_info(build_type='test', test_path=test_path)

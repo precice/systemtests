@@ -48,6 +48,13 @@ def get_test_participants(test_name):
 
     return [solvers_abbr[abbr] for abbr in  test_name.lower().split('_')[0].split('-')]
 
+def save_build_info(**kwargs):
+    with open('build_info.py', 'w') as f:
+        for key, value in kwargs.items():
+            f.write("{} = {}\n".format(key,value))
+
+
+
 
 from contextlib import contextmanager
 

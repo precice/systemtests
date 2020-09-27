@@ -122,25 +122,14 @@ if __name__ == "__main__":
     default_st_branch = "master"
 
     parser = argparse.ArgumentParser(description='Push build/test logs to output repository. Optionally includes result data (for tests only).')
-    parser.add_argument('--test', type=str, help="Which test to upload logs for.")
-    parser.add_argument('--adapter', type=str, help="Which adapter build to upload logs for.")
-    parser.add_argument('--precice', type=str, help="Which preCICE build to upload logs for.")
-    parser.add_argument('-b', '--base', type=str, help="Base image used", default=default_base)
     parser.add_argument('-o', '--output', action='store_true', help="Enable result storage (only for tests, disabled by default)", )
     parser.add_argument('--st-branch', type=str, help="Branch of precice_st_output to push to", default=default_st_branch)
-    parser.add_argument('--petsc', action='store_true', help="Use preCICE with PETSc as base image")
     args = parser.parse_args()
 
-    # Check that only one of test/adapter/precice is supplied
-    if sum(x != None for x in [args.test, args.adapter, args.precice]) != 1:
-        raise ValueError("You may only choose one of ['--test', '--adapter', '--precice'].")
+    from build_info import *
+    # Ensure that build_info file is intact
+    assert(build_type in ['precice', 'adapter', 'test'])
 
-    if args.test:
-        type = 'test'
-    elif args.adapter:
-        type = 'adapter'
-    elif args.precice:
-        type = 'precice'
 
     job_id = os.environ["TRAVIS_JOB_ID"]
     job_result = os.environ["TRAVIS_TEST_RESULT"]
@@ -151,9 +140,9 @@ if __name__ == "__main__":
     job_folder_unpadded = os.environ["TRAVIS_JOB_NUMBER"] # example: "1832.8"
     job_folder = "{}.{:02d}".format(build_folder, int(job_folder_unpadded.split('.')[1]))
 
-
     ccall("git clone -b {st_branch} https://github.com/precice/precice_st_output".\
         format(st_branch=args.st_branch))
+
 
     # Path to repository folder
     repo_path = os.path.join(os.getcwd(), repo_folder)
@@ -168,45 +157,31 @@ if __name__ == "__main__":
     # Path to Output folder inside a job folder
     output_path = os.path.join(job_path, "Output")
 
-    if args.adapter:
-        docker_tag = ""
-        with open("./.docker_tag","r") as f:
-            docker_tag = f.read()
+
+    if build_type == 'adapter':
+        # 'docker_tag' is imported from the build info file
         ccall("docker create --name adapter -it {} bash ".format(docker_tag))
         ccall("docker container ls -a")
         ccall("docker cp adapter:/home/precice/Logs {}".format(job_path))
-        # remove file after reading
-        ccall("rm ./.docker_tag")
 
-    if args.test:
+    if build_type == 'test':
+        # 'test_path' is imported from the build info file
         ccall("mkdir -p {}".format(output_path))
         # extract files from container, IF ENABLED
         if args.output:
             ccall("docker cp tutorial-data:/Output {}".format(job_path))
+            # Check if Output is missing, given that the option is enabled
+            if not os.listdir(output_path):
+                ccall("echo '# Output was enabled, but no output files found!' > {path}".format(path=
+                os.path.join(output_path, "README.md")))
+                output_missing = True
 
-        # move container logs into correct folder, only compose tests have containers
-        compose_tests = ["dealii-of", "dealii-of_3D", "of-of", "su2-ccx", "of-ccx", "of-of_np",
-        "fe-fe","nutils-of", "of-ccx_fsi"]
-
-        if args.test in compose_tests:
-            test_dirname = "TestCompose_{systest}".format(systest=args.test)
-            if args.base != default_base:
-                test_dirname += "." + args.base
-            if args.petsc:
-                test_dirname += ".PETSc"
-            test_path = os.path.join(os.getcwd(), 'tests', test_dirname)
+        if "TestCompose" in test_path:
             ccall("cp -r {test_path}/Logs {job_path}".\
                    format(test_path=test_path, job_path=job_path))
 
-        # Check if Output is missing, given it is enabled
-        if args.output:
-           if not os.listdir(output_path):
-               ccall("echo '# Output was enabled, but no output files found!' > {path}".format(path=
-               os.path.join(output_path, "README.md")))
-               output_missing = True
-
     # create travis log
-    with chdir(log_path):
+    with chdir(log_path):adapter
         with open("travis.log", "w") as log:
             travis_log = get_travis_job_log(job_id)
             log.write(travis_log)
@@ -224,6 +199,9 @@ if __name__ == "__main__":
         output_enabled=args.output,
         output_missing=output_missing,
         logs_missing=logs_missing)
+
+    # cleanup build info file after reading
+    ccall("rm ./build_info.py")
 
 
     os.chdir(repo_path)

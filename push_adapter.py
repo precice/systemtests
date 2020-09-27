@@ -40,6 +40,8 @@ if __name__ == "__main__":
         docker.push_image(tag=tag,
                           namespace="")
 
+    common.save_build_info(build_type='adapter', docker_tag=tag)
+
     else:
         print("No docker image was pushed because the previous job command failed.")
         print("Check the preceding adapter build to find out what went wrong.")
