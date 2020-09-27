@@ -26,7 +26,7 @@ if __name__ == "__main__":
         for feature in dockerfile.split(".")[1:]:  # Extract features from filename and join features with "." as separator.
             i += 1
             if i == 1:  # first feature is mandatory always describes the os
-                assert(feature in ["Ubuntu1604", "Ubuntu1804", "Arch"])  # we expect that one of the following operating systems is used
+                assert(feature in ["Ubuntu1604", "Ubuntu1804", "Ubuntu2004", "Arch"])  # we expect that one of the following operating systems is used
                 features["os"] = feature
             if i == 2:  # second feature is optional if it exists it describes the preCICE installation
                 assert(feature in ["package", "home", "sudo"])  # we expect that one of the following installation procedures is used
