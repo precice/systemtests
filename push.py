@@ -126,7 +126,15 @@ if __name__ == "__main__":
     parser.add_argument('--st-branch', type=str, help="Branch of precice_st_output to push to", default=default_st_branch)
     args = parser.parse_args()
 
-    from build_info import *
+    try:
+        from build_info import *
+    except ModuleNotFoundError:
+        print("##########################################\n" +
+              "The file 'build_info.py' was not found.\n" +
+              "This indicates a problem with a previous build step.\n" +
+              "Check the log prior to this message for more information.\n" +
+              "##########################################")
+        exit(1)
     # Ensure that build_info file is intact
     assert(build_type in ['precice', 'adapter', 'test'])
 

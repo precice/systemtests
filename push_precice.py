@@ -46,6 +46,9 @@ if __name__ == "__main__":
         common.save_build_info(build_type='precice')
 
     else:
-        print("No docker image was pushed because the previous job command failed.")
-        print("Check the preceding preCICE build to find out what went wrong.")
-        print("(Note that this script relies on being called *directly* after build_precice.py)")
+        print("#############################################################\n" +
+              "No docker image was pushed because the previous job command failed.\n" +
+              "Check the preceding preCICE build to find out what went wrong.\n" +
+              "(Note that this script relies on being called *directly* after build_precice.py)\n" +
+              "#############################################################")
+        exit(1)
