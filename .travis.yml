@@ -14,6 +14,7 @@ jobs:
     # To add a test here, list its exact name
     - name: "Ubuntu 18.04.sudo.mpich [failure allowed]"
     - name: "[18.04] SU2 <-> Calculix [unstable][failure allowed]"
+    - name: "[20.04] CalculiX adapter [PETSc]"
 
 
   include:
