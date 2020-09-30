@@ -103,6 +103,8 @@ def run_compose(systest, branch, local, tag, force_rebuild, rm_all=False, verbos
     commands_cleanup = ["docker-compose down -v"]
 
     test_path = os.path.join(os.getcwd(), 'tests', test_dirname)
+    common.save_build_info(build_type='test', test_path=test_path)
+    
     with common.chdir(test_path):
 
         # cleanup previous results
@@ -213,11 +215,12 @@ def build_run_compare(test, tag, branch, local_precice, force_rebuild, rm_all=Fa
     if local_precice:
         build_adapters(test_basename, tag, branch, local_precice, force_rebuild)
     if test_basename in compose_tests:
-        test_path = run_compose(test, branch, local_precice, tag, force_rebuild, rm_all, verbose)
+        run_compose(test, branch, local_precice, tag, force_rebuild, rm_all, verbose)
     else:
         # remaining, non-compose tests
         test_dirname = "Test_{systest}".format(systest=test)
         test_path = os.path.join(os.getcwd(), 'tests', test_dirname)
+        common.save_build_info(build_type='test', test_path=test_path)
         with common.chdir(test_path):
             # Build
             build(test_basename, tag, branch, local_precice, force_rebuild)
@@ -293,5 +296,3 @@ if __name__ == "__main__":
     tag = args.base.lower()
     test_path = build_run_compare(test, tag, args.branch.lower(), args.local,
             args.force_rebuild, rm_all=False, verbose=args.verbose)
-
-    common.save_build_info(build_type='test', test_path=test_path)
