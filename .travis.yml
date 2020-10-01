@@ -138,8 +138,8 @@ jobs:
     - name: "[20.04] CalculiX adapter"
       if: fork = false
       script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu2004 --precice-installation home --docker-username $DOCKER_USERNAME
-        - python push_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu2004 --precice-installation home --docker-username $DOCKER_USERNAME
+        - python build_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu2004 --precice-installation package --docker-username $DOCKER_USERNAME
+        - python push_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu2004 --precice-installation package --docker-username $DOCKER_USERNAME
         - python push.py
 
     - name: "[18.04] OpenFOAM adapter [PETSc]"
