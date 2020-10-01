@@ -76,7 +76,7 @@ if [ -n "$diff_files" ]; then
     # exponential filter, DELETES exponent! TODO: have awk command below handle exponents
     exp_filter='s/[eE][+-][0-9]\+//g'
     # text filter, checks for any text lines after the prefilter was applied
-    txt_filter='/[a-df-zA-Z]/!d'
+    txt_filter='/[a-df-zA-DF-Z]/!d'
 
     # Apply filters
     file1_num=$( cat "$file1" | sed "$pre_filter" | grep -o "$num_filter" | sed "$exp_filter")
