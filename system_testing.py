@@ -104,7 +104,7 @@ def run_compose(systest, branch, local, tag, force_rebuild, rm_all=False, verbos
 
     test_path = os.path.join(os.getcwd(), 'tests', test_dirname)
     common.save_build_info(build_type='test', test_path=test_path)
-    
+
     with common.chdir(test_path):
 
         # cleanup previous results
@@ -137,9 +137,6 @@ def run_compose(systest, branch, local, tag, force_rebuild, rm_all=False, verbos
             if rm_all:
                 for command in commands_cleanup:
                     ccall(command)
-
-    return test_path
-
 
 class SystemTestException(Exception):
     def __init__(self, *args):
@@ -231,7 +228,6 @@ def build_run_compare(test, tag, branch, local_precice, force_rebuild, rm_all=Fa
             # Comparing
             comparison(pathToRef, pathToOutput)
 
-    return test_path
 
 
 def compose_tag(docker_username, base, features, branch):
@@ -294,5 +290,5 @@ if __name__ == "__main__":
     else:
         test = test[0]
     tag = args.base.lower()
-    test_path = build_run_compare(test, tag, args.branch.lower(), args.local,
+    build_run_compare(test, tag, args.branch.lower(), args.local,
             args.force_rebuild, rm_all=False, verbose=args.verbose)
