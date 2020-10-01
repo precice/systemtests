@@ -14,7 +14,6 @@ jobs:
     # To add a test here, list its exact name
     - name: "Ubuntu 18.04.sudo.mpich [failure allowed]"
     - name: "[18.04] SU2 <-> Calculix [unstable][failure allowed]"
-    - name: "[20.04] CalculiX adapter [PETSc]"
 
 
   include:
@@ -234,12 +233,12 @@ jobs:
     - name: "[18.04] Elastictube1D - Python"
       script:
         - python system_testing.py -s 1dtube_py -v
-        - python push.py -o
+        - python push.py
 
     - name: "[18.04] Elastictube1D - C++"
       script:
         - python system_testing.py -s 1dtube_cxx -v
-        - python push.py -o
+        - python push.py
 
     - name: "[18.04 PETSc] OpenFOAM <-> CalculiX [FSI]"
       script:
