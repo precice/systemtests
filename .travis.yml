@@ -26,7 +26,7 @@ jobs:
         - python push.py
 
     - stage: Building preCICE
-      name: "Ubuntu 18.04 home [PETSc]"
+      name: "Ubuntu 18.04 home [PETSc from source]"
       if: fork = false
       script:
         - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.home --petsc yes --docker-username $DOCKER_USERNAME
@@ -42,15 +42,7 @@ jobs:
         - python push.py
 
     - stage: Building preCICE
-      name: "Ubuntu 20.04.package"
-      if: fork = false
-      script:
-        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu2004.package --docker-username $DOCKER_USERNAME
-        - python push_precice.py --dockerfile precice/Dockerfile.Ubuntu2004.package --docker-username $DOCKER_USERNAME
-        - python push.py
-
-    - stage: Building preCICE
-      name: "Ubuntu 20.04.package [PETSc]"
+      name: "Ubuntu 20.04.package [PETSc from APT]"
       if: fork = false
       script:
         - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu2004.package --petsc yes --docker-username $DOCKER_USERNAME
@@ -71,11 +63,11 @@ jobs:
         - python push_adapter.py --dockerfile adapters/Dockerfile.su2-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
         - python push.py
 
-    - name: "[20.04] SU2 adapter"
+    - name: "[20.04] SU2 adapter [PETSc]"
       if: fork = false
       script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.su2-adapter --operating-system ubuntu2004 --precice-installation package --docker-username $DOCKER_USERNAME
-        - python push_adapter.py --dockerfile adapters/Dockerfile.su2-adapter --operating-system ubuntu2004 --precice-installation package --docker-username $DOCKER_USERNAME
+        - python build_adapter.py --dockerfile adapters/Dockerfile.su2-adapter --operating-system ubuntu2004 --precice-installation package --petsc yes --docker-username $DOCKER_USERNAME
+        - python push_adapter.py --dockerfile adapters/Dockerfile.su2-adapter --operating-system ubuntu2004 --precice-installation package --petsc yes --docker-username $DOCKER_USERNAME
         - python push.py
 
     - name: "[18.04] deal.ii adapter [3D]"
@@ -92,11 +84,11 @@ jobs:
         - python push_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
         - python push.py
 
-    - name: "[20.04] deal.ii adapter [2D]"
+    - name: "[20.04] deal.ii adapter [2D][PETSc]"
       if: fork = false
       script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter --operating-system ubuntu2004 --precice-installation package --docker-username $DOCKER_USERNAME
-        - python push_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter --operating-system ubuntu2004 --precice-installation package --docker-username $DOCKER_USERNAME
+        - python build_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter --operating-system ubuntu2004 --precice-installation package --petsc yes --docker-username $DOCKER_USERNAME
+        - python push_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter --operating-system ubuntu2004 --precice-installation package --petsc yes --docker-username $DOCKER_USERNAME
         - python push.py
 
     - name: "[18.04] OpenFOAM adapter"
@@ -106,11 +98,18 @@ jobs:
         - python push_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
         - python push.py
 
-    - name: "[20.04] OpenFOAM adapter"
+    - name: "[18.04] OpenFOAM adapter [PETSc]"
       if: fork = false
       script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu2004 --precice-installation package --docker-username $DOCKER_USERNAME
-        - python push_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu2004 --precice-installation package --docker-username $DOCKER_USERNAME
+        - python build_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1804 --precice-installation home --petsc yes --docker-username $DOCKER_USERNAME
+        - python push_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1804 --precice-installation home --petsc yes --docker-username $DOCKER_USERNAME
+        - python push.py
+
+    - name: "[20.04] OpenFOAM adapter [PETSc]"
+      if: fork = false
+      script:
+        - python build_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu2004 --precice-installation package --petsc yes --docker-username $DOCKER_USERNAME
+        - python push_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu2004 --precice-installation package --petsc yes --docker-username $DOCKER_USERNAME
         - python push.py
 
     - name: "[18.04] FEniCS adapter"
@@ -133,21 +132,6 @@ jobs:
         - python build_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
         - python push_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
         - python push.py
-
-    - name: "[20.04] CalculiX adapter"
-      if: fork = false
-      script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu2004 --precice-installation package --docker-username $DOCKER_USERNAME
-        - python push_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu2004 --precice-installation package --docker-username $DOCKER_USERNAME
-        - python push.py
-
-    - name: "[18.04] OpenFOAM adapter [PETSc]"
-      if: fork = false
-      script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1804 --precice-installation home --petsc yes --docker-username $DOCKER_USERNAME
-        - python push_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1804 --precice-installation home --petsc yes --docker-username $DOCKER_USERNAME
-        - python push.py
-
 
     - name: "[18.04] CalculiX adapter [PETSc]"
       if: fork = false
@@ -175,9 +159,9 @@ jobs:
         - python system_testing.py -s su2-ccx -v
         - python push.py
 
-    - name: "[20.04] SU2 <-> Calculix [unstable][failure allowed]"
+    - name: "[20.04 PETSc] SU2 <-> Calculix [unstable]"
       script:
-        - python system_testing.py -s su2-ccx --base Ubuntu2004.package -v
+        - python system_testing.py -s su2-ccx --base Ubuntu2004.package.PETSc -v
         - python push.py
 
     - name: "[18.04] OpenFOAM <-> OpenFOAM"
@@ -210,9 +194,9 @@ jobs:
         - python system_testing.py -s dealii-of -v
         - python push.py
 
-    - name: "[20.04] deal.ii <-> OpenFOAM [FSI][2D]"
+    - name: "[20.04 PETSc] deal.ii <-> OpenFOAM [FSI][2D]"
       script:
-        - python system_testing.py -s dealii-of --base Ubuntu2004.package -v
+        - python system_testing.py -s dealii-of --base Ubuntu2004.package.PETSc -v
         - python push.py
 
     - name: "[18.04] nutils <-> OpenFOAM"

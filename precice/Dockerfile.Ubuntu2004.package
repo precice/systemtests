@@ -18,6 +18,7 @@ RUN apt-get -qq update && apt-get -qq install \
     git \
     python-numpy \
     python-dev \
+    petsc-dev \
     wget \
     bzip2 \
     cmake && \
