@@ -28,7 +28,7 @@ if __name__ == "__main__":
             features["installation"] = feature
         if i >= 3:  # third and following features are optional
             assert(feature in ["mpich"])  # we expect one of these optional features
-            if feature is "mpich":
+            if feature == "mpich":
                 features["mpich"] = "yes"
     assert(i > 0)  # at least one feature (the os) should have been provided
     if args.petsc == "yes":
