@@ -24,29 +24,29 @@ RUN apt-get -qq update && apt-get -qq install \
     cmake && \
     rm -rf /var/lib/apt/lists/*
 
-    # create user precice
-    ARG uid=1000
-    ARG gid=1000
-    RUN groupadd -g ${gid} precice \
-      && useradd -u ${uid} -g ${gid} -m -s /bin/bash precice
+# create user precice
+ARG uid=1000
+ARG gid=1000
+RUN groupadd -g ${gid} precice \
+  && useradd -u ${uid} -g ${gid} -m -s /bin/bash precice
 
-    # set locale
-    RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
-        locale-gen
-    ENV LANG en_US.UTF-8
-    ENV LANGUAGE en_US:en
-    ENV LC_ALL en_US.UTF-8
+# set locale
+RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
+    locale-gen
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
 
-    # Rebuild image if force_rebuild after that command
-    ARG CACHEBUST
+# Rebuild image if force_rebuild after that command
+ARG CACHEBUST
 
-    USER precice
-    WORKDIR /home/precice
-    # Setting some environment variables for installing preCICE
-    ENV CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/usr/include/eigen3" \
-        CPATH="/usr/include/eigen3:${CPATH}" \
-        PETSC_DIR="/usr/share/petsc/" \
-        PETSC_ARCH="arch-linux2-c-debug" \
+USER precice
+WORKDIR /home/precice
+# Setting some environment variables for installing preCICE
+ENV CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/usr/include/eigen3" \
+    CPATH="/usr/include/eigen3:${CPATH}" \
+    PETSC_DIR="/usr/share/petsc/" \
+    PETSC_ARCH="arch-linux2-c-debug"
 
 # Building preCICE
 ARG branch=develop
