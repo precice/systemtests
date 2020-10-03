@@ -1,7 +1,7 @@
 ARG branch=develop
 ARG from=precice/precice-ubuntu1804.home-${branch}
-ARG base_solver=precice/openfoam
-FROM ${base_solver} as openfoam
+# ARG base_solver=precice/openfoam
+# FROM ${base_solver} as openfoam
 FROM $from
 
 USER root
@@ -14,16 +14,16 @@ RUN apt-get -qq update && apt-get -qq install \
     rm -rf /var/lib/apt/lists/*
 
 
+
 ARG CACHEBUST
 
-# # Installing OpenFOAM5 manually
-# RUN sh -c "wget -O - http://dl.openfoam.org/gpg.key | apt-key add -" && \
-# add-apt-repository http://dl.openfoam.org/ubuntu && \
-# apt-get update && \
-# apt-get -y install openfoam5
+# Install OpenFOAM v2006
+# see https://github.com/precice/openfoam-adapter/wiki/Notes-on-OpenFOAM#get-openfoam
+RUN wget -q -O - https://dl.openfoam.com/add-debian-repo.sh | bash && \
+    apt-get install -y openfoam2006-default
 
-# Get OpenFOAM5 install via folder copy
-COPY --from=openfoam /opt/openfoam5 /opt/openfoam5/
+# # Get OpenFOAM5 install via folder copy
+# COPY --from=openfoam /opt/openfoam5 /opt/openfoam5/
 
 
 # Building openfoam-adapter
@@ -34,6 +34,6 @@ RUN mkdir -p Logs Data/Input Data/Output Data/Exchange
 ARG adapter_branch=develop
 RUN git clone  --branch $adapter_branch https://github.com/precice/openfoam-adapter.git
 WORKDIR /home/precice/openfoam-adapter
-RUN . /opt/openfoam5/etc/bashrc && ./Allwmake; cat wmake.log && cp wmake.log Allwmake.log ldd.log $HOME/Logs
+# RUN . /opt/openfoam5/etc/bashrc && ./Allwmake; cat wmake.log && cp wmake.log Allwmake.log ldd.log $HOME/Logs
 
 ENV LD_LIBRARY_PATH="/usr/lib:${LD_LIBRARY_PATH}"
