@@ -11,7 +11,7 @@ services:
       - inner_fluid_input:/home/precice/Data/Input/
       - configs:/home/precice/openfoam-adapter/configs/
     command: >
-      /bin/bash -c "source /opt/openfoam5/etc/bashrc
+      /bin/bash -c "source /usr/lib/openfoam/openfoam2006/etc/bashrc
       && ln -sf configs/* .
       && buoyantSimpleFoam -case /home/precice/Data/Input
       && cp -r /home/precice/Data/Input/. /home/precice/Data/Output/Inner-Fluid"
@@ -19,7 +19,7 @@ services:
     depends_on:
       - tutorial-data
 
-  # outer-fluid 
+  # outer-fluid
   openfoam-adapter-outer:
     image: "${SYSTEST_REMOTE}openfoam-adapter${PRECICE_BASE}:${OPENFOAM_TAG}"
     networks:
@@ -30,7 +30,7 @@ services:
       - outer_fluid_input:/home/precice/Data/Input/
       - configs:/home/precice/openfoam-adapter/configs/
     command: >
-      /bin/bash -c "source /opt/openfoam5/etc/bashrc
+      /bin/bash -c "source /usr/lib/openfoam/openfoam2006/etc/bashrc
       && ln -sf configs/* .
       && buoyantSimpleFoam -case /home/precice/Data/Input
       && cp -r /home/precice/Data/Input/. /home/precice/Data/Output/Outer-Fluid"

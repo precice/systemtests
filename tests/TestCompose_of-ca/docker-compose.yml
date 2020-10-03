@@ -11,7 +11,7 @@ services:
       - input:/home/precice/Data/Input
       - exchange:/home/precice/Data/Exchange
     command: >
-      /bin/bash -c "source /opt/openfoam5/etc/bashrc &&
+      /bin/bash -c "source /usr/lib/openfoam/openfoam2006/etc/bashrc &&
       cd /home/precice/Data/Input &&
       ./runFluid &&
       cp -r Fluid/ /home/precice/Data/Output"

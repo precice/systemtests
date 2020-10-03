@@ -12,7 +12,7 @@ services:
       - output:/home/precice/Data/Output/
     command: >
       /bin/bash -c "
-      source /opt/openfoam5/etc/bashrc &&
+      source /usr/lib/openfoam/openfoam2006/etc/bashrc &&
       ln -sf configs/* . &&
       cp -r /home/precice/Data/Input/0.orig /home/precice/Data/Input/0 &&
       blockMesh -case /home/precice/Data/Input &&
