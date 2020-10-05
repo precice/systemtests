@@ -167,12 +167,12 @@ jobs:
     - name: "[18.04] OpenFOAM <-> OpenFOAM"
       script:
         - python system_testing.py -s of-of -v
-        - python push.py
+        - python push.py -o
 
     - name: "[18.04] Calculix <-> OpenFOAM"
       script:
         - python system_testing.py -s of-ccx -v
-        - python push.py
+        - python push.py -o
 
     - name: "[18.04] FEniCS <-> FEniCS"
       script:
@@ -187,32 +187,32 @@ jobs:
     - name: "[18.04] deal.ii <-> OpenFOAM [FSI][3D]"
       script:
         - python system_testing.py -s dealii-of_3D -v
-        - python push.py
+        - python push.py -o
 
     - name: "[18.04] deal.ii <-> OpenFOAM [FSI][2D]"
       script:
         - python system_testing.py -s dealii-of -v
-        - python push.py
+        - python push.py -o
 
     - name: "[20.04 PETSc] deal.ii <-> OpenFOAM [FSI][2D]"
       script:
         - python system_testing.py -s dealii-of --base Ubuntu2004.package.PETSc -v
-        - python push.py
+        - python push.py -o
 
     - name: "[18.04] nutils <-> OpenFOAM"
       script:
         - python system_testing.py -s nutils-of -v
-        - python push.py
+        - python push.py -o
 
     - name: "[18.04] OpenFOAM <-> OpenFOAM [nearest projection]"
       script:
         - python system_testing.py -s of-of_np -v
-        - python push.py
+        - python push.py -o
 
     - name: "[18.04] OpenFOAM <-> Code_Aster"
       script:
         - python system_testing.py -s of-ca -v
-        - python push.py
+        - python push.py -o
 
     - name: "[18.04] Elastictube1D - Python"
       script:
@@ -227,4 +227,4 @@ jobs:
     - name: "[18.04 PETSc] OpenFOAM <-> CalculiX [FSI]"
       script:
         - python system_testing.py -s of-ccx_fsi --base Ubuntu1804.home.PETSc -v
-        - python push.py
+        - python push.py -o
