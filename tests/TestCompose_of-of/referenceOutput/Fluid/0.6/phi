@@ -1,8 +1,8 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  5.x                                   |
-|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|  \\    /   O peration     | Version:  2006                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
 FoamFile
@@ -16,6 +16,8 @@ FoamFile
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 dimensions      [1 0 -1 0 0 0 0];
+oriented        oriented;
+
 
 internalField   nonuniform List<scalar> 
 23692
@@ -24137,7 +24139,7 @@ boundaryField
     defaultFaces
     {
         type            empty;
-        value           nonuniform 0();
+        value           nonuniform List<scalar> 0();
     }
 }
 

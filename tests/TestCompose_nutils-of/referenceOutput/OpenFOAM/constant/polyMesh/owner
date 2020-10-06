@@ -1,8 +1,8 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  5.x                                   |
-|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|  \\    /   O peration     | Version:  2006                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
 FoamFile
@@ -10,7 +10,7 @@ FoamFile
     version     2.0;
     format      ascii;
     class       labelList;
-    note        "nPoints: 24696 nCells: 12013 nFaces: 48386 nInternalFaces: 23692";
+    note        "nPoints:24696  nCells:12013  nFaces:48386  nInternalFaces:23692";
     location    "constant/polyMesh";
     object      owner;
 }
