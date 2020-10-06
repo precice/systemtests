@@ -87,14 +87,14 @@ jobs:
     - name: "[20.04] deal.ii adapter [2D][PETSc]"
       if: fork = false
       script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter --operating-system ubuntu2004 --precice-installation package --petsc yes --docker-username $DOCKER_USERNAME
+        - python build_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter --operating-system ubuntu2004 --precice-installation package --petsc yes --docker-username $DOCKER_USERNAME --base-solver precice/deal.ii-ubuntu2004
         - python push_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter --operating-system ubuntu2004 --precice-installation package --petsc yes --docker-username $DOCKER_USERNAME
         - python push.py
 
     - name: "[18.04] OpenFOAM adapter"
       if: fork = false
       script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME -ab fix_i133
+        - python build_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
         - python push_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
         - python push.py
 
