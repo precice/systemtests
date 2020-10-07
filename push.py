@@ -127,6 +127,7 @@ if __name__ == "__main__":
     parser.add_argument('--precice', type=str, help="Which preCICE build to upload logs for.")
     parser.add_argument('-b', '--base', type=str, help="Base image used", default=default_base)
     parser.add_argument('-o', '--output', action='store_true', help="Enable result storage (only for tests, disabled by default)", )
+    parser.add_argument('--branch', type=str, help="Branch of preCICE that was used for this build. Setting this value has no effect on execution.", default='develop')
     parser.add_argument('--st-branch', type=str, help="Branch of precice_st_output to push to", default=default_st_branch)
     parser.add_argument('--petsc', action='store_true', help="Use preCICE with PETSc as base image")
     args = parser.parse_args()
