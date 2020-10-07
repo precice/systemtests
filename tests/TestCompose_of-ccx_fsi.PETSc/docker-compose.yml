@@ -16,7 +16,7 @@ services:
       ln -sf configs/* . &&
       cp -r /home/precice/Data/Input/0.orig /home/precice/Data/Input/0 &&
       blockMesh -case /home/precice/Data/Input &&
-      pimpleDyMFoam -case /home/precice/Data/Input &&
+      pimpleFoam -case /home/precice/Data/Input &&
       cp -r /home/precice/Data/Input/. /home/precice/Data/Output/Fluid"
     container_name: openfoam-adapter-fluid
     depends_on:
