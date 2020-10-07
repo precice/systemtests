@@ -18,10 +18,10 @@ from collections import namedtuple
 
 adapter_info = namedtuple('adapter_info', 'repo tests base install_mode')
 
-adapters_info = {"openfoam": adapter_info('openfoam-adapter', ['of-of', 'of-ccx'],  'Ubuntu1604.home', 'clone'),
-                "calculix":  adapter_info('calculix-adapter', ['of-ccx','su2-ccx'], 'Ubuntu1604.home', 'clone'),
-                "su2":       adapter_info('su2-adapter',      ['su2-ccx'],          'Ubuntu1604.home', 'clone'),
-                "dealii":    adapter_info('dealii-adapter',   ['dealii-of_2D'],        'Ubuntu1604.home', 'clone'),
+adapters_info = {"openfoam": adapter_info('openfoam-adapter', ['of-of', 'of-ccx'],  'Ubuntu1804.home', 'clone'),
+                "calculix":  adapter_info('calculix-adapter', ['of-ccx','su2-ccx'], 'Ubuntu1804.home', 'clone'),
+                "su2":       adapter_info('su2-adapter',      ['su2-ccx'],          'Ubuntu1804.home', 'clone'),
+                "dealii":    adapter_info('dealii-adapter',   ['dealii-of_2D'],     'Ubuntu1804.home', 'clone'),
                 "fenics":    adapter_info('fenics-adapter',   ['fe-fe'],            'Ubuntu1804.home', 'pip')}
 
 class msg_color:
@@ -98,7 +98,7 @@ def determine_image_tag():
     else:
         return branch
 
-def generate_travis_job(adapter, user, enable_output = False, trigger_failure = True, st_branch='develop'):
+def generate_adapter_build(adapter, user, enable_output = False, trigger_failure = True, st_branch='develop'):
 
     triggered_by = os.environ["TRAVIS_JOB_WEB_URL"] if "TRAVIS_JOB_WEB_URL" in\
          os.environ else "manual script call"
@@ -169,7 +169,7 @@ def generate_travis_job(adapter, user, enable_output = False, trigger_failure = 
     for tests in adapters_info[adapter].tests:
         job = {}
         for key,systest_template in systest_templates.items():
-            if key is not 'script':
+            if key != 'script':
                 job[key] = systest_template.format(TESTNAME=tests, USER=user, TEST=tests,
                     ADAPTER=adapter, BASE=base)
             else:
@@ -182,6 +182,29 @@ def generate_travis_job(adapter, user, enable_output = False, trigger_failure = 
 
     return job_body
 
+def generate_full_build(precice_branch='develop', st_branch='develop'):
+    """
+    Generate a body from the travis.yml file in the systemtests repo.
+    st_branch       -- The systemtests branch from which to copy the travis.yml file.
+    precice_branch  -- The branch of precice/precice to use for running the build.
+                       This applies to building preCICE, building the adapters,
+                       and running the tests.
+    """
+    import yaml, re
+    travis_file = urlopen('https://raw.githubusercontent.com/precice/systemtests/{st_branch}/.travis.yml'.format(st_branch=st_branch)).read().decode('utf-8')
+    print(type(travis_file))
+    additional_args = ' --branch {branch}'.format(branch=precice_branch)
+
+    command_calls = ['build_precice.py','push_precice.py','build_adapter.py','push_adapter.py','system_testing.py']
+
+    for command in command_calls:
+        travis_file = re.sub(r'({pattern})'.format(pattern=command),
+                             r'\1{args}'.format(args=additional_args),
+                             travis_file)
+
+    travis_yaml = yaml.load(travis_file)
+
+    return travis_yaml
 
 def trigger_travis_build(job_body, user, repo):
     """ Trigger custom travis build using "job_body" as specification
@@ -293,9 +316,10 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Generate and trigger job for systemtests")
     parser.add_argument('--owner',  type=str, help="Owner of repository", default='precice' )
+    parser.add_argument('--branch',  type=str, help="Used branch of preCICE", default='develop' )
     parser.add_argument('--st-branch',  type=str, help="Used branch of systemtests", default='develop' )
-    parser.add_argument('--adapter', type=str, help="Adapter for which you want to trigger systemtests",
-              required=True, choices = adapters_info.keys() )
+    parser.add_argument('--build-type',  type=str, choices=['adapter', 'full'], help="Type of build to trigger.", default='full' )
+    parser.add_argument('--adapter', type=str, help="Adapter for which you want to trigger systemtests", choices = adapters_info.keys() )
     parser.add_argument('-o', '--output', help="Enable output for the triggered tests", action='store_true')
     parser.add_argument('--failure', help="Whether to trigger normal or failure build",
               action="store_true")
@@ -306,17 +330,33 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.failure:
+        # Sends a build failure staight away.
         repo = adapters_info[ args.adapter ].repo
         trigger_travis_build( generate_failure_callback(), args.owner,repo)
     else:
-        if args.test:
-            job = generate_travis_job(args.adapter, args.owner, enable_output=args.output,
-                trigger_failure=False, st_branch=args.st_branch)
-            pprint.pprint(job)
-        else:
-            if args.wait:
-                trigger_travis_and_wait_and_respond(generate_travis_job(args.adapter, args.owner,
-                    enable_output=args.output, trigger_failure=False, st_branch=args.st_branch), args.owner, 'systemtests' )
+        if args.build_type == 'adapter':
+            # Run a adapter-focused test that only builds the chosen adapter an a selected set of tests.
+            if args.test:
+                job = generate_adapter_build(args.adapter, args.owner, enable_output=args.output,
+                    trigger_failure=False, st_branch=args.st_branch)
+                pprint.pprint(job)
             else:
-                trigger_travis_build( generate_travis_job(args.adapter, args.owner,
-                    enable_output=args.output, trigger_failure=False, st_branch=args.st_branch), args.owner, 'systemtests' )
+                if args.wait:
+                    trigger_travis_and_wait_and_respond(generate_adapter_build(args.adapter, args.owner,
+                        enable_output=args.output, trigger_failure=False, st_branch=args.st_branch), args.owner, 'systemtests' )
+                else:
+                    trigger_travis_build( generate_adapter_build(args.adapter, args.owner,
+                        enable_output=args.output, trigger_failure=False, st_branch=args.st_branch), args.owner, 'systemtests' )
+
+        elif args.build_type == 'full':
+            # Run a full build using the existing .travis.yml file with chosen specifications.
+            if args.test:
+                job = generate_full_build(precice_branch=args.branch,st_branch=args.st_branch)
+                pprint.pprint(job)
+            else:
+                if args.wait:
+                    trigger_travis_and_wait_and_respond(generate_full_build(precice_branch=args.branch,st_branch=args.st_branch),
+                                                        args.owner, 'systemtests' )
+                else:
+                    trigger_travis_build( generate_full_build(precice_branch=args.branch,st_branch=args.st_branch),
+                                                        args.owner, 'systemtests' )
