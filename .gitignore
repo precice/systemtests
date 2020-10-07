@@ -4,3 +4,4 @@ Output
 Logs
 *.pyc
 .docker_tag
+build_info.py
