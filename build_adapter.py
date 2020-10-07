@@ -13,7 +13,9 @@ if __name__ == "__main__":
     parser.add_argument('-os', '--operating-system', help="Operating system used by preCICE base image", default="ubuntu1604")
     parser.add_argument('-i', '--precice-installation', help="Installation mode used for preCICE", default="home")
     parser.add_argument('-p', '--petsc', help="set 'yes', if you want to use a preCICE base image that was built with PETSc.", default="no", choices={'yes', 'no'})
-    parser.add_argument('-f', '--force-rebuild', nargs='+', help="Force rebuild of variable parts of docker image", default = [], choices  = ["precice", "tests"])
+    parser.add_argument('-f', '--force-rebuild', nargs='+', help="Force rebuild of variable parts of docker image.", default = [], choices  = ["precice", "tests"])
+    parser.add_argument('-bs', '--base-solver', type=str, help="Specify the docker image of the base solver used.", default=None)
+
     args = parser.parse_args()
 
     dockerfile = os.path.basename(args.dockerfile)
@@ -47,10 +49,16 @@ if __name__ == "__main__":
 
     print("Building {} image with the following features: {}".format(adapter_name, features))
 
+    build_args={"branch" : args.branch,
+                "adapter_branch" : args.adapter_branch,
+                "from" : precice_base_tag}
+
+    # Check in order to preserve default value in dockerfile unless base_solver is deliberately set
+    if args.base_solver:
+        build_args["base_solver"] = args.base_solver
+
     docker.build_image(tag=tag,
                        dockerfile=args.dockerfile,
-                       build_args={"branch" : args.branch,
-                                   "adapter_branch" : args.adapter_branch,
-                                   "from" : precice_base_tag},
+                       build_args=build_args,
                        force_rebuild=args.force_rebuild,
                        namespace="")
