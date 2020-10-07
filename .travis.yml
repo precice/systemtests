@@ -12,6 +12,8 @@ jobs:
   allow_failures:
     # Currently unstable tests that do not affect the build status
     # To add a test here, list its exact name
+    - name: "[18.04] FEniCS adapter [failure allowed]"
+    - name: "[18.04] FEniCS <-> FEniCS [failure allowed]"
     - name: "Ubuntu 18.04.sudo.mpich [failure allowed]"
     - name: "[18.04] SU2 <-> Calculix [unstable][failure allowed]"
 
@@ -112,7 +114,7 @@ jobs:
         - python push_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu2004 --precice-installation package --petsc yes --docker-username $DOCKER_USERNAME
         - python push.py
 
-    - name: "[18.04] FEniCS adapter"
+    - name: "[18.04] FEniCS adapter [failure allowed]"
       if: fork = false
       script:
         - python build_adapter.py --dockerfile adapters/Dockerfile.fenics-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
@@ -174,7 +176,7 @@ jobs:
         - python system_testing.py -s of-ccx -v
         - python push.py -o
 
-    - name: "[18.04] FEniCS <-> FEniCS"
+    - name: "[18.04] FEniCS <-> FEniCS [failure allowed]"
       script:
         - python system_testing.py -s fe-fe -v
         - python push.py
