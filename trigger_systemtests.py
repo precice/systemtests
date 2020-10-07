@@ -192,7 +192,7 @@ def generate_full_build(precice_branch='develop', st_branch='develop'):
     """
     import yaml, re
     travis_file = urlopen('https://raw.githubusercontent.com/precice/systemtests/{st_branch}/.travis.yml'.format(st_branch=st_branch)).read().decode('utf-8')
-    print(type(travis_file))
+    
     additional_args = ' --branch {branch}'.format(branch=precice_branch)
 
     command_calls = ['build_precice.py','push_precice.py','build_adapter.py','push_adapter.py','system_testing.py']
