@@ -182,7 +182,7 @@ def generate_adapter_build(adapter, user, enable_output = False, trigger_failure
 
     return job_body
 
-def generate_full_build(precice_branch='develop', st_branch='develop'):
+def generate_full_build(precice_branch='develop', st_branch='develop', message='Manual trigger'):
     """
     Generate a body from the travis.yml file in the systemtests repo.
     st_branch       -- The systemtests branch from which to copy the travis.yml file.
@@ -192,7 +192,7 @@ def generate_full_build(precice_branch='develop', st_branch='develop'):
     """
     import yaml, re
     travis_file = urlopen('https://raw.githubusercontent.com/precice/systemtests/{st_branch}/.travis.yml'.format(st_branch=st_branch)).read().decode('utf-8')
-    
+
     additional_args = ' --branch {branch}'.format(branch=precice_branch)
 
     command_calls = ['build_precice.py','push_precice.py','build_adapter.py','push_adapter.py','system_testing.py']
@@ -202,9 +202,18 @@ def generate_full_build(precice_branch='develop', st_branch='develop'):
                              r'\1{args}'.format(args=additional_args),
                              travis_file)
 
-    travis_yaml = yaml.load(travis_file)
+    travis_config = yaml.load(travis_file)
 
-    return travis_yaml
+    travis_config['merge_mode'] = 'replace'
+    job_body={
+        "request": {
+          "message": "{}".format(message),
+          "branch": "{}".format(st_branch),
+          "config": travis_config
+         }
+    }
+
+    return job_body
 
 def trigger_travis_build(job_body, user, repo):
     """ Trigger custom travis build using "job_body" as specification
@@ -318,6 +327,7 @@ if __name__ == "__main__":
     parser.add_argument('--owner',  type=str, help="Owner of repository", default='precice' )
     parser.add_argument('--branch',  type=str, help="Used branch of preCICE", default='develop' )
     parser.add_argument('--st-branch',  type=str, help="Used branch of systemtests", default='develop' )
+    parser.add_argument('-m', '--message',  type=str, help="Custom commit message to send", default=None )
     parser.add_argument('--build-type',  type=str, choices=['adapter', 'full'], help="Type of build to trigger.", default='full' )
     parser.add_argument('--adapter', type=str, help="Adapter for which you want to trigger systemtests", choices = adapters_info.keys() )
     parser.add_argument('-o', '--output', help="Enable output for the triggered tests", action='store_true')
@@ -351,12 +361,12 @@ if __name__ == "__main__":
         elif args.build_type == 'full':
             # Run a full build using the existing .travis.yml file with chosen specifications.
             if args.test:
-                job = generate_full_build(precice_branch=args.branch,st_branch=args.st_branch)
+                job = generate_full_build(precice_branch=args.branch,st_branch=args.st_branch,message=args.message)
                 pprint.pprint(job)
             else:
                 if args.wait:
-                    trigger_travis_and_wait_and_respond(generate_full_build(precice_branch=args.branch,st_branch=args.st_branch),
+                    trigger_travis_and_wait_and_respond(generate_full_build(precice_branch=args.branch,st_branch=args.st_branch,message=args.message),
                                                         args.owner, 'systemtests' )
                 else:
-                    trigger_travis_build( generate_full_build(precice_branch=args.branch,st_branch=args.st_branch),
+                    trigger_travis_build( generate_full_build(precice_branch=args.branch,st_branch=args.st_branch,message=args.message),
                                                         args.owner, 'systemtests' )
