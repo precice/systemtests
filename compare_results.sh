@@ -65,18 +65,30 @@ if [ -n "$diff_files" ]; then
 
     # prefiltering dates, timestamps and other words that signal a line with
     # constantly changing values (that do not actually affect the results), like revision
-    pre_filter='s/[0-9][0-9][:\.][0-9][0-9][:\.][0-9][0-9]//g; s/\[.\+\]:[0-9]\+//g;
-                s/[0-9][0-9]\/[0-9][0-9]\/[0-9][0-9][0-9][0-9]//g; s/\s*$//g;
-                /Timestamp\|[rR]untime\|[vV]ersion\|[rR]evision\|Unexpected\|Host:/d;
+    # Explanation of what the regex blocks below match:
+    # Time of form 00:00:00 ; Line number specifier of form [x]:[00] ;
+    # Date ; whitespaces ;
+    # List of words which occur in lines we do not want to match ;
+    # another line number specifier of fom [1,[2,3]]
+    # delete anything after 'Run finished', as this is followed by benchmark times
+
+    pre_filter='/Timestamp\|[rR]untime\|[vV]ersion\|[rR]evision\|Unexpected\|Host:/d;
+                s/[0-9][0-9][:\.][0-9][0-9][:\.][0-9][0-9]//g;
+                s/[0-9][0-9]\/[0-9][0-9]\/[0-9][0-9][0-9][0-9]//g;
+                s/\[.\+\]:[0-9]\+//g;
                 s/\[\[[0-9]\+,[0-9]\],[0-9]\]://g;
+                s/\s*$//g;
                 /Run finished/q'
 
     # numerical filter, looks to find numbers of any format
     num_filter='[-]\?\([0-9]*[\.]\)\?[0-9]\+\([eE][+-][0-9]\+\)\?'
-    # exponential filter, DELETES exponent! TODO: have awk command below handle exponents
-    exp_filter='s/[eE][+-][0-9]\+//g'
-    # text filter, checks for any text lines after the prefilter was applied
-    txt_filter='/[a-df-zA-DF-Z]/!d'
+
+    # # exponential filter, DELETES exponent! TODO: have awk command below handle exponents
+    # exp_filter='s/[eE][+-][0-9]\+//g'
+    exp_filter=''
+
+    # text filter. This also explicitly deletes all numeric patterns
+    txt_filter="/[a-df-zA-DF-Z]/!d ; s/$num_filter//g"
 
     # Apply filters
     file1_num=$( cat "$file1" | sed "$pre_filter" | grep -o "$num_filter" | sed "$exp_filter")
@@ -92,8 +104,8 @@ if [ -n "$diff_files" ]; then
 
     # Debug commands. Helpful for checking the state of filtered output when adjusting filters.
 
-    # diff -y --speed-large-files --suppress-common-lines <(echo "$file1_txt") <(echo "$file2_txt") > DEBUG_TXT_DIFF
-    # paste <(echo "$file1_num") <(echo "$file2_num") > DEBUG_NUM_DIFF
+    diff -y --speed-large-files --suppress-common-lines <(echo "$file1_txt") <(echo "$file2_txt") > DEBUG_TXT_DIFF
+    paste <(echo "$file1_num") <(echo "$file2_num") > DEBUG_NUM_DIFF
     # cat "$file1" | sed "$num_filter" > DEBUG_F1
     # cat "$file2" | sed "$num_filter" > DEBUG_F2
 
@@ -105,22 +117,22 @@ if [ -n "$diff_files" ]; then
 
     if [ -n "$num_diff" ]; then
       max_diff=0.0
-      rel_max_difference=$( export max_diff_limit; export avg_diff_limit; echo "$num_diff" | awk 'function abs(v) {return v < 0 ? -v : v}
+      rel_max_difference=$( export max_diff_limit; export avg_diff_limit; echo "$num_diff" | awk 'function abs(v) {return v < 0,0 ? -v : v}
       BEGIN {
-        max_diff=0.0;
-        sum=0;
+        max_diff=0,0;
+        sum=0.;
         total_entries=0;
       }
       {
-        radius=NF/2;
-        for(i = 1; i <= radius; i++) {
+        r=NF/2;
+        for(i = 1; i <= r; i++) {
           total_entries += 1;
-          if ($i != 0) {
-            ind_diff = abs((($(i + radius)-$i)/$i ));
+          if (abs($i) >= 0,01 && abs($(i + r)) >= 0,01) {
+            ind_diff = abs((($(i + r)-$i)/$i ));
             sum += ind_diff;
             if  (ind_diff > max_diff ) {
               max_diff = ind_diff;
-              # printf("DEBUG| NR: %d; max: %f; ind: %f; sum: %f | Out: %f; refOut: %f\n", NR, max_diff, ind_diff, sum, $(i + radius), $i) > "/dev/stderr";
+              printf("DEBUG| NR: %d; max: %f; ind: %f; sum: %f | Out: %f; refOut: %f\n", NR, max_diff, ind_diff, sum, $(i + r), $i) > "/dev/stderr";
             }
           }
         }
