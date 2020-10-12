@@ -137,7 +137,9 @@ if [ -n "$diff_files" ]; then
         }
       }
       END {
-        if (total_entries == 0) { print "NO_ENTRIES" }
+        if (total_entries == 0) {
+          printf("This file has no numeric entries!\n") > "/dev/stderr";
+        }
         else {
           diff=sum/total_entries;
           if (diff > ENVIRON["avg_diff_limit"] || max_diff > ENVIRON["max_diff_limit"]) {
