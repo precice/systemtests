@@ -13,8 +13,10 @@ COPY interface_beam.nam fix1_beam.nam  all.msh $tutorial_path/Solid/
 # RUN sed -i '/application     pimpleFoam/d; s/\/\/ application     pimpleDyMFoam/application    pimpleDyMFoam/g' $tutorial_path/Fluid/system/controlDict
 
 RUN mkdir configs &&  \
-    sed -e 's|<m2n:sockets from=\"Fluid\" to=\"Calculix\"|<m2n:sockets from=\"Fluid\" to=\"Calculix\" exchange-directory=\"/home/precice/Data/Exchange/\" network=\"eth0\"/>|g; s|max-time value="5"|max-time value="1"|g' \
-    $tutorial_path/precice-config.xml > configs/precice-config.xml && cp $tutorial_path/config.yml configs/
+    sed -e 's|<m2n:sockets from=\"Fluid\" to=\"Calculix\"|<m2n:sockets from=\"Fluid\" to=\"Calculix\" exchange-directory=\"/home/precice/Data/Exchange/\" network=\"eth0\"/>|g; \
+            s|max-time value="5"|max-time value="1"|g; \
+            s|\(\s\+\)\(</participant>\)|\1   <export:vtk directory="precice-output" />\n\1\2|g' \
+            $tutorial_path/precice-config.xml > configs/precice-config.xml && cp $tutorial_path/config.yml configs/
 RUN rm $tutorial_path/precice-config.xml
 
 RUN addgroup -g 1000 precice && adduser -u 1000 -G precice -D precice && chown -R precice:precice tutorials configs

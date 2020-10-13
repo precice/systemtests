@@ -8,7 +8,6 @@ RUN git clone --branch $branch https://github.com/precice/tutorials
 # Copy modified configs
 COPY controlDict $tutorial_path/Inner-Fluid/system/controlDict
 COPY controlDict $tutorial_path/Outer-Fluid/system/controlDict
-COPY precice-config.xml configs/precice-config.xml
 
 # Download meshes
 WORKDIR $tutorial_path
@@ -18,7 +17,9 @@ RUN bash ./Download_meshes && \
 
 # TODO: Precice configuration file can be just kept here
 WORKDIR /
-RUN sed -i 's|exchange-directory\="."|exchange-directory="/home/precice/Data/Exchange/" network="eth0"|g' \
-    configs/precice-config.xml && cp $tutorial_path/config.yml  configs/config.yml
+RUN sed -i 's|exchange-directory\="."|exchange-directory="/home/precice/Data/Exchange/" network="eth0"|g; \
+            s|max-time value=".*"|max-time value="1"|g;
+            s|\(\s\+\)\(</participant>\)|\1   <export:vtk directory="precice-output" />\n\1\2|g' \
+            $tutorial_path/precice-config.xml > configs/precice-config.xml && cp $tutorial_path/config.yml  configs/config.yml
 RUN addgroup -g 1000 precice && adduser -u 1000 -G precice -D precice && chown -R precice:precice tutorials configs
 USER precice

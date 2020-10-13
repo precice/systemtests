@@ -10,9 +10,11 @@ services:
     command: >
       /bin/bash -c "source /usr/lib/openfoam/openfoam2006/etc/bashrc &&
       cd /home/precice/openfoam-adapter/tutorials/CHT/flow-over-plate/buoyantPimpleFoam-laplacianFoam &&
-      sed -i 's|<m2n:sockets from=\"Fluid\" to=\"Solid\"/>|<m2n:sockets from=\"Fluid\" to=\"Solid\" exchange-directory=\"/home/precice/Data/Exchange/\" network=\"eth0\"/>|g' precice-config.xml &&
+      sed -i 's|<m2n:sockets from=\"Fluid\" to=\"Solid\"/>|<m2n:sockets from=\"Fluid\" to=\"Solid\" exchange-directory=\"/home/precice/Data/Exchange/\" network=\"eth0\"/>|g; \
+              s|\(\s\+\)\(</participant>\)|\1   <export:vtk directory="precice-output" />\n\1\2|g' precice-config.xml &&
       ./runFluid &&
-      cp -r Fluid/ /home/precice/Data/Output/"
+      mkdir /home/precice/Data/Output/Fluid &&
+      cp -r precice-output *.log /home/precice/Data/Output/Fluid"
     container_name: openfoam-adapter-fluid
 
   openfoam-adapter-solid:
@@ -25,9 +27,11 @@ services:
     command: >
       /bin/bash -c "source /usr/lib/openfoam/openfoam2006/etc/bashrc &&
       cd /home/precice/openfoam-adapter/tutorials/CHT/flow-over-plate/buoyantPimpleFoam-laplacianFoam &&
-      sed -i 's|<m2n:sockets from=\"Fluid\" to=\"Solid\"/>|<m2n:sockets from=\"Fluid\" to=\"Solid\" exchange-directory=\"/home/precice/Data/Exchange/\" network=\"eth0\"/>|g' precice-config.xml &&
+      sed -i 's|<m2n:sockets from=\"Fluid\" to=\"Solid\"/>|<m2n:sockets from=\"Fluid\" to=\"Solid\" exchange-directory=\"/home/precice/Data/Exchange/\" network=\"eth0\"/>|g; \
+              s|\(\s\+\)\(</participant>\)|\1   <export:vtk directory="precice-output" />\n\1\2|g' precice-config.xml &&
       ./runSolid &&
-      cp -r Solid/ /home/precice/Data/Output/"
+      mkdir /home/precice/Data/Output/Solid &&
+      cp -r precice-output *.log /home/precice/Data/Output/Solid"
     container_name: openfoam-adapter-solid
 
   tutorial-data:
