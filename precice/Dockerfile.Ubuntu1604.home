@@ -8,7 +8,6 @@ RUN apt-get -qq update && apt-get -qq install \
     build-essential \
     locales \
     libxml2-dev \
-    petsc-dev \
     git \
     python3-numpy \
     python3-dev \
