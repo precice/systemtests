@@ -1,4 +1,4 @@
-# Dockerfile for building preCICE on Ubuntu 18.04
+make all check# Dockerfile for building preCICE on Ubuntu 18.04
 # default setup, user set to 'precice', package install
 
 # Use official Ubuntu 18.04 as base
@@ -39,7 +39,7 @@ RUN apt-get -qq update && apt-get -qq install \
     RUN wget -nv 'https://www.mcs.anl.gov/petsc/mirror/release-snapshots/petsc-3.12.5.tar.gz' -O - | tar xz && \
       cd petsc-3.12.5 && \
       ./configure && \
-      make all test
+      make all check
     RUN chown -R precice:precice /petsc
 
     # Rebuild image if force_rebuild after that command
