@@ -1,4 +1,4 @@
-make all check# Dockerfile for building preCICE on Ubuntu 18.04
+# Dockerfile for building preCICE on Ubuntu 18.04
 # default setup, user set to 'precice', package install
 
 # Use official Ubuntu 18.04 as base
