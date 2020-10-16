@@ -13,6 +13,7 @@ RUN apt-get -qq update && apt-get -qq install \
     git \
     python3-numpy \
     python3-dev \
+    petsc-dev \
     wget \
     bzip2 \
     cmake && \
@@ -35,8 +36,8 @@ ENV LC_ALL en_US.UTF-8
 WORKDIR /petsc
 RUN wget -nv 'https://www.mcs.anl.gov/petsc/mirror/release-snapshots/petsc-3.12.5.tar.gz' -O - | tar xz && \
   cd petsc-3.12.5 && \
-  ./configure --with-cc=gcc --with-cxx=g++ --with-fc=0 --download-openmpi --download-f2cblaslapack && \
-  make all check
+  ./configure && \
+  make all test
 RUN chown -R precice:precice /petsc
 
 # Rebuild image if force_rebuild after that command
@@ -49,7 +50,8 @@ ENV CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/usr/include/eigen3" \
     CPATH="/usr/include/eigen3:${CPATH}" \
     PETSC_DIR="/petsc/petsc-3.12.5" \
     PETSC_ARCH="arch-linux2-c-debug" \
-    LD_LIBRARY_PATH="/petsc/petsc-3.12.5/arch-linux2-c-debug/lib:${LD_LIBRARY_PATH}"
+    LD_LIBRARY_PATH="/petsc/petsc-3.12.5/arch-linux2-c-debug/lib:${LD_LIBRARY_PATH}" \
+    PKG_CONFIG_PATH="/petsc/petsc-3.12.5/arch-linux2-c-debug/lib/pkgconfig:${PKG_CONFIG_PATH}"
 
 
 # Building preCICE
@@ -83,7 +85,7 @@ RUN mkdir /home/precice/precice-build && \
 
 # Setting preCICE environment variables
 ENV PRECICE_ROOT="/home/precice/precice" \
-    PKG_CONFIG_PATH="/home/precice/precice-install/lib/pkgconfig" \
+    PKG_CONFIG_PATH="/home/precice/precice-install/lib/pkgconfig:${PKG_CONFIG_PATH}" \
     LD_LIBRARY_PATH="/home/precice/precice-install/lib:${LD_LIBRARY_PATH}" \
     LIBRARY_PATH="/home/precice/precice-install/lib:${LIBRARY_PATH}" \
     CPATH="/home/precice/precice-install/include:${CPATH}" \
