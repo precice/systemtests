@@ -29,7 +29,7 @@ services:
       - input_fluid:/home/precice/Data/Input/
       - configs:/home/precice/su2-adapter/configs
     command: >
-              /bin/bash -c "ln -sf /home/precice/Data/Input Fluid &&
+              /bin/bash -c "ln -sf /home/precice/Data/Input Fluid;
                 ln -sf /home/precice/su2-adapter/configs/* . &&
                 . runFluid &&
                 mkdir /home/precice/Data/Output/Fluid &&
