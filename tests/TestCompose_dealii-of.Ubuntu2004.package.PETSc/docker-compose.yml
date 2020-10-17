@@ -14,7 +14,7 @@ services:
       /bin/bash -c "
       ln -sf configs/* . &&
       sed -i 's/\(set Solver type *\)= Direct/\1 = CG/gp' /home/precice/Data/Input/linear_elasticity.prm &&
-      ./linear_elasticity/linear_elasticity /home/precice/Data/Input/linear_elasticity.prm
+      ./linear_elasticity/linear_elasticity /home/precice/Data/Input/linear_elasticity.prm &&
       mkdir /home/precice/Data/Output/Fluid &&
       cp -r precice-output *.log /home/precice/Data/Output/Fluid"
     container_name: dealii-adapter
