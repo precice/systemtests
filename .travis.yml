@@ -184,7 +184,7 @@ jobs:
     - name: "[18.04] Bindings/Solverdummies"
       script:
         - python system_testing.py -s bindings -v
-        - python push.py -o
+        - python push.py
 
     - name: "[18.04] deal.ii <-> OpenFOAM [FSI][3D]"
       script:
