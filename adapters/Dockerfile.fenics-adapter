@@ -23,14 +23,14 @@ RUN wget -q https://bootstrap.pypa.io/get-pip.py -O get-pip.py && \
     python3 get-pip.py
 
 
-# Installing FEniCS
-RUN apt-get -qq update && \
-    apt-get -qq install fenics && \
-    rm -rf /var/lib/apt/lists/*
-# RUN add-apt-repository -y ppa:fenics-packages/fenics && \
-#     apt-get -qq update && \
-#     apt-get -qq install --no-install-recommends fenics && \
+# # Installing FEniCS
+# RUN apt-get -qq update && \
+#     apt-get -qq install fenics && \
 #     rm -rf /var/lib/apt/lists/*
+RUN add-apt-repository -y ppa:fenics-packages/fenics && \
+    apt-get -qq update && \
+    apt-get -qq install --no-install-recommends fenics && \
+    rm -rf /var/lib/apt/lists/*
 
 RUN pip3 install --user cython # TODO: can we put this dependency into requirements.txt of python?
 
