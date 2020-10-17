@@ -5,7 +5,7 @@ ENV workdir_path /home/precice/Data/Input
 ENV ca_adapter_path /home/precice/code_aster-adapter/cht
 RUN apk add git bash
 
-ARG branch=develop
+ARG branch=CA_OpenFOAM
 RUN git clone --branch $branch https://github.com/precice/tutorials
 
 COPY \
