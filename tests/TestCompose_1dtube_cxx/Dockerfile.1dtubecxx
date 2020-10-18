@@ -18,4 +18,7 @@ RUN git clone --branch $branch https://github.com/precice/elastictube1d.git
 
 RUN mkdir -p Data/Output/Postproc
 WORKDIR /home/precice/elastictube1d/cxx
+
+RUN sed -i 's|\(\s\+\)\(</participant>\)|\1   <export:vtk directory="precice-output" />\n\1\2|g' \
+            precice-config.xml
 RUN cmake . && make all

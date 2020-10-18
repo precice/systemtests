@@ -1,0 +1,63 @@
+Run finished at Sun Oct 18 00:17:52 2020
+Global runtime       = 35916ms / 35.916s
+Number of processors = 1
+# Rank: 0
+
+                                                                                                  Event |      Count |  Total[ms] |    Max[ms] |    Min[ms] |    Avg[ms] | Time Ratio |
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                                                                                _GLOBAL |          1 |      35916 |      35916 |      35916 |      35916 |          1 |
+                                                                                                advance |          1 |        933 |        933 |        933 |        933 |      0.026 |
+                                                                                advance/m2n.receiveData |          2 |          1 |          0 |          0 |          0 |   2.78e-05 |
+                                                                                   advance/m2n.sendData |          2 |          5 |          2 |          2 |          2 |   0.000139 |
+                                  advance/map.nn.mapData.FromSolid-to-Outer-FluidToOuter-Fluid-to-Solid |          2 |         18 |          9 |          9 |          9 |   0.000501 |
+                                                                                              configure |          1 |         12 |         12 |         12 |         12 |   0.000334 |
+                                                                                               finalize |          1 |       1868 |       1868 |       1868 |       1868 |      0.052 |
+                                                                                             initialize |          1 |        847 |        847 |        847 |        847 |     0.0236 |
+                                                                  initialize/m2n.acceptMasterConnection |          1 |         11 |         11 |         11 |         11 |   0.000306 |
+                                                                  initialize/m2n.acceptSlavesConnection |          1 |        198 |        198 |        198 |        198 |    0.00551 |
+                                                            initialize/m2n.broadcastVertexDistributions |          2 |          0 |          0 |          0 |          0 |          0 |
+                                                                   initialize/m2n.buildCommunicationMap |          2 |         82 |         54 |         27 |         41 |    0.00228 |
+                                                                    initialize/m2n.createCommunications |          2 |          9 |          5 |          3 |          4 |   0.000251 |
+                                                              initialize/m2n.exchangeVertexDistribution |          2 |        105 |        100 |          4 |         52 |    0.00292 |
+                                                   initialize/partition.gatherMesh.Outer-Fluid-to-Solid |          1 |        131 |        131 |        131 |        131 |    0.00365 |
+                                                  initialize/partition.prepareMesh.Outer-Fluid-to-Solid |          1 |         22 |         22 |         22 |         22 |   0.000613 |
+                                            initialize/partition.receiveGlobalMesh.Solid-to-Outer-Fluid |          1 |        309 |        309 |        309 |        309 |     0.0086 |
+                                               initialize/partition.sendGlobalMesh.Outer-Fluid-to-Solid |          1 |         34 |         34 |         34 |         34 |   0.000947 |
+                                                                                         initializeData |          1 |      10241 |      10241 |      10241 |      10241 |      0.285 |
+                                                                         initializeData/m2n.receiveData |          2 |         22 |         22 |          0 |         11 |   0.000613 |
+                                                                            initializeData/m2n.sendData |          2 |         23 |         18 |          5 |         11 |    0.00064 |
+                    initializeData/map.nn.computeMapping.FromSolid-to-Outer-FluidToOuter-Fluid-to-Solid |          1 |       8765 |       8765 |       8765 |       8765 |      0.244 |
+ initializeData/map.nn.computeMapping.FromSolid-to-Outer-FluidToOuter-Fluid-to-Solid.getIndexOnVertices |          1 |        210 |        210 |        210 |        210 |    0.00585 |
+                           initializeData/map.nn.mapData.FromSolid-to-Outer-FluidToOuter-Fluid-to-Solid |          2 |         34 |         17 |         17 |         17 |   0.000947 |
+                                                                                         solver.advance |          1 |         14 |         14 |         14 |         14 |    0.00039 |
+                                                                                      solver.initialize |          1 |      22009 |      22009 |      22009 |      22009 |      0.613 |
+
+
+                                                                                                   Name |        Max |  MaxOnRank |        Min |  MinOnRank |    Min/Max |
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                                                                                _GLOBAL |      35916 |          0 |      35916 |          0 |          1 |
+                                                                                                advance |        933 |          0 |        933 |          0 |          1 |
+                                                                                advance/m2n.receiveData |          0 |          0 |          0 |          0 |          0 |
+                                                                                   advance/m2n.sendData |          2 |          0 |          2 |          0 |          1 |
+                                  advance/map.nn.mapData.FromSolid-to-Outer-FluidToOuter-Fluid-to-Solid |          9 |          0 |          9 |          0 |          1 |
+                                                                                              configure |         12 |          0 |         12 |          0 |          1 |
+                                                                                               finalize |       1868 |          0 |       1868 |          0 |          1 |
+                                                                                             initialize |        847 |          0 |        847 |          0 |          1 |
+                                                                  initialize/m2n.acceptMasterConnection |         11 |          0 |         11 |          0 |          1 |
+                                                                  initialize/m2n.acceptSlavesConnection |        198 |          0 |        198 |          0 |          1 |
+                                                            initialize/m2n.broadcastVertexDistributions |          0 |          0 |          0 |          0 |          0 |
+                                                                   initialize/m2n.buildCommunicationMap |         54 |          0 |         27 |          0 |        0.5 |
+                                                                    initialize/m2n.createCommunications |          5 |          0 |          3 |          0 |        0.6 |
+                                                              initialize/m2n.exchangeVertexDistribution |        100 |          0 |          4 |          0 |       0.04 |
+                                                   initialize/partition.gatherMesh.Outer-Fluid-to-Solid |        131 |          0 |        131 |          0 |          1 |
+                                                  initialize/partition.prepareMesh.Outer-Fluid-to-Solid |         22 |          0 |         22 |          0 |          1 |
+                                            initialize/partition.receiveGlobalMesh.Solid-to-Outer-Fluid |        309 |          0 |        309 |          0 |          1 |
+                                               initialize/partition.sendGlobalMesh.Outer-Fluid-to-Solid |         34 |          0 |         34 |          0 |          1 |
+                                                                                         initializeData |      10241 |          0 |      10241 |          0 |          1 |
+                                                                         initializeData/m2n.receiveData |         22 |          0 |          0 |          0 |          0 |
+                                                                            initializeData/m2n.sendData |         18 |          0 |          5 |          0 |   0.277778 |
+                    initializeData/map.nn.computeMapping.FromSolid-to-Outer-FluidToOuter-Fluid-to-Solid |       8765 |          0 |       8765 |          0 |          1 |
+ initializeData/map.nn.computeMapping.FromSolid-to-Outer-FluidToOuter-Fluid-to-Solid.getIndexOnVertices |        210 |          0 |        210 |          0 |          1 |
+                           initializeData/map.nn.mapData.FromSolid-to-Outer-FluidToOuter-Fluid-to-Solid |         17 |          0 |         17 |          0 |          1 |
+                                                                                         solver.advance |         14 |          0 |         14 |          0 |          1 |
+                                                                                      solver.initialize |      22009 |          0 |      22009 |          0 |          1 |
