@@ -64,13 +64,17 @@ if [ -n "$diff_files" ]; then
     # Filtering section. We compare numbers and text seperately
 
     # prefiltering dates, timestamps and other words that signal a line with
-    # constantly changing values (that do not actually affect the results), like revision
+    # constantly changing values (that do not actually affect the results)
     # Explanation of what the regex blocks below match:
-    # Time of form 00:00:00 ; Line number specifier of form [x]:[00] ;
-    # Date ; whitespaces ;
-    # List of words which occur in lines we do not want to match ;
-    # another line number specifier of fom [1,[2,3]]
-    # delete anything after 'Run finished', as this is followed by benchmark times
+    #
+    #   List of words which occur in lines we do not want to check ;
+    #   Time format ;
+    #   Date format ;
+    #   Line number specifier of form [x]:[00] ;
+    #   another line number specifier of fom [1,[2,3]] ;
+    #   sequence of whitespaces ;
+    #   hexadecimals (will commonly describe memory locations)
+    #   delete anything after 'Run finished', as this is followed by benchmark times
 
     pre_filter='/Timestamp\|[rR]untime\|[vV]ersion\|[rR]evision\|Unexpected\|Host:/d;
                 s/[0-9][0-9][:\.][0-9][0-9][:\.][0-9][0-9]//g;
@@ -78,6 +82,7 @@ if [ -n "$diff_files" ]; then
                 s/\[.\+\]:[0-9]\+//g;
                 s/\[\[[0-9]\+,[0-9]\],[0-9]\]://g;
                 s/\s*$//g;
+                s/0x[0-9a-f]//g;
                 /Run finished/q'
 
     # numerical filter, looks to find numbers of any format
