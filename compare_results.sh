@@ -61,6 +61,12 @@ if [ -n "$diff_files" ]; then
     file1=$( echo "${array_files[i]}" | awk '{print $1}' )
     file2=$( echo "${array_files[i]}" | awk '{print $2}' )
 
+    filename=$(basename $file1)
+    # Check if events-summary file and skip comparison if so
+    if [[ $filename =~ events-summary.log$ ]]; then
+      continue
+
+
     # Filtering section. We compare numbers and text seperately
 
     # prefiltering dates, timestamps and other words that signal a line with
@@ -70,6 +76,7 @@ if [ -n "$diff_files" ]; then
     #   List of words which occur in lines we do not want to check ;
     #   Time format ;
     #   Date format ;
+    #   Weekday format ;
     #   Line number specifier of form [x]:[00] ;
     #   another line number specifier of fom [1,[2,3]] ;
     #   sequence of whitespaces ;
@@ -79,6 +86,7 @@ if [ -n "$diff_files" ]; then
     pre_filter='/Timestamp\|[rR]untime\|[vV]ersion\|[rR]evision\|Unexpected\|Host:/d;
                 s/[0-9][0-9][:\.][0-9][0-9][:\.][0-9][0-9]//g;
                 s/[0-9][0-9]\/[0-9][0-9]\/[0-9][0-9][0-9][0-9]//g;
+                s/Mon\|Tue\|Wed\|Thu\|Fri\|Sat\|Sun//g;
                 s/\[.\+\]:[0-9]\+//g;
                 s/\[\[[0-9]\+,[0-9]\],[0-9]\]://g;
                 s/\s*$//g;
@@ -116,7 +124,6 @@ if [ -n "$diff_files" ]; then
 
 
     # Pairwise compare file fields and compute average/maximum relative difference
-    filename=$(basename $file1) # total file paths are long, this keeps info concise
     # echo "Comparing values in '$filename'..."
 
 
