@@ -47,7 +47,7 @@ Dimensional simulation.
 The reference area is 1 m^2.
 The semi-span will be computed using the max y(3D) value.
 The reference length is 1 m.
-Reference origin for moment evaluation is (4.66903e-310, 4.66903e-310, 0).
+Reference origin for moment evaluation is (4.64643e-310, 4.64643e-310, 0).
 Surface(s) where the force coefficients are evaluated: 
 Input mesh file name: Fluid/fluidMesh.su2
 
@@ -187,19 +187,6 @@ Setting dynamic mesh structure for zone 0.
 
 ---------------------- Python Interface Preprocessing ---------------------
 Setting customized boundary conditions for zone 0
---------------------------------------------------------------------------
-[[57769,1],0]: A high-performance Open MPI point-to-point messaging module
-was unable to find any relevant network interfaces:
-
-Module: OpenFabrics (openib)
-  Host: 15c031b13d8a
-
-Another transport will be used instead, although this may result in
-lower performance.
-
-NOTE: You can disable this warning by setting the MCA parameter
-btl_base_warn_component_unused to 0.
---------------------------------------------------------------------------
 ---[precice] [0m This is preCICE version 2.1.1
 ---[precice] [0m Revision info: v2.1.1-44-g087248fb
 ---[precice] [0m Configuring preCICE with configuration "./precice-config.xml"
@@ -14004,21 +13991,9 @@ Deleted CConfig container.
 Deleted COutput class.
 -------------------------------------------------------------------------
 
-Completed in 128.059264 seconds on 1 core.
+Completed in 130.176483 seconds on 1 core.
 Process #0/0: Finalizing preCICE...
 Process #0/0: Done finalizing preCICE!
-double free or corruption (fasttop)
-[15c031b13d8a:00008] *** Process received signal ***
-[15c031b13d8a:00008] Signal: Aborted (6)
-[15c031b13d8a:00008] Signal code:  (-6)
-[15c031b13d8a:00008] [ 0] /lib/x86_64-linux-gnu/libc.so.6(+0x3efd0)[0x7fb266282fd0]
-[15c031b13d8a:00008] [ 1] /lib/x86_64-linux-gnu/libc.so.6(gsignal+0xc7)[0x7fb266282f47]
-[15c031b13d8a:00008] [ 2] /lib/x86_64-linux-gnu/libc.so.6(abort+0x141)[0x7fb2662848b1]
-[15c031b13d8a:00008] [ 3] /lib/x86_64-linux-gnu/libc.so.6(+0x89907)[0x7fb2662cd907]
-[15c031b13d8a:00008] [ 4] /lib/x86_64-linux-gnu/libc.so.6(+0x9097a)[0x7fb2662d497a]
-[15c031b13d8a:00008] [ 5] /lib/x86_64-linux-gnu/libc.so.6(cfree+0x6b4)[0x7fb2662dc074]
-[15c031b13d8a:00008] [ 6] SU2_CFD(+0x148e8a)[0x55f301190e8a]
-[15c031b13d8a:00008] [ 7] SU2_CFD(+0xaf9f4)[0x55f3010f79f4]
-[15c031b13d8a:00008] [ 8] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xe7)[0x7fb266265b97]
-[15c031b13d8a:00008] [ 9] SU2_CFD(+0xaf28a)[0x55f3010f728a]
-[15c031b13d8a:00008] *** End of error message ***
+
+------------------------- Exit Success (SU2_CFD) ------------------------
+
