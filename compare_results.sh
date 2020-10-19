@@ -65,7 +65,7 @@ if [ -n "$diff_files" ]; then
     # Check if events-summary file and skip comparison if so
     if [[ $filename =~ events-summary.log$ ]]; then
       continue
-
+    fi
 
     # Filtering section. We compare numbers and text seperately
 
