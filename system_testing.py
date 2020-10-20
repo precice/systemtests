@@ -12,9 +12,10 @@ Example:
         $ python system_testing.py -s of-of -l
 """
 
-import argparse, filecmp, os, shutil, sys, re, glob
+import argparse, filecmp, os, shutil, sys, re
 import common, docker
 from subprocess import CalledProcessError
+from glob import glob
 from common import call, ccall, get_test_variants, filter_tests, get_test_participants
 
 def build(systest, tag, branch, local, force_rebuild):
