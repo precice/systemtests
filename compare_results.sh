@@ -62,10 +62,6 @@ if [ -n "$diff_files" ]; then
     file2=$( echo "${array_files[i]}" | awk '{print $2}' )
 
     filename=$(basename $file1)
-    # Check if events-summary file and skip comparison if so
-    if [[ $filename =~ events-summary.log$ ]]; then
-      continue
-    fi
 
     # Filtering section. We compare numbers and text seperately
 

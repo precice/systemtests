@@ -12,7 +12,7 @@ Example:
         $ python system_testing.py -s of-of -l
 """
 
-import argparse, filecmp, os, shutil, sys
+import argparse, filecmp, os, shutil, sys, re
 import common, docker
 from subprocess import CalledProcessError
 from common import call, ccall, get_test_variants, filter_tests, get_test_participants
@@ -114,6 +114,16 @@ def run_compose(systest, branch, local, tag, force_rebuild, rm_all=False, verbos
         try:
             for command in commands_main:
                 ccall(command)
+
+            # Filter out specific files that we don't want to compare
+            # e.g. -events-summary.log files, which contain very fluctuating values
+            patterns_to_ignore = [r"events-summary.log$", r"ldd.log"]
+            output_files = os.listdir("Output")
+            for output_file in output_files:
+                for pattern in patterns_to_ignore:
+                    if re.match(pattern, output_file):
+                        ccall("rm -f Output/{}".format(output_file))
+                        break
 
             #compare results
             path_to_ref = os.path.join(os.getcwd(), "referenceOutput")
