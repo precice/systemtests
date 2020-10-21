@@ -117,6 +117,11 @@ if [ -n "$diff_files" ]; then
     paste <(echo "$file1_num") <(echo "$file2_num") > DEBUG_NUM_DIFF
     # cat "$file1" | sed "$num_filter" > DEBUG_F1
     # cat "$file2" | sed "$num_filter" > DEBUG_F2
+    echo "TXT_DIFF:"
+    echo $DEBUG_TXT_DIFF
+    echo "------------------------"
+    echo "NUM_DIFF:"
+    echo $DEBUG_NUM_DIFF
 
 
     # Pairwise compare file fields and compute average/maximum relative difference
