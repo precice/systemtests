@@ -16,6 +16,7 @@ jobs:
     - name: "[18.04] FEniCS <-> FEniCS [failure allowed]"
     - name: "Ubuntu 18.04.sudo.mpich [failure allowed]"
     - name: "[18.04] SU2 <-> Calculix [unstable][failure allowed]"
+    - name: "[20.04 PETSc] SU2 <-> Calculix [unstable][failure allowed]"
     - name: "[18.04 PETSc] OpenFOAM <-> CalculiX [FSI][failure allowed]"
 
 
@@ -162,7 +163,7 @@ jobs:
         - python system_testing.py -s su2-ccx -v
         - python push.py -o
 
-    - name: "[20.04 PETSc] SU2 <-> Calculix [unstable]"
+    - name: "[20.04 PETSc] SU2 <-> Calculix [unstable][failure allowed]"
       script:
         - python system_testing.py -s su2-ccx --base Ubuntu2004.package.PETSc -v
         - python push.py -o
