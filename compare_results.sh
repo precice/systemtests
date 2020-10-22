@@ -124,16 +124,18 @@ if [ -n "$diff_files" ]; then
 
     if [ -n "$num_diff" ]; then
       rel_max_difference=$( export max_diff_limit; export avg_diff_limit; echo "$num_diff" | awk 'function abs(v) {return v < 0.0 ? -v : v}
+      function log10(v) {return log(v)/log(10)}
       BEGIN {
         max_diff=0.0;
         sum=0.0;
         total_entries=0;
+        exp_threshold=-12;
       }
       {
         r=NF/2;
         for(i = 1; i <= r; i++) {
           total_entries += 1;
-          if (abs($i) >= 1e-12 && abs($(i + r)) >= 1e-12) {
+          if (log10(abs($i)) > exp_threshold && log10(abs($(i + r))) > exp_threshold) {
             ind_diff = abs((($(i + r)-$i)/$i ));
             sum += ind_diff;
             if  (ind_diff > max_diff ) {
