@@ -5,7 +5,6 @@ ENV workdir_path /home/precice/Data/Input
 ENV ca_adapter_path /home/precice/code_aster-adapter/cht
 RUN apk add git bash
 
-# TODO: Change this branch to 'develop'
 ARG branch=CA_OpenFOAM
 RUN git clone --branch $branch https://github.com/precice/tutorials
 
@@ -29,6 +28,7 @@ RUN \
     sed -i 's|10|1|g' config.comm && \
     sed -i 's|100|10|g' config.comm && \
     sed -i 's|value="100"|value="10"|g' precice-config.xml && \
+    sed -i 's|\(\s\+\)\(</participant>\)|\1   <export:vtk directory="precice-output" />\n\1\2|g' precice-config.xml && \
     chmod 777 -R /tutorials/CHT/flow-over-plate/
 
 RUN adduser -D precice && chown -R precice:precice $tutorial_path/Solid

@@ -61,23 +61,32 @@ if [ -n "$diff_files" ]; then
     file1=$( echo "${array_files[i]}" | awk '{print $1}' )
     file2=$( echo "${array_files[i]}" | awk '{print $2}' )
 
+    filename=$(basename $file1)
+
     # Filtering section. We compare numbers and text seperately
 
     # prefiltering dates, timestamps and other words that signal a line with
-    # constantly changing values (that do not actually affect the results), like revision
+    # constantly changing values (that do not actually affect the results)
     # Explanation of what the regex blocks below match:
-    # Time of form 00:00:00 ; Line number specifier of form [x]:[00] ;
-    # Date ; whitespaces ;
-    # List of words which occur in lines we do not want to match ;
-    # another line number specifier of fom [1,[2,3]]
-    # delete anything after 'Run finished', as this is followed by benchmark times
+    #
+    #   List of words which occur in lines we do not want to check ;
+    #   Time format ;
+    #   Date format ;
+    #   Weekday format ;
+    #   Line number specifier of form [x]:[00] ;
+    #   another line number specifier of fom [1,[2,3]] ;
+    #   sequence of whitespaces ;
+    #   hexadecimals (will commonly describe memory locations)
+    #   delete anything after 'Run finished', as this is followed by benchmark times
 
     pre_filter='/Timestamp\|[rR]untime\|[vV]ersion\|[rR]evision\|Unexpected\|Host:/d;
                 s/[0-9][0-9][:\.][0-9][0-9][:\.][0-9][0-9]//g;
                 s/[0-9][0-9]\/[0-9][0-9]\/[0-9][0-9][0-9][0-9]//g;
+                s/Mon\|Tue\|Wed\|Thu\|Fri\|Sat\|Sun//g;
                 s/\[.\+\]:[0-9]\+//g;
                 s/\[\[[0-9]\+,[0-9]\],[0-9]\]://g;
                 s/\s*$//g;
+                s/0x[0-9a-f]//g;
                 /Run finished/q'
 
     # numerical filter, looks to find numbers of any format
@@ -104,29 +113,29 @@ if [ -n "$diff_files" ]; then
 
     # Debug commands. Helpful for checking the state of filtered output when adjusting filters.
 
-    diff -y --speed-large-files --suppress-common-lines <(echo "$file1_txt") <(echo "$file2_txt") > DEBUG_TXT_DIFF
-    paste <(echo "$file1_num") <(echo "$file2_num") > DEBUG_NUM_DIFF
+    # diff -y --speed-large-files --suppress-common-lines <(echo "$file1_txt") <(echo "$file2_txt") > DEBUG_TXT_DIFF
+    # paste <(echo "$file1_num") <(echo "$file2_num") > DEBUG_NUM_DIFF
     # cat "$file1" | sed "$num_filter" > DEBUG_F1
     # cat "$file2" | sed "$num_filter" > DEBUG_F2
 
-
     # Pairwise compare file fields and compute average/maximum relative difference
-    filename=$(basename $file1) # total file paths are long, this keeps info concise
-    # echo "Comparing values in '$filename'..."
+    echo "Comparing values in '$filename'..."
 
 
     if [ -n "$num_diff" ]; then
       rel_max_difference=$( export max_diff_limit; export avg_diff_limit; echo "$num_diff" | awk 'function abs(v) {return v < 0.0 ? -v : v}
+      function log10(v) {return log(v)/log(10)}
       BEGIN {
         max_diff=0.0;
         sum=0.0;
         total_entries=0;
+        exp_threshold=-12;
       }
       {
         r=NF/2;
         for(i = 1; i <= r; i++) {
           total_entries += 1;
-          if (abs($i) >= 1e-12 && abs($(i + r)) >= 1e-12) {
+          if (log10(abs($i)) > exp_threshold && log10(abs($(i + r))) > exp_threshold) {
             ind_diff = abs((($(i + r)-$i)/$i ));
             sum += ind_diff;
             if  (ind_diff > max_diff ) {
