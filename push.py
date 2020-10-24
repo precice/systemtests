@@ -123,6 +123,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description='Push build/test logs to output repository. Optionally includes result data (for tests only).')
     parser.add_argument('-o', '--output', action='store_true', help="Enable result storage (only for tests, disabled by default)", )
+    parser.add_argument('--branch', type=str, help="Branch of preCICE that was used for this build. Setting this value has no effect on execution.", default='develop')
     parser.add_argument('--st-branch', type=str, help="Branch of precice_st_output to push to", default=default_st_branch)
     args = parser.parse_args()
 

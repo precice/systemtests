@@ -56,6 +56,7 @@ ENV CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/usr/include/eigen3" \
     LD_LIBRARY_PATH="/petsc/petsc-3.12.5/arch-linux2-c-debug/lib:${LD_LIBRARY_PATH}" \
     PKG_CONFIG_PATH="/petsc/petsc-3.12.5/arch-linux2-c-debug/lib/pkgconfig:${PKG_CONFIG_PATH}"
 
+
 # Building preCICE
 ARG branch=develop
 RUN git clone --branch $branch https://github.com/precice/precice.git /home/precice/precice
