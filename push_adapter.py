@@ -1,7 +1,7 @@
-import argparse, docker
+import argparse, docker, common
 import system_testing
 import os
-                           
+
 if __name__ == "__main__":
     # Parsing flags
     parser = argparse.ArgumentParser(description='Push local adapter image to Docker Hub.')
@@ -14,23 +14,38 @@ if __name__ == "__main__":
     parser.add_argument('-f', '--force-rebuild', nargs='+', help="Force rebuild of variable parts of docker image", default = [], choices  = ["precice", "tests"])
     args = parser.parse_args()
 
-    dockerfile = os.path.basename(args.dockerfile)
-    assert(dockerfile.split(".")[0] == "Dockerfile")  # We have the convention that our Dockerfiles always start with the term "Dockerfile"
+    # Check if adapter build succeeded
+    # NOTE: requires push_adapter.py to be called directly after build command!
+    job_result = os.environ["TRAVIS_TEST_RESULT"]
+    job_success = True if (job_result == '0') else False
+    if job_success:
 
-    adapter_name = dockerfile.split(".")[1]  # Extract adapter name from filename
+        dockerfile = os.path.basename(args.dockerfile)
+        assert(dockerfile.split(".")[0] == "Dockerfile")  # We have the convention that our Dockerfiles always start with the term "Dockerfile"
 
-    # converting features provided via command-line to dictionary
-    features = dict()
-    assert(args.operating_system)
-    if args.operating_system:  # first feature is mandatory always describes the os
-        features["os"] = args.operating_system
-    if args.precice_installation:  # second feature is optional if it exists it describes the preCICE installation
-        features["installation"] = args.precice_installation
-    if args.petsc == "yes":
-        features["petsc"] = "yes"
+        adapter_name = dockerfile.split(".")[1]  # Extract adapter name from filename
 
-    tag = system_testing.compose_tag(args.docker_username, adapter_name, features, args.branch)
+        # converting features provided via command-line to dictionary
+        features = dict()
+        assert(args.operating_system)
+        if args.operating_system:  # first feature is mandatory always describes the os
+            features["os"] = args.operating_system
+        if args.precice_installation:  # second feature is optional if it exists it describes the preCICE installation
+            features["installation"] = args.precice_installation
+        if args.petsc == "yes":
+            features["petsc"] = "yes"
 
-    docker.push_image(tag=tag,
-                      namespace="")
-                       
+        tag = system_testing.compose_tag(args.docker_username, adapter_name, features, args.branch)
+
+        docker.push_image(tag=tag,
+                          namespace="")
+
+        common.save_build_info(build_type='adapter', docker_tag=tag)
+
+    else:
+        print("#############################################################\n" +
+              "No docker image was pushed because the previous job command failed.\n" +
+              "Check the preceding adapter build to find out what went wrong.\n" +
+              "(Note that this script relies on being called *directly* after build_adapter.py)\n" +
+              "#############################################################")
+        exit(1)

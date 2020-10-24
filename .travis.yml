@@ -12,10 +12,12 @@ jobs:
   allow_failures:
     # Currently unstable tests that do not affect the build status
     # To add a test here, list its exact name
-    - name: "[18.04] FEniCS <-> FEniCS [failure allowed]"
     - name: "[18.04] FEniCS adapter [failure allowed]"
+    - name: "[18.04] FEniCS <-> FEniCS [failure allowed]"
     - name: "Ubuntu 18.04.sudo.mpich [failure allowed]"
     - name: "[18.04] SU2 <-> Calculix [unstable][failure allowed]"
+    - name: "[20.04 PETSc] SU2 <-> Calculix [unstable][failure allowed]"
+    - name: "[18.04 PETSc] OpenFOAM <-> CalculiX [FSI][failure allowed]"
 
 
   include:
@@ -24,60 +26,32 @@ jobs:
       if: fork = false
       script:
         - python build_precice.py --dockerfile precice/Dockerfile.Arch --docker-username $DOCKER_USERNAME
-        - python push.py --precice precice/Dockerfile.Arch
-      deploy:
-        skip_cleanup: true
-        provider: script
-        on:
-          all_branches: true
-        script: >-
-          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_precice.py --dockerfile precice/Dockerfile.Arch --docker-username $DOCKER_USERNAME
+        - python push_precice.py --dockerfile precice/Dockerfile.Arch --docker-username $DOCKER_USERNAME
+        - python push.py
 
     - stage: Building preCICE
-      name: "Ubuntu 18.04.home"
-      if: fork = false
-      script:
-        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.home --docker-username $DOCKER_USERNAME
-        - python push.py --precice precice/Dockerfile.Ubuntu1804.home
-      deploy:
-        skip_cleanup: true
-        provider: script
-        on:
-          all_branches: true
-        script: >-
-          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.home --docker-username $DOCKER_USERNAME
-
-    - stage: Building preCICE
-      name: "Ubuntu 18.04 home [PETSc]"
+      name: "Ubuntu 18.04 home [PETSc from source]"
       if: fork = false
       script:
         - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.home --petsc yes --docker-username $DOCKER_USERNAME
-        - python push.py --precice precice/Dockerfile.Ubuntu1804.home
-      deploy:
-        skip_cleanup: true
-        provider: script
-        on:
-          all_branches: true
-        script: >-
-          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.home --petsc yes --docker-username $DOCKER_USERNAME
+        - python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.home --petsc yes --docker-username $DOCKER_USERNAME
+        - python push.py
 
     - stage: Building preCICE
       name: "Ubuntu 18.04.package"
       if: fork = false
       script:
         - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.package --docker-username $DOCKER_USERNAME
-        - python push.py --precice precice/Dockerfile.Ubuntu1804.package
-      deploy:
-        skip_cleanup: true
-        provider: script
-        on:
-          all_branches: true
-        script: >-
-          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.package --docker-username $DOCKER_USERNAME
+        - python push_precice.py --dockerfile precice/Dockerfile.Ubuntu1804.package --docker-username $DOCKER_USERNAME
+        - python push.py
+
+    - stage: Building preCICE
+      name: "Ubuntu 20.04.package [PETSc from APT]"
+      if: fork = false
+      script:
+        - python build_precice.py --dockerfile precice/Dockerfile.Ubuntu2004.package --petsc yes --docker-username $DOCKER_USERNAME
+        - python push_precice.py --dockerfile precice/Dockerfile.Ubuntu2004.package --petsc yes --docker-username $DOCKER_USERNAME
+        - python push.py
 
     - name: "[Build preCICE on fork] Using cached version"
       if: fork = true
@@ -90,127 +64,92 @@ jobs:
       if: fork = false
       script:
         - python build_adapter.py --dockerfile adapters/Dockerfile.su2-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
-        - python push.py --adapter adapters/Dockerfile.su2-adapter
-      deploy:
-        skip_cleanup: true
-        provider: script
-        on:
-          all_branches: true
-        script: >-
-          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_adapter.py --dockerfile adapters/Dockerfile.su2-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
+        - python push_adapter.py --dockerfile adapters/Dockerfile.su2-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
+        - python push.py
+
+    - name: "[20.04] SU2 adapter [PETSc]"
+      if: fork = false
+      script:
+        - python build_adapter.py --dockerfile adapters/Dockerfile.su2-adapter --operating-system ubuntu2004 --precice-installation package --petsc yes --docker-username $DOCKER_USERNAME
+        - python push_adapter.py --dockerfile adapters/Dockerfile.su2-adapter --operating-system ubuntu2004 --precice-installation package --petsc yes --docker-username $DOCKER_USERNAME
+        - python push.py
 
     - name: "[18.04] deal.ii adapter [3D]"
       if: fork = false
       script:
         - python build_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter_3D --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
-        - python push.py --adapter adapters/Dockerfile.dealii-adapter_3D
-      deploy:
-        skip_cleanup: true
-        provider: script
-        on:
-          all_branches: true
-        script: >-
-          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter_3D --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
+        - python push_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter_3D --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
+        - python push.py
 
     - name: "[18.04] deal.ii adapter [2D]"
       if: fork = false
       script:
         - python build_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
-        - python push.py --adapter adapters/Dockerfile.dealii-adapter
-      deploy:
-        skip_cleanup: true
-        provider: script
-        on:
-          all_branches: true
-        script: >-
-          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
+        - python push_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
+        - python push.py
 
-    - name: "[18.04] CalculiX adapter"
+    - name: "[20.04] deal.ii adapter [2D][PETSc]"
       if: fork = false
       script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
-        - python push.py --adapter adapters/Dockerfile.calculix-adapter
-      deploy:
-        skip_cleanup: true
-        provider: script
-        on:
-          all_branches: true
-        script: >-
-          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
+        - python build_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter --operating-system ubuntu2004 --precice-installation package --petsc yes --docker-username $DOCKER_USERNAME --base-solver precice/deal.ii-ubuntu2004
+        - python push_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter --operating-system ubuntu2004 --precice-installation package --petsc yes --docker-username $DOCKER_USERNAME
+        - python push.py
 
     - name: "[18.04] OpenFOAM adapter"
       if: fork = false
       script:
         - python build_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
-        - python push.py --adapter adapters/Dockerfile.openfoam-adapter
-      deploy:
-        skip_cleanup: true
-        provider: script
-        on:
-          all_branches: true
-        script: >-
-          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
-
-    - name: "[18.04] FEniCS adapter [failure allowed]"
-      if: fork = false
-      script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.fenics-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
-        - python push.py --adapter adapters/Dockerfile.fenics-adapter
-      deploy:
-        skip_cleanup: true
-        provider: script
-        on:
-          all_branches: true
-        script: >-
-          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_adapter.py --dockerfile adapters/Dockerfile.fenics-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
-
-    - name: "[18.04] Code_Aster adapter"
-      if: fork = false
-      script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.codeaster-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
-      deploy:
-        skip_cleanup: true
-        provider: script
-        on:
-          all_branches: true
-        script: >-
-          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_adapter.py --dockerfile adapters/Dockerfile.codeaster-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
+        - python push_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
+        - python push.py
 
     - name: "[18.04] OpenFOAM adapter [PETSc]"
       if: fork = false
       script:
         - python build_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1804 --precice-installation home --petsc yes --docker-username $DOCKER_USERNAME
-        - python push.py --adapter adapters/Dockerfile.openfoam-adapter
-      deploy:
-        skip_cleanup: true
-        provider: script
-        on:
-          all_branches: true
-        script: >-
-          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1804 --precice-installation home --petsc yes --docker-username $DOCKER_USERNAME
+        - python push_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1804 --precice-installation home --petsc yes --docker-username $DOCKER_USERNAME
+        - python push.py
+
+    - name: "[20.04] OpenFOAM adapter [PETSc]"
+      if: fork = false
+      script:
+        - python build_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu2004 --precice-installation package --petsc yes --docker-username $DOCKER_USERNAME
+        - python push_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu2004 --precice-installation package --petsc yes --docker-username $DOCKER_USERNAME
+        - python push.py
+
+    - name: "[18.04] FEniCS adapter [failure allowed]"
+      if: fork = false
+      script:
+        - python build_adapter.py --dockerfile adapters/Dockerfile.fenics-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
+        - python push_adapter.py --dockerfile adapters/Dockerfile.fenics-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
+        - python push.py
+
+    - name: "[18.04] Code_Aster adapter"
+      if: fork = false
+      script:
+        - python build_adapter.py --dockerfile adapters/Dockerfile.codeaster-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
+        - python push_adapter.py --dockerfile adapters/Dockerfile.codeaster-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
+        - python push.py
+
+    - name: "[18.04] CalculiX adapter"
+      if: fork = false
+      script:
+        - python build_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
+        - python push_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
+        - python push.py
 
     - name: "[18.04] CalculiX adapter [PETSc]"
       if: fork = false
       script:
         - python build_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1804 --precice-installation home --petsc yes --docker-username $DOCKER_USERNAME
-        - python push.py --adapter adapters/Dockerfile.calculix-adapter
-      deploy:
-        skip_cleanup: true
-        provider: script
-        on:
-          all_branches: true
-        script: >-
-          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &&
-          python push_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1804 --precice-installation home --petsc yes --docker-username $DOCKER_USERNAME
+        - python push_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1804 --precice-installation home --petsc yes --docker-username $DOCKER_USERNAME
+        - python push.py
 
+    - name: "[20.04] CalculiX adapter [PETSc]"
+      if: fork = false
+      script:
+        - python build_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu2004 --precice-installation package --petsc yes --docker-username $DOCKER_USERNAME
+        - python push_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu2004 --precice-installation package --petsc yes --docker-username $DOCKER_USERNAME
+        - python push.py
 
     - name: "[Build adapters on fork] Using cached version"
       if: fork = true
@@ -222,64 +161,74 @@ jobs:
       name: "[18.04] SU2 <-> Calculix [unstable][failure allowed]"
       script:
         - python system_testing.py -s su2-ccx -v
-        - python push.py --test su2-ccx
+        - python push.py
+
+    - name: "[20.04 PETSc] SU2 <-> Calculix [unstable][failure allowed]"
+      script:
+        - python system_testing.py -s su2-ccx --base Ubuntu2004.package.PETSc -v
+        - python push.py
 
     - name: "[18.04] OpenFOAM <-> OpenFOAM"
       script:
         - python system_testing.py -s of-of -v
-        - python push.py --test of-of
+        - python push.py
 
     - name: "[18.04] Calculix <-> OpenFOAM"
       script:
         - python system_testing.py -s of-ccx -v
-        - python push.py --test of-ccx
+        - python push.py
 
     - name: "[18.04] FEniCS <-> FEniCS [failure allowed]"
       script:
         - python system_testing.py -s fe-fe -v
-        - python push.py --test fe-fe
+        - python push.py
 
     - name: "[18.04] Bindings/Solverdummies"
       script:
         - python system_testing.py -s bindings -v
-        - python push.py --test bindings
+        - python push.py
 
-    - name: "[18.04] deal.ii <-> OpenFOAM [3D]"
+    - name: "[18.04] deal.ii <-> OpenFOAM [FSI][3D]"
       script:
         - python system_testing.py -s dealii-of_3D -v
-        - python push.py --test dealii-of_3D
+        - python push.py
 
-    - name: "[18.04] deal.ii <-> OpenFOAM [2D]"
+    - name: "[18.04] deal.ii <-> OpenFOAM [FSI][2D]"
       script:
         - python system_testing.py -s dealii-of -v
-        - python push.py --test dealii-of
+        - python push.py
+
+    - name: "[20.04 PETSc] deal.ii <-> OpenFOAM [FSI][2D]"
+      script:
+        - python system_testing.py -s dealii-of --base Ubuntu2004.package.PETSc -v
+        - python push.py
 
     - name: "[18.04] nutils <-> OpenFOAM"
       script:
         - python system_testing.py -s nutils-of -v
-        - python push.py --test nutils-of
+        - python push.py
 
     - name: "[18.04] OpenFOAM <-> OpenFOAM [nearest projection]"
       script:
         - python system_testing.py -s of-of_np -v
-        - python push.py --test of-of_np
+        - python push.py
 
     - name: "[18.04] OpenFOAM <-> Code_Aster"
       script:
         - python system_testing.py -s of-ca -v
-        - python push.py --test of-ca
+        - python push.py
 
     - name: "[18.04] Elastictube1D - Python"
       script:
         - python system_testing.py -s 1dtube_py -v
-        - python push.py --test 1dtube_py
+        - python push.py
 
     - name: "[18.04] Elastictube1D - C++"
       script:
         - python system_testing.py -s 1dtube_cxx -v
-        - python push.py --test 1dtube_cxx
+        - python push.py
 
-    - name: "[18.04 PETSc] OpenFOAM <-> CalculiX [FSI]"
+    - name: "[18.04 PETSc] OpenFOAM <-> CalculiX [FSI][failure allowed]"
       script:
         - python system_testing.py -s of-ccx_fsi --base Ubuntu1804.home.PETSc -v
-        - python push.py --test of-ccx_fsi --petsc
+        - python push.py

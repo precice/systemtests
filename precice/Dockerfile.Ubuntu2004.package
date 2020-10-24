@@ -1,0 +1,85 @@
+# Dockerfile for building preCICE on Ubuntu 20.04
+# default setup, user set to 'precice', package install
+
+# Use official Ubuntu 20.04 as base
+FROM ubuntu:20.04
+
+ARG DEBIAN_FRONTEND=noninteractive
+# this is necessary to avoid timeouts during installation due to interactive installs
+
+# Installing necessary dependencies for preCICE, boost 1.71 from apt-get
+RUN apt-get -qq update && apt-get -qq install \
+    build-essential \
+    locales \
+    libboost-all-dev \
+    libeigen3-dev \
+    libxml2-dev \
+    petsc-dev \
+    git \
+    python3-dev \
+    python3-numpy \
+    petsc-dev \
+    wget \
+    bzip2 \
+    cmake && \
+    rm -rf /var/lib/apt/lists/*
+
+# create user precice
+ARG uid=1000
+ARG gid=1000
+RUN groupadd -g ${gid} precice \
+  && useradd -u ${uid} -g ${gid} -m -s /bin/bash precice
+
+# set locale
+RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
+    locale-gen
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_NUMERIC en_US.UTF-8
+ENV LC_ALL en_US.UTF-8
+
+# Rebuild image if force_rebuild after that command
+ARG CACHEBUST
+
+USER precice
+WORKDIR /home/precice
+# Setting some environment variables for installing preCICE
+ENV CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/usr/include/eigen3" \
+    CPATH="/usr/include/eigen3:${CPATH}" \
+    PETSC_DIR="/usr/share/petsc/" \
+    PETSC_ARCH="arch-linux2-c-debug"
+
+# Building preCICE
+ARG branch=develop
+RUN git clone --branch $branch https://github.com/precice/precice.git /home/precice/precice
+# Some parameters for the build, you can set them in the build command e.g.
+# sudo docker build Dockerfile.precice --build-arg petsc_para=yes --build-arg mpi_para=yes .
+# this will result in
+# cmake -DPRECICE_PETScMapping=yes -DPRECICE_MPICommunication=yes -DPRECICE_PythonActions=no -DCMAKE_CXX_COMPILER=mpicxx -j2 /home/precice/precice
+ARG petsc_para=no
+ARG mpi_para=yes
+ARG python_para=no
+# Build preCICE and clean-up generated object files
+RUN mkdir /home/precice/precice-build && \
+    cd /home/precice/precice-build && \
+    cmake -DBUILD_SHARED_LIBS=ON \
+          -DPRECICE_Packages=ON \
+          -DPRECICE_InstallTest=ON \
+          -DCMAKE_INSTALL_PREFIX=/usr \
+          -DCMAKE_BUILD_TYPE=Debug \
+          -DPRECICE_PETScMapping=$petsc_para \
+          -DPRECICE_MPICommunication=$mpi_para \
+          -DPRECICE_PythonActions=$python_para \
+          /home/precice/precice && \
+    make -j$(nproc) && \
+    make test_base && \
+    make package && \
+    mv $(find . -maxdepth 1 -name "*.deb") /home/precice && \
+    rm -r /home/precice/precice-build  # copy *.deb to home/precice; we do not need the remaining files in precice-build anymore and delete them
+# user with sudo rights is needed to install preCICE in debian package
+USER root
+RUN cd /home/precice && dpkg -i $(find . -maxdepth 1 -name "*.deb")
+
+# Setting preCICE environment variables
+USER precice
+ENV PRECICE_ROOT="/home/precice/precice"

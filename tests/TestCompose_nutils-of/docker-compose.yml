@@ -10,10 +10,11 @@ services:
       - openfoam_input:/home/precice/Data/Input/
       - configs:/home/precice/openfoam-adapter/configs/
     command: >
-      /bin/bash -c "source /opt/openfoam5/etc/bashrc
+      /bin/bash -c "source /usr/lib/openfoam/openfoam2006/etc/bashrc
       && blockMesh -case /home/precice/Data/Input
-      && buoyantPimpleFoam -case /home/precice/Data/Input
-      && cp -r /home/precice/Data/Input/. /home/precice/Data/Output/OpenFOAM"
+      && buoyantPimpleFoam -case /home/precice/Data/Input &&
+      mkdir /home/precice/Data/Output/OpenFOAM &&
+      cp -r precice-output *.log /home/precice/Data/Output/OpenFOAM"
     container_name: openfoam-adapter-outer
     depends_on:
       - tutorial-data
@@ -32,8 +33,9 @@ services:
       - configs:/home/precice/nutils/configs/
     command: >
       /bin/bash -c "ln -sf /home/precice/Data/Input/* .
-      && python3 cht.py
-      && mkdir -p /home/precice/Data/Output/Nutils &&  cp *convergence.log *iterations.log *.vtk /home/precice/Data/Output/Nutils"
+      && python3 cht.py &&
+      mkdir /home/precice/Data/Output/Nutils &&
+      cp -r precice-output *.log /home/precice/Data/Output/Nutils"
     container_name: nutils-adapter
     depends_on:
       - tutorial-data

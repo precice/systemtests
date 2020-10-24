@@ -30,7 +30,11 @@ def build_image(tag, dockerfile="Dockerfile", build_args={}, force_rebuild=False
     print("EXECUTING:", cmd)
     subprocess.run(cmd, shell = True, check = True)
 
-def push_image(tag, namespace=get_namespace()):
-    cmd = "docker push {namespace}{tag}:latest".format(namespace=namespace, tag=tag.lower())
+def push_image(tag, namespace=get_namespace(), docker_login = True):
+    cmd = ""
+    if docker_login == True:
+        cmd += "echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin && "
+
+    cmd += "docker push {namespace}{tag}:latest".format(namespace=namespace, tag=tag.lower())
     print("EXECUTING:", cmd)
     subprocess.run(cmd, shell = True, check = True)

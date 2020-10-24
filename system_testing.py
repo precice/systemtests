@@ -12,9 +12,10 @@ Example:
         $ python system_testing.py -s of-of -l
 """
 
-import argparse, filecmp, os, shutil, sys
+import argparse, filecmp, os, shutil, sys, re
 import common, docker
 from subprocess import CalledProcessError
+from glob import glob
 from common import call, ccall, get_test_variants, filter_tests, get_test_participants
 
 def build(systest, tag, branch, local, force_rebuild):
@@ -103,6 +104,8 @@ def run_compose(systest, branch, local, tag, force_rebuild, rm_all=False, verbos
     commands_cleanup = ["docker-compose down -v"]
 
     test_path = os.path.join(os.getcwd(), 'tests', test_dirname)
+    common.save_build_info(build_type='test', test_path=test_path)
+
     with common.chdir(test_path):
 
         # cleanup previous results
@@ -112,6 +115,17 @@ def run_compose(systest, branch, local, tag, force_rebuild, rm_all=False, verbos
         try:
             for command in commands_main:
                 ccall(command)
+
+            # Filter out specific log files that we don't want to compare
+            # e.g. -events-summary.log files, which contain very fluctuating values
+            patterns_to_ignore = [r"events-summary.log$", r"ldd.log$"]
+            # Gather all ".log" files from the Output in a list
+            log_files = [y for x in os.walk("Output") for y in glob(os.path.join(x[0], '*.log'))]
+            for log_file in log_files:
+                for pattern in patterns_to_ignore:
+                    if re.search(pattern, log_file):
+                        ccall("rm -f {}".format(log_file))
+                        break
 
             #compare results
             path_to_ref = os.path.join(os.getcwd(), "referenceOutput")
@@ -135,7 +149,6 @@ def run_compose(systest, branch, local, tag, force_rebuild, rm_all=False, verbos
             if rm_all:
                 for command in commands_cleanup:
                     ccall(command)
-
 
 class SystemTestException(Exception):
     def __init__(self, *args):
@@ -216,6 +229,7 @@ def build_run_compare(test, tag, branch, local_precice, force_rebuild, rm_all=Fa
         # remaining, non-compose tests
         test_dirname = "Test_{systest}".format(systest=test)
         test_path = os.path.join(os.getcwd(), 'tests', test_dirname)
+        common.save_build_info(build_type='test', test_path=test_path)
         with common.chdir(test_path):
             # Build
             build(test_basename, tag, branch, local_precice, force_rebuild)
@@ -225,6 +239,7 @@ def build_run_compare(test, tag, branch, local_precice, force_rebuild, rm_all=Fa
             pathToOutput = os.path.join(os.getcwd(), "Output")
             # Comparing
             comparison(pathToRef, pathToOutput)
+
 
 
 def compose_tag(docker_username, base, features, branch):
@@ -270,16 +285,14 @@ if __name__ == "__main__":
     parser.add_argument('-s', '--systemtest', type=str, help="Choose system tests you want to use",
                         choices = common.get_tests(), required = True)
     parser.add_argument('-b', '--branch', help="preCICE branch to use", default="develop")  # make sure that branch corresponding to system tests branch is used, if no branch is explicitly specified. If we are testing a pull request, will test against develop by default.
-# Usage of the branch argument:
-#   When on a PR, this will by default use the develop versions of preCICE and adapter images.
-#   This makes it easier to experiment with tests, which are most commonly addressed by PRs
-#   (otherwise you would need to also create preCICE and adapter images for your branch which are only different in name)
     parser.add_argument('-f', '--force_rebuild', nargs='+', help="Force rebuild of variable parts of docker image",
                         default = [], choices  = ["precice", "tests"])
     parser.add_argument('--base', type=str,help="Base preCICE image to use",
             default= "Ubuntu1804.home")
     parser.add_argument('-v', '--verbose', action='store_true', help="Verbose output of participant containers")
     args = parser.parse_args()
+
+
     # check if there is specialized dir for this version
     test_name = args.systemtest
     all_derived_tests = get_test_variants(test_name)

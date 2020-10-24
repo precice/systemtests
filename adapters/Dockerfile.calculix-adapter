@@ -15,7 +15,7 @@ RUN apt-get -qq update && apt-get -qq install \
     autotools-dev \
     bzip2 \
     libarpack2-dev \
-    libspooles2.2 \
+    libspooles-dev \
     libyaml-cpp-dev && \
     rm -rf /var/lib/apt/lists/*
 

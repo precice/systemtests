@@ -1,6 +1,7 @@
-# Dockerfile for building preCICE on ubuntu 18.04
+# Dockerfile for building preCICE on Ubuntu 18.04
+# default setup, user set to 'precice', manual install
 
-# Using ubuntu 18.04 as basis
+# Use official Ubuntu 18.04 as base
 FROM ubuntu:18.04
 
 # Installing necessary dependacies for preCICE, boost 1.65 from apt-get
@@ -30,7 +31,9 @@ RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
     locale-gen
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
+ENV LC_NUMERIC en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
+
 
 # Install PETSc from source
 WORKDIR /petsc
