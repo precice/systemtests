@@ -47,7 +47,7 @@ Dimensional simulation.
 The reference area is 1 m^2.
 The semi-span will be computed using the max y(3D) value.
 The reference length is 1 m.
-Reference origin for moment evaluation is (4.64643e-310, 4.64643e-310, 0).
+Reference origin for moment evaluation is (4.65198e-310, 4.65198e-310, 0).
 Surface(s) where the force coefficients are evaluated: 
 Input mesh file name: Fluid/fluidMesh.su2
 
@@ -187,8 +187,21 @@ Setting dynamic mesh structure for zone 0.
 
 ---------------------- Python Interface Preprocessing ---------------------
 Setting customized boundary conditions for zone 0
+--------------------------------------------------------------------------
+[[55859,1],0]: A high-performance Open MPI point-to-point messaging module
+was unable to find any relevant network interfaces:
+
+Module: OpenFabrics (openib)
+  Host: c3789abdc370
+
+Another transport will be used instead, although this may result in
+lower performance.
+
+NOTE: You can disable this warning by setting the MCA parameter
+btl_base_warn_component_unused to 0.
+--------------------------------------------------------------------------
 ---[precice] [0m This is preCICE version 2.1.1
----[precice] [0m Revision info: v2.1.1-44-g087248fb
+---[precice] [0m Revision info: v2.1.1-47-g623fe0c5
 ---[precice] [0m Configuring preCICE with configuration "./precice-config.xml"
 ---[precice] [0m I am participant "SU2_CFD"
 ---[precice] [0m Setting up master communication to coupling partner/s
@@ -13991,7 +14004,7 @@ Deleted CConfig container.
 Deleted COutput class.
 -------------------------------------------------------------------------
 
-Completed in 130.176483 seconds on 1 core.
+Completed in 124.206990 seconds on 1 core.
 Process #0/0: Finalizing preCICE...
 Process #0/0: Done finalizing preCICE!
 

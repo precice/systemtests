@@ -82,8 +82,21 @@ Starting FSI analysis via preCICE using the geometrically non-linear CalculiX so
  Using up to 1 cpu(s) for the energy calculation.
 
 Setting up preCICE participant Calculix, using config file: config.yml
+--------------------------------------------------------------------------
+[[4520,1],0]: A high-performance Open MPI point-to-point messaging module
+was unable to find any relevant network interfaces:
+
+Module: OpenFabrics (openib)
+  Host: 572d314b0cab
+
+Another transport will be used instead, although this may result in
+lower performance.
+
+NOTE: You can disable this warning by setting the MCA parameter
+btl_base_warn_component_unused to 0.
+--------------------------------------------------------------------------
 ---[precice] [0m This is preCICE version 2.1.1
----[precice] [0m Revision info: v2.1.1-44-g087248fb
+---[precice] [0m Revision info: v2.1.1-47-g623fe0c5
 ---[precice] [0m Configuring preCICE with configuration "./precice-config.xml"
 ---[precice] [0m I am participant "Calculix"
 Set ID Found 
@@ -13773,7 +13786,7 @@ Adapter writing coupling data...
 Writing DISPLACEMENTDELTAS coupling data with ID '2'. 
 Adapter calling advance()...
 ---[precice] [0m relative convergence measure: relative two-norm diff = 7.43013e-05, limit = 0.001, normalization = 0.415452, conv = true
----[precice] [0m relative convergence measure: relative two-norm diff = 0.00295573, limit = 0.001, normalization = 50.1618, conv = false
+---[precice] [0m relative convergence measure: relative two-norm diff = 0.00295574, limit = 0.001, normalization = 50.1618, conv = false
 ---[precice] [0m it 4 of 20 | dt# 44 of 50 | t 0.43 | dt 0.01 | max dt 0.01 | ongoing yes | dt complete no | read-iteration-checkpoint | 
 Adapter reading checkpoint...
 Adjusting time step for transient step
