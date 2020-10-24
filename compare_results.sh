@@ -10,8 +10,8 @@
 # Input: folder where results should be compared and (optional) maximum relative difference between
 # numerical values in the reference and obtained files ( averaged over the file and over the individual field)
 
-avg_diff_limit="0.001"
-max_diff_limit="0.001"
+avg_diff_limit="0.01"
+max_diff_limit="0.01"
 
 
 if [ $# -lt 2 ]; then
@@ -61,22 +61,43 @@ if [ -n "$diff_files" ]; then
     file1=$( echo "${array_files[i]}" | awk '{print $1}' )
     file2=$( echo "${array_files[i]}" | awk '{print $2}' )
 
+    filename=$(basename $file1)
+
     # Filtering section. We compare numbers and text seperately
 
     # prefiltering dates, timestamps and other words that signal a line with
-    # constantly changing values (that do not actually affect the results), like revision
-    pre_filter='s/[0-9][0-9][:\.][0-9][0-9][:\.][0-9][0-9]//g; s/\[.\+\]:[0-9]\+//g;
-                s/[0-9][0-9]\/[0-9][0-9]\/[0-9][0-9][0-9][0-9]//g; s/\s*$//g;
-                /Timestamp\|[rR]untime\|[vV]ersion\|[rR]evision\|Unexpected\|Host:/d;
+    # constantly changing values (that do not actually affect the results)
+    # Explanation of what the regex blocks below match:
+    #
+    #   List of words which occur in lines we do not want to check ;
+    #   Time format ;
+    #   Date format ;
+    #   Weekday format ;
+    #   Line number specifier of form [x]:[00] ;
+    #   another line number specifier of fom [1,[2,3]] ;
+    #   sequence of whitespaces ;
+    #   hexadecimals (will commonly describe memory locations)
+    #   delete anything after 'Run finished', as this is followed by benchmark times
+
+    pre_filter='/Timestamp\|[rR]untime\|[vV]ersion\|[rR]evision\|Unexpected\|Host:/d;
+                s/[0-9][0-9][:\.][0-9][0-9][:\.][0-9][0-9]//g;
+                s/[0-9][0-9]\/[0-9][0-9]\/[0-9][0-9][0-9][0-9]//g;
+                s/Mon\|Tue\|Wed\|Thu\|Fri\|Sat\|Sun//g;
+                s/\[.\+\]:[0-9]\+//g;
                 s/\[\[[0-9]\+,[0-9]\],[0-9]\]://g;
+                s/\s*$//g;
+                s/0x[0-9a-f]//g;
                 /Run finished/q'
 
     # numerical filter, looks to find numbers of any format
-    num_filter='[-]\?\([0-9]*[\.]\)\?[0-9]\+\([eE][+-][0-9]\+\)\?'
-    # exponential filter, DELETES exponent! TODO: have awk command below handle exponents
-    exp_filter='s/[eE][+-][0-9]\+//g'
-    # text filter, checks for any text lines after the prefilter was applied
-    txt_filter='/[a-df-zA-DF-Z]/!d'
+    num_filter='[-]\?\([0-9]*[\.]\)\?[0-9]\+\([eE][+-]\?[0-9]\+\)\?'
+
+    # # exponential filter, DELETES exponent! TODO: have awk command below handle exponents
+    # exp_filter='s/[eE][+-][0-9]\+//g'
+    exp_filter=''
+
+    # text filter. This also explicitly deletes all numeric patterns
+    txt_filter="/[a-df-zA-DF-Z]/!d ; s/$num_filter//g"
 
     # Apply filters
     file1_num=$( cat "$file1" | sed "$pre_filter" | grep -o "$num_filter" | sed "$exp_filter")
@@ -97,36 +118,37 @@ if [ -n "$diff_files" ]; then
     # cat "$file1" | sed "$num_filter" > DEBUG_F1
     # cat "$file2" | sed "$num_filter" > DEBUG_F2
 
-
     # Pairwise compare file fields and compute average/maximum relative difference
-    filename=$(basename $file1) # total file paths are long, this keeps info concise
     echo "Comparing values in '$filename'..."
 
 
     if [ -n "$num_diff" ]; then
-      max_diff=0.0
-      rel_max_difference=$( export max_diff_limit; export avg_diff_limit; echo "$num_diff" | awk 'function abs(v) {return v < 0 ? -v : v}
+      rel_max_difference=$( export max_diff_limit; export avg_diff_limit; echo "$num_diff" | awk 'function abs(v) {return v < 0.0 ? -v : v}
+      function log10(v) {return log(v)/log(10)}
       BEGIN {
         max_diff=0.0;
-        sum=0;
+        sum=0.0;
         total_entries=0;
+        exp_threshold=-12;
       }
       {
-        radius=NF/2;
-        for(i = 1; i <= radius; i++) {
+        r=NF/2;
+        for(i = 1; i <= r; i++) {
           total_entries += 1;
-          if ($i != 0) {
-            ind_diff = abs((($(i + radius)-$i)/$i ));
+          if (log10(abs($i)) > exp_threshold && log10(abs($(i + r))) > exp_threshold) {
+            ind_diff = abs((($(i + r)-$i)/$i ));
             sum += ind_diff;
             if  (ind_diff > max_diff ) {
               max_diff = ind_diff;
-              # printf("DEBUG| NR: %d; max: %f; ind: %f; sum: %f | Out: %f; refOut: %f\n", NR, max_diff, ind_diff, sum, $(i + radius), $i) > "/dev/stderr";
+              # printf("NR: %d; max: %g; ind: %g; sum: %g | Out: %g; refOut: %g\n", NR, max_diff, ind_diff, sum, $(i + r), $i) > "/dev/stderr";
             }
           }
         }
       }
       END {
-        if (total_entries == 0) { print "NO_ENTRIES" }
+        if (total_entries == 0) {
+          printf("This file has no numeric entries!\n") > "/dev/stderr";
+        }
         else {
           diff=sum/total_entries;
           if (diff > ENVIRON["avg_diff_limit"] || max_diff > ENVIRON["max_diff_limit"]) {

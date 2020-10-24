@@ -28,3 +28,6 @@ WORKDIR /home/precice/
 RUN git clone https://github.com/precice/elastictube1d.git
 
 WORKDIR /home/precice/elastictube1d/python
+
+RUN sed -i 's|\(\s\+\)\(</participant>\)|\1   <export:vtk directory="precice-output" />\n\1\2|g' \
+            precice-config.xml

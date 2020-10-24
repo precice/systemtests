@@ -8,7 +8,6 @@ RUN apt-get -qq update && apt-get -qq install \
     build-essential \
     locales \
     libxml2-dev \
-    petsc-dev \
     git \
     python3-numpy \
     python3-dev \
@@ -37,8 +36,8 @@ ENV Eigen3_ROOT="/eigen/eigen-3.3.7"
 WORKDIR /petsc
 RUN wget -nv 'https://www.mcs.anl.gov/petsc/mirror/release-snapshots/petsc-3.12.5.tar.gz' -O - | tar xz && \
   cd petsc-3.12.5 && \
-  ./configure && \
-  make all test
+  ./configure --with-cc=gcc --with-cxx=g++ --with-fc=0 --download-openmpi --download-f2cblaslapack && \
+  make all check
 RUN chown -R precice:precice /petsc
 
 
@@ -59,6 +58,7 @@ RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
     locale-gen
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
+ENV LC_NUMERIC en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
 
 
