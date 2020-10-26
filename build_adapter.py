@@ -61,4 +61,5 @@ if __name__ == "__main__":
                        dockerfile=args.dockerfile,
                        build_args=build_args,
                        force_rebuild=args.force_rebuild,
-                       namespace="")
+                       namespace="",
+                       build_context="adapters/")

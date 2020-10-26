@@ -22,11 +22,12 @@ def get_containers():
     images = cp.stdout.decode().split("\n")
     return [i for i in images if len(i) > 0] # Remove empty lines
 
-def build_image(tag, dockerfile="Dockerfile", build_args={}, force_rebuild=False, namespace=get_namespace()):
+def build_image(tag, dockerfile="Dockerfile", build_args={}, force_rebuild=False, namespace=get_namespace(), build_context="."):
     if force_rebuild:
         build_args["CACHEBUST"] = datetime.datetime.now().isoformat() # A unique string for every invocation
     args = " ".join(["--build-arg " + a + "=" + b for a, b in build_args.items()])
-    cmd = "docker build --network=host --file {dockerfile} --tag {namespace}{tag} {build_args} .".format(dockerfile=dockerfile, namespace=namespace, tag=tag.lower(), build_args=args)
+    cmd = "docker build --network=host --file {dockerfile} --tag {namespace}{tag} {build_args} {build_context}".format(
+            dockerfile=dockerfile, namespace=namespace, tag=tag.lower(), build_args=args, build_context=build_context)
     print("EXECUTING:", cmd)
     subprocess.run(cmd, shell = True, check = True)
 

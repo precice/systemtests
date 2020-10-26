@@ -41,4 +41,5 @@ if __name__ == "__main__":
                        dockerfile=args.dockerfile,
                        build_args={"branch" : args.branch, "petsc_para" : args.petsc},
                        force_rebuild=args.force_rebuild,
-                       namespace="")
+                       namespace="",
+                       build_context="precice/")
