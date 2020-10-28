@@ -4,16 +4,32 @@
 * [Docker-compose](https://docs.docker.com/compose/)
 * [Main Travis docs](https://docs.travis-ci.com/)
 * [Travis API](https://developer.travis-ci.com/)
-
+* [TODO: Bash scripting documentation]
+* [TODO: AWK scripting documentation]
 
 # Useful patterns and commands
-##  During development of standalone Dockerfiles
 
-If something fails during building, you can determine the failing command and comment out the remaining of the Dockerfile. Then, rebuild and tag (e.g. `test_image`). You can then interactively try to follow the commented out section of the Dockerfile, by starting the container interactively:
+## Deciding where to run your builds
+Whenever you detect a build failure and start investigating the failing command, it is recommended to make use of local builds (on your machine) as much as possible (as opposed to sending builds to the CI platform). This way you have much more interactive control over the test (e.g. being able to enter an active docker container to figure things out at runtime) and save computational resources on the platform that others might want to use. Nontheless, do not be afraid to use CI when necessary, sometimes an issue can only be resolved by checking how a certain build behaves in CI.
+
+Note that the investigation methods below (whereby you interact with images/containers through a shell) require you to run the build locally.
+
+## Investigating failures during the build stage of Dockerfiles
+If something fails during building, you will be able to find the failing command in the logging output during building (Docker will print each line in the Dockerfile that it is about to execute). For debugging, you can then comment out all commands of the Dockerfile below **and including** the failing line. Then, rebuild the image (possibly tag it something distinct so that it doesn't interfere with actual functional Dockerfiles, e.g. `debug_fenics-adapter`). This will yield an intact docker image that you can then enter in interactive mode to check its status prior to failing and execute the failing command manually to see whats going on. To launch such an image interactively, see this command using the aforementioned example:
 ```
-   docker run -it --rm test_image /bin/bash
+docker run -it --rm debug_fenics-adapter /bin/bash
 ```
-Usually it is much easier to debug in this way.
+The `-it` flags will cause you to enter a shell with which to interact with the target image. `/bin/bash` specifies the shell, `--rm` is an optional flag that ensures that the container will be removed after you exit it.
+
+## Investigating failures during runtime of a docker-compose test
+If failures occur during the runtime of a test (meaning the execution of a tutorial example using finished adapter Dockerfiles), the error most likely is happening during the execution of commands specified in `docker-compose.yml` and not whilst building a Dockerimage. In this case, you can hijack the running containers mid-test with the following:
+```
+docker exec -it id_of_target_container /bin/bash
+```
+Note that the ID of the wanted container is required, which you can obtain through `docker container ls`.
+This allows you to interact with test participants through a shell while they are executing their specified docker-compose commands, which can be useful to identify issues that pop up during computation. Beware that by default, the container shuts down after it ends its command chain (from the docker-compose file) either through success or error, which will terminate your connection. A workaround in this case is to add a temporary sleep command, e.g. `sleep 10m`, at a fitting location in the launch commands.
+
+
 
 If you are developing a new base image for preCICE, make sure you create a user `precice`, in group `precice` with `uid` and `gid` equal to 1000, as done in
 other base dockerfiles. Additionally, make sure that precice in installed in `/home/precice/precice`, and create folders `/home/precice/Data/Exchange`,
@@ -108,7 +124,7 @@ Output can then be copied from the containers.
 
 Depending on the test case several code components are used (preCICE, bindings, adapter(s), tutorial). Sometimes it becomes necessary to use a branch that is different from the one that is used as default (e.g. `develop` is used for the preCICE images. See [here](https://github.com/precice/systemtests/blob/ec4ef9d4aedd0087dfb3a8ed98fdf7a1267c7751/precice/Dockerfile.Ubuntu1604.home#L50-L52)).
 
-### Non-default branch for preCICE 
+### Non-default branch for preCICE
 
 If you want to use a different branch for the preCICE image, you can just use the [`--branch` option](https://github.com/precice/systemtests/blob/master/system_testing.py#L178) when you run `system_testing.py`.
 
@@ -116,10 +132,10 @@ If you want to use a different branch for the preCICE image, you can just use th
 
 For other components we do not have a nice interface (see https://github.com/precice/systemtests/issues/121). However, there is a workaround:
 
-We want to use the branch `feature` of the FEniCS adapter instead of the default branch `master` for the test `fe-fe`. We only want to run the test locally on our machine. 
+We want to use the branch `feature` of the FEniCS adapter instead of the default branch `master` for the test `fe-fe`. We only want to run the test locally on our machine.
 
 1. We have to modify the `Dockerfile` correspondingly to use the branch `feature`.
-2. Make sure that the modified `Dockerfile` is used to build the image `precice/fenics-adapter-ubuntu1804.home-develop`. 
+2. Make sure that the modified `Dockerfile` is used to build the image `precice/fenics-adapter-ubuntu1804.home-develop`.
 ```
 $ docker image build -t precice/fenics-adapter-ubuntu1804.home-develop -f Dockerfile.fenics-adapter --build-arg from=precice/precice-ubuntu1804.home-develop .
 ```
