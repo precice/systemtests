@@ -119,8 +119,8 @@ jobs:
     - name: "[18.04] FEniCS adapter [failure allowed]"
       if: fork = false
       script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.fenics-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
-        - python push_adapter.py --dockerfile adapters/Dockerfile.fenics-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
+        - python build_adapter.py --dockerfile adapters/Dockerfile.fenics-adapter --operating-system ubuntu1804 --precice-installation package --docker-username $DOCKER_USERNAME
+        - python push_adapter.py --dockerfile adapters/Dockerfile.fenics-adapter --operating-system ubuntu1804 --precice-installation package --docker-username $DOCKER_USERNAME
         - python push.py
 
     - name: "[18.04] Code_Aster adapter"
@@ -180,7 +180,7 @@ jobs:
 
     - name: "[18.04] FEniCS <-> FEniCS [failure allowed]"
       script:
-        - python system_testing.py -s fe-fe -v
+        - python system_testing.py -s fe-fe --base Ubuntu1804.package -v
         - python push.py
 
     - name: "[18.04] Bindings/Solverdummies"
