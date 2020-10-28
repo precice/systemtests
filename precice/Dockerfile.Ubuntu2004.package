@@ -45,9 +45,8 @@ USER precice
 WORKDIR /home/precice
 # Setting some environment variables for installing preCICE
 ENV CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/usr/include/eigen3" \
-    CPATH="/usr/include/eigen3:${CPATH}" \
-    PETSC_DIR="/usr/share/petsc/" \
-    PETSC_ARCH="arch-linux2-c-debug"
+    CPATH="/usr/include/eigen3:${CPATH}"
+
 
 # Building preCICE
 ARG branch=develop

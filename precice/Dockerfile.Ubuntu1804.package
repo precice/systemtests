@@ -49,10 +49,7 @@ RUN apt-get -qq update && apt-get -qq install \
     WORKDIR /home/precice
     # Setting some environment variables for installing preCICE
     ENV CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/usr/include/eigen3" \
-        CPATH="/usr/include/eigen3:${CPATH}" \
-        PETSC_DIR="/petsc/petsc-3.12.5" \
-        PETSC_ARCH="arch-linux2-c-debug" \
-        LD_LIBRARY_PATH="/petsc/petsc-3.12.5/arch-linux2-c-debug/lib:${LD_LIBRARY_PATH}"
+        CPATH="/usr/include/eigen3:${CPATH}"
 
 
 # Building preCICE
