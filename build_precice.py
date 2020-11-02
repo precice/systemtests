@@ -9,7 +9,7 @@ if __name__ == "__main__":
     parser.add_argument('-b', '--branch', help="preCICE branch to use", default="develop")
     parser.add_argument('-p', '--petsc', help="set 'yes', if you want to build with PETSc.", default="no", choices={'yes', 'no'})
     parser.add_argument('-u', '--docker-username', help="docker username", default=os.environ["DOCKER_USERNAME"] if "DOCKER_USERNAME" in os.environ else "precice")
-    parser.add_argument('-f', '--force-rebuild', nargs='+', help="Force rebuild of variable parts of docker image", default = [], choices  = ["precice", "tests"])
+    parser.add_argument('-f', '--force-rebuild', action='store_true', help="Force rebuild of docker image.")
     args = parser.parse_args()
 
     dockerfile = os.path.basename(args.dockerfile)

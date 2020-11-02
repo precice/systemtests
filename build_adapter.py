@@ -13,7 +13,7 @@ if __name__ == "__main__":
     parser.add_argument('-os', '--operating-system', help="Operating system used by preCICE base image", default="ubuntu1604")
     parser.add_argument('-i', '--precice-installation', help="Installation mode used for preCICE", default="home")
     parser.add_argument('-p', '--petsc', help="set 'yes', if you want to use a preCICE base image that was built with PETSc.", default="no", choices={'yes', 'no'})
-    parser.add_argument('-f', '--force-rebuild', nargs='+', help="Force rebuild of variable parts of docker image.", default = [], choices  = ["precice", "tests"])
+    parser.add_argument('-f', '--force-rebuild', action='store_true', help="Force rebuild of docker image.")
     parser.add_argument('-bs', '--base-solver', type=str, help="Specify the docker image of the base solver used.", default=None)
 
     args = parser.parse_args()
