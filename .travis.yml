@@ -12,8 +12,6 @@ jobs:
   allow_failures:
     # Currently unstable tests that do not affect the build status
     # To add a test here, list its exact name
-    - name: "[18.04] FEniCS adapter [failure allowed]"
-    - name: "[18.04] FEniCS <-> FEniCS [failure allowed]"
     - name: "Ubuntu 18.04.sudo.mpich [failure allowed]"
     - name: "[18.04] SU2 <-> Calculix [unstable][failure allowed]"
     - name: "[20.04 PETSc] SU2 <-> Calculix [unstable][failure allowed]"
