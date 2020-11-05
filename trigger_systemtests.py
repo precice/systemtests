@@ -18,11 +18,11 @@ from collections import namedtuple
 
 adapter_info = namedtuple('adapter_info', 'repo tests base install_mode')
 
-adapters_info = {"openfoam": adapter_info('openfoam-adapter', ['of-of', 'of-ccx'],  'Ubuntu1804.home', 'clone'),
-                "calculix":  adapter_info('calculix-adapter', ['of-ccx','su2-ccx'], 'Ubuntu1804.home', 'clone'),
-                "su2":       adapter_info('su2-adapter',      ['su2-ccx'],          'Ubuntu1804.home', 'clone'),
-                "dealii":    adapter_info('dealii-adapter',   ['dealii-of'],        'Ubuntu1804.home', 'clone'),
-                "fenics":    adapter_info('fenics-adapter',   ['fe-fe'],            'Ubuntu1804.home', 'pip')}
+adapters_info = {"openfoam": adapter_info('openfoam-adapter', ['of-of', 'of-ccx'],  'Ubuntu1804.package', 'clone'),
+                "calculix":  adapter_info('calculix-adapter', ['of-ccx','su2-ccx'], 'Ubuntu1804.package', 'clone'),
+                "su2":       adapter_info('su2-adapter',      ['su2-ccx'],          'Ubuntu1804.package', 'clone'),
+                "dealii":    adapter_info('dealii-adapter',   ['dealii-of'],        'Ubuntu1804.package', 'clone'),
+                "fenics":    adapter_info('fenics-adapter',   ['fe-fe'],            'Ubuntu1804.package', 'pip')}
 
 class msg_color:
     green = "\033[92m"
@@ -42,6 +42,7 @@ def get_json_response(url, **kwargs):
     req = Request(url, headers = headers, **kwargs )
     response = urlopen( req ).read().decode()
     json_response = json.loads( response )
+
 
     return json_response
 
