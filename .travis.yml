@@ -60,8 +60,8 @@ jobs:
       name: "[18.04] SU2 adapter"
       if: fork = false
       script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.su2-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
-        - python push_adapter.py --dockerfile adapters/Dockerfile.su2-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
+        - python build_adapter.py --dockerfile adapters/Dockerfile.su2-adapter --operating-system ubuntu1804 --precice-installation package --docker-username $DOCKER_USERNAME
+        - python push_adapter.py --dockerfile adapters/Dockerfile.su2-adapter --operating-system ubuntu1804 --precice-installation package --docker-username $DOCKER_USERNAME
         - python push.py
 
     - name: "[20.04] SU2 adapter [PETSc]"
@@ -74,15 +74,15 @@ jobs:
     - name: "[18.04] deal.ii adapter [3D]"
       if: fork = false
       script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter_3D --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
-        - python push_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter_3D --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
+        - python build_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter_3D --operating-system ubuntu1804 --precice-installation package --docker-username $DOCKER_USERNAME
+        - python push_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter_3D --operating-system ubuntu1804 --precice-installation package --docker-username $DOCKER_USERNAME
         - python push.py
 
     - name: "[18.04] deal.ii adapter [2D]"
       if: fork = false
       script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
-        - python push_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
+        - python build_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter --operating-system ubuntu1804 --precice-installation package --docker-username $DOCKER_USERNAME
+        - python push_adapter.py --dockerfile adapters/Dockerfile.dealii-adapter --operating-system ubuntu1804 --precice-installation package --docker-username $DOCKER_USERNAME
         - python push.py
 
     - name: "[20.04] deal.ii adapter [2D][PETSc]"
@@ -95,8 +95,8 @@ jobs:
     - name: "[18.04] OpenFOAM adapter"
       if: fork = false
       script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
-        - python push_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
+        - python build_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1804 --precice-installation package --docker-username $DOCKER_USERNAME
+        - python push_adapter.py --dockerfile adapters/Dockerfile.openfoam-adapter --operating-system ubuntu1804 --precice-installation package --docker-username $DOCKER_USERNAME
         - python push.py
 
     - name: "[18.04] OpenFOAM adapter [PETSc]"
@@ -123,15 +123,15 @@ jobs:
     - name: "[18.04] Code_Aster adapter"
       if: fork = false
       script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.codeaster-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
-        - python push_adapter.py --dockerfile adapters/Dockerfile.codeaster-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
+        - python build_adapter.py --dockerfile adapters/Dockerfile.codeaster-adapter --operating-system ubuntu1804 --precice-installation package --docker-username $DOCKER_USERNAME
+        - python push_adapter.py --dockerfile adapters/Dockerfile.codeaster-adapter --operating-system ubuntu1804 --precice-installation package --docker-username $DOCKER_USERNAME
         - python push.py
 
     - name: "[18.04] CalculiX adapter"
       if: fork = false
       script:
-        - python build_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
-        - python push_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1804 --precice-installation home --docker-username $DOCKER_USERNAME
+        - python build_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1804 --precice-installation package --docker-username $DOCKER_USERNAME
+        - python push_adapter.py --dockerfile adapters/Dockerfile.calculix-adapter --operating-system ubuntu1804 --precice-installation package --docker-username $DOCKER_USERNAME
         - python push.py
 
     - name: "[18.04] CalculiX adapter [PETSc]"
