@@ -229,7 +229,7 @@ def build_run_compare(test, tag, branch, local_precice, force_rebuild, rm_all=Fa
         # remaining, non-compose tests
         test_dirname = "Test_{systest}".format(systest=test)
         test_path = os.path.join(os.getcwd(), 'tests', test_dirname)
-        common.save_build_info(build_type='test', test_path=test_path)
+        common.save_build_info(build_type='test', test_type='basic', test_path=test_path)
         with common.chdir(test_path):
             # Build
             build(test_basename, tag, branch, local_precice, force_rebuild)
