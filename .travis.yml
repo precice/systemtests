@@ -12,6 +12,7 @@ jobs:
   allow_failures:
     # Currently unstable jobs that do not affect the build status
     # To add a job here, list its exact name
+    - name: "[18.04] nutils <-> OpenFOAM [failure allowed]"
     - name: "[18.04] SU2 <-> Calculix [unstable][failure allowed]"
     - name: "[20.04 PETSc] SU2 <-> Calculix [unstable][failure allowed]"
     - name: "[18.04 PETSc] OpenFOAM <-> CalculiX [FSI][failure allowed]"
@@ -200,7 +201,7 @@ jobs:
         - python system_testing.py -s dealii-of --base Ubuntu2004.package.PETSc -v
         - python push.py
 
-    - name: "[18.04] nutils <-> OpenFOAM"
+    - name: "[18.04] nutils <-> OpenFOAM [failure allowed]"
       script:
         - python system_testing.py -s nutils-of -v
         - python push.py

@@ -83,7 +83,7 @@ Starting FSI analysis via preCICE using the geometrically non-linear CalculiX so
 
 Setting up preCICE participant Calculix, using config file: config.yml
 ---[precice] [0m This is preCICE version 2.1.1
----[precice] [0m Revision info: v2.1.1-44-g087248fb
+---[precice] [0m Revision info: v2.1.1-77-g641e5057
 ---[precice] [0m Configuring preCICE with configuration "./precice-config.xml"
 ---[precice] [0m I am participant "Calculix"
 Set ID Found 
