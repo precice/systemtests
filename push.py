@@ -176,16 +176,17 @@ if __name__ == "__main__":
     if build_type == 'test':
         # 'test_path' is imported from the build info file
         ccall("mkdir -p {}".format(output_path))
-        # extract files from container, IF ENABLED
-        if args.output:
-            ccall("docker cp tutorial-data:/Output {}".format(job_path))
-            # Check if Output is missing, given that the option is enabled
-            if not os.listdir(output_path):
-                ccall("echo '# Output was enabled, but no output files found!' > {path}".format(path=
-                os.path.join(output_path, "README.md")))
-                output_missing = True
 
-        if "TestCompose" in test_path:
+        if test_type=='compose':
+            # extract files from container, IF ENABLED (requires a compose test)
+            if args.output:
+                ccall("docker cp tutorial-data:/Output {}".format(job_path))
+                # Check if Output is missing, given that the option is enabled
+                if not os.listdir(output_path):
+                    ccall("echo '# Output was enabled, but no output files found!' > {path}".format(path=
+                    os.path.join(output_path, "README.md")))
+                    output_missing = True
+
             ccall("cp -r {test_path}/Logs {job_path}".\
                    format(test_path=test_path, job_path=job_path))
 

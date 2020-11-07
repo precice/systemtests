@@ -104,7 +104,7 @@ def run_compose(systest, branch, local, tag, force_rebuild, rm_all=False, verbos
     commands_cleanup = ["docker-compose down -v"]
 
     test_path = os.path.join(os.getcwd(), 'tests', test_dirname)
-    common.save_build_info(build_type='test', test_path=test_path)
+    common.save_build_info(build_type='test', test_type='compose', test_path=test_path)
 
     with common.chdir(test_path):
 
