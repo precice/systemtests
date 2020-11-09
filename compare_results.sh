@@ -76,8 +76,9 @@ if [ -n "$diff_files" ]; then
     #   Line number specifier of form [x]:[00] ;
     #   another line number specifier of fom [1,[2,3]] ;
     #   sequence of whitespaces ;
-    #   hexadecimals (will commonly describe memory locations)
-    #   delete anything after 'Run finished', as this is followed by benchmark times
+    #   hexadecimals (will commonly describe memory locations);
+    #   phrase "[number] sec(onds)"
+    #   delete anything after 'Run finished' \\ avoids Benchmark times that get printed below
 
     pre_filter='/Timestamp\|[rR]untime\|[vV]ersion\|[rR]evision\|Unexpected\|Host:/d;
                 s/[0-9][0-9][:\.][0-9][0-9][:\.][0-9][0-9]//g;
@@ -87,6 +88,7 @@ if [ -n "$diff_files" ]; then
                 s/\[\[[0-9]\+,[0-9]\],[0-9]\]://g;
                 s/\s*$//g;
                 s/0x[0-9a-f]//g;
+                s/\([0-9]*[\.]\)\?[0-9]\+ sec//g;
                 /Run finished/q'
 
     # numerical filter, looks to find numbers of any format
