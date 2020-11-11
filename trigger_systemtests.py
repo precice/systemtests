@@ -229,7 +229,7 @@ def trigger_travis_and_wait_and_respond(job_body, user, repo):
         # for ther reference in case of failures
         print("Current request status is '{}'.".format(request_info['state']), flush=True)
         request_info = query_request_info(user, repo, request_id)
-        time.sleep(20)
+        time.sleep(120)
 
     if request_info["result"] != "approved":
         raise Exception("Systemtest build request did not get approved.")
