@@ -12,6 +12,7 @@ RUN  mkdir configs && cp $tutorial_path/precice-config.xml configs/precice-confi
              s|\(\s\+\)\(</participant>\)|\1   <export:vtk directory="precice-output" />\n\1\2|g' \
              configs/precice-config.xml && \
      sed -i 's|\.\./precice-config\.xml|configs/precice-config.xml|g' $tutorial_path/Nutils/cht.py && \
-     sed -i 's|\.\./precice-config\.xml|configs/precice-config.xml|g' $tutorial_path/OpenFOAM/system/preciceDict
+     sed -i 's|\.\./precice-config\.xml|configs/precice-config.xml|g' $tutorial_path/OpenFOAM/system/preciceDict && \
+     cat configs/precice-config.xml
 RUN addgroup -g 1000 precice && adduser -u 1000 -G precice -D precice && chown -R precice:precice tutorials configs
 USER precice
