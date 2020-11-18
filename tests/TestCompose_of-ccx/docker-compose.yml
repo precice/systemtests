@@ -31,7 +31,7 @@ services:
       - outer_fluid_input:/home/precice/Data/Input/
       - configs:/home/precice/openfoam-adapter/configs/
     command: >
-      /bin/bash -c "sleep 10m && source /usr/lib/openfoam/openfoam2006/etc/bashrc &&
+      /bin/bash -c "source /usr/lib/openfoam/openfoam2006/etc/bashrc &&
       ln -sf configs/* . &&
       buoyantSimpleFoam -case /home/precice/Data/Input &&
       mkdir /home/precice/Data/Output/Outer-Fluid &&
