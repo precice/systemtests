@@ -19,22 +19,32 @@ ARG CACHEBUST
 
 # Install OpenFOAM v2006
 # see https://github.com/precice/openfoam-adapter/wiki/Notes-on-OpenFOAM#get-openfoam
-RUN wget -q -O - https://dl.openfoam.com/add-debian-repo.sh | bash && \
-    apt-get install -y openfoam2006-default
+# RUN wget -q -O - https://dl.openfoam.com/add-debian-repo.sh | bash && \
+#     apt-get install -y openfoam2006-default
 
-# # Get OpenFOAM5 install via folder copy
-# COPY --from=openfoam /opt/openfoam5 /opt/openfoam5/
-# for of5, we need to also source the file at /opt/openfoam5/etc/bashrc
+
+# Install OpenFOAM 8
+ENV DEBIAN_FRONTEND=noninteractive
+RUN sh -c "wget -O - https://dl.openfoam.org/gpg.key | apt-key add -" && \
+    add-apt-repository http://dl.openfoam.org/ubuntu && \
+    apt-get update && \
+    apt-get -y install openfoam8
+
+
 
 # Building openfoam-adapter
 USER precice
-SHELL ["/bin/bash", "-c"]  # without this command /opt/openfoam5/etc/bashrc cannot be sourced
+SHELL ["/bin/bash", "-c"]  # without this command the OF bashrc file cannot be sourced
 WORKDIR /home/precice
 RUN mkdir -p Logs Data/Input Data/Output Data/Exchange
 ARG adapter_branch=develop
 RUN git clone  --branch $adapter_branch https://github.com/precice/openfoam-adapter.git
 WORKDIR /home/precice/openfoam-adapter
 
-RUN . /usr/lib/openfoam/openfoam2006/etc/bashrc && ./Allwmake; cat wmake.log && cp wmake.log Allwmake.log ldd.log $HOME/Logs
+# Adapter install with OF 8
+RUN . /opt/openfoam8/etc/bashrc && ./Allwmake; cat wmake.log && cp wmake.log Allwmake.log ldd.log $HOME/Logs
+
+# Adapter install with OFv2006
+# RUN . /usr/lib/openfoam/openfoam2006/etc/bashrc && ./Allwmake; cat wmake.log && cp wmake.log Allwmake.log ldd.log $HOME/Logs
 
 ENV LD_LIBRARY_PATH="/usr/lib:${LD_LIBRARY_PATH}"
