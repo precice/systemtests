@@ -3,7 +3,7 @@ services:
 
 # OpenFOAM Adapter
   openfoam-adapter-fluid:
-    image: "${SYSTEST_REMOTE}openfoam-adapter-ubuntu1804.home-develop"
+    image: "${SYSTEST_REMOTE}openfoam-adapter${PRECICE_BASE}"
     networks:
       - precicecomm
     volumes:
@@ -22,7 +22,7 @@ services:
 
 # Code_Aster Adapter
   codeaster-adapter-solid:
-    image: "${SYSTEST_REMOTE}codeaster-adapter-ubuntu1804.home-develop"
+    image: "${SYSTEST_REMOTE}codeaster-adapter${PRECICE_BASE}"
     networks:
       - precicecomm
     volumes:
