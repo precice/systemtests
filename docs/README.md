@@ -2,7 +2,7 @@
 
 Here you will find general documentation for the preCICE systemtesting architecture.
 
-## What are systemtests?
+## Why use precice/systemtests?
 
 This repository fulfills a variety of functions, which are handled by separate files/folders.
 Roughly outlined, these functions are:
