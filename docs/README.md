@@ -18,6 +18,17 @@ The repository written in a combination of Dockerfiles, Python, and Bash. The ex
 
 ## Where to start?
 
+### Useful Documentation
+
+* [Docker](https://docs.docker.com/)
+* [Docker-compose](https://docs.docker.com/compose/)
+* [TravisCI main docs](https://docs.travis-ci.com/)
+* [TravisCI API](https://developer.travis-ci.com/)
+* [Bash scripting](https://tiswww.case.edu/php/chet/bash/bashref.html) (most bash docs/cheatsheets you can find by googling are pretty good, this is only one example)
+* [AWK scripting](https://www.grymoire.com/Unix/Awk.html) (as with bash, this is only one example)
+
+### How to use systemtests 
+
 - General overview of the testing architecture is provided in [`architecture.md`](./architecture.md). **(If you are new, read this first!)**
 - Handling of CI for the individual adapters is described in [`adapters-ci.md`](./adapters-ci.md)
 - Some tips and practices for the development are found in [`development.md`](./development.md)
