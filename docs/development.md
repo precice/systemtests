@@ -1,11 +1,6 @@
 # Useful documentation
 
-* [Docker](https://docs.docker.com/)
-* [Docker-compose](https://docs.docker.com/compose/)
-* [Main Travis docs](https://docs.travis-ci.com/)
-* [Travis API](https://developer.travis-ci.com/)
-* [TODO: Bash scripting documentation]
-* [TODO: AWK scripting documentation]
+See main [README.md](./README.md) under `Where to start`.
 
 # Useful patterns and commands
 
