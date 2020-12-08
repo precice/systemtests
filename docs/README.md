@@ -29,6 +29,7 @@ The repository written in a combination of Dockerfiles, Python, and Bash. The ex
 
 ### How to use systemtests 
 
-- General overview of the testing architecture is provided in [`architecture.md`](./architecture.md). **(If you are new, read this first!)**
-- Handling of CI for the individual adapters is described in [`adapters-ci.md`](./adapters-ci.md)
-- Some tips and practices for the development are found in [`development.md`](./development.md)
+- [`architecture.md`](./architecture.md): General overview of the testing architecture. **(If you are new, read this first!)**
+- [`adapters-ci.md`](./adapters-ci.md): How to handle builds originating from adapter repositories.
+- [`adding_tasks.md`](./adding_tasks.md): Explanation of the `.travis.yml` job structure.
+- [`development.md`](./development.md): Tips and common practices for development.
