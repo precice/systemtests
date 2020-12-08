@@ -14,7 +14,7 @@ Roughly outlined, these functions are:
 - Logging results and storing debug output by pushing it to the repository `precice_st_output`. (This is subject to be replaced with a fitting storage mechanism in the future).
 
 
-The repository written in a combination of Dockerfiles, Python, and Bash. The execution is done on TravisCI platform, though this is subject to change in the future (possibly migrating to GitLabCI/GitHubCI).
+The repository written in a combination of Dockerfiles, Python, and Bash. The code execution is done on the CI platform Travis, though this is subject to change in the future (possibly migrating to GitLabCI/GitHubCI).
 
 ## Where to start?
 
