@@ -1,47 +1,68 @@
 
-# Continuous Integration on adapters repositories
+# Continuous Integration on adapter repositories
 
-This file documents solution that ensures continuous integration for adapters, including different branch
-and pull requests without unnecessary code duplication.
+This file documents the use of the `trigger_systemtests.py` script, which ensures continuous integration for adapters. This primarily means that adapter repositories can create build testing their current code (including different branches
+and pull request versions) without unnecessary code duplication. In order to understand this section in depth, one should read through the `trigger_systemtests.py` script as well (though starting with this document is probably more helpful).
 
-## Triggering the build from the adapter
+## Triggering a TravisCI build from the adapter
 
-In order not to duplicate tests on different adapters, and to reuse functionality provided here, we use the Travis API
-to trigger selected tests present in this repository after commits to the adapters repositories. This is done by
-generating custom JSON with specification of the job and sending it to the Travis that triggers the build on this repository(For the overview of build triggering and custom jobs 
-see [here](https://docs.travis-ci.com/user/triggering-builds/)).
-Correspondingly, in order to send this request a simple Travis job needs to be present on adapters repository, so that it runs the main triggering script.
-Once the tests are finished, their return status is queried/sent back (controlled by `--wait` argument) to the Travis job on the adapter repository. 
-In case `--wait` flag is on, Travis job on adapter's repository essentially performs a blocking call, that does not return until tests finish (two running jobs 
-will be then seen in Travis dashboard - one for systemtests and one for the adapter). Alternatively, non-blocking call is possible - in that case, in order to indicate
-failure of the test, the script will trigger "failing job" on the adapters repository if the test fails.
+In order not to duplicate and store systemtest code on each of the adapter repositories, we instead reuse the testing system provided here. This is done by employing the Travis API to trigger Travis builds of selected test subsets from this systemtests repository after performing a commit on an adapter repository. 
 
-You can learn more from `trigger_systemtests.py`, which handles all of described functionality.
+For this purpose, we use the `trigger_systemtests.py` script to generate custom JSON with fitting job specifications and sending it to TravisCI. If executed correcty, this triggers a build to start on the systemtests page on TravisCI. For an overview of build triggering and custom jobs see [this page](https://docs.travis-ci.com/user/triggering-builds/).
 
-Since we don't need to run a full set of tests, only the following stages are added when generating the JSON job configuration file:
+To illustrate the process of triggering a build, let's look at the operations in chronological order using [this example from the fenics-adapter repository](https://travis-ci.org/github/precice/fenics-adapter/builds/741877203):
+
+1. Firstly, a [change is commited on the adapter repository](https://github.com/precice/fenics-adapter/commit/71c6941fdb96de69bab139b706d66db228075737).
+
+2. TravisCI picks up on this commit and [initiates a build on the adapter repository](https://travis-ci.org/github/precice/fenics-adapter/builds/741877203). Note that this requires two things: the adapter repository must be listed as active in the TravisCI precice dashboard and the repository [must contain a `.travis.yml` file for TravisCI to execute](https://github.com/precice/fenics-adapter/blob/71c6941fdb96de69bab139b706d66db228075737/.travis.yml).
+
+3. TravisCI [boots up a machine to execute the instructions in the adapters `.travis.yml` file](https://travis-ci.org/github/precice/fenics-adapter/builds/741877203). These contain a command to pull one file, `trigger_systemtests.py`, from the precice/systemtests repository and call it with a certain set of arguments that is specific to this adapter. Note that this step is performed on the TravisCI page of the adapter, not on systemtests!
+
+4. The TravisCI machine creates a JSON-formatted request to build a job on precice/systemtests and sends it to Travis. The request contains a simplified build job of two stages:
 - Building the adapter
-- Running the tests in which it participates
+- Running tests in which the adapter participates
 
-## Running on different branches and pull requests
+    This request is then received and upon parsing creates a [second, independent build that runs on precice/systemtests](https://travis-ci.org/github/precice/systemtests/builds/741879219). After sending the request, the original adapter build will either exit immediately or stall until it hears back from the triggered systemtests build before stopping. This behavior is dictated [by the `--wait` flag, which if set will cause the build to wait until the systemtests one is resolved](https://github.com/precice/fenics-adapter/blob/71c6941fdb96de69bab139b706d66db228075737/.travis.yml#L10).
 
-During the adapter's Travis job, if it is identified that the job is running on a pull request on a non-master branch (using the
-`TRAVIS_BRANCH` and `TRAVIS_PULL_REQUEST` environment variables), the generated JSON filed is patched with additional bash script that modifies
-the adapter Dockerfiles with additional instruction to switch to the needed branch (the instruction should be injected prior
-to actually building an image).
+5. Depending on the result of the triggered build, the original adapter build will either fail or succeed.
 
-The resulting image is then tagged with the name of the branch/pull request and pushed to [Dockerhub](https://hub.docker.com/u/precice). In the `docker-compose.yml` the image tag
-is controlled using  `{${SOLVER_NAME}_TAG}`( defaults to `latest`). Similarly, this environment variables is also specified in the specification of the Travis job
-for every solver participating in the test.
+    *Note:  that if we omit`--wait`, this build will immediately exit as 'success' before the actual build on systemtests resolves. In this case, the systemtests build will contain an additional command at its end that causes it to send back another build request to the original adapter repository. This third build only contains the command `return false` and thus serves as notification that the systemtests build corresponding to the commit has failed. (This is quite hacky and in practice never used, as we mostly use `--wait` in the adapters. If someone plans to build upon this feature, it is probably best to find a simpler way to achieve this callback.)*
+
+## Running on different branches/pull requests
+
+During the adapters TravisCI job, the `trigger_systemtests.py` script checks if it is running on non-master-branch/pull-request-branch  (using the `TRAVIS_BRANCH` and `TRAVIS_PULL_REQUEST` environment variables). If that is the case, the generated JSON file is patched with additional bash script calls that modify the adapters Dockerfile with additional instructions (such that it checks out the correct branch before cloning the repostory, for instance).
+
+The resulting adapter image is then tagged with the name of the branch/pull request and pushed to [DockerHub](https://hub.docker.com/u/precice). This is done to prevent the PR image from overwriting other images (e.g. the regularly used `develop` variant of the adapter). The test that follows after building the adapter will use this special image variant. More specifically, the tag is determined in `docker-compose.yml` with the `{${SOLVER_NAME}_TAG}` variable (defaults to `latest`).
 
 ## Adding CI for the adapter's repository
 
-Add specifications of the adapter into the `adapter_info` dictionary in `trigger_systemtests`.
-Then, the only thing remaining is to add a `.travis.yml` file to the adapter's repository, such as:
+When setting up a new adapter to use the systemtests CI, the following modifications need to be made:
 
-    - if: branch = master
-      script: |
-        curl -LO --retry 3 https://raw.githubusercontent.com/precice/systemtests/master/trigger_systemtests.py
-        python3 trigger_systemtests.py --adapter openfoam
+- [The adapter repository must be activated on TravisCI](https://docs.travis-ci.com/user/tutorial/#to-get-started-with-travis-ci-using-github).
 
-We also need to add a `TRAVIS_ACCESS_TOKEN` in each adapter's repository, as a secure variable to authenticate the build triggering. This token can be
-found on the [Travis profile page](https://travis-ci.org/account/preferences).
+- A `.travis.yml` file must be generated in the adapter repository. For illustration purposes let us consider [the fenics-adapter implementation of `.travis.yml`](https://github.com/precice/fenics-adapter/blob/71c6941fdb96de69bab139b706d66db228075737/.travis.yml) as an example:
+
+    ```yaml
+    matrix: 
+      include: 
+      - os: linux
+        name: "Systemtests"
+        if: fork = false AND ( branch = master OR branch = develop )
+        python: "3.6" 
+        env: PY=python3
+        script:
+        - curl -LO --retry 3 https://raw.githubusercontent.com/precice/systemtests/develop/trigger_systemtests.py
+        - travis_wait 60 $PY trigger_systemtests.py --adapter fenics --wait
+    ```
+
+    You don't have to match this exact format when creating your own `.travis.yml` file, but make sure that the following lines are included:
+    
+    1. `if: fork = false AND ( branch = master OR branch = develop )`: this ensures that tests only run from the original repository (non-fork) and only if the commits are made to `master`/`develop` or a PR which targets these branches.
+        
+    2. `- curl -LO --retry 3 https://raw.githubusercontent.com/precice/systemtests/develop/trigger_systemtests.py`: this pulls the latest `develop` version of `trigger_systemtests.py` for use in the adapter repository.
+        
+    3. `- travis_wait 60 $PY trigger_systemtests.py --adapter fenics --wait` launches the request for the fenics-adapter with the `--wait` flag. Note that `travis_wait 60` is not necessary.
+
+- A specification for the adapter must be added into the `adapter_info` dictionary in `trigger_systemtests`.
+
+- A `TRAVIS_ACCESS_TOKEN` for the TravisCI precice user must be added as [environment variable in the adapters repository](https://docs.travis-ci.com/user/environment-variables/#defining-variables-in-repository-settings). This is required for the request to be permitted. You can find the token under the [Travis profile page](https://travis-ci.org/account/preferences).
