@@ -1,8 +1,10 @@
 # General architecture
 
+## TravisCI
+
 At the moment, the systemtest procedure is being run on the [TravisCI platform](https://travis-ci.org/github/precice). Note that this is subject to change soon: TravisCI itself is currently [migrating](https://docs.travis-ci.com/user/migrate/open-source-repository-migration) (changing the domain from `travis-ci.org` to `travis-ci.com`), and on top of that we plan on [transferring the systemtests to another platform alltogether](https://github.com/precice/systemtests/issues/253).
 
-Running tests on TravisCI has two requirements: the repository needs to be registered as acive on TravisCI, and it must contain a file named `.travis.yml` located in the root of the repository. Assuming these criteria are met, TravisCI will then 'watch' the repository for changes and trigger a build whenever a change to the repository is made (the exact behavior of what to do is specified in the repository settings tab on the TravisCI dashboard). Once a build has been triggered, TravisCI boots up a virtual machine that executes commands as specified in `.travis.yml`. 
+Running tests on TravisCI has two requirements: the repository needs to be registered as active on TravisCI, and it must contain a file named `.travis.yml` located in the root of the repository. Assuming these criteria are met, TravisCI will then 'watch' the repository for changes and trigger a build whenever a change to the repository is made (the exact behavior of what to do is specified in the repository settings tab on the TravisCI dashboard). Once a build has been triggered, TravisCI boots up a virtual machine that executes commands as specified in `.travis.yml`. 
 
 We structure TravisCI builds into three distinct stages; building preCICE, building adapters, and tests. Details of each stage are outlined below.
 
@@ -55,24 +57,31 @@ docker build --build-arg from=precice/precice-ubuntu1804.home-develop -d Dockerf
 The adapers mostly require different installation methods, below a rough description of how to build each adapter:
 
 - **SU2 adapter**
+
   Since the SU2 adapter modifies the SU2 source code, it makes no sense to copy a clean SU2 build from an external solver image, since we need to rebuild it anyways. Instead, we clone the SU2 source and build it here. Currently, we are using the fixed SU2 version `v6.0.0`.
 
 - **deal.II adapter**
+
   deal.II is a library and the adapter just needs to link to it. Thus, we import a pre-built deal.II solver image and build only the adapter in the dockerfile. Note that at time of building we are required to set the number of dimensions the adapter is built for. Since we run tests both for 2D- and 3D-scenarios, we have to build two separate adapter images.
   
 - **CalculiX adapter**
+
   We only import the necessary libraries (Spooles, ARPACK), since the CalculiX adapter modifies the CalculiX source code. We use the fixed version `2.16`.
   
 - **OpenFOAM adapter**
+
   Since we began using mainly OF v2006, the installation process is now simple enough that we choose to perform it directly in the adapter dockerfile. Prior to this, we were copying OF5 from a solver image.
   
 - **Nutils adapter**
+
   The Nutils adapter is simply a Python script with Nutils and preCICE for a particular test case. As a result, there is nothing to be done at this build stage. We only provide a Dockerfile for the running the test in the next stage.
 
 - **FEniCS adapter**
+
   We install the FEniCS solver together with the FEniCS adapter when building.
   
 - **CodeAster adapter**
+
   Here we again use a prebuilt image of the solver named `precice/codeaster` and only perform the adapter install.
 
 
@@ -89,7 +98,7 @@ The tests are based on the corresponding tutorials from the [tutorials repositor
 Afterwards, when the simulation finishes, the output is copied from all the solvers into the common volume. The testing script then extracts this data from the docker containers and compares them to the reference output using `compare_results.sh`. An error is thrown if they don't match.
 
 The comparison goes as follows:
-- First, check scan the output files to determine if an are missing and if the files differ at all. If the content of a file fully matches its respective reference, it will not be considered in further steps.
+- First, scan the output files to determine if an are missing and if the files differ at all. If the content of a file fully matches its respective reference, it will not be considered in further steps.
 - After finding all non-matching files, compare these more thoroughly. There are numerous file differences which we expect to happen; time-stamps, dates, memory adresses, small floating point differences due to running on a different machine or OS. These, however, should not flag a test as failure. The script thus checks the file for textual and numerical differences and filters out any keywords that signify a values we expect to vary beforehand. This then leaves a comparison of filtered text and filtered numbers. For the latter we specifically compute the largest difference observed in a single entry and the overall average of differences. If these exceed their specified relative tolerance (default 0.1 percent), an error is thrown.
 
 In either case, after a test finishes, all the related volumes, networks and containers are removed.
