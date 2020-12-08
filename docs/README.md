@@ -1,6 +1,8 @@
-# preCICE systemtests documentation
+# preCICE Systemtests Documentation
 
 Here you will find general documentation for the preCICE systemtesting architecture.
+
+## What are systemtests?
 
 This repository fulfills a variety of functions, which are handled by separate files/folders.
 Roughly outlined, these functions are:
@@ -12,10 +14,10 @@ Roughly outlined, these functions are:
 - Logging results and storing debug output by pushing it to the repository `precice_st_output`. (This is subject to be replaced with a fitting storage mechanism in the future).
 
 
-The repository uses a combination of Docker, Python, and Bash scripts to set up and validate preCICE installations and tests. The execution of the tests themselves is done by launching build jobs on TravisCI, though this is subject to change in the future (possibly migrating to GitLabCI).
+The repository written in a combination of Dockerfiles, Python, and Bash. The execution is done on TravisCI platform, though this is subject to change in the future (possibly migrating to GitLabCI/GitHubCI).
 
+## Where to start?
 
-
-- General overview of the testing architecture is provided in [`architecture.md`](./architecture.md). This is the file you should read first.
+- General overview of the testing architecture is provided in [`architecture.md`](./architecture.md). **(If you are new, read this first!)**
 - Handling of CI for the individual adapters is described in [`adapters-ci.md`](./adapters-ci.md)
 - Some tips and practices for the development are found in [`development.md`](./development.md)
