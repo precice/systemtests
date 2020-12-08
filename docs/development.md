@@ -1,10 +1,12 @@
-# Useful documentation
+# Tips/Tricks for using systemtests
+
+This file contains small guidelines on what to do if you encounter some of the more common problems. Before reading this, one should make sure to read the other docs and/or be familiar with the code.
+
+## Useful Documentation
 
 See main [README.md](./README.md) under `Where to start`.
 
-# Useful patterns and commands
-
-## Deciding where to run your builds
+## Foreford: deciding where to run your builds
 Whenever you detect a build failure and start investigating the failing command, it is recommended to make use of local builds (on your machine) as much as possible (as opposed to sending builds to the CI platform). This way you have much more interactive control over the test (e.g. being able to enter an active docker container to figure things out at runtime) and save computational resources on the platform that others might want to use. Nontheless, do not be afraid to use CI when necessary, sometimes an issue can only be resolved by checking how a certain build behaves in CI.
 
 Note that the investigation methods below (whereby you interact with images/containers through a shell) require you to run the build locally.
@@ -49,7 +51,7 @@ owned by user `precice`, not the `root` user and not the user of your local mach
 
 You should also make sure that running both on a local and a remote machine work, testing both `local_test.py` and `system_testing.py` with the considered test case.
 
-## If something fails on Travis
+## If something fails on TravisCI
 
 1. Inspect the build log
 2. Restart the build (maybe it is a connection problem)
@@ -61,7 +63,7 @@ You should also make sure that running both on a local and a remote machine work
 
 ## If a systemtest request fails with 'HTTP Error 403: Forbidden'
 
-It might happen at some point that the `trigger_systemtests.py` script responsible for triggering builds through the Travis API starts to fail with the error above. This could happen due to the `TRAVIS_ACCESS_TOKEN` expiring and is potentially easy to fix. To renew the token, generate a new one locally using the Travis CLI (taken from [here](https://blog.travis-ci.com/2013-01-28-token-token-token)):
+It might happen at some point that the `trigger_systemtests.py` script responsible for triggering builds through the Travis API starts to fail with the error above. This could happen due to the `TRAVIS_ACCESS_TOKEN` expiring after some time and is potentially easy to fix. To renew the token, generate a new one locally using the Travis CLI (taken from [here](https://blog.travis-ci.com/2013-01-28-token-token-token)):
 
 ```
 gem install travis && travis login && travis token
@@ -71,23 +73,23 @@ and replace the current `TRAVIS_ACCESS_TOKEN` value in the TravisCI systemtests 
 
 ## If there are network problems
 
-It can happen, that you cannot access the network from the inside of docker. You can try to fix it using `--network=host` during build of docker images or by specifying `network: host` in the `docker-compose.yml`. You might also want to add this parameter in `build_image` function in `docker.py`.
+It might happen that you cannot access the network from inside of docker. You can try to fix it using `--network=host` during build of docker images or by specifying `network: host` in the `docker-compose.yml`. You might also want to add this parameter in `build_image` function in `docker.py`.
 
 
 ## If CI on adapters does not work
 
-You first need to add `TRAVIS_ACCESS_TOKEN` as environment variable on your system.
-Then you can  run and check the generated JSON file without sending a request
+For locally investigating this issue, make sure you have a `TRAVIS_ACCESS_TOKEN` stored as environment variable on your system.
+Then you can then run and check the generated JSON file without sending an actual request to the server with:
 ```
    python3 trigger_systemtests.py --adapter su2 --test
 ```
-If it looks fine, you can run it without `--test` to actually send the request to Travis. Then check the triggered builds.
-If there are no builds visible there, check the `requests` section of Travis, maybe Travis could not interpret the request correctly.
+If it looks fine, you can run it without `--test` to actually send the request to Travis. Then check in the Travis dashboard if a build was launched.
+If not, you should at least be able to see the received request under `requests` section of Travis together with an explanation why the build was denied.
 
 ## If you want to use Dockerfiles for your own development
 
 Some users might want to run coupled simulations without having everything installed on the same system.
-For instance mount input folders from your machine to `/home/precice/Data/Input` in the container and get output from
+For instance: mount input folders from your machine to `/home/precice/Data/Input` in the container and get output from
 `/home/precice/Data/Output`.
 
 With the provided setup and a few tweaks this is easy to achieve. Using the example of the fenics-adapter:
@@ -113,11 +115,11 @@ Then you are free to run your coupled simulation for each participant with:
 ```
 docker run --user=precice -it -v $(pwd)/HT/partitioned-heat/fenics-fenics:/home/precice/Data/Input -v exchange:/home/precice/Data/Exchange fenics-adapter-user /bin/bash```
 ```
-Output can then be copied from the containers.
+Output can then be copied from the containers afterwards.
 
 ## If you want to run the tests based on code from a non-default branch
 
-Depending on the test case several code components are used (preCICE, bindings, adapter(s), tutorial). Sometimes it becomes necessary to use a branch that is different from the one that is used as default (e.g. `develop` is used for the preCICE images. See [here](https://github.com/precice/systemtests/blob/ec4ef9d4aedd0087dfb3a8ed98fdf7a1267c7751/precice/Dockerfile.Ubuntu1604.home#L50-L52)).
+Depending on the test case several code components are used (preCICE, bindings, adapter(s), tutorial). Sometimes it becomes necessary to use a branch different from the default (e.g. `develop` is used for the preCICE images. See [here](https://github.com/precice/systemtests/blob/ec4ef9d4aedd0087dfb3a8ed98fdf7a1267c7751/precice/Dockerfile.Ubuntu1604.home#L50-L52)).
 
 ### Non-default branch for preCICE
 
