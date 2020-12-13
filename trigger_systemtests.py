@@ -1,4 +1,4 @@
-com"""
+"""
  Generate Travis API V3 request to trigger corresponding systemtests
  based on the adapter type. To adjust it for newly added system test modify
  struct `adapter_info` struct below with the name of the
