@@ -1,6 +1,6 @@
 # Dockerfile for building preCICE on Arch Linux
 
-FROM archlinux/base
+FROM archlinux/archlinux
 
 RUN pacman -Syu --quiet --noconfirm --needed base-devel boost eigen git cmake openmpi python3 python-numpy
 
