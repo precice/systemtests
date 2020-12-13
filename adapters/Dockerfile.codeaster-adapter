@@ -27,7 +27,7 @@ WORKDIR /home/precice
 COPY --from=precice/codeaster /home/precice/Code_Aster /home/precice/Code_Aster
 
 ARG adapter_branch=develop
-RUN git clone --branch $adapter_branch https://github.com/precice/code_aster-adapter.git
+RUN git clone --depth 1 --branch $adapter_branch https://github.com/precice/code_aster-adapter.git
 
 RUN \
     sed -i "s|.rmed|.resu|g" code_aster-adapter/cht/adapter.comm && \

@@ -6,7 +6,7 @@ ENV ca_adapter_path /home/precice/code_aster-adapter/cht
 RUN apk add git bash
 
 ARG branch=CA_OpenFOAM
-RUN git clone --branch $branch https://github.com/precice/tutorials
+RUN git clone --depth 1 --branch $branch https://github.com/precice/tutorials
 
 COPY \
     docker.export $tutorial_path/Solid/solid.export

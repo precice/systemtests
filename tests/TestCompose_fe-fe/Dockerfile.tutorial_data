@@ -2,7 +2,7 @@ from alpine
 ENV tutorial_path tutorials/HT/partitioned-heat/fenics-fenics
 RUN apk add git
 ARG branch=develop
-RUN git clone --branch $branch https://github.com/precice/tutorials
+RUN git clone --depth 1 --branch $branch https://github.com/precice/tutorials
 RUN mkdir configs && \
     sed -i 's|<m2n:sockets from="HeatDirichlet" to="HeatNeumann"/>|<m2n:sockets from="HeatDirichlet" to="HeatNeumann" exchange-directory="/home/precice/Data/Exchange/" network="eth0"/>|g; \
             s|\(\s\+\)\(</participant>\)|\1   <export:vtk directory="precice-output" />\n\1\2|g' $tutorial_path/precice-config.xml

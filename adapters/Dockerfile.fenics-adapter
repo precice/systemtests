@@ -29,7 +29,7 @@ RUN add-apt-repository -y ppa:fenics-packages/fenics && \
     rm -rf /var/lib/apt/lists/*
 
 
-RUN pip3 install --user cython # TODO: can we put this dependency into requirements.txt of python?
+RUN pip3 install --depth 1 --user cython # TODO: can we put this dependency into requirements.txt of python?
 
 USER precice
 
