@@ -13,16 +13,15 @@ jobs:
     # Currently problematic jobs that will not affect the build status
     # To add a job here, list its *exact* name.
     #   Current short-term failures (to be fixed soon):
-    - name: "Arch Linux [failure allowed]"
     - name: "[18.04] nutils <-> OpenFOAM [failure allowed]"
     #   Unstable builds (allowed to fail long-term)
-    - name: "[18.04] SU2 <-> Calculix [unstable][failure allowed]"
-    - name: "[20.04 PETSc] SU2 <-> Calculix [unstable][failure allowed]"
+    - name: "[18.04] SU2 <-> Calculix [unstable] [failure allowed]"
+    - name: "[20.04 PETSc] SU2 <-> Calculix [unstable] [failure allowed]"
 
 
   include:
     - stage: Building preCICE
-      name: "Arch Linux [failure allowed]"
+      name: "Arch Linux"
       if: fork = false
       script:
         - python build_precice.py --dockerfile precice/Dockerfile.Arch --docker-username $DOCKER_USERNAME
