@@ -180,7 +180,7 @@ jobs:
     - name: "[18.04] FEniCS <-> FEniCS"
       script:
         - python system_testing.py -s fe-fe --base Ubuntu1804.package -v
-        - python push.py
+        - python push.py -o
 
     - name: "[18.04] Bindings/Solverdummies"
       script:
@@ -195,12 +195,12 @@ jobs:
     - name: "[18.04] deal.ii <-> OpenFOAM [FSI][2D]"
       script:
         - python system_testing.py -s dealii-of -v
-        - python push.py
+        - python push.py -o
 
     - name: "[20.04 PETSc] deal.ii <-> OpenFOAM [FSI][2D]"
       script:
         - python system_testing.py -s dealii-of --base Ubuntu2004.package.PETSc -v
-        - python push.py
+        - python push.py -o
 
     - name: "[18.04] nutils <-> OpenFOAM [failure allowed]"
       script:
