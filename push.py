@@ -184,6 +184,7 @@ if __name__ == "__main__":
 
                 # Filter out specific log files that we don't want to compare
                 # e.g. -events-summary.log files, which contain very fluctuating values
+                # TODO: move filter into a more unified location. This is currently identical to the filter in systemtesting.py
                 patterns_to_ignore = [r"events-summary.log$", r"ldd.log$"]
                 # Gather all ".log" files from the Output in a list
                 log_files = [y for x in os.walk(os.path.join(job_path, "Output")) for y in glob(os.path.join(x[0], '*.log'))]
