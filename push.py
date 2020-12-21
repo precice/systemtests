@@ -181,6 +181,18 @@ if __name__ == "__main__":
             # extract files from container, IF ENABLED (requires a compose test)
             if args.output:
                 ccall("docker cp tutorial-data:/Output {}".format(job_path))
+
+                # Filter out specific log files that we don't want to compare
+                # e.g. -events-summary.log files, which contain very fluctuating values
+                patterns_to_ignore = [r"events-summary.log$", r"ldd.log$"]
+                # Gather all ".log" files from the Output in a list
+                log_files = [y for x in os.walk(os.path.join(job_path, "Output")) for y in glob(os.path.join(x[0], '*.log'))]
+                for log_file in log_files:
+                    for pattern in patterns_to_ignore:
+                        if re.search(pattern, log_file):
+                            ccall("rm -f {}".format(log_file))
+                            break
+
                 # Check if Output is missing, given that the option is enabled
                 if not os.listdir(output_path):
                     ccall("echo '# Output was enabled, but no output files found!' > {path}".format(path=
