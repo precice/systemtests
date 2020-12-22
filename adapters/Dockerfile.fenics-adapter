@@ -18,11 +18,7 @@ RUN apt-get -qq update && apt-get -qq install \
     python3-dev && \
     rm -rf /var/lib/apt/lists/*
 
-# Install pip dependecies; we have to use pip, since cython provided by apt-get is too old.
-RUN wget -q https://bootstrap.pypa.io/get-pip.py -O get-pip.py && \
-    python3 get-pip.py
-
-
+# Install FEniCS
 RUN add-apt-repository -y ppa:fenics-packages/fenics && \
     apt-get -qq update && \
     apt-get -qq install --no-install-recommends fenics && \
