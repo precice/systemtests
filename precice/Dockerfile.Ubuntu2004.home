@@ -15,8 +15,9 @@ RUN apt-get -qq update && apt-get -qq install \
     libeigen3-dev \
     libxml2-dev \
     git \
-    python-numpy \
-    python-dev \
+    python3-numpy \
+    python3-dev \
+    petsc-dev \
     wget \
     bzip2 \
     cmake && \
