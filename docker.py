@@ -22,19 +22,23 @@ def get_containers():
     images = cp.stdout.decode().split("\n")
     return [i for i in images if len(i) > 0] # Remove empty lines
 
-def build_image(tag, dockerfile="Dockerfile", build_args={}, force_rebuild=False, namespace=get_namespace()):
+def build_image(tag, dockerfile="Dockerfile", build_args={}, force_rebuild=False, namespace=get_namespace(), docker_tag="latest", docker_login=True):
     if force_rebuild:
         build_args["CACHEBUST"] = datetime.datetime.now().isoformat() # A unique string for every invocation
-    args = " ".join(["--build-arg " + a + "=" + b for a, b in build_args.items()])
-    cmd = "docker build --network=host --file {dockerfile} --tag {namespace}{tag} {build_args} .".format(dockerfile=dockerfile, namespace=namespace, tag=tag.lower(), build_args=args)
-    print("EXECUTING:", cmd)
-    subprocess.run(cmd, shell = True, check = True)
-
-def push_image(tag, namespace=get_namespace(), docker_login = True):
     cmd = ""
-    if docker_login == True:
+    if docker_login:
         cmd += "echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin && "
 
-    cmd += "docker push {namespace}{tag}:latest".format(namespace=namespace, tag=tag.lower())
+    args = " ".join(["--build-arg " + a + "=" + b for a, b in build_args.items()])
+    cmd += f"docker build --network=host --file {dockerfile} --tag {namespace}{tag.lower()}:{docker_tag} {args} ."
     print("EXECUTING:", cmd)
-    subprocess.run(cmd, shell = True, check = True)
+    subprocess.run(cmd, shell=True, check=True)
+
+def push_image(tag, namespace=get_namespace(), docker_tag="latest", docker_login=True):
+    cmd = ""
+    if docker_login:
+        cmd += "echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin && "
+
+    cmd += f"docker push {namespace}{tag.lower()}:{docker_tag}"
+    print("EXECUTING:", cmd)
+    subprocess.run(cmd, shell=True, check=True)
