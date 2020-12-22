@@ -11,10 +11,10 @@ RUN apt-get -qq update && apt-get -qq install \
     libboost-all-dev \
     libeigen3-dev \
     libxml2-dev \
+    petsc-dev \
     git \
     python3-numpy \
     python3-dev \
-    petsc-dev \
     wget \
     bzip2 \
     cmake && \

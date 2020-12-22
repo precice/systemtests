@@ -43,12 +43,10 @@ RUN wget -nv 'https://www.mcs.anl.gov/petsc/mirror/release-snapshots/petsc-3.12.
   make all test
 RUN chown -R precice:precice /petsc
 
-
-USER precice
-
-# Rebuild image from here on if `force_rebuild` is enabled
+# Rebuild image if force_rebuild after that command
 ARG CACHEBUST
 
+USER precice
 WORKDIR /home/precice
 # Setting some environment variables for installing preCICE
 ENV CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/usr/include/eigen3" \
