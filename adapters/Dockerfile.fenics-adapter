@@ -1,4 +1,9 @@
-# System testing preCICE with fenics-adapter
+# Dockerfile for building the fenics-adapter for preCICE
+# NOTE: At the moment, fenics has some dependency issues, which
+#       requires us to use some workarounds for building the adapter.
+#       At a later point, these workarounds should be removed:
+#         1. precice-Ubuntu1804.package being built with outdated PETSc version
+#         2. Manually uninstalling the fenics-ufl package (in this file)
 
 # Building on top of the latest preCICE-build
 ARG branch=develop
@@ -9,7 +14,7 @@ USER root
 ENV USER=root
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Installing necessary dependencies
+# Install necessary dependencies
 RUN apt-get -qq update && apt-get -qq install \
     apt-utils && \
     apt-get -qq install \
@@ -25,21 +30,21 @@ RUN add-apt-repository -y ppa:fenics-packages/fenics && \
     rm -rf /var/lib/apt/lists/*
 
 
+# Install pip dependencies; we have to use pip, since cython provided by apt-get is too old.
 RUN pip3 install --user cython # TODO: can we put this dependency into requirements.txt of python?
 
 USER precice
 
-
-# Rebuild image if force_rebuild after that command
+# Rebuild image from here if `force_rebuild` is enabled
 ARG CACHEBUST
 
 ARG bindings_branch=develop
 ARG adapter_branch=develop
 
-# Builds the precice python bindings for python3
+# Build the precice python bindings for python3
 RUN pip3 install --user https://github.com/precice/python-bindings/archive/$bindings_branch.zip
 
-# Building fenics-adapter
+# Build fenics-adapter
 RUN pip3 install --user numpy==1.14.5 https://github.com/precice/fenics-adapter/archive/$adapter_branch.zip
 
 

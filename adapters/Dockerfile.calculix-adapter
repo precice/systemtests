@@ -1,10 +1,14 @@
+# Dockerfile for building the calculix-adapter for preCICE
+# NOTE: Built for CalculiX v2.16
+
+# Building on top of the latest preCICE-build
 ARG branch=develop
 ARG from=precice/precice-ubuntu1804.home-${branch}
 FROM $from
 
 USER root
 
-# ( since we are importing form the precice image )
+# Install dependencies
 RUN apt-get -qq update && apt-get -qq install \
     build-essential \
     gfortran \
@@ -19,20 +23,24 @@ RUN apt-get -qq update && apt-get -qq install \
     libyaml-cpp-dev && \
     rm -rf /var/lib/apt/lists/*
 
+# Rebuild image from here if `force_rebuild` is enabled
 ARG CACHEBUST
 
 USER precice
-# get calculix source
+
+# Get calculix source (using version 2.16)
 WORKDIR /home/precice
 RUN curl -s http://www.dhondt.de/ccx_2.16.src.tar.bz2 | tar -xj
+
+# Get adapter source
 ARG adapter_branch=develop
 RUN git clone --depth 1 --branch $adapter_branch https://github.com/precice/calculix-adapter.git
 
-# build adapter
+# Build adapter
 WORKDIR calculix-adapter/
 RUN make -j $(nproc)
 
-# create directory for input/out/exchange
+# Create directory for input/out/exchange
 WORKDIR /home/precice
 RUN mkdir -p Logs Data/Input Data/Output Data/Exchange
 ENV PATH="/home/precice/calculix-adapter/bin:${PATH}"
