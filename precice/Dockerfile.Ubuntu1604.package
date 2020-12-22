@@ -1,5 +1,11 @@
 # Dockerfile for building preCICE on ubuntu 16.04
 
+# #################
+# WARNING: As of 11.2020, images using Ubuntu 16.04 are no longer maintained.
+#          Attempting to build this dockerfile or using it as base image for
+#          other builds is likely to fail.
+# #################
+
 # Using ubuntu 16.04 as basis
 FROM ubuntu:16.04
 

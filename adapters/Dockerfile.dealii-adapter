@@ -1,11 +1,17 @@
+# Dockerfile for building the dealii-adapter for preCICE
+# NOTE: Built with dimension argument set to 2.
+
+# Building on top of the latest preCICE-build
 ARG branch=develop
 ARG from=precice/precice-ubuntu1804.home-${branch}
 ARG base_solver=precice/deal.ii
 FROM ${base_solver} as deal.ii
 FROM $from
 
+# Rebuild image from here if `force_rebuild` is enabled
 ARG CACHEBUST
 
+# Get solver
 COPY --from=deal.ii /home/precice/dealii/ /home/precice/dealii/
 COPY --from=deal.ii /home/precice/dealii_build/ /home/precice/dealii_build/
 
@@ -13,9 +19,11 @@ USER precice
 WORKDIR /home/precice
 RUN mkdir -p Logs Data/Input Data/Output Data/Exchange
 
+# Get adapter source
 ARG adapter_branch=develop
 RUN git clone --depth 1 --branch $adapter_branch https://github.com/precice/dealii-adapter.git
 
+# Build adapter
 RUN cd dealii-adapter/linear_elasticity/ && \
     cmake -DDEAL_II_DIR=$HOME/dealii_build -DDIM=2 -DCMAKE_BUILD_TYPE=Release . && \
     make -j $(nproc)

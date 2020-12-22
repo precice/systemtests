@@ -1,3 +1,6 @@
+# Dockerfile for building the codeaster-adapter for preCICE
+
+# Building on top of the latest preCICE-build
 ARG branch=develop
 ARG from=precice/precice-ubuntu1804.home-${branch}
 ARG base_solver=precice/codeaster
@@ -7,7 +10,7 @@ FROM $from
 USER root
 ENV USER=root
 
-# Install dependecies
+# Install dependencies
 RUN apt-get -qq update && apt-get -qq install \
     git \
     locales \
@@ -15,12 +18,10 @@ RUN apt-get -qq update && apt-get -qq install \
     python3-numpy && \
     rm -rf /var/lib/apt/lists/*
 
-RUN locale-gen en_US.UTF-8
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US:en
-ENV LC_ALL en_US.UTF-8
+# Rebuild image from here if `force_rebuild` is enabled
+ARG CACHEBUST
 
-# Building Code_Aster-adapter
+# Build Code_Aster-adapter
 USER precice
 WORKDIR /home/precice
 
@@ -38,6 +39,6 @@ RUN \
 RUN \
     mkdir Data Logs && cd Data && mkdir Exchange Input Output
 
-# Installing python bindings for preCICE
+# Install python bindings for preCICE
 RUN \
     pip3 install --upgrade pip && pip3 install --user pyprecice

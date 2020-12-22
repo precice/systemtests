@@ -1,5 +1,11 @@
-# Dockerfile for building preCICE on Ubuntu 18.04
-# default setup, user set to root, manual install, using MPICH
+# Dockerfile for building preCICE
+#   OS version:           Ubuntu 18.04
+#   User:                 precice
+#   PETSc install:        from apt [OUTDATED]
+#   precice install:      as Debian package
+#
+#   Uses MPICH instead of OpenMPI (default)
+
 
 # Use official Ubuntu 18.04 as base
 FROM ubuntu:18.04

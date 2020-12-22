@@ -1,3 +1,6 @@
+# Dockerfile for building the openfoam-adapter for preCICE
+# NOTE: Built for OpenFOAM v2006
+
 ARG branch=develop
 ARG from=precice/precice-ubuntu1804.home-${branch}
 # ARG base_solver=precice/openfoam
@@ -7,14 +10,14 @@ FROM $from
 USER root
 ENV USER=root
 
-# Install dependecies
+# Install dependencies
 RUN apt-get -qq update && apt-get -qq install \
     software-properties-common \
     wget apt-transport-https && \
     rm -rf /var/lib/apt/lists/*
 
 
-
+# Rebuild image from here if `force_rebuild` is enabled
 ARG CACHEBUST
 
 # Install OpenFOAM v2006
@@ -22,11 +25,7 @@ ARG CACHEBUST
 RUN wget -q -O - https://dl.openfoam.com/add-debian-repo.sh | bash && \
     apt-get install -y openfoam2006-default
 
-# # Get OpenFOAM5 install via folder copy
-# COPY --from=openfoam /opt/openfoam5 /opt/openfoam5/
-# for of5, we need to also source the file at /opt/openfoam5/etc/bashrc
-
-# Building openfoam-adapter
+# Build openfoam-adapter
 USER precice
 SHELL ["/bin/bash", "-c"]  # without this command /opt/openfoam5/etc/bashrc cannot be sourced
 WORKDIR /home/precice
