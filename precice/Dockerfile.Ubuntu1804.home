@@ -14,6 +14,7 @@ RUN apt-get -qq update && apt-get -qq install \
     git \
     python3-numpy \
     python3-dev \
+    python3-pip \
     petsc-dev \
     wget \
     bzip2 \
@@ -43,10 +44,15 @@ RUN wget -nv 'https://www.mcs.anl.gov/petsc/mirror/release-snapshots/petsc-3.12.
   make all test
 RUN chown -R precice:precice /petsc
 
-# Rebuild image if force_rebuild after that command
-ARG CACHEBUST
 
 USER precice
+
+# Upgrade pip to latest version
+RUN pip3 install --user --upgrade pip
+
+# Rebuild image from here on if `force_rebuild` is enabled
+ARG CACHEBUST
+
 WORKDIR /home/precice
 # Setting some environment variables for installing preCICE
 ENV CPLUS_INCLUDE_PATH="$CPLUS_INCLUDE_PATH:/usr/include/eigen3" \
