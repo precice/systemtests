@@ -44,9 +44,6 @@ ENV LC_ALL en_US.UTF-8
 
 USER precice
 
-# Upgrade pip to latest version
-RUN pip3 install --user --upgrade pip
-
 # Rebuild image from here on if `force_rebuild` is enabled
 ARG CACHEBUST
 
