@@ -10,15 +10,13 @@ install:
 
 jobs:
   allow_failures:
-    # Currently unstable jobs that do not affect the build status
-    # To add a job here, list its exact name
+    # Currently problematic jobs that will not affect the build status
+    # To add a job here, list its *exact* name.
+    #   Current short-term failures (to be fixed soon):
     - name: "[18.04] nutils <-> OpenFOAM [failure allowed]"
-    - name: "[18.04] SU2 <-> Calculix [unstable][failure allowed]"
-    - name: "[20.04 PETSc] SU2 <-> Calculix [unstable][failure allowed]"
-    - name: "[18.04 PETSc] OpenFOAM <-> CalculiX [FSI][failure allowed]"
-    - name: "[18.04] CalculiX adapter [failure allowed]"
-    - name: "[18.04] CalculiX adapter [PETSc] [failure allowed]"
-    - name: "[20.04] CalculiX adapter [PETSc] [failure allowed]"
+    #   Unstable builds (allowed to fail long-term)
+    - name: "[18.04] SU2 <-> Calculix [unstable] [failure allowed]"
+    - name: "[20.04 PETSc] SU2 <-> Calculix [unstable] [failure allowed]"
 
 
   include:
@@ -159,12 +157,12 @@ jobs:
 
 
     - stage: Tests
-      name: "[18.04] SU2 <-> Calculix [unstable][failure allowed]"
+      name: "[18.04] SU2 <-> Calculix [unstable] [failure allowed]"
       script:
         - python system_testing.py -s su2-ccx -v
         - python push.py
 
-    - name: "[20.04 PETSc] SU2 <-> Calculix [unstable][failure allowed]"
+    - name: "[20.04 PETSc] SU2 <-> Calculix [unstable] [failure allowed]"
       script:
         - python system_testing.py -s su2-ccx --base Ubuntu2004.package.PETSc -v
         - python push.py
@@ -229,7 +227,7 @@ jobs:
         - python system_testing.py -s 1dtube_cxx -v
         - python push.py
 
-    - name: "[18.04 PETSc] OpenFOAM <-> CalculiX [FSI][failure allowed]"
+    - name: "[18.04 PETSc] OpenFOAM <-> CalculiX [FSI]"
       script:
         - python system_testing.py -s of-ccx_fsi --base Ubuntu1804.home.PETSc -v
         - python push.py

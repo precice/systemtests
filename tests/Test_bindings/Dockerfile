@@ -23,7 +23,7 @@ ARG branch=develop
 
 # Clones the precice python bindings
 WORKDIR /home/precice
-RUN git clone --branch $branch https://github.com/precice/python-bindings.git
+RUN git clone --depth 1 --branch $branch https://github.com/precice/python-bindings.git
 # Builds the precice python bindings
 WORKDIR /home/precice/python-bindings
 RUN pip3 install --user .
@@ -49,7 +49,7 @@ RUN ./solverdummy ../precice-config.xml SolverOne MeshOne & ./solverdummy ../pre
 
 # Clones the fortran-module
 WORKDIR /home/precice
-RUN git clone https://github.com/precice/fortran-module.git
+RUN git clone --depth 1 https://github.com/precice/fortran-module.git
 # Builds the fortran module
 WORKDIR /home/precice/fortran-module
 RUN make

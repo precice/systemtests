@@ -3,7 +3,7 @@ ENV tutorial_path tutorials/FSI/flap_perp_2D/OpenFOAM-deal.II
 RUN apk add git
 
 ARG branch=develop
-RUN git clone --branch $branch https://github.com/precice/tutorials
+RUN git clone --depth 1  --branch $branch https://github.com/precice/tutorials
 RUN mkdir configs && \
     sed -e 's|m2n:sockets from="Fluid" to="Solid"|m2n:sockets from="Fluid" to="Solid" exchange-directory="/home/precice/Data/Exchange/" network="eth0"|g; \
     s|max-time value="5"|max-time value="1"|g ; \

@@ -17,7 +17,7 @@ RUN pip3 install --user https://github.com/precice/python-bindings/archive/$bran
 ARG version=v6.0
 
 WORKDIR /home/precice/
-RUN git clone --branch $version https://github.com/evalf/nutils.git && \
+RUN git clone --depth 1 --branch $version https://github.com/evalf/nutils.git && \
     python3 -m pip install --user --editable nutils
 
 RUN mkdir -p Data/Input Data/Output Data/Exchange

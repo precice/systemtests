@@ -14,7 +14,7 @@ USER precice
 
 WORKDIR /home/precice/
 ARG branch=develop
-RUN git clone --branch $branch https://github.com/precice/elastictube1d.git
+RUN git clone --depth 1 --branch $branch https://github.com/precice/elastictube1d.git
 
 WORKDIR /home/precice/elastictube1d/cxx
 

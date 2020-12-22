@@ -32,7 +32,7 @@ SHELL ["/bin/bash", "-c"]  # without this command /opt/openfoam5/etc/bashrc cann
 WORKDIR /home/precice
 RUN mkdir -p Logs Data/Input Data/Output Data/Exchange
 ARG adapter_branch=develop
-RUN git clone  --branch $adapter_branch https://github.com/precice/openfoam-adapter.git
+RUN git clone --depth 1 --branch $adapter_branch https://github.com/precice/openfoam-adapter.git
 WORKDIR /home/precice/openfoam-adapter
 
 RUN . /usr/lib/openfoam/openfoam2006/etc/bashrc && ./Allwmake; cat wmake.log && cp wmake.log Allwmake.log ldd.log $HOME/Logs

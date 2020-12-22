@@ -26,7 +26,7 @@ USER precice
 WORKDIR /home/precice
 RUN curl -s http://www.dhondt.de/ccx_2.16.src.tar.bz2 | tar -xj
 ARG adapter_branch=develop
-RUN git clone --branch $adapter_branch https://github.com/precice/calculix-adapter.git
+RUN git clone --depth 1 --branch $adapter_branch https://github.com/precice/calculix-adapter.git
 
 # build adapter
 WORKDIR calculix-adapter/

@@ -189,7 +189,7 @@ def trigger_travis_build(job_body, user, repo):
     in the user/repo using Travis API V3
     """
 
-    url = "https://api.{TRAVIS_URL}/repo/{USER}%2F{REPO}/requests".format(TRAVIS_URL="travis-ci.org",
+    url = "https://api.{TRAVIS_URL}/repo/{USER}%2F{REPO}/requests".format(TRAVIS_URL="travis-ci.com",
         USER=user,REPO=repo)
 
     data = json.dumps(job_body).encode('utf8')
@@ -198,20 +198,20 @@ def trigger_travis_build(job_body, user, repo):
 
 def check_job_status(job_id):
     """ Checks status of the travis job"""
-    url = "https://api.{TRAVIS_URL}/build/{JOB_ID}".format(TRAVIS_URL="travis-ci.org", JOB_ID=job_id)
+    url = "https://api.{TRAVIS_URL}/build/{JOB_ID}".format(TRAVIS_URL="travis-ci.com", JOB_ID=job_id)
 
     resp =  get_json_response(url)
     return resp['state']
 
 def get_requests(user, repo):
 
-    url = "https://api.{TRAVIS_URL}/repo/{USER}%2F{REPO}/requests".format(TRAVIS_URL="travis-ci.org",
+    url = "https://api.{TRAVIS_URL}/repo/{USER}%2F{REPO}/requests".format(TRAVIS_URL="travis-ci.com",
             USER=user, REPO=repo )
     return get_json_response(url)
 
 def query_request_info(user, repo, req_id):
 
-    url = "https://api.{TRAVIS_URL}/repo/{USER}%2F{REPO}/request/{REQUEST_ID}".format(TRAVIS_URL="travis-ci.org",
+    url = "https://api.{TRAVIS_URL}/repo/{USER}%2F{REPO}/request/{REQUEST_ID}".format(TRAVIS_URL="travis-ci.com",
             USER=user, REPO=repo, REQUEST_ID=req_id)
     return get_json_response(url)
 
@@ -241,7 +241,7 @@ def trigger_travis_and_wait_and_respond(job_body, user, repo):
           "Request approved!\n" +
           "Assigned build number on 'systemtests': {}\n\n".format(build_number) +
           "Link to build page:\n" +
-          "https://travis-ci.org/github/precice/systemtests/builds/{}\n".format(build_id) +
+          "https://travis-ci.com/github/precice/systemtests/builds/{}\n".format(build_id) +
           "###############################\n" +
           msg_color.end)
     job_status = ''

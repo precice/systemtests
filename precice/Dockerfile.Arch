@@ -1,6 +1,6 @@
 # Dockerfile for building preCICE on Arch Linux
 
-FROM archlinux/base
+FROM archlinux/archlinux
 
 RUN pacman -Syu --quiet --noconfirm --needed base-devel boost eigen git cmake openmpi python3 python-numpy
 
@@ -26,7 +26,7 @@ ARG CACHEBUST
 
 # Building preCICE
 ARG branch=develop
-RUN git clone --branch $branch https://github.com/precice/precice.git /home/precice/precice
+RUN git clone --depth 1 --branch $branch https://github.com/precice/precice.git /home/precice/precice
 WORKDIR /home/precice/precice
 
 # add oversubscribe to fix travis

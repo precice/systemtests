@@ -94,7 +94,7 @@ if [ -n "$diff_files" ]; then
     # numerical filter, looks to find numbers of any format
     num_filter='[-]\?\([0-9]*[\.]\)\?[0-9]\+\([eE][+-]\?[0-9]\+\)\?'
 
-    # # exponential filter, DELETES exponent! TODO: have awk command below handle exponents
+    # # exponential filter, DELETES exponent! (if exponent should not be interpreted)
     # exp_filter='s/[eE][+-][0-9]\+//g'
     exp_filter=''
 
