@@ -25,13 +25,12 @@ RUN add-apt-repository -y ppa:fenics-packages/fenics && \
     apt-get -qq install --no-install-recommends fenics && \
     rm -rf /var/lib/apt/lists/*
 
-# Upgrade pip to newest version (pip version from 18.04 apt-get is outdated)
-RUN pip3 install --user --upgrade pip
-# Use pip to install cython (apt-get version of cython is too old)
-RUN pip3 install --user cython # TODO: can we put this dependency into requirements.txt of python?
-
 USER precice
 
+# Upgrade pip to newest version (pip version from 18.04 apt-get is outdated)
+RUN python3 -m pip install --user --upgrade pip
+# Use pip to install cython (apt-get version of cython is too old)
+RUN python3 -m pip install --user cython # TODO: can we put this dependency into requirements.txt of python?
 
 # Rebuild image if force_rebuild after that command
 ARG CACHEBUST
@@ -40,10 +39,10 @@ ARG bindings_branch=develop
 ARG adapter_branch=develop
 
 # Builds the precice python bindings for python3
-RUN pip3 install --user https://github.com/precice/python-bindings/archive/$bindings_branch.zip
+RUN python3 -m pip install --user https://github.com/precice/python-bindings/archive/$bindings_branch.zip
 
 # Building fenics-adapter
-RUN pip3 install --user numpy==1.14.5 https://github.com/precice/fenics-adapter/archive/$adapter_branch.zip
+RUN python3 -m pip install --user numpy==1.14.5 https://github.com/precice/fenics-adapter/archive/$adapter_branch.zip
 
 
 # ----- TODO: Remove this block after fenics issue is fixed -----
