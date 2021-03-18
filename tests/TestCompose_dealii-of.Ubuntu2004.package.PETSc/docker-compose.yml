@@ -47,8 +47,8 @@ services:
       context: .
       dockerfile: Dockerfile.tutorial_data
     volumes:
-      - input_of:/tutorials/FSI/flap_perp/OpenFOAM-deal.II/Fluid
-      - input_dealii:/tutorials/FSI/flap_perp/OpenFOAM-deal.II/Solid
+      - input_of:/tutorials/perpendicular-flap/fluid-openfoam
+      - input_dealii:/tutorials/perpendicular-flap/solid-dealii
       - configs:/configs/
       - output:/Output/
     container_name: tutorial-data
