@@ -10,7 +10,7 @@ services:
       - input:/home/precice/Data/Input
     command: >
        /bin/bash -c "cd /home/precice
-       && python3 /home/precice/Data/Input/heat.py -d -i simple &&
+       && python3 /home/precice/Data/Input/heat.py -d &&
        mkdir /home/precice/Data/Output/Dirichlet &&
        cp -r precice-output *.log /home/precice/Data/Output/Dirichlet"
     container_name: fenics-adapter-dirichlet
@@ -27,7 +27,7 @@ services:
       - input:/home/precice/Data/Input
     command: >
        /bin/bash -c "cd /home/precice
-       && python3 /home/precice/Data/Input/heat.py -n -i simple &&
+       && python3 /home/precice/Data/Input/heat.py -n &&
        mkdir /home/precice/Data/Output/Neumann &&
        cp -r precice-output *.log /home/precice/Data/Output/Neumann"
     container_name: fenics-adapter-neumann
@@ -41,7 +41,7 @@ services:
       network: host
     volumes:
       - output:/Output/
-      - input:/tutorials/HT/partitioned-heat/fenics-fenics
+      - input:/tutorials/partitioned-heat-conduction/fenics
     container_name: tutorial-data
 
 networks:

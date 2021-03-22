@@ -1,5 +1,5 @@
 from alpine
-ENV tutorial_path tutorials/HT/partitioned-heat/fenics-fenics
+ENV tutorial_path tutorials/partitioned-heat-conduction/fenics
 RUN apk add git
 ARG branch=develop
 RUN git clone --depth 1 --branch $branch https://github.com/precice/tutorials
