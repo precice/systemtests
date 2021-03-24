@@ -1,5 +1,5 @@
 from alpine
-ENV tutorial_path tutorials/FSI/flap_perp_2D/OpenFOAM-deal.II
+ENV tutorial_path tutorials/perpendicular-flap
 RUN apk add git
 
 ARG branch=develop
@@ -11,10 +11,10 @@ RUN mkdir configs && \
  		        $tutorial_path/precice-config.xml > configs/precice-config.xml
 
 # When running on older OF versions (<= 5.x, <= v1712), perform substitution below
-# RUN sed -i '/application     pimpleFoam/d; s/\/\/ application     pimpleDyMFoam/application    pimpleDyMFoam/g' $tutorial_path/Fluid/system/controlDict
+# RUN sed -i '/application     pimpleFoam/d; s/\/\/ application     pimpleDyMFoam/application    pimpleDyMFoam/g' $tutorial_path/fluid-openfoam/system/controlDict
 
 RUN rm $tutorial_path/precice-config.xml
-RUN rm -rfv $tutorial_path/Fluid/0/
-RUN cp -r $tutorial_path/Fluid/0.orig/ $tutorial_path/Fluid/0/
+RUN rm -rfv $tutorial_path/fluid-openfoam/0/
+RUN cp -r $tutorial_path/fluid-openfoam/0.orig/ $tutorial_path/fluid-openfoam/0/
 RUN addgroup -g 1000 precice && adduser -u 1000 -G precice -D precice && chown -R precice:precice tutorials configs
 USER precice
